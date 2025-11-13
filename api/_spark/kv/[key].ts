@@ -38,16 +38,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   // --- Handle methods ---
   if (req.method === "GET") {
-    const value = kvStore.get(decodedKey);
+    let value = kvStore.get(decodedKey);
+    
+    // Return empty array for undefined array-like keys to prevent "a.map is not a function"
     if (value === undefined) {
-      // Return empty array for keys that are typically arrays (e.g., chat-messages)
-      // This prevents "a.map is not a function" errors in Spark UI
-      const defaultValue = decodedKey.includes("messages") ? [] : null;
-      res.setHeader("Content-Type", "application/json");
-      return res.status(200).json({ key: decodedKey, value: defaultValue });
+      if (decodedKey.includes("messages") || decodedKey.includes("list") || decodedKey.includes("items")) {
+        value = [];
+      } else {
+        value = null;
+      }
     }
+    
+    // Ensure arrays are always arrays (defensive programming)
+    if (value === null && (decodedKey.includes("messages") || decodedKey.includes("list"))) {
+      value = [];
+    }
+    
     res.setHeader("Content-Type", "application/json");
-    return res.status(200).json({ key: decodedKey, value });
+    return res.status(200).json({ value });
   }
 
   if (req.method === "POST") {
