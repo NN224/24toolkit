@@ -21,7 +21,9 @@
     { "source": "/_spark/user", "destination": "/api/_spark/user.ts" },
     { "source": "/_spark/loaded", "destination": "/api/_spark/loaded.ts" },
     { "source": "/_spark/kv", "destination": "/api/_spark/kv/index.ts" },
-    { "source": "/_spark/kv/:key", "destination": "/api/_spark/kv/[key].ts" }
+    { "source": "/_spark/kv/:key", "destination": "/api/_spark/kv/[key].ts" },
+
+    { "source": "/(.*)", "destination": "/" }
   ],
 
   "headers": [
