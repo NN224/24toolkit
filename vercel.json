@@ -9,7 +9,7 @@
       }
     },
     {
-      "src": "api/**/*.js",
+      "src": "api/**/*.{js,ts}",
       "use": "@vercel/node"
     }
   ],
@@ -21,7 +21,7 @@
     { "source": "/_spark/user", "destination": "/api/_spark/user" },
     { "source": "/_spark/loaded", "destination": "/api/_spark/loaded" },
     { "source": "/_spark/kv", "destination": "/api/_spark/kv/index" },
-    { "source": "/_spark/kv/:key", "destination": "/api/_spark/kv/:key" }
+    { "source": "/_spark/kv/:key", "destination": "/api/_spark/kv/[key]" }
   ],
 
   "headers": [
