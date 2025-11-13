@@ -34,32 +34,38 @@ app.post('/api/ai', async (req, res) => {
 
       const anthropic = new Anthropic({ apiKey });
 
-      // Set headers for streaming
+      // Set headers for streaming BEFORE any writes
       res.setHeader('Content-Type', 'text/event-stream');
       res.setHeader('Cache-Control', 'no-cache');
       res.setHeader('Connection', 'keep-alive');
       res.setHeader('Access-Control-Allow-Origin', '*');
 
-      const stream = await anthropic.messages.stream({
-        model: model,
-        max_tokens: 2048,
-        messages: [{ role: 'user', content: prompt }],
-      });
+      try {
+        const stream = await anthropic.messages.stream({
+          model: model,
+          max_tokens: 2048,
+          messages: [{ role: 'user', content: prompt }],
+        });
 
-      stream.on('text', (text) => {
-        res.write(`data: ${JSON.stringify({ text })}\n\n`);
-      });
+        stream.on('text', (text) => {
+          res.write(`data: ${JSON.stringify({ text })}\n\n`);
+        });
 
-      stream.on('end', () => {
-        res.write('data: [DONE]\n\n');
+        stream.on('end', () => {
+          res.write('data: [DONE]\n\n');
+          res.end();
+        });
+
+        stream.on('error', (error) => {
+          console.error('Anthropic streaming error:', error);
+          res.write(`data: ${JSON.stringify({ error: error.message })}\n\n`);
+          res.end();
+        });
+      } catch (streamError) {
+        console.error('Stream creation error:', streamError);
+        res.write(`data: ${JSON.stringify({ error: streamError.message })}\n\n`);
         res.end();
-      });
-
-      stream.on('error', (error) => {
-        console.error('Anthropic streaming error:', error);
-        res.write(`data: ${JSON.stringify({ error: error.message })}\n\n`);
-        res.end();
-      });
+      }
 
     } else if (provider === 'groq') {
       const apiKey = process.env.GROQ_API_KEY;
@@ -72,28 +78,34 @@ app.post('/api/ai', async (req, res) => {
 
       const groq = new Groq({ apiKey });
 
-      // Set headers for streaming
+      // Set headers for streaming BEFORE any writes
       res.setHeader('Content-Type', 'text/event-stream');
       res.setHeader('Cache-Control', 'no-cache');
       res.setHeader('Connection', 'keep-alive');
       res.setHeader('Access-Control-Allow-Origin', '*');
 
-      const stream = await groq.chat.completions.create({
-        model: model,
-        messages: [{ role: 'user', content: prompt }],
-        stream: true,
-        max_tokens: 2048,
-      });
+      try {
+        const stream = await groq.chat.completions.create({
+          model: model,
+          messages: [{ role: 'user', content: prompt }],
+          stream: true,
+          max_tokens: 2048,
+        });
 
-      for await (const chunk of stream) {
-        const content = chunk.choices[0]?.delta?.content || '';
-        if (content) {
-          res.write(`data: ${JSON.stringify({ text: content })}\n\n`);
+        for await (const chunk of stream) {
+          const content = chunk.choices[0]?.delta?.content || '';
+          if (content) {
+            res.write(`data: ${JSON.stringify({ text: content })}\n\n`);
+          }
         }
-      }
 
-      res.write('data: [DONE]\n\n');
-      res.end();
+        res.write('data: [DONE]\n\n');
+        res.end();
+      } catch (streamError) {
+        console.error('Groq stream error:', streamError);
+        res.write(`data: ${JSON.stringify({ error: streamError.message })}\n\n`);
+        res.end();
+      }
 
     } else {
       return res.status(400).json({
@@ -123,5 +135,5 @@ app.get('/health', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`API Server running on http://localhost:${PORT}`);
-  console.log('Streaming AI endpoint: POST http://localhost:${PORT}/api/ai');
+  console.log(`Streaming AI endpoint: POST http://localhost:${PORT}/api/ai`);
 });
