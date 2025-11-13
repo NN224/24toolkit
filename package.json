@@ -13,7 +13,7 @@
     },
     "dependencies": {
         "@anthropic-ai/sdk": "^0.32.1",
-        "@github/spark": "^0.39.0",
+        "@github/spark": "^0.41.24",
         "@heroicons/react": "^2.2.0",
         "@hookform/resolvers": "^5.2.2",
         "@octokit/core": "^6.1.4",
