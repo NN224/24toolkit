@@ -1,0 +1,7 @@
+# robots.txt for 24toolkit.com
+
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://24toolkit.com/sitemap.xml

@@ -1,0 +1,256 @@
+import { useState } from 'react'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Copy, Shuffle } from '@phosphor-icons/react'
+import { toast } from 'sonner'
+
+interface ColorPalette {
+  hex: string
+  rgb: string
+  hsl: string
+}
+
+export default function ColorPicker() {
+  const [selectedColor, setSelectedColor] = useState('#4A90E2')
+  const [palette, setPalette] = useState<ColorPalette[]>([])
+
+  const hexToRgb = (hex: string): string => {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+    if (!result) return 'Invalid'
+    const r = parseInt(result[1], 16)
+    const g = parseInt(result[2], 16)
+    const b = parseInt(result[3], 16)
+    return `rgb(${r}, ${g}, ${b})`
+  }
+
+  const hexToHsl = (hex: string): string => {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+    if (!result) return 'Invalid'
+    
+    let r = parseInt(result[1], 16) / 255
+    let g = parseInt(result[2], 16) / 255
+    let b = parseInt(result[3], 16) / 255
+
+    const max = Math.max(r, g, b)
+    const min = Math.min(r, g, b)
+    let h = 0
+    let s = 0
+    const l = (max + min) / 2
+
+    if (max !== min) {
+      const d = max - min
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+      
+      switch (max) {
+        case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break
+        case g: h = ((b - r) / d + 2) / 6; break
+        case b: h = ((r - g) / d + 4) / 6; break
+      }
+    }
+
+    return `hsl(${Math.round(h * 360)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`
+  }
+
+  const generateRandomColor = (): string => {
+    return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')
+  }
+
+  const generatePalette = () => {
+    const newPalette: ColorPalette[] = []
+    for (let i = 0; i < 5; i++) {
+      const hex = generateRandomColor()
+      newPalette.push({
+        hex,
+        rgb: hexToRgb(hex),
+        hsl: hexToHsl(hex)
+      })
+    }
+    setPalette(newPalette)
+    toast.success('New palette generated!')
+  }
+
+  const copyToClipboard = async (text: string, label: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      toast.success(`${label} copied to clipboard!`)
+    } catch (err) {
+      toast.error('Failed to copy')
+    }
+  }
+
+  return (
+    <div className="py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
+            Color Picker & Palette Generator
+          </h1>
+          <p className="text-lg text-muted-foreground">
+            Pick colors, view different format codes, and generate beautiful color palettes.
+          </p>
+        </div>
+
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Color Picker</CardTitle>
+              <CardDescription>
+                Select a color and view its HEX, RGB, and HSL values
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="flex flex-col md:flex-row gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="color-input">Pick a Color</Label>
+                  <div className="flex gap-4 items-center">
+                    <input
+                      id="color-input"
+                      type="color"
+                      value={selectedColor}
+                      onChange={(e) => setSelectedColor(e.target.value)}
+                      className="w-24 h-24 rounded-lg cursor-pointer border-2 border-border"
+                    />
+                    <Input
+                      value={selectedColor}
+                      onChange={(e) => setSelectedColor(e.target.value)}
+                      className="w-32 font-mono"
+                      placeholder="#000000"
+                    />
+                  </div>
+                </div>
+
+                <div
+                  className="flex-1 rounded-lg border-2 border-border min-h-[120px]"
+                  style={{ backgroundColor: selectedColor }}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Card className="bg-muted/30">
+                  <CardContent className="pt-6">
+                    <div className="space-y-2">
+                      <Label className="text-xs text-muted-foreground">HEX</Label>
+                      <div className="flex items-center justify-between">
+                        <code className="text-sm font-mono">{selectedColor.toUpperCase()}</code>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => copyToClipboard(selectedColor.toUpperCase(), 'HEX')}
+                        >
+                          <Copy size={14} />
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-muted/30">
+                  <CardContent className="pt-6">
+                    <div className="space-y-2">
+                      <Label className="text-xs text-muted-foreground">RGB</Label>
+                      <div className="flex items-center justify-between">
+                        <code className="text-sm font-mono">{hexToRgb(selectedColor)}</code>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => copyToClipboard(hexToRgb(selectedColor), 'RGB')}
+                        >
+                          <Copy size={14} />
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-muted/30">
+                  <CardContent className="pt-6">
+                    <div className="space-y-2">
+                      <Label className="text-xs text-muted-foreground">HSL</Label>
+                      <div className="flex items-center justify-between">
+                        <code className="text-sm font-mono">{hexToHsl(selectedColor)}</code>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => copyToClipboard(hexToHsl(selectedColor), 'HSL')}
+                        >
+                          <Copy size={14} />
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Random Palette Generator</CardTitle>
+              <CardDescription>
+                Generate a random 5-color palette for your next project
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Button onClick={generatePalette} className="gap-2">
+                <Shuffle size={16} weight="bold" />
+                Generate Random Palette
+              </Button>
+
+              {palette.length > 0 && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                  {palette.map((color, index) => (
+                    <Card key={index} className="overflow-hidden">
+                      <div
+                        className="h-32 w-full"
+                        style={{ backgroundColor: color.hex }}
+                      />
+                      <CardContent className="pt-4 space-y-2">
+                        <div className="space-y-1">
+                          <div className="flex items-center justify-between">
+                            <code className="text-xs font-mono">{color.hex}</code>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="h-6 w-6 p-0"
+                              onClick={() => copyToClipboard(color.hex, 'HEX')}
+                            >
+                              <Copy size={12} />
+                            </Button>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <code className="text-xs font-mono text-muted-foreground">{color.rgb}</code>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="h-6 w-6 p-0"
+                              onClick={() => copyToClipboard(color.rgb, 'RGB')}
+                            >
+                              <Copy size={12} />
+                            </Button>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <code className="text-xs font-mono text-muted-foreground">{color.hsl}</code>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="h-6 w-6 p-0"
+                              onClick={() => copyToClipboard(color.hsl, 'HSL')}
+                            >
+                              <Copy size={12} />
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  )
+}

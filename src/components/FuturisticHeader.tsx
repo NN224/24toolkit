@@ -1,0 +1,285 @@
+import { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { MagnifyingGlass, Microphone, User, Moon, Sun, Lightning } from '@phosphor-icons/react'
+import { searchTools, type Tool } from '@/lib/tools-data'
+import { useTheme } from '@/components/ThemeProvider'
+import { toast } from 'sonner'
+
+export default function FuturisticHeader() {
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searchResults, setSearchResults] = useState<Tool[]>([])
+  const [isListening, setIsListening] = useState(false)
+  const { theme, setTheme } = useTheme()
+  const navigate = useNavigate()
+  const recognitionRef = useRef<any>(null)
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault()
+        setSearchOpen(true)
+      }
+      if (e.key === 'Escape') {
+        setSearchOpen(false)
+        setSearchQuery('')
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
+
+  useEffect(() => {
+    if (searchQuery.trim()) {
+      const results = searchTools(searchQuery)
+      setSearchResults(results.slice(0, 8))
+    } else {
+      setSearchResults([])
+    }
+  }, [searchQuery])
+
+  const handleSelectTool = (path: string) => {
+    navigate(path)
+    setSearchOpen(false)
+    setSearchQuery('')
+  }
+
+  const startVoiceSearch = () => {
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+      toast.error('Voice search not supported in your browser')
+      return
+    }
+
+    try {
+      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+      const recognition = new SpeechRecognition()
+      
+      recognition.lang = 'en-US'
+      recognition.continuous = false
+      recognition.interimResults = false
+
+      recognition.onstart = () => {
+        setIsListening(true)
+        toast.info('Listening... Speak now!')
+      }
+
+      recognition.onresult = (event: any) => {
+        const transcript = event.results[0][0].transcript
+        setSearchQuery(transcript)
+        setSearchOpen(true)
+        toast.success(`Searching for: "${transcript}"`)
+      }
+
+      recognition.onerror = (event: any) => {
+        setIsListening(false)
+        toast.error('Voice recognition error')
+      }
+
+      recognition.onend = () => {
+        setIsListening(false)
+      }
+
+      recognitionRef.current = recognition
+      recognition.start()
+    } catch (error) {
+      toast.error('Could not start voice search')
+      setIsListening(false)
+    }
+  }
+
+  return (
+    <>
+      <header className="fixed top-0 left-0 right-0 z-30 lg:left-20 bg-[#0a0f1e]/80 backdrop-blur-sm border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex items-center justify-between gap-4">
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="flex-1 max-w-2xl bg-card/50 rounded-xl px-4 py-3 flex items-center gap-3 group transition-all focus:ring-2 focus:ring-accent focus:outline-none border border-white/10"
+              style={{ boxShadow: '0 0 8px rgba(109,40,217,0.3)' }}
+            >
+              <MagnifyingGlass size={20} className="text-muted-foreground" />
+              <span className="text-sm text-muted-foreground flex-1 text-left">
+                Search 80+ tools... 
+              </span>
+              <kbd className="hidden sm:inline-flex px-2 py-1 text-xs font-semibold text-muted-foreground bg-white/5 border border-white/10 rounded">
+                ⌘K
+              </kbd>
+            </button>
+
+            <div className="flex items-center gap-3">
+              <button 
+                onClick={startVoiceSearch}
+                className={`p-2 rounded-lg bg-card/50 transition-all border border-white/10 ${
+                  isListening ? 'animate-pulse' : ''
+                }`}
+                style={isListening ? { boxShadow: '0 0 8px rgba(109,40,217,0.5)' } : {}}
+              >
+                <Microphone 
+                  size={20} 
+                  weight={isListening ? 'fill' : 'regular'}
+                  className={isListening ? 'text-accent' : 'text-foreground'} 
+                />
+              </button>
+
+              <div className="hidden md:flex items-center gap-1 p-1 bg-card/50 rounded-lg border border-white/10">
+                <button
+                  onClick={() => setTheme('dark')}
+                  className={`px-3 py-1.5 rounded text-xs font-medium transition-all ${
+                    theme === 'dark' 
+                      ? 'bg-gradient-to-r from-purple-600 to-sky-500 text-white' 
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  <Moon size={14} weight={theme === 'dark' ? 'fill' : 'regular'} className="inline mr-1" />
+                  Dark
+                </button>
+                <button
+                  onClick={() => setTheme('cyber')}
+                  className={`px-3 py-1.5 rounded text-xs font-medium transition-all ${
+                    theme === 'cyber' 
+                      ? 'bg-gradient-to-r from-green-500 to-pink-500 text-white' 
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  <Lightning size={14} weight={theme === 'cyber' ? 'fill' : 'regular'} className="inline mr-1" />
+                  Cyber
+                </button>
+                <button
+                  onClick={() => setTheme('minimal')}
+                  className={`px-3 py-1.5 rounded text-xs font-medium transition-all ${
+                    theme === 'minimal' 
+                      ? 'bg-gradient-to-r from-gray-400 to-gray-600 text-white' 
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  <Sun size={14} weight={theme === 'minimal' ? 'fill' : 'regular'} className="inline mr-1" />
+                  Minimal
+                </button>
+              </div>
+
+              <button className="p-2 rounded-lg bg-card/50 transition-all border border-white/10">
+                <User size={20} className="text-foreground" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {searchOpen && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50"
+            onClick={() => setSearchOpen(false)}
+          />
+          <div
+            className="fixed top-20 left-1/2 -translate-x-1/2 w-full max-w-2xl z-50 px-4"
+          >
+            <div className="bg-card/90 backdrop-blur-sm rounded-2xl overflow-hidden border-2 border-accent/30"
+              style={{ boxShadow: '0 0 20px rgba(109,40,217,0.4)' }}
+            >
+              <div className="p-4 border-b border-white/10 bg-gradient-to-r from-accent/10 via-transparent to-accent/10">
+                <div className="flex items-center gap-3">
+                  <MagnifyingGlass size={24} className="text-accent" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search for tools..."
+                    className="flex-1 bg-transparent border-none outline-none text-foreground text-lg placeholder:text-muted-foreground"
+                    autoFocus
+                  />
+                  <button 
+                    onClick={startVoiceSearch}
+                    className={`p-2 rounded-lg hover:bg-white/5 transition-colors ${
+                      isListening ? 'text-accent animate-pulse' : 'text-muted-foreground'
+                    }`}
+                  >
+                    <Microphone size={20} weight={isListening ? 'fill' : 'regular'} />
+                  </button>
+                </div>
+              </div>
+
+              <div className="max-h-96 overflow-y-auto p-2">
+                {searchQuery.trim() === '' ? (
+                  <>
+                    <div className="text-xs text-muted-foreground px-3 py-2">
+                      Quick search tips
+                    </div>
+                    <div className="px-3 py-8 text-center">
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Type to search from 80+ tools
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Try: "compress image", "convert json", "password generator"
+                      </p>
+                    </div>
+                  </>
+                ) : searchResults.length > 0 ? (
+                  <>
+                    <div className="text-xs text-muted-foreground px-3 py-2">
+                      Found {searchResults.length} result{searchResults.length !== 1 ? 's' : ''}
+                    </div>
+                    {searchResults.map((tool) => {
+                      const Icon = tool.icon
+                      return (
+                        <SearchResult
+                          key={tool.id}
+                          title={tool.title}
+                          description={tool.description}
+                          icon={<Icon size={24} weight="duotone" />}
+                          badge={tool.isAI ? 'AI' : undefined}
+                          onClick={() => handleSelectTool(tool.path)}
+                        />
+                      )
+                    })}
+                  </>
+                ) : (
+                  <div className="px-3 py-8 text-center text-sm text-muted-foreground">
+                    No tools found for "{searchQuery}"
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+    </>
+  )
+}
+
+function SearchResult({ 
+  title, 
+  description, 
+  icon, 
+  badge, 
+  onClick 
+}: { 
+  title: string
+  description: string
+  icon: React.ReactNode
+  badge?: string
+  onClick: () => void
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className="w-full flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-white/5 transition-all group"
+    >
+      <span className="text-foreground/80 group-hover:text-accent transition-colors">{icon}</span>
+      <div className="flex-1 text-left">
+        <div className="flex items-center gap-2">
+          <span className="font-medium text-foreground group-hover:text-accent transition-colors">
+            {title}
+          </span>
+          {badge && (
+            <span className="px-2 py-0.5 text-xs font-semibold bg-gradient-to-r from-purple-600 to-sky-500 text-white rounded-full">
+              {badge}
+            </span>
+          )}
+        </div>
+        <p className="text-sm text-muted-foreground">{description}</p>
+      </div>
+    </button>
+  )
+}

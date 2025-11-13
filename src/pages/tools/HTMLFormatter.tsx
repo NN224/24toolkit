@@ -1,0 +1,213 @@
+import { useState } from 'react'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Textarea } from '@/components/ui/textarea'
+import { Copy, Trash, Code } from '@phosphor-icons/react'
+import { toast } from 'sonner'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+
+export default function HTMLFormatter() {
+  const [input, setInput] = useState('')
+  const [formatted, setFormatted] = useState('')
+  const [language, setLanguage] = useState<'html' | 'css' | 'javascript'>('html')
+
+  const formatHTML = (html: string): string => {
+    let formatted = ''
+    let indent = 0
+    const lines = html.split(/>\s*</)
+    
+    lines.forEach((line, index) => {
+      if (index > 0) line = '<' + line
+      if (index < lines.length - 1) line = line + '>'
+      
+      const isClosing = line.startsWith('</')
+      const isSelfClosing = line.endsWith('/>')
+      const isOpening = !isClosing && !isSelfClosing && line.startsWith('<') && !line.startsWith('<!') && !line.startsWith('<?')
+      
+      if (isClosing) indent--
+      
+      formatted += '  '.repeat(Math.max(0, indent)) + line.trim() + '\n'
+      
+      if (isOpening) indent++
+    })
+    
+    return formatted.trim()
+  }
+
+  const formatCSS = (css: string): string => {
+    let formatted = ''
+    let indent = 0
+    const lines = css.split(/[{};]/)
+    
+    lines.forEach((line) => {
+      const trimmed = line.trim()
+      if (!trimmed) return
+      
+      if (trimmed.includes('}')) {
+        indent--
+      }
+      
+      formatted += '  '.repeat(Math.max(0, indent)) + trimmed
+      
+      if (trimmed.includes('{')) {
+        formatted += ' {\n'
+        indent++
+      } else if (trimmed.includes('}')) {
+        formatted += '\n'
+      } else {
+        formatted += ';\n'
+      }
+    })
+    
+    return formatted.trim()
+  }
+
+  const formatJavaScript = (js: string): string => {
+    let formatted = ''
+    let indent = 0
+    const lines = js.split(/\n/)
+    
+    lines.forEach((line) => {
+      const trimmed = line.trim()
+      if (!trimmed) return
+      
+      if (trimmed.startsWith('}') || trimmed.startsWith(']') || trimmed.startsWith(')')) {
+        indent--
+      }
+      
+      formatted += '  '.repeat(Math.max(0, indent)) + trimmed + '\n'
+      
+      if (trimmed.endsWith('{') || trimmed.endsWith('[') || trimmed.endsWith('(')) {
+        indent++
+      }
+    })
+    
+    return formatted.trim()
+  }
+
+  const handleFormat = () => {
+    if (!input.trim()) {
+      toast.error('Please enter some code to format')
+      return
+    }
+
+    try {
+      let result = ''
+      if (language === 'html') {
+        result = formatHTML(input)
+      } else if (language === 'css') {
+        result = formatCSS(input)
+      } else {
+        result = formatJavaScript(input)
+      }
+      setFormatted(result)
+      toast.success('Code formatted successfully!')
+    } catch (error) {
+      toast.error('Failed to format code')
+    }
+  }
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(formatted)
+      toast.success('Formatted code copied!')
+    } catch (err) {
+      toast.error('Failed to copy code')
+    }
+  }
+
+  const handleClear = () => {
+    setInput('')
+    setFormatted('')
+    toast.success('Cleared')
+  }
+
+  return (
+    <div className="py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
+            HTML/CSS/JS Formatter
+          </h1>
+          <p className="text-lg text-muted-foreground">
+            Auto-beautify your HTML, CSS, or JavaScript code with proper indentation
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Input Code</CardTitle>
+              <CardDescription>Paste your code here</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Tabs value={language} onValueChange={(v) => setLanguage(v as any)}>
+                <TabsList className="grid w-full grid-cols-3">
+                  <TabsTrigger value="html">HTML</TabsTrigger>
+                  <TabsTrigger value="css">CSS</TabsTrigger>
+                  <TabsTrigger value="javascript">JavaScript</TabsTrigger>
+                </TabsList>
+              </Tabs>
+              
+              <Textarea
+                id="code-input"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder={`Enter your ${language.toUpperCase()} code...`}
+                className="font-mono text-sm min-h-[400px]"
+              />
+
+              <div className="flex gap-2">
+                <Button onClick={handleFormat} className="flex-1">
+                  <Code size={18} className="mr-2" />
+                  Format Code
+                </Button>
+                <Button onClick={handleClear} variant="outline">
+                  <Trash size={18} />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Formatted Output</CardTitle>
+              <CardDescription>Beautified code with proper indentation</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {formatted ? (
+                <div className="relative">
+                  <SyntaxHighlighter
+                    language={language}
+                    style={vscDarkPlus}
+                    customStyle={{
+                      borderRadius: '0.5rem',
+                      padding: '1rem',
+                      maxHeight: '400px',
+                      fontSize: '0.875rem'
+                    }}
+                  >
+                    {formatted}
+                  </SyntaxHighlighter>
+                </div>
+              ) : (
+                <div className="min-h-[400px] border-2 border-dashed border-border rounded-lg flex items-center justify-center text-muted-foreground">
+                  Formatted code will appear here
+                </div>
+              )}
+
+              {formatted && (
+                <Button onClick={handleCopy} className="w-full">
+                  <Copy size={18} className="mr-2" />
+                  Copy Formatted Code
+                </Button>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  )
+}
