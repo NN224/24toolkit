@@ -12,6 +12,7 @@
   "cleanUrls": false,
 
   "rewrites": [
+    { "source": "/api/ai", "destination": "/api/ai" },
     { "source": "/_spark/llm", "destination": "/api/_spark/llm" },
     { "source": "/_spark/user", "destination": "/api/_spark/user" },
     { "source": "/_spark/loaded", "destination": "/api/_spark/loaded" },
