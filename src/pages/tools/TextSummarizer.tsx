@@ -7,18 +7,19 @@ import { toast } from 'sonner'
 import { AILoadingSpinner } from '@/components/ai/AILoadingSpinner'
 import { AIBadge } from '@/components/ai/AIBadge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderSelector'
+import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { callAI } from '@/lib/ai'
 
 type SummaryLength = 'short' | 'medium' | 'detailed'
-type Provider = 'anthropic' | 'groq'
 
 export default function TextSummarizer() {
   const [text, setText] = useState('')
   const [summary, setSummary] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [summaryLength, setSummaryLength] = useState<SummaryLength>('medium')
-  const [provider, setProvider] = useState<Provider>('anthropic')
+  const [provider, setProvider] = useState<AIProvider>('anthropic')
+  const copyToClipboard = useCopyToClipboard()
 
   const handleSummarize = async () => {
     if (!text.trim()) {
@@ -56,14 +57,7 @@ ${text}`
     }
   }
 
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(summary)
-      toast.success('Summary copied to clipboard!')
-    } catch (err) {
-      toast.error('Failed to copy summary')
-    }
-  }
+
 
   const handleClear = () => {
     setText('')
@@ -104,23 +98,7 @@ ${text}`
               />
               
               <div className="space-y-3">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-foreground">AI Provider</label>
-                  <ToggleGroup 
-                    type="single" 
-                    value={provider} 
-                    onValueChange={(value) => value && setProvider(value as Provider)}
-                    className="w-full justify-start"
-                    variant="outline"
-                  >
-                    <ToggleGroupItem value="anthropic" className="flex-1">
-                      Anthropic Claude
-                    </ToggleGroupItem>
-                    <ToggleGroupItem value="groq" className="flex-1">
-                      Groq
-                    </ToggleGroupItem>
-                  </ToggleGroup>
-                </div>
+                <AIProviderSelector value={provider} onValueChange={setProvider} />
                 
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Select value={summaryLength} onValueChange={(value) => setSummaryLength(value as SummaryLength)}>
@@ -177,7 +155,7 @@ ${text}`
                   </div>
                   
                   <Button
-                    onClick={handleCopy}
+                    onClick={() => copyToClipboard(summary, 'Summary copied to clipboard!')}
                     variant="outline"
                     className="w-full gap-2"
                   >

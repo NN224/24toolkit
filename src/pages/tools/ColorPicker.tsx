@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Copy, Shuffle } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 
 interface ColorPalette {
   hex: string
@@ -15,6 +16,7 @@ interface ColorPalette {
 export default function ColorPicker() {
   const [selectedColor, setSelectedColor] = useState('#4A90E2')
   const [palette, setPalette] = useState<ColorPalette[]>([])
+  const copyColor = useCopyToClipboard()
 
   const hexToRgb = (hex: string): string => {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
@@ -71,14 +73,7 @@ export default function ColorPicker() {
     toast.success('New palette generated!')
   }
 
-  const copyToClipboard = async (text: string, label: string) => {
-    try {
-      await navigator.clipboard.writeText(text)
-      toast.success(`${label} copied to clipboard!`)
-    } catch (err) {
-      toast.error('Failed to copy')
-    }
-  }
+
 
   return (
     <div className="py-12 px-4 sm:px-6 lg:px-8">
@@ -137,7 +132,7 @@ export default function ColorPicker() {
                         <Button
                           size="sm"
                           variant="ghost"
-                          onClick={() => copyToClipboard(selectedColor.toUpperCase(), 'HEX')}
+                          onClick={() => copyColor(selectedColor.toUpperCase(), 'HEX copied to clipboard!')}
                         >
                           <Copy size={14} />
                         </Button>
@@ -155,7 +150,7 @@ export default function ColorPicker() {
                         <Button
                           size="sm"
                           variant="ghost"
-                          onClick={() => copyToClipboard(hexToRgb(selectedColor), 'RGB')}
+                          onClick={() => copyColor(hexToRgb(selectedColor), 'RGB copied to clipboard!')}
                         >
                           <Copy size={14} />
                         </Button>
@@ -173,7 +168,7 @@ export default function ColorPicker() {
                         <Button
                           size="sm"
                           variant="ghost"
-                          onClick={() => copyToClipboard(hexToHsl(selectedColor), 'HSL')}
+                          onClick={() => copyColor(hexToHsl(selectedColor), 'HSL copied to clipboard!')}
                         >
                           <Copy size={14} />
                         </Button>
@@ -214,7 +209,7 @@ export default function ColorPicker() {
                               size="sm"
                               variant="ghost"
                               className="h-6 w-6 p-0"
-                              onClick={() => copyToClipboard(color.hex, 'HEX')}
+                              onClick={() => copyColor(color.hex, 'HEX copied to clipboard!')}
                             >
                               <Copy size={12} />
                             </Button>
@@ -225,7 +220,7 @@ export default function ColorPicker() {
                               size="sm"
                               variant="ghost"
                               className="h-6 w-6 p-0"
-                              onClick={() => copyToClipboard(color.rgb, 'RGB')}
+                              onClick={() => copyColor(color.rgb, 'RGB copied to clipboard!')}
                             >
                               <Copy size={12} />
                             </Button>
@@ -236,7 +231,7 @@ export default function ColorPicker() {
                               size="sm"
                               variant="ghost"
                               className="h-6 w-6 p-0"
-                              onClick={() => copyToClipboard(color.hsl, 'HSL')}
+                              onClick={() => copyColor(color.hsl, 'HSL copied to clipboard!')}
                             >
                               <Copy size={12} />
                             </Button>

@@ -6,18 +6,19 @@ import { Label } from '@/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Copy, Envelope } from '@phosphor-icons/react'
 import { toast } from 'sonner'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderSelector'
+import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { callAI } from '@/lib/ai'
 
 type EmailMode = 'formal' | 'casual' | 'business'
-type Provider = 'anthropic' | 'groq'
 
 export default function AIEmailWriter() {
   const [topic, setTopic] = useState('')
   const [mode, setMode] = useState<EmailMode>('formal')
   const [generatedEmail, setGeneratedEmail] = useState('')
   const [loading, setLoading] = useState(false)
-  const [provider, setProvider] = useState<Provider>('anthropic')
+  const [provider, setProvider] = useState<AIProvider>('anthropic')
+  const copyToClipboard = useCopyToClipboard()
 
   const generateEmail = async () => {
     if (!topic.trim()) {
@@ -51,10 +52,7 @@ Include a subject line, greeting, body, and professional closing. Format it as a
     }
   }
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(generatedEmail)
-    toast.success('Email copied to clipboard!')
-  }
+
 
   return (
     <div className="container mx-auto max-w-4xl px-4 py-8 space-y-6">
@@ -102,23 +100,7 @@ Include a subject line, greeting, body, and professional closing. Format it as a
             </TabsList>
           </Tabs>
 
-          <div className="space-y-2">
-            <Label>AI Provider</Label>
-            <ToggleGroup 
-              type="single" 
-              value={provider} 
-              onValueChange={(value) => value && setProvider(value as Provider)}
-              className="w-full justify-start"
-              variant="outline"
-            >
-              <ToggleGroupItem value="anthropic" className="flex-1">
-                Anthropic Claude
-              </ToggleGroupItem>
-              <ToggleGroupItem value="groq" className="flex-1">
-                Groq
-              </ToggleGroupItem>
-            </ToggleGroup>
-          </div>
+          <AIProviderSelector value={provider} onValueChange={setProvider} />
 
           <Button
             onClick={generateEmail}
@@ -132,7 +114,7 @@ Include a subject line, greeting, body, and professional closing. Format it as a
             <div className="space-y-2 mt-4">
               <div className="flex items-center justify-between">
                 <Label>Generated Email</Label>
-                <Button variant="ghost" size="sm" onClick={copyToClipboard}>
+                <Button variant="ghost" size="sm" onClick={() => copyToClipboard(generatedEmail, 'Email copied to clipboard!')}>
                   <Copy size={16} className="mr-2" />
                   Copy
                 </Button>

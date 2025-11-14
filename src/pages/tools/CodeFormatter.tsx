@@ -9,10 +9,9 @@ import { AIBadge } from '@/components/ai/AIBadge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderSelector'
+import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { callAI } from '@/lib/ai'
-
-type Provider = 'anthropic' | 'groq'
 
 export default function CodeFormatter() {
   const [code, setCode] = useState('')
@@ -20,7 +19,8 @@ export default function CodeFormatter() {
   const [explanation, setExplanation] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [activeTab, setActiveTab] = useState<'format' | 'explain'>('format')
-  const [provider, setProvider] = useState<Provider>('anthropic')
+  const [provider, setProvider] = useState<AIProvider>('anthropic')
+  const copyToClipboard = useCopyToClipboard()
 
   const detectLanguage = (code: string): string => {
     if (code.includes('function') || code.includes('const') || code.includes('let')) return 'javascript'
@@ -92,14 +92,7 @@ ${code}`
     }
   }
 
-  const handleCopy = async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text)
-      toast.success('Copied to clipboard!')
-    } catch (err) {
-      toast.error('Failed to copy')
-    }
-  }
+
 
   const handleClear = () => {
     setCode('')
@@ -151,23 +144,7 @@ ${code}`
               )}
               
               <div className="space-y-3">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-foreground">AI Provider</label>
-                  <ToggleGroup 
-                    type="single" 
-                    value={provider} 
-                    onValueChange={(value) => value && setProvider(value as Provider)}
-                    className="w-full justify-start"
-                    variant="outline"
-                  >
-                    <ToggleGroupItem value="anthropic" className="flex-1">
-                      Anthropic Claude
-                    </ToggleGroupItem>
-                    <ToggleGroupItem value="groq" className="flex-1">
-                      Groq
-                    </ToggleGroupItem>
-                  </ToggleGroup>
-                </div>
+                <AIProviderSelector value={provider} onValueChange={setProvider} />
                 
                 <div className="flex flex-col gap-2">
                   <Button
@@ -236,7 +213,7 @@ ${code}`
                       </div>
                       
                       <Button
-                        onClick={() => handleCopy(formattedCode)}
+                        onClick={() => copyToClipboard(formattedCode)}
                         variant="outline"
                         className="w-full gap-2"
                       >
@@ -270,7 +247,7 @@ ${code}`
                       </div>
                       
                       <Button
-                        onClick={() => handleCopy(explanation)}
+                        onClick={() => copyToClipboard(explanation)}
                         variant="outline"
                         className="w-full gap-2"
                       >

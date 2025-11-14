@@ -5,16 +5,16 @@ import { Copy, Image as ImageIcon, Sparkle, Upload } from '@phosphor-icons/react
 import { toast } from 'sonner'
 import { AILoadingSpinner } from '@/components/ai/AILoadingSpinner'
 import { AIBadge } from '@/components/ai/AIBadge'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderSelector'
+import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { callAI } from '@/lib/ai'
-
-type Provider = 'anthropic' | 'groq'
 
 export default function ImageCaptionGenerator() {
   const [imageUrl, setImageUrl] = useState<string>('')
   const [caption, setCaption] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [provider, setProvider] = useState<Provider>('anthropic')
+  const [provider, setProvider] = useState<AIProvider>('anthropic')
+  const copyToClipboard = useCopyToClipboard()
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -71,14 +71,7 @@ export default function ImageCaptionGenerator() {
     }
   }
 
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(caption)
-      toast.success('Caption copied to clipboard!')
-    } catch (err) {
-      toast.error('Failed to copy caption')
-    }
-  }
+
 
   const handleClear = () => {
     setImageUrl('')
@@ -151,23 +144,7 @@ export default function ImageCaptionGenerator() {
                   </div>
 
                   <div className="space-y-3">
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-foreground">AI Provider</label>
-                      <ToggleGroup 
-                        type="single" 
-                        value={provider} 
-                        onValueChange={(value) => value && setProvider(value as Provider)}
-                        className="w-full justify-start"
-                        variant="outline"
-                      >
-                        <ToggleGroupItem value="anthropic" className="flex-1">
-                          Anthropic Claude
-                        </ToggleGroupItem>
-                        <ToggleGroupItem value="groq" className="flex-1">
-                          Groq
-                        </ToggleGroupItem>
-                      </ToggleGroup>
-                    </div>
+                    <AIProviderSelector value={provider} onValueChange={setProvider} />
 
                     <div className="flex gap-2">
                       <Button
@@ -219,7 +196,7 @@ export default function ImageCaptionGenerator() {
                     </div>
                     
                     <Button
-                      onClick={handleCopy}
+                      onClick={() => copyToClipboard(caption, 'Caption copied to clipboard!')}
                       variant="outline"
                       className="w-full gap-2"
                     >
