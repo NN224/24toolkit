@@ -8,18 +8,19 @@ import { AILoadingSpinner } from '@/components/ai/AILoadingSpinner'
 import { AIBadge } from '@/components/ai/AIBadge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderSelector'
+import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { callAI } from '@/lib/ai'
 
 type Tone = 'formal' | 'neutral' | 'casual'
-type Provider = 'anthropic' | 'groq'
 
 export default function ParagraphRewriter() {
   const [inputText, setInputText] = useState('')
   const [outputText, setOutputText] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [tone, setTone] = useState<Tone>('neutral')
-  const [provider, setProvider] = useState<Provider>('anthropic')
+  const [provider, setProvider] = useState<AIProvider>('anthropic')
+  const copyToClipboard = useCopyToClipboard()
 
   const handleRewrite = async () => {
     if (!inputText.trim()) {
@@ -57,14 +58,7 @@ Rewritten text:`
     }
   }
 
-  const handleCopy = async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text)
-      toast.success('Text copied to clipboard!')
-    } catch (err) {
-      toast.error('Failed to copy text')
-    }
-  }
+
 
   const handleClear = () => {
     setInputText('')
@@ -116,23 +110,7 @@ Rewritten text:`
                 </Select>
               </div>
               
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground">AI Provider</label>
-                <ToggleGroup 
-                  type="single" 
-                  value={provider} 
-                  onValueChange={(value) => value && setProvider(value as Provider)}
-                  className="w-full justify-start"
-                  variant="outline"
-                >
-                  <ToggleGroupItem value="anthropic" className="flex-1">
-                    Anthropic Claude
-                  </ToggleGroupItem>
-                  <ToggleGroupItem value="groq" className="flex-1">
-                    Groq
-                  </ToggleGroupItem>
-                </ToggleGroup>
-              </div>
+              <AIProviderSelector value={provider} onValueChange={setProvider} />
               
               <div className="flex flex-wrap gap-3">
                 <Button
@@ -172,7 +150,7 @@ Rewritten text:`
                 />
                 
                 <Button
-                  onClick={() => handleCopy(inputText)}
+                  onClick={() => copyToClipboard(inputText)}
                   disabled={!inputText}
                   variant="outline"
                   className="w-full gap-2"
@@ -211,7 +189,7 @@ Rewritten text:`
                         </div>
                         
                         <Button
-                          onClick={() => handleCopy(outputText)}
+                          onClick={() => copyToClipboard(outputText)}
                           variant="outline"
                           className="w-full gap-2"
                         >
