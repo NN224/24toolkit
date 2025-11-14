@@ -21,38 +21,38 @@ export default function ColorPicker() {
   const hexToRgb = (hex: string): string => {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
     if (!result) return 'Invalid'
-    const r = parseInt(result[1], 16)
-    const g = parseInt(result[2], 16)
-    const b = parseInt(result[3], 16)
-    return `rgb(${r}, ${g}, ${b})`
+    const red = parseInt(result[1], 16)
+    const green = parseInt(result[2], 16)
+    const blue = parseInt(result[3], 16)
+    return `rgb(${red}, ${green}, ${blue})`
   }
 
   const hexToHsl = (hex: string): string => {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
     if (!result) return 'Invalid'
     
-    let r = parseInt(result[1], 16) / 255
-    let g = parseInt(result[2], 16) / 255
-    let b = parseInt(result[3], 16) / 255
+    let red = parseInt(result[1], 16) / 255
+    let green = parseInt(result[2], 16) / 255
+    let blue = parseInt(result[3], 16) / 255
 
-    const max = Math.max(r, g, b)
-    const min = Math.min(r, g, b)
-    let h = 0
-    let s = 0
-    const l = (max + min) / 2
+    const max = Math.max(red, green, blue)
+    const min = Math.min(red, green, blue)
+    let hue = 0
+    let saturation = 0
+    const lightness = (max + min) / 2
 
     if (max !== min) {
-      const d = max - min
-      s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+      const delta = max - min
+      saturation = lightness > 0.5 ? delta / (2 - max - min) : delta / (max + min)
       
       switch (max) {
-        case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break
-        case g: h = ((b - r) / d + 2) / 6; break
-        case b: h = ((r - g) / d + 4) / 6; break
+        case red: hue = ((green - blue) / delta + (green < blue ? 6 : 0)) / 6; break
+        case green: hue = ((blue - red) / delta + 2) / 6; break
+        case blue: hue = ((red - green) / delta + 4) / 6; break
       }
     }
 
-    return `hsl(${Math.round(h * 360)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`
+    return `hsl(${Math.round(hue * 360)}, ${Math.round(saturation * 100)}%, ${Math.round(lightness * 100)}%)`
   }
 
   const generateRandomColor = (): string => {

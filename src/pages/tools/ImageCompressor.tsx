@@ -101,10 +101,10 @@ export default function ImageCompressor() {
 
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return '0 Bytes'
-    const k = 1024
+    const kilobyte = 1024
     const sizes = ['Bytes', 'KB', 'MB']
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i]
+    const sizeIndex = Math.floor(Math.log(bytes) / Math.log(kilobyte))
+    return Math.round(bytes / Math.pow(kilobyte, sizeIndex) * 100) / 100 + ' ' + sizes[sizeIndex]
   }
 
   const compressionRatio = originalImage && compressedImage
