@@ -8,6 +8,7 @@ import { Switch } from '@/components/ui/switch'
 import { Badge } from '@/components/ui/badge'
 import { Copy, Shuffle } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 
 export default function PasswordGenerator() {
   const [password, setPassword] = useState('')
@@ -18,6 +19,7 @@ export default function PasswordGenerator() {
     numbers: true,
     symbols: true
   })
+  const copyToClipboard = useCopyToClipboard()
 
   const generatePassword = () => {
     const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -65,16 +67,7 @@ export default function PasswordGenerator() {
     return { label: 'Strong', color: 'default' }
   }
 
-  const handleCopy = async () => {
-    if (!password) return
-    
-    try {
-      await navigator.clipboard.writeText(password)
-      toast.success('Password copied to clipboard!')
-    } catch (err) {
-      toast.error('Failed to copy password')
-    }
-  }
+
 
   const strength = calculateStrength()
 
@@ -108,7 +101,7 @@ export default function PasswordGenerator() {
                   className="font-mono text-lg"
                 />
                 <Button
-                  onClick={handleCopy}
+                  onClick={() => password && copyToClipboard(password, 'Password copied to clipboard!')}
                   disabled={!password}
                   variant="outline"
                   size="icon"

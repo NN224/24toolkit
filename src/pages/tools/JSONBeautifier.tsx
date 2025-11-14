@@ -6,12 +6,14 @@ import { Copy, Trash, CheckCircle, XCircle } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 
 export default function JSONBeautifier() {
   const [input, setInput] = useState('')
   const [formatted, setFormatted] = useState('')
   const [isValid, setIsValid] = useState<boolean | null>(null)
   const [error, setError] = useState('')
+  const copyToClipboard = useCopyToClipboard()
 
   const handleBeautify = () => {
     if (!input.trim()) {
@@ -55,14 +57,7 @@ export default function JSONBeautifier() {
     }
   }
 
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(formatted)
-      toast.success('JSON copied!')
-    } catch (err) {
-      toast.error('Failed to copy')
-    }
-  }
+
 
   const handleClear = () => {
     setInput('')
@@ -160,7 +155,7 @@ export default function JSONBeautifier() {
               )}
 
               {formatted && (
-                <Button onClick={handleCopy} className="w-full">
+                <Button onClick={() => copyToClipboard(formatted, 'JSON copied!')} className="w-full">
                   <Copy size={18} className="mr-2" />
                   Copy JSON
                 </Button>

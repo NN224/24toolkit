@@ -5,11 +5,13 @@ import { Textarea } from '@/components/ui/textarea'
 import { Copy, Trash, ArrowsLeftRight } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 
 export default function Base64Tool() {
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')
   const [mode, setMode] = useState<'encode' | 'decode'>('encode')
+  const copyToClipboard = useCopyToClipboard()
 
   const handleEncode = () => {
     if (!input.trim()) {
@@ -41,14 +43,7 @@ export default function Base64Tool() {
     }
   }
 
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(output)
-      toast.success('Copied to clipboard!')
-    } catch (err) {
-      toast.error('Failed to copy')
-    }
-  }
+
 
   const handleClear = () => {
     setInput('')
@@ -129,7 +124,7 @@ export default function Base64Tool() {
                   />
 
                   <div className="flex gap-2">
-                    <Button onClick={handleCopy} className="flex-1">
+                    <Button onClick={() => copyToClipboard(output)} className="flex-1">
                       <Copy size={18} className="mr-2" />
                       Copy Result
                     </Button>
