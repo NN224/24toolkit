@@ -1,0 +1,35 @@
+{
+  "name": "24Toolkit - Complete Online Toolkit",
+  "short_name": "24Toolkit",
+  "description": "80+ free, fast, and AI-powered tools for developers, creators, and everyday users",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#6D28D9",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "utilities", "developer"],
+  "shortcuts": [
+    {
+      "name": "AI Tools",
+      "short_name": "AI",
+      "description": "Access AI-powered tools",
+      "url": "/?category=ai",
+      "icons": [{ "src": "/favicon.svg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Image Tools",
+      "short_name": "Images",
+      "description": "Image editing and conversion",
+      "url": "/?category=image",
+      "icons": [{ "src": "/favicon.svg", "sizes": "96x96" }]
+    }
+  ]
+}
