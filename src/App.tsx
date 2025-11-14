@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import React, { Suspense } from 'react'
 import { Toaster } from '@/components/ui/sonner'
 import Layout from '@/components/Layout'
 import HomePage from '@/pages/HomePage'
@@ -11,16 +12,16 @@ import WordCounter from '@/pages/tools/WordCounter'
 import PasswordGenerator from '@/pages/tools/PasswordGenerator'
 import QRGenerator from '@/pages/tools/QRGenerator'
 import JSONCSVConverter from '@/pages/tools/JSONCSVConverter'
-import ImageCompressor from '@/pages/tools/ImageCompressor'
+const ImageCompressor = React.lazy(() => import('@/pages/tools/ImageCompressor'))
 import TextToSpeech from '@/pages/tools/TextToSpeech'
 import PDFToWord from '@/pages/tools/PDFToWord'
 import ColorPicker from '@/pages/tools/ColorPicker'
-import ImageToText from '@/pages/tools/ImageToText'
+const ImageToText = React.lazy(() => import('@/pages/tools/ImageToText'))
 import UnitConverter from '@/pages/tools/UnitConverter'
 import TextSummarizer from '@/pages/tools/TextSummarizer'
 import ParagraphRewriter from '@/pages/tools/ParagraphRewriter'
 import CodeFormatter from '@/pages/tools/CodeFormatter'
-import ImageCaptionGenerator from '@/pages/tools/ImageCaptionGenerator'
+const ImageCaptionGenerator = React.lazy(() => import('@/pages/tools/ImageCaptionGenerator'))
 import ChatAssistant from '@/pages/tools/ChatAssistant'
 import TextCaseConverter from '@/pages/tools/TextCaseConverter'
 import RemoveLineBreaks from '@/pages/tools/RemoveLineBreaks'
@@ -42,25 +43,25 @@ import TimestampConverter from '@/pages/tools/TimestampConverter'
 import JWTDecoder from '@/pages/tools/JWTDecoder'
 import TextEncryptor from '@/pages/tools/TextEncryptor'
 import MarkdownPreviewer from '@/pages/tools/MarkdownPreviewer'
-import ImageResizer from '@/pages/tools/ImageResizer'
-import ImageCropper from '@/pages/tools/ImageCropper'
-import BackgroundRemover from '@/pages/tools/BackgroundRemover'
-import ImageFilterEditor from '@/pages/tools/ImageFilterEditor'
-import WatermarkAdder from '@/pages/tools/WatermarkAdder'
-import MemeGenerator from '@/pages/tools/MemeGenerator'
-import ImageFormatConverter from '@/pages/tools/ImageFormatConverter'
-import ImageRotator from '@/pages/tools/ImageRotator'
-import ImageColorExtractor from '@/pages/tools/ImageColorExtractor'
-import ImageCompressorV2 from '@/pages/tools/ImageCompressorV2'
+const ImageResizer = React.lazy(() => import('@/pages/tools/ImageResizer'))
+const ImageCropper = React.lazy(() => import('@/pages/tools/ImageCropper'))
+const BackgroundRemover = React.lazy(() => import('@/pages/tools/BackgroundRemover'))
+const ImageFilterEditor = React.lazy(() => import('@/pages/tools/ImageFilterEditor'))
+const WatermarkAdder = React.lazy(() => import('@/pages/tools/WatermarkAdder'))
+const MemeGenerator = React.lazy(() => import('@/pages/tools/MemeGenerator'))
+const ImageFormatConverter = React.lazy(() => import('@/pages/tools/ImageFormatConverter'))
+const ImageRotator = React.lazy(() => import('@/pages/tools/ImageRotator'))
+const ImageColorExtractor = React.lazy(() => import('@/pages/tools/ImageColorExtractor'))
+const ImageCompressorV2 = React.lazy(() => import('@/pages/tools/ImageCompressorV2'))
 import PercentageCalculator from '@/pages/tools/PercentageCalculator'
 import AgeCalculator from '@/pages/tools/AgeCalculator'
 import BMICalculator from '@/pages/tools/BMICalculator'
 import TipCalculator from '@/pages/tools/TipCalculator'
 import DiscountCalculator from '@/pages/tools/DiscountCalculator'
 import CurrencyConverter from '@/pages/tools/CurrencyConverter'
-import AITranslator from '@/pages/tools/AITranslator'
-import AIEmailWriter from '@/pages/tools/AIEmailWriter'
-import AIHashtagGenerator from '@/pages/tools/AIHashtagGenerator'
+const AITranslator = React.lazy(() => import('@/pages/tools/AITranslator'))
+const AIEmailWriter = React.lazy(() => import('@/pages/tools/AIEmailWriter'))
+const AIHashtagGenerator = React.lazy(() => import('@/pages/tools/AIHashtagGenerator'))
 import MetaTagGenerator from '@/pages/tools/MetaTagGenerator'
 import IPAddressFinder from '@/pages/tools/IPAddressFinder'
 import HTTPHeaderAnalyzer from '@/pages/tools/HTTPHeaderAnalyzer'
@@ -101,16 +102,37 @@ function App() {
           <Route path="tools/password-generator" element={<PasswordGenerator />} />
           <Route path="tools/qr-generator" element={<QRGenerator />} />
           <Route path="tools/json-csv-converter" element={<JSONCSVConverter />} />
-          <Route path="tools/image-compressor" element={<ImageCompressor />} />
+          <Route
+            path="tools/image-compressor"
+            element={
+              <Suspense fallback={<div className="p-4 text-center">Loading Image Compressor...</div>}>
+                <ImageCompressor />
+              </Suspense>
+            }
+          />
           <Route path="tools/text-to-speech" element={<TextToSpeech />} />
           <Route path="tools/pdf-to-word" element={<PDFToWord />} />
           <Route path="tools/color-picker" element={<ColorPicker />} />
-          <Route path="tools/image-to-text" element={<ImageToText />} />
+          <Route
+            path="tools/image-to-text"
+            element={
+              <Suspense fallback={<div className="p-4 text-center">Loading Image to Text...</div>}>
+                <ImageToText />
+              </Suspense>
+            }
+          />
           <Route path="tools/unit-converter" element={<UnitConverter />} />
           <Route path="tools/text-summarizer" element={<TextSummarizer />} />
           <Route path="tools/paragraph-rewriter" element={<ParagraphRewriter />} />
           <Route path="tools/code-formatter" element={<CodeFormatter />} />
-          <Route path="tools/image-caption-generator" element={<ImageCaptionGenerator />} />
+          <Route
+            path="tools/image-caption-generator"
+            element={
+              <Suspense fallback={<div className="p-4 text-center">Loading Image Caption Generator...</div>}>
+                <ImageCaptionGenerator />
+              </Suspense>
+            }
+          />
           <Route path="tools/chat-assistant" element={<ChatAssistant />} />
           <Route path="tools/text-case-converter" element={<TextCaseConverter />} />
           <Route path="tools/remove-line-breaks" element={<RemoveLineBreaks />} />
@@ -132,25 +154,116 @@ function App() {
           <Route path="tools/jwt-decoder" element={<JWTDecoder />} />
           <Route path="tools/text-encryptor" element={<TextEncryptor />} />
           <Route path="tools/markdown-previewer" element={<MarkdownPreviewer />} />
-          <Route path="tools/image-resizer" element={<ImageResizer />} />
-          <Route path="tools/image-cropper" element={<ImageCropper />} />
-          <Route path="tools/background-remover" element={<BackgroundRemover />} />
-          <Route path="tools/image-filter-editor" element={<ImageFilterEditor />} />
-          <Route path="tools/watermark-adder" element={<WatermarkAdder />} />
-          <Route path="tools/meme-generator" element={<MemeGenerator />} />
-          <Route path="tools/image-format-converter" element={<ImageFormatConverter />} />
-          <Route path="tools/image-rotator" element={<ImageRotator />} />
-          <Route path="tools/image-color-extractor" element={<ImageColorExtractor />} />
-          <Route path="tools/image-compressor-v2" element={<ImageCompressorV2 />} />
+          <Route
+            path="tools/image-resizer"
+            element={
+              <Suspense fallback={<div className="p-4 text-center">Loading Image Resizer...</div>}>
+                <ImageResizer />
+              </Suspense>
+            }
+          />
+          <Route
+            path="tools/image-cropper"
+            element={
+              <Suspense fallback={<div className="p-4 text-center">Loading Image Cropper...</div>}>
+                <ImageCropper />
+              </Suspense>
+            }
+          />
+          <Route
+            path="tools/background-remover"
+            element={
+              <Suspense fallback={<div className="p-4 text-center">Loading tool...</div>}>
+                <BackgroundRemover />
+              </Suspense>
+            }
+          />
+          <Route
+            path="tools/image-filter-editor"
+            element={
+              <Suspense fallback={<div className="p-4 text-center">Loading Image Filter Editor...</div>}>
+                <ImageFilterEditor />
+              </Suspense>
+            }
+          />
+          <Route
+            path="tools/watermark-adder"
+            element={
+              <Suspense fallback={<div className="p-4 text-center">Loading Watermark Adder...</div>}>
+                <WatermarkAdder />
+              </Suspense>
+            }
+          />
+          <Route
+            path="tools/meme-generator"
+            element={
+              <Suspense fallback={<div className="p-4 text-center">Loading Meme Generator...</div>}>
+                <MemeGenerator />
+              </Suspense>
+            }
+          />
+          <Route
+            path="tools/image-format-converter"
+            element={
+              <Suspense fallback={<div className="p-4 text-center">Loading Image Format Converter...</div>}>
+                <ImageFormatConverter />
+              </Suspense>
+            }
+          />
+          <Route
+            path="tools/image-rotator"
+            element={
+              <Suspense fallback={<div className="p-4 text-center">Loading Image Rotator...</div>}>
+                <ImageRotator />
+              </Suspense>
+            }
+          />
+          <Route
+            path="tools/image-color-extractor"
+            element={
+              <Suspense fallback={<div className="p-4 text-center">Loading Image Color Extractor...</div>}>
+                <ImageColorExtractor />
+              </Suspense>
+            }
+          />
+          <Route
+            path="tools/image-compressor-v2"
+            element={
+              <Suspense fallback={<div className="p-4 text-center">Loading Image Compressor v2...</div>}>
+                <ImageCompressorV2 />
+              </Suspense>
+            }
+          />
           <Route path="tools/percentage-calculator" element={<PercentageCalculator />} />
           <Route path="tools/age-calculator" element={<AgeCalculator />} />
           <Route path="tools/bmi-calculator" element={<BMICalculator />} />
           <Route path="tools/tip-calculator" element={<TipCalculator />} />
           <Route path="tools/discount-calculator" element={<DiscountCalculator />} />
           <Route path="tools/currency-converter" element={<CurrencyConverter />} />
-          <Route path="tools/ai-translator" element={<AITranslator />} />
-          <Route path="tools/ai-email-writer" element={<AIEmailWriter />} />
-          <Route path="tools/ai-hashtag-generator" element={<AIHashtagGenerator />} />
+          <Route
+            path="tools/ai-translator"
+            element={
+              <Suspense fallback={<div className="p-4 text-center">Loading AI Translator...</div>}>
+                <AITranslator />
+              </Suspense>
+            }
+          />
+          <Route
+            path="tools/ai-email-writer"
+            element={
+              <Suspense fallback={<div className="p-4 text-center">Loading AI Email Writer...</div>}>
+                <AIEmailWriter />
+              </Suspense>
+            }
+          />
+          <Route
+            path="tools/ai-hashtag-generator"
+            element={
+              <Suspense fallback={<div className="p-4 text-center">Loading AI Hashtag Generator...</div>}>
+                <AIHashtagGenerator />
+              </Suspense>
+            }
+          />
           <Route path="tools/meta-tag-generator" element={<MetaTagGenerator />} />
           <Route path="tools/ip-address-finder" element={<IPAddressFinder />} />
           <Route path="tools/http-header-analyzer" element={<HTTPHeaderAnalyzer />} />

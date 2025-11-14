@@ -6,16 +6,16 @@ import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
 import { Copy, Hash } from '@phosphor-icons/react'
 import { toast } from 'sonner'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderSelector'
+import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { callAI } from '@/lib/ai'
-
-type Provider = 'anthropic' | 'groq'
 
 export default function AIHashtagGenerator() {
   const [content, setContent] = useState('')
   const [hashtags, setHashtags] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
-  const [provider, setProvider] = useState<Provider>('anthropic')
+  const [provider, setProvider] = useState<AIProvider>('anthropic')
+  const copyToClipboard = useCopyToClipboard()
 
   const generateHashtags = async () => {
     if (!content.trim()) {
@@ -49,16 +49,7 @@ Return only the hashtags, one per line, each starting with #. Include a mix of p
     }
   }
 
-  const copyAllHashtags = () => {
-    const text = hashtags.join(' ')
-    navigator.clipboard.writeText(text)
-    toast.success('All hashtags copied!')
-  }
 
-  const copyHashtag = (tag: string) => {
-    navigator.clipboard.writeText(tag)
-    toast.success('Hashtag copied!')
-  }
 
   return (
     <div className="container mx-auto max-w-4xl px-4 py-8 space-y-6">
@@ -98,23 +89,7 @@ Return only the hashtags, one per line, each starting with #. Include a mix of p
             />
           </div>
 
-          <div className="space-y-2">
-            <Label>AI Provider</Label>
-            <ToggleGroup 
-              type="single" 
-              value={provider} 
-              onValueChange={(value) => value && setProvider(value as Provider)}
-              className="w-full justify-start"
-              variant="outline"
-            >
-              <ToggleGroupItem value="anthropic" className="flex-1">
-                Anthropic Claude
-              </ToggleGroupItem>
-              <ToggleGroupItem value="groq" className="flex-1">
-                Groq
-              </ToggleGroupItem>
-            </ToggleGroup>
-          </div>
+          <AIProviderSelector value={provider} onValueChange={setProvider} />
 
           <Button
             onClick={generateHashtags}
@@ -128,7 +103,7 @@ Return only the hashtags, one per line, each starting with #. Include a mix of p
             <div className="space-y-4 mt-4">
               <div className="flex items-center justify-between">
                 <Label>Generated Hashtags ({hashtags.length})</Label>
-                <Button variant="ghost" size="sm" onClick={copyAllHashtags}>
+                <Button variant="ghost" size="sm" onClick={() => copyToClipboard(hashtags.join(' '), 'All hashtags copied!')}>
                   <Copy size={16} className="mr-2" />
                   Copy All
                 </Button>
@@ -140,7 +115,7 @@ Return only the hashtags, one per line, each starting with #. Include a mix of p
                       key={index}
                       variant="secondary"
                       className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
-                      onClick={() => copyHashtag(tag)}
+                      onClick={() => copyToClipboard(tag, 'Hashtag copied!')}
                     >
                       {tag}
                     </Badge>

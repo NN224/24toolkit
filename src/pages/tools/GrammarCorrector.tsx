@@ -4,17 +4,17 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Copy, Trash, Sparkle } from '@phosphor-icons/react'
 import { toast } from 'sonner'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderSelector'
+import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { callAI } from '@/lib/ai'
-
-type Provider = 'anthropic' | 'groq'
 
 export default function GrammarCorrector() {
   const [text, setText] = useState('')
   const [correctedText, setCorrectedText] = useState('')
   const [corrections, setCorrections] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(false)
-  const [provider, setProvider] = useState<Provider>('anthropic')
+  const [provider, setProvider] = useState<AIProvider>('anthropic')
+  const copyToClipboard = useCopyToClipboard()
 
   const correctGrammar = async () => {
     if (!text.trim()) {
@@ -53,14 +53,7 @@ ${text}`
     }
   }
 
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(correctedText)
-      toast.success('Corrected text copied to clipboard!')
-    } catch (err) {
-      toast.error('Failed to copy text')
-    }
-  }
+
 
   const handleClear = () => {
     setText('')
@@ -104,23 +97,7 @@ ${text}`
               />
               
               <div className="space-y-3">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-foreground">AI Provider</label>
-                  <ToggleGroup 
-                    type="single" 
-                    value={provider} 
-                    onValueChange={(value) => value && setProvider(value as Provider)}
-                    className="w-full justify-start"
-                    variant="outline"
-                  >
-                    <ToggleGroupItem value="anthropic" className="flex-1">
-                      Anthropic Claude
-                    </ToggleGroupItem>
-                    <ToggleGroupItem value="groq" className="flex-1">
-                      Groq
-                    </ToggleGroupItem>
-                  </ToggleGroup>
-                </div>
+                <AIProviderSelector value={provider} onValueChange={setProvider} />
               
                 <div className="flex gap-2">
                   <Button
@@ -163,7 +140,7 @@ ${text}`
                   />
                   
                   <Button
-                    onClick={handleCopy}
+                    onClick={() => copyToClipboard(correctedText, 'Corrected text copied to clipboard!')}
                     variant="default"
                     className="gap-2"
                   >
