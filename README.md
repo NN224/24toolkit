@@ -116,7 +116,15 @@ npm run dev        # Start development server
 npm run build      # Build for production
 npm run preview    # Preview production build
 npm run lint       # Run ESLint
+npm run api        # Start local API server (development)
+npm run dev:full   # Start both frontend and API server
 ```
+
+## 📚 Documentation
+
+- **[Production Guide](PRODUCTION.md)** - Complete production deployment guide
+- **[API Documentation](API.md)** - Full API reference and examples
+- **[Environment Setup](.env.example)** - Environment variable configuration
 
 ## 🌐 Domain Configuration
 
@@ -126,6 +134,15 @@ The project is configured for `24toolkit.com`:
 - Sitemap available at `/sitemap.xml`
 - Robots.txt at `/robots.txt`
 - Security headers configured in `vercel.json`
+
+## 🔐 Production Features
+
+- ✅ **Rate Limiting**: Protection against abuse (10 req/min for AI, 100 req/min for KV)
+- ✅ **Input Validation**: Comprehensive validation on all endpoints
+- ✅ **Structured Logging**: JSON logging in production for better monitoring
+- ✅ **Error Sanitization**: Safe error messages without sensitive data leaks
+- ✅ **Request Timeouts**: 30-second timeouts for external API calls
+- ✅ **Security Headers**: CSP, XSS protection, frame options, etc.
 
 ## 🤝 Contributing
 
