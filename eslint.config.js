@@ -47,7 +47,7 @@ export default tseslint.config(
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "off",
       "react-refresh/only-export-components": "off",
-      "no-console": ["warn", { allow: ["warn", "error"] }],
+      "no-console": "off",
     },
   }
 );
