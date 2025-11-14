@@ -2,15 +2,14 @@ import { useState, useRef, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { PaperPlaneRight, Sparkle, Trash, User, Robot } from '@phosphor-icons/react'
+import { Textarea } from '@/components/ui/textarea'
+import { PaperPlaneRight, Sparkle, Trash, User, Robot, DiceThree, PencilSimple } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { AIBadge } from '@/components/ai/AIBadge'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { callAI } from '@/lib/ai'
 
-type Mode = 'creative' | 'precise' | 'friendly'
 type Provider = 'anthropic' | 'groq'
 
 interface Message {
@@ -20,7 +19,15 @@ interface Message {
   timestamp: number
 }
 
-// Custom hook for localStorage-based state
+interface Persona {
+  name: string
+  role: string
+  traits: string
+  quirk: string
+}
+
+// ... (useLocalStorage hook remains the same) ...
+
 function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T | ((prev: T) => T)) => void] {
   const [storedValue, setStoredValue] = useState<T>(() => {
     try {
@@ -45,13 +52,21 @@ function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T | ((pre
   return [storedValue, setValue]
 }
 
-export default function ChatAssistant() {
-  const [messages, setMessages] = useLocalStorage<Message[]>('chat-messages', [])
+const predefinedPersonas: Persona[] = [
+  { name: 'Sherlock Holmes', role: 'a 19th-century detective', traits: 'Brilliant, Observant, Logical, Aloof', quirk: 'Occasionally plays the violin when deep in thought.' },
+  { name: 'Captain Jack', role: 'a charismatic space pirate', traits: 'Witty, Unpredictable, Resourceful, Charming', quirk: 'Always looking for the next great treasure.' },
+  { name: 'Zen Master', role: 'an ancient Zen master', traits: 'Calm, Wise, Patient, Cryptic', quirk: 'Answers questions with another question.' },
+]
+
+export default function AIPersonaPlayground() {
+  const [messages, setMessages] = useLocalStorage<Message[]>('persona-chat-messages', [])
   const messageList = messages || []
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [mode, setMode] = useState<Mode>('friendly')
   const [provider, setProvider] = useState<Provider>('anthropic')
+  const [activePersona, setActivePersona] = useState<Persona | null>(null)
+  const [persona, setPersona] = useState<Persona>({ name: '', role: '', traits: '', quirk: '' })
+
   const scrollRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -62,7 +77,7 @@ export default function ChatAssistant() {
   }, [messageList])
 
   const handleSend = async () => {
-    if (!input.trim() || isLoading) return
+    if (!input.trim() || isLoading || !activePersona) return
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -75,20 +90,20 @@ export default function ChatAssistant() {
     setInput('')
     setIsLoading(true)
 
-    const modePrompts = {
-      creative: 'You are a creative and imaginative AI assistant. Provide engaging, creative responses with interesting perspectives and ideas.',
-      precise: 'You are a precise and accurate AI assistant. Provide factual, concise, and well-structured responses.',
-      friendly: 'You are a friendly and helpful AI assistant. Provide warm, conversational responses while being informative.'
-    }
+    const systemPrompt = `You are to embody a specific persona for this conversation. Do not break character.
 
-    const promptText = `${modePrompts[mode]}
+Persona Name: ${activePersona.name}
+Role/Profession: ${activePersona.role}
+Core Traits: ${activePersona.traits}
+Quirk: ${activePersona.quirk}
 
+Your responses must strictly adhere to this persona. Engage with the user from this character's perspective.
 User question: ${userMessage.content}
 
-Provide a helpful response:`
+Provide a response in character:`
 
     try {
-      const result = await callAI(promptText, provider)
+      const result = await callAI(systemPrompt, provider)
       
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -100,19 +115,12 @@ Provide a helpful response:`
       setMessages((prev) => [...(prev || []), assistantMessage])
     } catch (error) {
       console.error('Chat error:', error)
-      const fallbackResponses = {
-        creative: "That's a fascinating question! Let me think creatively about this... While I'm temporarily unable to provide my full creative perspective, I'd love to explore this topic further with you once I'm back online.",
-        precise: "I appreciate your question. To provide the most accurate response, I would need to access more detailed information. Please try again in a moment.",
-        friendly: "Hey! Thanks for asking. I'm having a little trouble connecting right now, but I'd be happy to chat about that once I'm back up and running!"
-      }
-      
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: fallbackResponses[mode],
+        content: `(OOC: I seem to be having trouble connecting to my consciousness. Please try again in a moment.)`,
         timestamp: Date.now()
       }
-      
       setMessages((prev) => [...(prev || []), assistantMessage])
     } finally {
       setIsLoading(false)
@@ -131,79 +139,115 @@ Provide a helpful response:`
     setMessages([])
     toast.success('Chat history cleared')
   }
+  
+  const handleBuildPersona = () => {
+    if (persona.name && persona.role && persona.traits) {
+      setActivePersona(persona)
+      setMessages([])
+      toast.success(`Persona "${persona.name}" is now active!`)
+    } else {
+      toast.error('Please fill out at least Name, Role, and Traits.')
+    }
+  }
+
+  const randomizePersona = () => {
+    const random = predefinedPersonas[Math.floor(Math.random() * predefinedPersonas.length)]
+    setPersona(random)
+  }
 
   const formatTime = (timestamp: number) => {
     const date = new Date(timestamp)
     return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
   }
 
+  if (!activePersona) {
+    return (
+      <div className="py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-2xl mx-auto">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-semibold text-foreground tracking-tight">AI Persona Playground</h1>
+            <p className="text-lg text-muted-foreground mt-3">Create your own AI character and start a conversation.</p>
+            <AIBadge className="mt-2 inline-block" />
+          </div>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Design Your AI Persona</CardTitle>
+              <CardDescription>Give your AI a unique personality. Be creative!</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Name</label>
+                  <Input placeholder="e.g., Professor Falken" value={persona.name} onChange={e => setPersona({...persona, name: e.target.value})} />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Role / Profession</label>
+                  <Input placeholder="e.g., A curious historian" value={persona.role} onChange={e => setPersona({...persona, role: e.target.value})} />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Core Traits</label>
+                <Input placeholder="e.g., Witty, Sarcastic, Brilliant" value={persona.traits} onChange={e => setPersona({...persona, traits: e.target.value})} />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">A Quirk or Habit</label>
+                <Textarea placeholder="e.g., Speaks only in rhymes" value={persona.quirk} onChange={e => setPersona({...persona, quirk: e.target.value})} />
+              </div>
+              <div className="flex flex-col sm:flex-row gap-2 pt-2">
+                <Button onClick={handleBuildPersona} className="flex-1 gap-2">
+                  <Sparkle size={18} weight="fill" />
+                  Build & Chat
+                </Button>
+                <Button onClick={randomizePersona} variant="outline" className="gap-2">
+                  <DiceThree size={18} />
+                  Randomize
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-3">
-            <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-              AI Chat Assistant
-            </h1>
-            <AIBadge />
-          </div>
-          <p className="text-lg text-muted-foreground">
-            Have a conversation with an AI assistant. Ask questions, get help, or just chat!
-          </p>
-        </div>
-
         <div className="space-y-6">
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle>Chat Settings</CardTitle>
+                  <CardTitle>Chatting with: {activePersona.name}</CardTitle>
                   <CardDescription>
-                    Choose the AI's personality mode
+                    {activePersona.role}
                   </CardDescription>
                 </div>
-                <Button
-                  onClick={handleClear}
-                  variant="outline"
-                  size="sm"
-                  className="gap-2"
-                  disabled={messageList.length === 0}
-                >
-                  <Trash size={16} />
-                  Clear
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    onClick={() => setActivePersona(null)}
+                    variant="outline"
+                    size="sm"
+                    className="gap-2"
+                  >
+                    <PencilSimple size={16} />
+                    Edit Persona
+                  </Button>
+                  <Button
+                    onClick={handleClear}
+                    variant="destructive"
+                    size="sm"
+                    className="gap-2"
+                    disabled={messageList.length === 0}
+                  >
+                    <Trash size={16} />
+                    Clear
+                  </Button>
+                </div>
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground">AI Mode</label>
-                <Select value={mode} onValueChange={(value) => setMode(value as Mode)}>
-                  <SelectTrigger className="w-full sm:w-[220px]">
-                    <SelectValue placeholder="Select mode" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="creative">
-                      <div className="flex items-center gap-2">
-                        <Sparkle size={16} weight="fill" className="text-purple-500" />
-                        <span className="font-medium">Creative</span>
-                      </div>
-                    </SelectItem>
-                    <SelectItem value="precise">
-                      <div className="flex items-center gap-2">
-                        <Robot size={16} weight="fill" className="text-blue-500" />
-                        <span className="font-medium">Precise</span>
-                      </div>
-                    </SelectItem>
-                  <SelectItem value="friendly">
-                    <div className="flex items-center gap-2">
-                      <Sparkle size={16} weight="fill" className="text-pink-500" />
-                      <span className="font-medium">Friendly</span>
-                    </div>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-              </div>
-              
               <div className="space-y-2">
                 <label className="text-sm font-medium text-foreground">AI Provider</label>
                 <ToggleGroup 
@@ -214,10 +258,10 @@ Provide a helpful response:`
                   variant="outline"
                 >
                   <ToggleGroupItem value="anthropic" className="flex-1">
-                    Anthropic Claude
+                    Anthropic (Creative)
                   </ToggleGroupItem>
                   <ToggleGroupItem value="groq" className="flex-1">
-                    Groq
+                    Groq (Fast)
                   </ToggleGroupItem>
                 </ToggleGroup>
               </div>
@@ -233,10 +277,10 @@ Provide a helpful response:`
                       <Robot size={40} weight="duotone" className="text-purple-500" />
                     </div>
                     <p className="text-lg font-medium text-foreground mb-2">
-                      Start a conversation
+                      Start a conversation with {activePersona.name}
                     </p>
                     <p className="text-sm text-muted-foreground max-w-sm">
-                      Ask me anything! I'm here to help with questions, ideas, or just to chat.
+                      Ask anything! They will respond in character.
                     </p>
                   </div>
                 ) : (
@@ -306,7 +350,7 @@ Provide a helpful response:`
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Type your message..."
+                    placeholder={`Message ${activePersona.name}...`}
                     disabled={isLoading}
                     className="flex-1"
                   />
