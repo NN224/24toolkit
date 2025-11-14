@@ -31,9 +31,9 @@ export default function ColorPicker() {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
     if (!result) return 'Invalid'
     
-    let red = parseInt(result[1], 16) / 255
-    let green = parseInt(result[2], 16) / 255
-    let blue = parseInt(result[3], 16) / 255
+    const red = parseInt(result[1], 16) / 255
+    const green = parseInt(result[2], 16) / 255
+    const blue = parseInt(result[3], 16) / 255
 
     const max = Math.max(red, green, blue)
     const min = Math.min(red, green, blue)

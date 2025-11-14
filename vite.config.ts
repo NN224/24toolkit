@@ -22,6 +22,19 @@ export default defineConfig({
       '@': resolve(projectRoot, 'src')
     }
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'ui-vendor': ['@radix-ui/react-dialog', '@radix-ui/react-select', '@radix-ui/react-tabs', '@radix-ui/react-tooltip'],
+          'image-tools': ['tesseract.js', 'browser-image-compression'],
+          'utilities': ['date-fns', 'papaparse', 'marked', 'uuid']
+        }
+      }
+    },
+    chunkSizeWarningLimit: 1000
+  },
   server: {
     proxy: {
       '/api': {
