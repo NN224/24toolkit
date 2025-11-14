@@ -1,9 +1,14 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { validateLLMRequest, sanitizeErrorMessage } from '../_utils/validation';
+import { checkRateLimit, getClientIdentifier, RATE_LIMITS } from '../_utils/rateLimit';
+import { logger } from '../_utils/logger';
 
 export default async function handler(
   req: VercelRequest,
   res: VercelResponse
 ) {
+  const startTime = Date.now();
+  
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -19,24 +24,50 @@ export default async function handler(
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  // Rate limiting
+  const clientId = getClientIdentifier(req);
+  const rateLimit = checkRateLimit(clientId, RATE_LIMITS.ai);
+  
+  res.setHeader('X-RateLimit-Limit', RATE_LIMITS.ai.maxRequests.toString());
+  res.setHeader('X-RateLimit-Remaining', rateLimit.remaining.toString());
+  res.setHeader('X-RateLimit-Reset', new Date(rateLimit.resetTime).toISOString());
+
+  if (!rateLimit.allowed) {
+    logger.warn('Rate limit exceeded', { clientId, endpoint: '/_spark/llm' });
+    return res.status(429).json({ 
+      error: 'Too many requests. Please try again later.',
+      retryAfter: Math.ceil((rateLimit.resetTime - Date.now()) / 1000)
+    });
+  }
+
+  // Validate request body
+  const validation = validateLLMRequest(req.body);
+  if (!validation.isValid) {
+    logger.warn('Invalid LLM request', { error: validation.error, clientId });
+    return res.status(400).json({ error: validation.error });
+  }
+
   // Get API keys from environment
   const anthropicKey = process.env.ANTHROPIC_API_KEY;
   const githubToken = process.env.GITHUB_TOKEN;
   
   if (!anthropicKey && !githubToken) {
-    console.error('No API key configured');
+    logger.error('No API key configured');
     return res.status(500).json({ 
-      error: 'Server configuration error: ANTHROPIC_API_KEY or GITHUB_TOKEN not configured' 
+      error: 'Server configuration error: AI service not configured' 
     });
   }
 
   // Log request for debugging
-  console.log('[LLM] Request body:', JSON.stringify(req.body).substring(0, 200));
+  logger.logRequest(req.method, '/_spark/llm', { 
+    messagesCount: req.body.messages?.length,
+    model: req.body.model 
+  });
 
   try {
     // Use Anthropic Claude if key is available
     if (anthropicKey) {
-      console.log('[LLM] Using Anthropic Claude API');
+      logger.debug('Using Anthropic Claude API');
       
       // Map model names to Claude models
       const modelMap: Record<string, string> = {
@@ -65,48 +96,75 @@ export default async function handler(
         ...(systemMessage && { system: systemMessage.content })
       };
       
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'x-api-key': anthropicKey,
-          'anthropic-version': '2023-06-01',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(claudeBody),
-      });
-      
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Claude API error:', response.status, errorText);
-        throw new Error(`Claude API error: ${response.statusText}`);
-      }
-      
-      const claudeData = await response.json();
-      
-      // Convert Claude format back to OpenAI format
-      const openAIFormat = {
-        id: claudeData.id,
-        object: 'chat.completion',
-        created: Date.now(),
-        model: claudeModel,
-        choices: [{
-          index: 0,
-          message: {
-            role: 'assistant',
-            content: claudeData.content[0].text
+      // Add timeout for external API call
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 seconds
+
+      try {
+        const response = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: {
+            'x-api-key': anthropicKey,
+            'anthropic-version': '2023-06-01',
+            'Content-Type': 'application/json',
           },
-          finish_reason: claudeData.stop_reason === 'end_turn' ? 'stop' : claudeData.stop_reason
-        }],
-        usage: claudeData.usage
-      };
-      
-      return res.status(200).json(openAIFormat);
+          body: JSON.stringify(claudeBody),
+          signal: controller.signal,
+        });
+        
+        clearTimeout(timeoutId);
+        
+        if (!response.ok) {
+          const errorText = await response.text();
+          logger.error('Claude API error', new Error(errorText), { 
+            status: response.status,
+            statusText: response.statusText 
+          });
+          throw new Error(`Claude API error: ${response.statusText}`);
+        }
+        
+        const claudeData = await response.json();
+        
+        // Convert Claude format back to OpenAI format
+        const openAIFormat = {
+          id: claudeData.id,
+          object: 'chat.completion',
+          created: Date.now(),
+          model: claudeModel,
+          choices: [{
+            index: 0,
+            message: {
+              role: 'assistant',
+              content: claudeData.content[0].text
+            },
+            finish_reason: claudeData.stop_reason === 'end_turn' ? 'stop' : claudeData.stop_reason
+          }],
+          usage: claudeData.usage
+        };
+        
+        const duration = Date.now() - startTime;
+        logger.logResponse(req.method, '/_spark/llm', 200, duration, { 
+          provider: 'anthropic',
+          model: claudeModel 
+        });
+        return res.status(200).json(openAIFormat);
+      } catch (fetchError) {
+        if (fetchError instanceof Error && fetchError.name === 'AbortError') {
+          logger.error('Claude API timeout', fetchError);
+          throw new Error('Request timeout - the AI service took too long to respond');
+        }
+        throw fetchError;
+      }
     }
     
     // Fallback to GitHub Models if no Anthropic key
     const apiUrl = 'https://models.github.ai/chat/completions';
-    console.log('[LLM] Using GitHub Models API');
+    logger.debug('Using GitHub Models API');
     
+    // Add timeout for external API call
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 seconds
+
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
@@ -114,11 +172,17 @@ export default async function handler(
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(req.body),
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('GitHub Models API error:', response.status, errorText);
+      logger.error('GitHub Models API error', new Error(errorText), { 
+        status: response.status,
+        statusText: response.statusText 
+      });
       
       // Return user-friendly error
       return res.status(200).json({
@@ -134,12 +198,24 @@ export default async function handler(
     }
 
     const data = await response.json();
+    const duration = Date.now() - startTime;
+    logger.logResponse(req.method, '/_spark/llm', 200, duration, { provider: 'github' });
     return res.status(200).json(data);
   } catch (error) {
-    console.error('Error calling GitHub Models API:', error);
+    if (error instanceof Error && error.name === 'AbortError') {
+      logger.error('GitHub Models API timeout', error);
+      const duration = Date.now() - startTime;
+      logger.logResponse(req.method, '/_spark/llm', 408, duration);
+      return res.status(408).json({ 
+        error: 'Request timeout - the AI service took too long to respond'
+      });
+    }
+
+    logger.error('Error calling AI service', error instanceof Error ? error : new Error(String(error)));
+    const duration = Date.now() - startTime;
+    logger.logResponse(req.method, '/_spark/llm', 500, duration);
     return res.status(500).json({ 
-      error: 'Failed to process AI request',
-      message: error instanceof Error ? error.message : 'Unknown error'
+      error: sanitizeErrorMessage(error, false)
     });
   }
 }
