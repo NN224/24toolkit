@@ -27,7 +27,6 @@ interface Persona {
   quirk: string
 }
 
-// ... (useLocalStorage hook remains the same) ...
 function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T | ((prev: T) => T)) => void] {
   const [storedValue, setStoredValue] = useState<T>(() => {
     try {
