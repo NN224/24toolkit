@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import React, { Suspense } from 'react'
 import { Toaster } from '@/components/ui/sonner'
 import Layout from '@/components/Layout'
+import ScrollToTop from '@/components/ScrollToTop'
 import HomePage from '@/pages/HomePage'
 import AboutPage from '@/pages/AboutPage'
 import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage'
@@ -90,6 +91,7 @@ import PomodoroTimer from '@/pages/tools/PomodoroTimer'
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
