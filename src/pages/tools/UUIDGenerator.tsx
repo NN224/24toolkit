@@ -4,10 +4,12 @@ import { Button } from '@/components/ui/button'
 import { Copy, Sparkle } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { v4 as uuidv4 } from 'uuid'
+import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 
 export default function UUIDGenerator() {
   const [uuids, setUuids] = useState<string[]>([])
   const [count, setCount] = useState(1)
+  const copyToClipboard = useCopyToClipboard()
 
   const generateUUIDs = (num: number) => {
     const newUuids: string[] = []
@@ -18,23 +20,7 @@ export default function UUIDGenerator() {
     toast.success(`Generated ${num} UUID${num > 1 ? 's' : ''}`)
   }
 
-  const handleCopy = async (uuid: string) => {
-    try {
-      await navigator.clipboard.writeText(uuid)
-      toast.success('UUID copied!')
-    } catch (err) {
-      toast.error('Failed to copy')
-    }
-  }
 
-  const handleCopyAll = async () => {
-    try {
-      await navigator.clipboard.writeText(uuids.join('\n'))
-      toast.success('All UUIDs copied!')
-    } catch (err) {
-      toast.error('Failed to copy')
-    }
-  }
 
   return (
     <div className="py-12 px-4 sm:px-6 lg:px-8">
@@ -80,7 +66,7 @@ export default function UUIDGenerator() {
                   <CardTitle>Generated UUIDs</CardTitle>
                   <CardDescription>{uuids.length} unique identifier{uuids.length > 1 ? 's' : ''}</CardDescription>
                 </div>
-                <Button onClick={handleCopyAll} variant="outline">
+                <Button onClick={() => copyToClipboard(uuids.join('\n'), 'All UUIDs copied!')} variant="outline">
                   <Copy size={18} className="mr-2" />
                   Copy All
                 </Button>
@@ -97,7 +83,7 @@ export default function UUIDGenerator() {
                     <Button
                       size="sm"
                       variant="ghost"
-                      onClick={() => handleCopy(uuid)}
+                      onClick={() => copyToClipboard(uuid, 'UUID copied!')}
                       className="opacity-0 group-hover:opacity-100 transition-opacity"
                     >
                       <Copy size={16} />
