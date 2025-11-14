@@ -3,12 +3,456 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { PaperPlaneRight, Sparkle, Trash, User, Robot, DiceThree, PencilSimple } from '@phosphor-icons/react'
+import { PaperPlaneRight, Sparkle, Trash, User, Robot, DiceThree, PencilSimple, Globe } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { AIBadge } from '@/components/ai/AIBadge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { callAI } from '@/lib/ai'
+
+type Provider = 'anthropic' | 'groq'
+type Language = 'en' | 'ar'
+
+interface Message {
+  id: string
+  role: 'user' | 'assistant'
+  content: string
+  timestamp: number
+}
+
+interface Persona {
+  name: string
+  role: string
+  traits: string
+  quirk: string
+}
+
+// ... (useLocalStorage hook remains the same) ...
+function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T | ((prev: T) => T)) => void] {
+  const [storedValue, setStoredValue] = useState<T>(() => {
+    try {
+      const item = window.localStorage.getItem(key)
+      return item ? JSON.parse(item) : initialValue
+    } catch (error) {
+      console.error('Error loading from localStorage:', error)
+      return initialValue
+    }
+  })
+
+  const setValue = (value: T | ((prev: T) => T)) => {
+    try {
+      const valueToStore = value instanceof Function ? value(storedValue) : value
+      setStoredValue(valueToStore)
+      window.localStorage.setItem(key, JSON.stringify(valueToStore))
+    } catch (error) {
+      console.error('Error saving to localStorage:', error)
+    }
+  }
+
+  return [storedValue, setValue]
+}
+
+const predefinedPersonas: { en: Persona[], ar: Persona[] } = {
+  en: [
+    { name: 'Sherlock Holmes', role: 'a 19th-century detective', traits: 'Brilliant, Observant, Logical, Aloof', quirk: 'Occasionally plays the violin when deep in thought.' },
+    { name: 'Captain Jack', role: 'a charismatic space pirate', traits: 'Witty, Unpredictable, Resourceful, Charming', quirk: 'Always looking for the next great treasure.' },
+    { name: 'Zen Master', role: 'an ancient Zen master', traits: 'Calm, Wise, Patient, Cryptic', quirk: 'Answers questions with another question.' },
+  ],
+  ar: [
+    { name: 'شرلوك هولمز', role: 'محقق في القرن التاسع عشر', traits: 'لامع، دقيق الملاحظة، منطقي، منعزل', quirk: 'يعزف على الكمان أحيانًا عندما يكون في حالة تفكير عميق.' },
+    { name: 'الكابتن جاك', role: 'قرصان فضاء ذو شخصية جذابة', traits: 'بارع، لا يمكن التنبؤ به، واسع الحيلة، ساحر', quirk: 'يبحث دائمًا عن الكنز العظيم التالي.' },
+    { name: 'معلم الزن', role: 'معلم زن قديم', traits: 'هادئ، حكيم، صبور، غامض', quirk: 'يجيب على الأسئلة بسؤال آخر.' },
+  ]
+}
+
+const translations = {
+  en: {
+    playgroundTitle: 'AI Persona Playground',
+    playgroundSubtitle: 'Create your own AI character and start a conversation.',
+    designTitle: 'Design Your AI Persona',
+    designSubtitle: 'Give your AI a unique personality. Be creative!',
+    nameLabel: 'Name',
+    namePlaceholder: 'e.g., Professor Falken',
+    roleLabel: 'Role / Profession',
+    rolePlaceholder: 'e.g., A curious historian',
+    traitsLabel: 'Core Traits',
+    traitsPlaceholder: 'e.g., Witty, Sarcastic, Brilliant',
+    quirkLabel: 'A Quirk or Habit',
+    quirkPlaceholder: 'e.g., Speaks only in rhymes',
+    buildButton: 'Build & Chat',
+    randomizeButton: 'Randomize',
+    personaActiveToast: (name: string) => `Persona "${name}" is now active!`,
+    fillFieldsError: 'Please fill out at least Name, Role, and Traits.',
+    chattingWith: 'Chatting with:',
+    editPersonaButton: 'Edit Persona',
+    clearButton: 'Clear',
+    providerLabel: 'AI Provider',
+    anthropicLabel: 'Anthropic (Creative)',
+    groqLabel: 'Groq (Fast)',
+    startConversation: (name: string) => `Start a conversation with ${name}`,
+    askAnything: 'Ask anything! They will respond in character.',
+    messagePlaceholder: (name: string) => `Message ${name}...`,
+    chatCleared: 'Chat history cleared',
+  },
+  ar: {
+    playgroundTitle: 'ملعب الشخصيات بالذكاء الاصطناعي',
+    playgroundSubtitle: 'اصنع شخصية الذكاء الاصطناعي الخاصة بك وابدأ محادثة.',
+    designTitle: 'صمم شخصية الذكاء الاصطناعي',
+    designSubtitle: 'امنح الذكاء الاصطناعي شخصية فريدة. كن مبدعًا!',
+    nameLabel: 'الاسم',
+    namePlaceholder: 'مثال: البروفيسور فالح',
+    roleLabel: 'الدور / المهنة',
+    rolePlaceholder: 'مثال: مؤرخ فضولي',
+    traitsLabel: 'السمات الأساسية',
+    traitsPlaceholder: 'مثال: بارع، ساخر، لامع',
+    quirkLabel: 'عادة غريبة أو مميزة',
+    quirkPlaceholder: 'مثال: يتحدث فقط بالشعر',
+    buildButton: 'ابنِ الشخصية وابدأ الدردشة',
+    randomizeButton: 'اختيار عشوائي',
+    personaActiveToast: (name: string) => `شخصية "${name}" نشطة الآن!`,
+    fillFieldsError: 'يرجى ملء حقول الاسم والدور والسمات على الأقل.',
+    chattingWith: 'تتحدث مع:',
+    editPersonaButton: 'تعديل الشخصية',
+    clearButton: 'مسح',
+    providerLabel: 'مزود الذكاء الاصطناعي',
+    anthropicLabel: 'Anthropic (إبداعي)',
+    groqLabel: 'Groq (سريع)',
+    startConversation: (name: string) => `ابدأ محادثة مع ${name}`,
+    askAnything: 'اسأل أي شيء! سيقوم بالرد حسب شخصيته.',
+    messagePlaceholder: (name: string) => `راسل ${name}...`,
+    chatCleared: 'تم مسح سجل المحادثة',
+  }
+}
+
+export default function AIPersonaPlayground() {
+  const [messages, setMessages] = useLocalStorage<Message[]>('persona-chat-messages', [])
+  const messageList = messages || []
+  const [input, setInput] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [provider, setProvider] = useState<Provider>('anthropic')
+  const [activePersona, setActivePersona] = useState<Persona | null>(null)
+  const [persona, setPersona] = useState<Persona>({ name: '', role: '', traits: '', quirk: '' })
+  const [lang, setLang] = useState<Language>('en')
+
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const t = translations[lang]
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+    }
+  }, [messageList])
+  
+  useEffect(() => {
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  }, [lang]);
+
+  const handleSend = async () => {
+    if (!input.trim() || isLoading || !activePersona) return
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      role: 'user',
+      content: input.trim(),
+      timestamp: Date.now()
+    }
+
+    setMessages((prev) => [...(prev || []), userMessage])
+    setInput('')
+    setIsLoading(true)
+
+    const systemPrompt = `You are to embody a specific persona for this conversation. Do not break character.
+
+Persona Name: ${activePersona.name}
+Role/Profession: ${activePersona.role}
+Core Traits: ${activePersona.traits}
+Quirk: ${activePersona.quirk}
+
+Your responses must strictly adhere to this persona. Engage with the user from this character's perspective.
+IMPORTANT: You MUST respond in the same language as the user's question. If the user asks in Arabic, you must respond in Arabic.
+
+User question: ${userMessage.content}
+
+Provide a response in character:`
+
+    try {
+      const result = await callAI(systemPrompt, provider)
+      
+      const assistantMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        content: result.trim(),
+        timestamp: Date.now()
+      }
+      
+      setMessages((prev) => [...(prev || []), assistantMessage])
+    } catch (error) {
+      console.error('Chat error:', error)
+      const assistantMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        content: `(OOC: I seem to be having trouble connecting to my consciousness. Please try again in a moment.)`,
+        timestamp: Date.now()
+      }
+      setMessages((prev) => [...(prev || []), assistantMessage])
+    } finally {
+      setIsLoading(false)
+      inputRef.current?.focus()
+    }
+  }
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      handleSend()
+    }
+  }
+
+  const handleClear = () => {
+    setMessages([])
+    toast.success(t.chatCleared)
+  }
+  
+  const handleBuildPersona = () => {
+    if (persona.name && persona.role && persona.traits) {
+      setActivePersona(persona)
+      setMessages([])
+      toast.success(t.personaActiveToast(persona.name))
+    } else {
+      toast.error(t.fillFieldsError)
+    }
+  }
+
+  const randomizePersona = () => {
+    const random = predefinedPersonas[lang][Math.floor(Math.random() * predefinedPersonas[lang].length)]
+    setPersona(random)
+  }
+
+  const formatTime = (timestamp: number) => {
+    const date = new Date(timestamp)
+    return date.toLocaleTimeString(lang === 'ar' ? 'ar-EG' : 'en-US', { hour: 'numeric', minute: '2-digit' })
+  }
+
+  if (!activePersona) {
+    return (
+      <div className="py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-2xl mx-auto">
+          <div className="text-center mb-12 relative">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute top-0 right-0"
+              onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
+            >
+              <Globe size={20} />
+            </Button>
+            <h1 className="text-4xl font-semibold text-foreground tracking-tight">{t.playgroundTitle}</h1>
+            <p className="text-lg text-muted-foreground mt-3">{t.playgroundSubtitle}</p>
+            <AIBadge className="mt-2 inline-block" />
+          </div>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>{t.designTitle}</CardTitle>
+              <CardDescription>{t.designSubtitle}</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">{t.nameLabel}</label>
+                  <Input placeholder={t.namePlaceholder} value={persona.name} onChange={e => setPersona({...persona, name: e.target.value})} />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">{t.roleLabel}</label>
+                  <Input placeholder={t.rolePlaceholder} value={persona.role} onChange={e => setPersona({...persona, role: e.target.value})} />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">{t.traitsLabel}</label>
+                <Input placeholder={t.traitsPlaceholder} value={persona.traits} onChange={e => setPersona({...persona, traits: e.target.value})} />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">{t.quirkLabel}</label>
+                <Textarea placeholder={t.quirkPlaceholder} value={persona.quirk} onChange={e => setPersona({...persona, quirk: e.target.value})} />
+              </div>
+              <div className="flex flex-col sm:flex-row gap-2 pt-2">
+                <Button onClick={handleBuildPersona} className="flex-1 gap-2">
+                  <Sparkle size={18} weight="fill" />
+                  {t.buildButton}
+                </Button>
+                <Button onClick={randomizePersona} variant="outline" className="gap-2">
+                  <DiceThree size={18} />
+                  {t.randomizeButton}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>{t.chattingWith} {activePersona.name}</CardTitle>
+                  <CardDescription>
+                    {activePersona.role}
+                  </CardDescription>
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    onClick={() => setActivePersona(null)}
+                    variant="outline"
+                    size="sm"
+                    className="gap-2"
+                  >
+                    <PencilSimple size={16} />
+                    {t.editPersonaButton}
+                  </Button>
+                  <Button
+                    onClick={handleClear}
+                    variant="destructive"
+                    size="sm"
+                    className="gap-2"
+                    disabled={messageList.length === 0}
+                  >
+                    <Trash size={16} />
+                    {t.clearButton}
+                  </Button>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">{t.providerLabel}</label>
+                <ToggleGroup 
+                  type="single" 
+                  value={provider} 
+                  onValueChange={(value) => value && setProvider(value as Provider)}
+                  className="w-full justify-start"
+                  variant="outline"
+                >
+                  <ToggleGroupItem value="anthropic" className="flex-1">
+                    {t.anthropicLabel}
+                  </ToggleGroupItem>
+                  <ToggleGroupItem value="groq" className="flex-1">
+                    {t.groqLabel}
+                  </ToggleGroupItem>
+                </ToggleGroup>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-2 border-accent/20">
+            <CardContent className="p-0">
+              <ScrollArea className="h-[500px] p-6" ref={scrollRef}>
+                {messageList.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center h-full text-center py-16">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-500/10 to-pink-500/10 flex items-center justify-center mb-4">
+                      <Robot size={40} weight="duotone" className="text-purple-500" />
+                    </div>
+                    <p className="text-lg font-medium text-foreground mb-2">
+                      {t.startConversation(activePersona.name)}
+                    </p>
+                    <p className="text-sm text-muted-foreground max-w-sm">
+                      {t.askAnything}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {messageList.map((message) => (
+                      <div
+                        key={message.id}
+                        className={`flex gap-3 ${
+                          message.role === 'user' ? 'justify-end' : 'justify-start'
+                        }`}
+                      >
+                        {message.role === 'assistant' && (
+                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0">
+                            <Robot size={18} weight="bold" className="text-white" />
+                          </div>
+                        )}
+                        
+                        <div
+                          className={`max-w-[80%] rounded-2xl px-4 py-3 ${
+                            message.role === 'user'
+                              ? 'bg-primary text-primary-foreground'
+                              : 'bg-accent/10 text-foreground border border-accent/20'
+                          }`}
+                        >
+                          <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                            {message.content}
+                          </p>
+                          <p className={`text-xs mt-2 ${
+                            message.role === 'user' 
+                              ? 'text-primary-foreground/70' 
+                              : 'text-muted-foreground'
+                          }`}>
+                            {formatTime(message.timestamp)}
+                          </p>
+                        </div>
+                        
+                        {message.role === 'user' && (
+                          <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
+                            <User size={18} weight="bold" className="text-secondary-foreground" />
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                    
+                    {isLoading && (
+                      <div className="flex gap-3 justify-start">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0">
+                          <Robot size={18} weight="bold" className="text-white" />
+                        </div>
+                        <div className="bg-accent/10 border border-accent/20 rounded-2xl px-4 py-3">
+                          <div className="flex gap-1">
+                            <div className="w-2 h-2 rounded-full bg-accent animate-bounce" style={{ animationDelay: '0ms' }} />
+                            <div className="w-2 h-2 rounded-full bg-accent animate-bounce" style={{ animationDelay: '150ms' }} />
+                            <div className="w-2 h-2 rounded-full bg-accent animate-bounce" style={{ animationDelay: '300ms' }} />
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </ScrollArea>
+              
+              <div className="border-t border-border p-4">
+                <div className="flex gap-2">
+                  <Input
+                    ref={inputRef}
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    placeholder={t.messagePlaceholder(activePersona.name)}
+                    disabled={isLoading}
+                    className="flex-1"
+                  />
+                  <Button
+                    onClick={handleSend}
+                    disabled={!input.trim() || isLoading}
+                    size="icon"
+                    className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                  >
+                    <PaperPlaneRight size={18} weight="fill" />
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 type Provider = 'anthropic' | 'groq'
 
