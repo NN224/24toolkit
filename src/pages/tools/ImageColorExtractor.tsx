@@ -64,15 +64,15 @@ export default function ImageColorExtractor() {
       const colorMap = new Map<string, number>()
 
       for (let i = 0; i < data.length; i += 40) {
-        const r = data[i]
-        const g = data[i + 1]
-        const b = data[i + 2]
+        const red = data[i]
+        const green = data[i + 1]
+        const blue = data[i + 2]
         
-        const rRounded = Math.round(r / 10) * 10
-        const gRounded = Math.round(g / 10) * 10
-        const bRounded = Math.round(b / 10) * 10
+        const redRounded = Math.round(red / 10) * 10
+        const greenRounded = Math.round(green / 10) * 10
+        const blueRounded = Math.round(blue / 10) * 10
         
-        const key = `${rRounded},${gRounded},${bRounded}`
+        const key = `${redRounded},${greenRounded},${blueRounded}`
         colorMap.set(key, (colorMap.get(key) || 0) + 1)
       }
 
@@ -83,10 +83,10 @@ export default function ImageColorExtractor() {
       const total = sortedColors.reduce((sum, [, count]) => sum + count, 0)
 
       const extractedColors: ColorInfo[] = sortedColors.map(([rgb, count]) => {
-        const [r, g, b] = rgb.split(',').map(Number)
+        const [red, green, blue] = rgb.split(',').map(Number)
         return {
-          hex: rgbToHex(r, g, b),
-          rgb: `rgb(${r}, ${g}, ${b})`,
+          hex: rgbToHex(red, green, blue),
+          rgb: `rgb(${red}, ${green}, ${blue})`,
           percentage: Math.round((count / total) * 100)
         }
       })

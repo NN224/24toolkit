@@ -22,14 +22,14 @@ export default function HashGenerator() {
     const msgBuffer = new TextEncoder().encode(message)
     const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer)
     const hashArray = Array.from(new Uint8Array(hashBuffer))
-    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
+    return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('')
   }
 
   async function sha1Hash(message: string): Promise<string> {
     const msgBuffer = new TextEncoder().encode(message)
     const hashBuffer = await crypto.subtle.digest('SHA-1', msgBuffer)
     const hashArray = Array.from(new Uint8Array(hashBuffer))
-    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
+    return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('')
   }
 
   function md5Hash(str: string): string {
@@ -37,113 +37,113 @@ export default function HashGenerator() {
       return (value << amount) | (value >>> (32 - amount))
     }
 
-    function addUnsigned(x: number, y: number): number {
-      return (x + y) >>> 0
+    function addUnsigned(firstValue: number, secondValue: number): number {
+      return (firstValue + secondValue) >>> 0
     }
 
-    function md5cycle(x: number[], k: number[]): void {
-      let a = x[0], b = x[1], c = x[2], d = x[3]
+    function md5cycle(stateRegisters: number[], messageBlock: number[]): void {
+      let a = stateRegisters[0], b = stateRegisters[1], c = stateRegisters[2], d = stateRegisters[3]
 
-      a = ff(a, b, c, d, k[0], 7, 0xd76aa478)
-      d = ff(d, a, b, c, k[1], 12, 0xe8c7b756)
-      c = ff(c, d, a, b, k[2], 17, 0x242070db)
-      b = ff(b, c, d, a, k[3], 22, 0xc1bdceee)
-      a = ff(a, b, c, d, k[4], 7, 0xf57c0faf)
-      d = ff(d, a, b, c, k[5], 12, 0x4787c62a)
-      c = ff(c, d, a, b, k[6], 17, 0xa8304613)
-      b = ff(b, c, d, a, k[7], 22, 0xfd469501)
-      a = ff(a, b, c, d, k[8], 7, 0x698098d8)
-      d = ff(d, a, b, c, k[9], 12, 0x8b44f7af)
-      c = ff(c, d, a, b, k[10], 17, 0xffff5bb1)
-      b = ff(b, c, d, a, k[11], 22, 0x895cd7be)
-      a = ff(a, b, c, d, k[12], 7, 0x6b901122)
-      d = ff(d, a, b, c, k[13], 12, 0xfd987193)
-      c = ff(c, d, a, b, k[14], 17, 0xa679438e)
-      b = ff(b, c, d, a, k[15], 22, 0x49b40821)
+      a = ff(a, b, c, d, messageBlock[0], 7, 0xd76aa478)
+      d = ff(d, a, b, c, messageBlock[1], 12, 0xe8c7b756)
+      c = ff(c, d, a, b, messageBlock[2], 17, 0x242070db)
+      b = ff(b, c, d, a, messageBlock[3], 22, 0xc1bdceee)
+      a = ff(a, b, c, d, messageBlock[4], 7, 0xf57c0faf)
+      d = ff(d, a, b, c, messageBlock[5], 12, 0x4787c62a)
+      c = ff(c, d, a, b, messageBlock[6], 17, 0xa8304613)
+      b = ff(b, c, d, a, messageBlock[7], 22, 0xfd469501)
+      a = ff(a, b, c, d, messageBlock[8], 7, 0x698098d8)
+      d = ff(d, a, b, c, messageBlock[9], 12, 0x8b44f7af)
+      c = ff(c, d, a, b, messageBlock[10], 17, 0xffff5bb1)
+      b = ff(b, c, d, a, messageBlock[11], 22, 0x895cd7be)
+      a = ff(a, b, c, d, messageBlock[12], 7, 0x6b901122)
+      d = ff(d, a, b, c, messageBlock[13], 12, 0xfd987193)
+      c = ff(c, d, a, b, messageBlock[14], 17, 0xa679438e)
+      b = ff(b, c, d, a, messageBlock[15], 22, 0x49b40821)
 
-      a = gg(a, b, c, d, k[1], 5, 0xf61e2562)
-      d = gg(d, a, b, c, k[6], 9, 0xc040b340)
-      c = gg(c, d, a, b, k[11], 14, 0x265e5a51)
-      b = gg(b, c, d, a, k[0], 20, 0xe9b6c7aa)
-      a = gg(a, b, c, d, k[5], 5, 0xd62f105d)
-      d = gg(d, a, b, c, k[10], 9, 0x02441453)
-      c = gg(c, d, a, b, k[15], 14, 0xd8a1e681)
-      b = gg(b, c, d, a, k[4], 20, 0xe7d3fbc8)
-      a = gg(a, b, c, d, k[9], 5, 0x21e1cde6)
-      d = gg(d, a, b, c, k[14], 9, 0xc33707d6)
-      c = gg(c, d, a, b, k[3], 14, 0xf4d50d87)
-      b = gg(b, c, d, a, k[8], 20, 0x455a14ed)
-      a = gg(a, b, c, d, k[13], 5, 0xa9e3e905)
-      d = gg(d, a, b, c, k[2], 9, 0xfcefa3f8)
-      c = gg(c, d, a, b, k[7], 14, 0x676f02d9)
-      b = gg(b, c, d, a, k[12], 20, 0x8d2a4c8a)
+      a = gg(a, b, c, d, messageBlock[1], 5, 0xf61e2562)
+      d = gg(d, a, b, c, messageBlock[6], 9, 0xc040b340)
+      c = gg(c, d, a, b, messageBlock[11], 14, 0x265e5a51)
+      b = gg(b, c, d, a, messageBlock[0], 20, 0xe9b6c7aa)
+      a = gg(a, b, c, d, messageBlock[5], 5, 0xd62f105d)
+      d = gg(d, a, b, c, messageBlock[10], 9, 0x02441453)
+      c = gg(c, d, a, b, messageBlock[15], 14, 0xd8a1e681)
+      b = gg(b, c, d, a, messageBlock[4], 20, 0xe7d3fbc8)
+      a = gg(a, b, c, d, messageBlock[9], 5, 0x21e1cde6)
+      d = gg(d, a, b, c, messageBlock[14], 9, 0xc33707d6)
+      c = gg(c, d, a, b, messageBlock[3], 14, 0xf4d50d87)
+      b = gg(b, c, d, a, messageBlock[8], 20, 0x455a14ed)
+      a = gg(a, b, c, d, messageBlock[13], 5, 0xa9e3e905)
+      d = gg(d, a, b, c, messageBlock[2], 9, 0xfcefa3f8)
+      c = gg(c, d, a, b, messageBlock[7], 14, 0x676f02d9)
+      b = gg(b, c, d, a, messageBlock[12], 20, 0x8d2a4c8a)
 
-      a = hh(a, b, c, d, k[5], 4, 0xfffa3942)
-      d = hh(d, a, b, c, k[8], 11, 0x8771f681)
-      c = hh(c, d, a, b, k[11], 16, 0x6d9d6122)
-      b = hh(b, c, d, a, k[14], 23, 0xfde5380c)
-      a = hh(a, b, c, d, k[1], 4, 0xa4beea44)
-      d = hh(d, a, b, c, k[4], 11, 0x4bdecfa9)
-      c = hh(c, d, a, b, k[7], 16, 0xf6bb4b60)
-      b = hh(b, c, d, a, k[10], 23, 0xbebfbc70)
-      a = hh(a, b, c, d, k[13], 4, 0x289b7ec6)
-      d = hh(d, a, b, c, k[0], 11, 0xeaa127fa)
-      c = hh(c, d, a, b, k[3], 16, 0xd4ef3085)
-      b = hh(b, c, d, a, k[6], 23, 0x04881d05)
-      a = hh(a, b, c, d, k[9], 4, 0xd9d4d039)
-      d = hh(d, a, b, c, k[12], 11, 0xe6db99e5)
-      c = hh(c, d, a, b, k[15], 16, 0x1fa27cf8)
-      b = hh(b, c, d, a, k[2], 23, 0xc4ac5665)
+      a = hh(a, b, c, d, messageBlock[5], 4, 0xfffa3942)
+      d = hh(d, a, b, c, messageBlock[8], 11, 0x8771f681)
+      c = hh(c, d, a, b, messageBlock[11], 16, 0x6d9d6122)
+      b = hh(b, c, d, a, messageBlock[14], 23, 0xfde5380c)
+      a = hh(a, b, c, d, messageBlock[1], 4, 0xa4beea44)
+      d = hh(d, a, b, c, messageBlock[4], 11, 0x4bdecfa9)
+      c = hh(c, d, a, b, messageBlock[7], 16, 0xf6bb4b60)
+      b = hh(b, c, d, a, messageBlock[10], 23, 0xbebfbc70)
+      a = hh(a, b, c, d, messageBlock[13], 4, 0x289b7ec6)
+      d = hh(d, a, b, c, messageBlock[0], 11, 0xeaa127fa)
+      c = hh(c, d, a, b, messageBlock[3], 16, 0xd4ef3085)
+      b = hh(b, c, d, a, messageBlock[6], 23, 0x04881d05)
+      a = hh(a, b, c, d, messageBlock[9], 4, 0xd9d4d039)
+      d = hh(d, a, b, c, messageBlock[12], 11, 0xe6db99e5)
+      c = hh(c, d, a, b, messageBlock[15], 16, 0x1fa27cf8)
+      b = hh(b, c, d, a, messageBlock[2], 23, 0xc4ac5665)
 
-      a = ii(a, b, c, d, k[0], 6, 0xf4292244)
-      d = ii(d, a, b, c, k[7], 10, 0x432aff97)
-      c = ii(c, d, a, b, k[14], 15, 0xab9423a7)
-      b = ii(b, c, d, a, k[5], 21, 0xfc93a039)
-      a = ii(a, b, c, d, k[12], 6, 0x655b59c3)
-      d = ii(d, a, b, c, k[3], 10, 0x8f0ccc92)
-      c = ii(c, d, a, b, k[10], 15, 0xffeff47d)
-      b = ii(b, c, d, a, k[1], 21, 0x85845dd1)
-      a = ii(a, b, c, d, k[8], 6, 0x6fa87e4f)
-      d = ii(d, a, b, c, k[15], 10, 0xfe2ce6e0)
-      c = ii(c, d, a, b, k[6], 15, 0xa3014314)
-      b = ii(b, c, d, a, k[13], 21, 0x4e0811a1)
-      a = ii(a, b, c, d, k[4], 6, 0xf7537e82)
-      d = ii(d, a, b, c, k[11], 10, 0xbd3af235)
-      c = ii(c, d, a, b, k[2], 15, 0x2ad7d2bb)
-      b = ii(b, c, d, a, k[9], 21, 0xeb86d391)
+      a = ii(a, b, c, d, messageBlock[0], 6, 0xf4292244)
+      d = ii(d, a, b, c, messageBlock[7], 10, 0x432aff97)
+      c = ii(c, d, a, b, messageBlock[14], 15, 0xab9423a7)
+      b = ii(b, c, d, a, messageBlock[5], 21, 0xfc93a039)
+      a = ii(a, b, c, d, messageBlock[12], 6, 0x655b59c3)
+      d = ii(d, a, b, c, messageBlock[3], 10, 0x8f0ccc92)
+      c = ii(c, d, a, b, messageBlock[10], 15, 0xffeff47d)
+      b = ii(b, c, d, a, messageBlock[1], 21, 0x85845dd1)
+      a = ii(a, b, c, d, messageBlock[8], 6, 0x6fa87e4f)
+      d = ii(d, a, b, c, messageBlock[15], 10, 0xfe2ce6e0)
+      c = ii(c, d, a, b, messageBlock[6], 15, 0xa3014314)
+      b = ii(b, c, d, a, messageBlock[13], 21, 0x4e0811a1)
+      a = ii(a, b, c, d, messageBlock[4], 6, 0xf7537e82)
+      d = ii(d, a, b, c, messageBlock[11], 10, 0xbd3af235)
+      c = ii(c, d, a, b, messageBlock[2], 15, 0x2ad7d2bb)
+      b = ii(b, c, d, a, messageBlock[9], 21, 0xeb86d391)
 
-      x[0] = addUnsigned(a, x[0])
-      x[1] = addUnsigned(b, x[1])
-      x[2] = addUnsigned(c, x[2])
-      x[3] = addUnsigned(d, x[3])
+      stateRegisters[0] = addUnsigned(a, stateRegisters[0])
+      stateRegisters[1] = addUnsigned(b, stateRegisters[1])
+      stateRegisters[2] = addUnsigned(c, stateRegisters[2])
+      stateRegisters[3] = addUnsigned(d, stateRegisters[3])
 
-      function cmn(q: number, a: number, b: number, x: number, s: number, t: number): number {
-        a = addUnsigned(addUnsigned(a, q), addUnsigned(x, t))
-        return addUnsigned(rotateLeft(a, s), b)
+      function cmn(operation: number, regA: number, regB: number, messageWord: number, shift: number, constant: number): number {
+        regA = addUnsigned(addUnsigned(regA, operation), addUnsigned(messageWord, constant))
+        return addUnsigned(rotateLeft(regA, shift), regB)
       }
 
-      function ff(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number {
-        return cmn((b & c) | (~b & d), a, b, x, s, t)
+      function ff(regA: number, regB: number, regC: number, regD: number, messageWord: number, shift: number, constant: number): number {
+        return cmn((regB & regC) | (~regB & regD), regA, regB, messageWord, shift, constant)
       }
 
-      function gg(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number {
-        return cmn((b & d) | (c & ~d), a, b, x, s, t)
+      function gg(regA: number, regB: number, regC: number, regD: number, messageWord: number, shift: number, constant: number): number {
+        return cmn((regB & regD) | (regC & ~regD), regA, regB, messageWord, shift, constant)
       }
 
-      function hh(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number {
-        return cmn(b ^ c ^ d, a, b, x, s, t)
+      function hh(regA: number, regB: number, regC: number, regD: number, messageWord: number, shift: number, constant: number): number {
+        return cmn(regB ^ regC ^ regD, regA, regB, messageWord, shift, constant)
       }
 
-      function ii(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number {
-        return cmn(c ^ (b | ~d), a, b, x, s, t)
+      function ii(regA: number, regB: number, regC: number, regD: number, messageWord: number, shift: number, constant: number): number {
+        return cmn(regC ^ (regB | ~regD), regA, regB, messageWord, shift, constant)
       }
     }
 
-    const n = str.length
+    const messageLength = str.length
     const state = [0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476]
     const tail = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     
-    for (let i = 0; i < n; i += 64) {
+    for (let i = 0; i < messageLength; i += 64) {
       const block = new Array(16)
       for (let j = 0; j < 16; j++) {
         block[j] = 
@@ -155,10 +155,10 @@ export default function HashGenerator() {
       md5cycle(state, block)
     }
 
-    const end = n % 64
+    const end = messageLength % 64
     const bytes = new Uint8Array(64)
     for (let i = 0; i < end; i++) {
-      bytes[i] = str.charCodeAt(n - end + i)
+      bytes[i] = str.charCodeAt(messageLength - end + i)
     }
     bytes[end] = 0x80
     
@@ -174,11 +174,11 @@ export default function HashGenerator() {
       }
     }
     
-    tail[14] = (n * 8) >>> 0
-    tail[15] = (n * 8) / 0x100000000
+    tail[14] = (messageLength * 8) >>> 0
+    tail[15] = (messageLength * 8) / 0x100000000
     md5cycle(state, tail)
 
-    return state.map(x => x.toString(16).padStart(8, '0')).join('')
+    return state.map(stateWord => stateWord.toString(16).padStart(8, '0')).join('')
   }
 
   const generateHashes = async () => {

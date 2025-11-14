@@ -65,7 +65,7 @@ export async function callAI(
           } else if (parsed.error) {
             throw new Error(parsed.error)
           }
-        } catch (e) {
+        } catch (parseError) {
           // Skip invalid JSON lines
         }
       }
