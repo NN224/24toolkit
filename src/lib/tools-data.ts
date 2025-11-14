@@ -42,7 +42,6 @@ import {
   ArrowsOut,
   Drop,
   Percent,
-  Activity,
   Receipt,
   CurrencyDollar,
   NetworkSlash,
@@ -52,7 +51,9 @@ import {
   Hash,
   Timer,
   Notepad,
-  ListBullets
+  ListBullets,
+  Lightbulb,
+  ListChecks
 } from '@phosphor-icons/react'
 
 export interface Tool {
@@ -67,6 +68,26 @@ export interface Tool {
 }
 
 export const allTools: Tool[] = [
+  {
+    id: 'ai-task-builder',
+    title: 'AI Task Builder',
+    description: 'Turn any goal into a step-by-step plan with AI.',
+    icon: ListChecks,
+    path: '/tools/ai-task-builder',
+    color: 'from-purple-500 to-pink-500',
+    category: 'ai',
+    isAI: true
+  },
+  {
+    id: 'ai-idea-analyzer',
+    title: 'AI Idea Analyzer',
+    description: 'Get instant feedback on your next big idea from an AI expert.',
+    icon: Lightbulb,
+    path: '/tools/idea-analyzer',
+    color: 'from-purple-500 to-pink-500',
+    category: 'ai',
+    isAI: true
+  },
   {
     id: 'text-summarizer',
     title: 'AI Text Summarizer',
@@ -103,16 +124,6 @@ export const allTools: Tool[] = [
     description: 'Generate descriptions for images',
     icon: Image,
     path: '/tools/image-caption-generator',
-    color: 'from-purple-500 to-pink-500',
-    category: 'ai',
-    isAI: true
-  },
-  {
-    id: 'chat-assistant',
-    title: 'AI Chat Assistant',
-    description: 'Conversational AI with personality modes',
-    icon: ChatCircleDots,
-    path: '/tools/chat-assistant',
     color: 'from-purple-500 to-pink-500',
     category: 'ai',
     isAI: true
@@ -539,7 +550,7 @@ export const allTools: Tool[] = [
     id: 'bmi-calculator',
     title: 'BMI Calculator',
     description: 'Calculate Body Mass Index',
-    icon: Activity,
+    icon: Calculator,
     path: '/tools/bmi-calculator',
     color: 'from-teal-500 to-cyan-500',
     category: 'calc'

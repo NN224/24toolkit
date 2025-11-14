@@ -22,7 +22,8 @@ import TextSummarizer from '@/pages/tools/TextSummarizer'
 import ParagraphRewriter from '@/pages/tools/ParagraphRewriter'
 import CodeFormatter from '@/pages/tools/CodeFormatter'
 const ImageCaptionGenerator = React.lazy(() => import('@/pages/tools/ImageCaptionGenerator'))
-import ChatAssistant from '@/pages/tools/ChatAssistant'
+const AITaskBuilder = React.lazy(() => import('@/pages/tools/AITaskBuilder'))
+const IdeaAnalyzer = React.lazy(() => import('@/pages/tools/IdeaAnalyzer'))
 import TextCaseConverter from '@/pages/tools/TextCaseConverter'
 import RemoveLineBreaks from '@/pages/tools/RemoveLineBreaks'
 import WordFrequencyAnalyzer from '@/pages/tools/WordFrequencyAnalyzer'
@@ -133,7 +134,22 @@ function App() {
               </Suspense>
             }
           />
-          <Route path="tools/chat-assistant" element={<ChatAssistant />} />
+          <Route
+            path="tools/ai-task-builder"
+            element={
+              <Suspense fallback={<div className="p-4 text-center">Loading AI Task Builder...</div>}>
+                <AITaskBuilder />
+              </Suspense>
+            }
+          />
+          <Route
+            path="tools/idea-analyzer"
+            element={
+              <Suspense fallback={<div className="p-4 text-center">Loading Idea Analyzer...</div>}>
+                <IdeaAnalyzer />
+              </Suspense>
+            }
+          />
           <Route path="tools/text-case-converter" element={<TextCaseConverter />} />
           <Route path="tools/remove-line-breaks" element={<RemoveLineBreaks />} />
           <Route path="tools/word-frequency-analyzer" element={<WordFrequencyAnalyzer />} />
