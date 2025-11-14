@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Copy, Hash } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 
 export default function HashGenerator() {
   const [text, setText] = useState('')
@@ -15,6 +16,7 @@ export default function HashGenerator() {
     md5: '',
     sha1: ''
   })
+  const copyToClipboard = useCopyToClipboard()
 
   async function sha256Hash(message: string): Promise<string> {
     const msgBuffer = new TextEncoder().encode(message)
@@ -198,14 +200,7 @@ export default function HashGenerator() {
     toast.success('Hashes generated successfully!')
   }
 
-  const handleCopy = async (hash: string, type: string) => {
-    try {
-      await navigator.clipboard.writeText(hash)
-      toast.success(`${type} hash copied to clipboard!`)
-    } catch {
-      toast.error('Failed to copy hash')
-    }
-  }
+
 
   return (
     <div className="py-12 px-4 sm:px-6 lg:px-8">
@@ -265,7 +260,7 @@ export default function HashGenerator() {
                       className="font-mono text-sm"
                     />
                     <Button
-                      onClick={() => handleCopy(hashes.sha256, 'SHA-256')}
+                      onClick={() => copyToClipboard(hashes.sha256, 'SHA-256 hash copied to clipboard!')}
                       variant="outline"
                       size="icon"
                       className="shrink-0"
@@ -285,7 +280,7 @@ export default function HashGenerator() {
                       className="font-mono text-sm"
                     />
                     <Button
-                      onClick={() => handleCopy(hashes.sha1, 'SHA-1')}
+                      onClick={() => copyToClipboard(hashes.sha1, 'SHA-1 hash copied to clipboard!')}
                       variant="outline"
                       size="icon"
                       className="shrink-0"
@@ -305,7 +300,7 @@ export default function HashGenerator() {
                       className="font-mono text-sm"
                     />
                     <Button
-                      onClick={() => handleCopy(hashes.md5, 'MD5')}
+                      onClick={() => copyToClipboard(hashes.md5, 'MD5 hash copied to clipboard!')}
                       variant="outline"
                       size="icon"
                       className="shrink-0"

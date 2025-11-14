@@ -4,10 +4,12 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Copy, Trash } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 
 export default function TextCaseConverter() {
   const [text, setText] = useState('')
   const [result, setResult] = useState('')
+  const copyToClipboard = useCopyToClipboard()
 
   const convertToUpper = () => {
     const converted = text.toUpperCase()
@@ -51,14 +53,7 @@ export default function TextCaseConverter() {
     toast.success('Converted to snake_case')
   }
 
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(result)
-      toast.success('Result copied to clipboard!')
-    } catch (err) {
-      toast.error('Failed to copy text')
-    }
-  }
+
 
   const handleClear = () => {
     setText('')
@@ -160,7 +155,7 @@ export default function TextCaseConverter() {
                 
                 <div className="flex gap-2">
                   <Button
-                    onClick={handleCopy}
+                    onClick={() => copyToClipboard(result, 'Result copied to clipboard!')}
                     variant="default"
                     className="gap-2"
                   >

@@ -6,7 +6,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Label } from '@/components/ui/label'
 import { Globe, Copy } from '@phosphor-icons/react'
 import { toast } from 'sonner'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderSelector'
+import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { callAI } from '@/lib/ai'
 
 const languages = [
@@ -22,14 +23,13 @@ const languages = [
   { code: 'hi', name: 'Hindi' },
 ]
 
-type Provider = 'anthropic' | 'groq'
-
 export default function AITranslator() {
   const [inputText, setInputText] = useState('')
   const [targetLang, setTargetLang] = useState('es')
   const [translatedText, setTranslatedText] = useState('')
   const [loading, setLoading] = useState(false)
-  const [provider, setProvider] = useState<Provider>('anthropic')
+  const [provider, setProvider] = useState<AIProvider>('anthropic')
+  const copyToClipboard = useCopyToClipboard()
 
   const translateText = async () => {
     if (!inputText.trim()) {
@@ -57,10 +57,7 @@ ${inputText}`
     }
   }
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(translatedText)
-    toast.success('Copied to clipboard!')
-  }
+
 
   return (
     <div className="container mx-auto max-w-4xl px-4 py-8 space-y-6">
@@ -116,23 +113,7 @@ ${inputText}`
             </Select>
           </div>
 
-          <div className="space-y-2">
-            <Label>AI Provider</Label>
-            <ToggleGroup 
-              type="single" 
-              value={provider} 
-              onValueChange={(value) => value && setProvider(value as Provider)}
-              className="w-full justify-start"
-              variant="outline"
-            >
-              <ToggleGroupItem value="anthropic" className="flex-1">
-                Anthropic Claude
-              </ToggleGroupItem>
-              <ToggleGroupItem value="groq" className="flex-1">
-                Groq
-              </ToggleGroupItem>
-            </ToggleGroup>
-          </div>
+          <AIProviderSelector value={provider} onValueChange={setProvider} />
 
           <Button
             onClick={translateText}
@@ -146,7 +127,7 @@ ${inputText}`
             <div className="space-y-2 mt-4">
               <div className="flex items-center justify-between">
                 <Label>Translation</Label>
-                <Button variant="ghost" size="sm" onClick={copyToClipboard}>
+                <Button variant="ghost" size="sm" onClick={() => copyToClipboard(translatedText)}>
                   <Copy size={16} className="mr-2" />
                   Copy
                 </Button>

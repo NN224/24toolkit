@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Copy, FileText } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 
 const loremParagraphs = [
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -17,6 +18,7 @@ const loremParagraphs = [
 export default function LoremIpsumGenerator() {
   const [output, setOutput] = useState('')
   const [paragraphs, setParagraphs] = useState(3)
+  const copyToClipboard = useCopyToClipboard()
 
   const generateLorem = () => {
     const generated: string[] = []
@@ -27,14 +29,7 @@ export default function LoremIpsumGenerator() {
     toast.success(`Generated ${paragraphs} ${paragraphs === 1 ? 'paragraph' : 'paragraphs'}!`)
   }
 
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(output)
-      toast.success('Lorem Ipsum copied to clipboard!')
-    } catch {
-      toast.error('Failed to copy text')
-    }
-  }
+
 
   return (
     <div className="py-12 px-4 sm:px-6 lg:px-8">
@@ -93,7 +88,7 @@ export default function LoremIpsumGenerator() {
                   className="min-h-[300px] font-serif"
                 />
 
-                <Button onClick={handleCopy} variant="outline" className="w-full gap-2">
+                <Button onClick={() => copyToClipboard(output, 'Lorem Ipsum copied to clipboard!')} variant="outline" className="w-full gap-2">
                   <Copy size={20} />
                   Copy to Clipboard
                 </Button>
