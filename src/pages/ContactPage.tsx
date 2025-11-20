@@ -23,10 +23,6 @@ export default function ContactPage() {
   const contactMetadata = getPageMetadata('contact')
   useSEO(contactMetadata)
 
-  useEffect(() => {
-    document.title = 'Contact — 24Toolkit'
-  }, [])
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
