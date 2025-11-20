@@ -7,8 +7,14 @@ import { toast } from 'sonner'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function JSONBeautifier() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('json-beautifier')
+  useSEO(metadata)
+
   const [input, setInput] = useState('')
   const [formatted, setFormatted] = useState('')
   const [isValid, setIsValid] = useState<boolean | null>(null)

@@ -5,8 +5,14 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Upload, Download, Trash, Smiley } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function MemeGenerator() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('meme-generator')
+  useSEO(metadata)
+
   const [image, setImage] = useState<string | null>(null)
   const [topText, setTopText] = useState('')
   const [bottomText, setBottomText] = useState('')

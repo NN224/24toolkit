@@ -6,8 +6,14 @@ import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { ShieldCheck, ShieldWarning, MagnifyingGlass } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function URLPhishingChecker() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('url-phishing-checker')
+  useSEO(metadata)
+
   const [url, setUrl] = useState('')
   const [result, setResult] = useState<null | { status: 'safe' | 'suspicious' | 'dangerous', reasons: string[] }>(null)
 

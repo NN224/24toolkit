@@ -2,8 +2,14 @@ import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Play, Pause, ArrowClockwise } from '@phosphor-icons/react'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function Stopwatch() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('stopwatch')
+  useSEO(metadata)
+
   const [time, setTime] = useState(0)
   const [isRunning, setIsRunning] = useState(false)
 

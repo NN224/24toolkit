@@ -4,10 +4,16 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Copy, Trash, Smiley } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 const popularEmojis = ['😀', '😊', '😍', '🎉', '✨', '❤️', '👍', '🔥', '💯', '🌟', '🚀', '💪', '🎯', '⭐', '✅']
 
 export default function EmojiTool() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('emoji-tool')
+  useSEO(metadata)
+
   const [text, setText] = useState('')
 
   const addEmoji = (emoji: string) => {

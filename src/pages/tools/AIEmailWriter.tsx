@@ -9,10 +9,16 @@ import { toast } from 'sonner'
 import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderSelector'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { callAI } from '@/lib/ai'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 type EmailMode = 'formal' | 'casual' | 'business'
 
 export default function AIEmailWriter() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('ai-email-writer')
+  useSEO(metadata)
+
   const [topic, setTopic] = useState('')
   const [mode, setMode] = useState<EmailMode>('formal')
   const [generatedEmail, setGeneratedEmail] = useState('')

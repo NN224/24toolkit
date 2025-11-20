@@ -4,8 +4,14 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@phosphor-icons/react'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function AgeCalculator() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('age-calculator')
+  useSEO(metadata)
+
   const [birthDate, setBirthDate] = useState('')
   const [targetDate, setTargetDate] = useState('')
   const [ageResult, setAgeResult] = useState<{

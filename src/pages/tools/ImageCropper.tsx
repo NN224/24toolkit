@@ -4,8 +4,14 @@ import { Button } from '@/components/ui/button'
 import { Upload, Download, Trash, Scissors } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import Cropper, { Area } from 'react-easy-crop'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function ImageCropper() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('image-cropper')
+  useSEO(metadata)
+
   const [image, setImage] = useState<string | null>(null)
   const [crop, setCrop] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)

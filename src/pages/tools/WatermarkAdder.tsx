@@ -6,8 +6,14 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Upload, Download, Trash, Image as ImageIcon } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function WatermarkAdder() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('watermark-adder')
+  useSEO(metadata)
+
   const [image, setImage] = useState<string | null>(null)
   const [watermarkText, setWatermarkText] = useState('© Your Watermark')
   const [fontSize, setFontSize] = useState(40)

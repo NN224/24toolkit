@@ -4,8 +4,14 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Upload, Download, Trash, SlidersHorizontal } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function ImageFilterEditor() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('image-filter-editor')
+  useSEO(metadata)
+
   const [image, setImage] = useState<string | null>(null)
   const [filters, setFilters] = useState({
     brightness: 100,

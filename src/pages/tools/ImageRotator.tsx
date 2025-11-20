@@ -3,8 +3,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Upload, Trash, ArrowsClockwise, ArrowsCounterClockwise, ArrowsHorizontal, ArrowsVertical } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function ImageRotator() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('image-rotator')
+  useSEO(metadata)
+
   const [image, setImage] = useState<string | null>(null)
   const [rotation, setRotation] = useState(0)
   const [flipH, setFlipH] = useState(false)

@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button'
 import { Sparkle, Copy } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { motion } from 'framer-motion'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 const quotes = [
   { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
@@ -24,6 +26,10 @@ const quotes = [
 ]
 
 export default function RandomQuoteGenerator() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('random-quote-generator')
+  useSEO(metadata)
+
   const [quote, setQuote] = useState(quotes[0])
   const [key, setKey] = useState(0)
 

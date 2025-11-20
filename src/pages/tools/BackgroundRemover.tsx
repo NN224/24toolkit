@@ -5,8 +5,14 @@ import { Upload, Download, Trash, Sparkle } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { AILoadingSpinner } from '@/components/ai/AILoadingSpinner'
 import { AIBadge } from '@/components/ai/AIBadge'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function BackgroundRemover() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('background-remover')
+  useSEO(metadata)
+
   const [image, setImage] = useState<string | null>(null)
   const [processedImage, setProcessedImage] = useState<string | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)

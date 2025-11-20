@@ -3,6 +3,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Upload, Trash, Palette } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 interface ColorInfo {
   hex: string
@@ -11,6 +13,10 @@ interface ColorInfo {
 }
 
 export default function ImageColorExtractor() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('image-color-extractor')
+  useSEO(metadata)
+
   const [image, setImage] = useState<string | null>(null)
   const [colors, setColors] = useState<ColorInfo[]>([])
   const [isProcessing, setIsProcessing] = useState(false)

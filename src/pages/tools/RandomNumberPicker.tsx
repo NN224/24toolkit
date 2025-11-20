@@ -6,8 +6,14 @@ import { Label } from '@/components/ui/label'
 import { Sparkle } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { motion } from 'framer-motion'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function RandomNumberPicker() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('random-number-picker')
+  useSEO(metadata)
+
   const [min, setMin] = useState(1)
   const [max, setMax] = useState(100)
   const [result, setResult] = useState<number | null>(null)

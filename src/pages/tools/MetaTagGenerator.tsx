@@ -6,8 +6,14 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Copy, Tag } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function MetaTagGenerator() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('meta-tag-generator')
+  useSEO(metadata)
+
   const [pageTitle, setPageTitle] = useState('')
   const [description, setDescription] = useState('')
   const [keywords, setKeywords] = useState('')

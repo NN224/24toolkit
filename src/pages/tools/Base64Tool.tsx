@@ -6,8 +6,14 @@ import { Copy, Trash, ArrowsLeftRight } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function Base64Tool() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('base64-tool')
+  useSEO(metadata)
+
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')
   const [mode, setMode] = useState<'encode' | 'decode'>('encode')

@@ -7,8 +7,14 @@ import { Slider } from '@/components/ui/slider'
 import { Download } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { QRCodeCanvas } from 'qrcode.react'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function QRGenerator() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('qr-generator')
+  useSEO(metadata)
+
   const [text, setText] = useState('')
   const [size, setSize] = useState(256)
   const qrRef = useRef<HTMLDivElement>(null)

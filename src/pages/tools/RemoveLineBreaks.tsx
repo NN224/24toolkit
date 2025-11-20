@@ -4,8 +4,14 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Copy, Trash } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function RemoveLineBreaks() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('remove-line-breaks')
+  useSEO(metadata)
+
   const [text, setText] = useState('')
 
   const removeLineBreaks = () => {

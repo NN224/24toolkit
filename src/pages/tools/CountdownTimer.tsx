@@ -4,8 +4,14 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Play, Pause, ArrowClockwise } from '@phosphor-icons/react'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function CountdownTimer() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('countdown-timer')
+  useSEO(metadata)
+
   const [minutes, setMinutes] = useState(5)
   const [seconds, setSeconds] = useState(0)
   const [timeLeft, setTimeLeft] = useState(0)

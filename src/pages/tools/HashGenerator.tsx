@@ -8,8 +8,14 @@ import { Copy, Hash } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function HashGenerator() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('hash-generator')
+  useSEO(metadata)
+
   const [text, setText] = useState('')
   const [hashes, setHashes] = useState({
     sha256: '',

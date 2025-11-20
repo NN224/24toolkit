@@ -4,8 +4,14 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Activity } from '@phosphor-icons/react'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function BMICalculator() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('bmi-calculator')
+  useSEO(metadata)
+
   const [weight, setWeight] = useState('')
   const [height, setHeight] = useState('')
   const [unit, setUnit] = useState<'metric' | 'imperial'>('metric')

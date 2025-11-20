@@ -7,8 +7,14 @@ import { Slider } from '@/components/ui/slider'
 import { Switch } from '@/components/ui/switch'
 import { Copy, Sparkle } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function RandomStringGenerator() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('random-string-generator')
+  useSEO(metadata)
+
   const [result, setResult] = useState('')
   const [length, setLength] = useState(16)
   const [options, setOptions] = useState({

@@ -7,8 +7,14 @@ import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Copy, Trash, MagnifyingGlass } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function FindReplace() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('find-replace')
+  useSEO(metadata)
+
   const [text, setText] = useState('')
   const [findText, setFindText] = useState('')
   const [replaceText, setReplaceText] = useState('')

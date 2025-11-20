@@ -6,8 +6,14 @@ import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { SpeakerHigh, Stop, Download } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function TextToSpeech() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('text-to-speech')
+  useSEO(metadata)
+
   const [text, setText] = useState('')
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([])
   const [selectedVoice, setSelectedVoice] = useState<string>('')

@@ -5,8 +5,14 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { CheckCircle, XCircle, Trash } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function PalindromeChecker() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('palindrome-checker')
+  useSEO(metadata)
+
   const [text, setText] = useState('')
   const [checked, setChecked] = useState(false)
   const [isPalindrome, setIsPalindrome] = useState(false)

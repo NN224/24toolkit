@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { useEasterEgg } from '@/hooks/use-easter-egg'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 import { 
   Sparkle,
   Brain,
@@ -117,6 +119,10 @@ export default function HomePage() {
   const [randomQuote] = useState(() => inspirationalQuotes[Math.floor(Math.random() * inspirationalQuotes.length)])
   const navigate = useNavigate()
   useEasterEgg()
+  
+  // Set SEO metadata for home page
+  const homeMetadata = getPageMetadata('home')
+  useSEO(homeMetadata)
 
   const handleRandomTool = () => {
     const randomTool = allTools[Math.floor(Math.random() * allTools.length)]

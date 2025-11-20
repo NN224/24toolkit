@@ -4,6 +4,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { ArrowsDownUp } from '@phosphor-icons/react'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 type UnitCategory = 'length' | 'weight' | 'temperature' | 'volume' | 'area' | 'speed'
 
@@ -240,6 +242,10 @@ const conversionData: Record<UnitCategory, { name: string; units: Record<string,
 }
 
 export default function UnitConverter() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('unit-converter')
+  useSEO(metadata)
+
   const [category, setCategory] = useState<UnitCategory>('length')
   const [fromUnit, setFromUnit] = useState('meter')
   const [toUnit, setToUnit] = useState('kilometer')

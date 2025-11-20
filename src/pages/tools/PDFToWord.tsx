@@ -5,8 +5,14 @@ import { Progress } from '@/components/ui/progress'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Upload, Download, Trash, FilePdf, FileDoc, Info } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function PDFToWord() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('pdf-to-word')
+  useSEO(metadata)
+
   const [file, setFile] = useState<File | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
   const [progress, setProgress] = useState(0)

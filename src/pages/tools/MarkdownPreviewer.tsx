@@ -5,8 +5,14 @@ import { Textarea } from '@/components/ui/textarea'
 import { Copy, Trash, Eye } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { marked } from 'marked'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function MarkdownPreviewer() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('markdown-previewer')
+  useSEO(metadata)
+
   const [markdown, setMarkdown] = useState(`# Welcome to Markdown Previewer
 
 ## Features

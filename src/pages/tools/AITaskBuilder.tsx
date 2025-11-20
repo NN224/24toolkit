@@ -6,6 +6,8 @@ import { Sparkle, ListChecks } from '@phosphor-icons/react';
 import { AIBadge } from '@/components/ai/AIBadge';
 import { callAI } from '@/lib/ai';
 import { toast } from 'sonner';
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 interface Task {
   id: number;
@@ -14,6 +16,10 @@ interface Task {
 }
 
 export default function AITaskBuilder() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('ai-task-builder')
+  useSEO(metadata)
+
   const [goal, setGoal] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([]);

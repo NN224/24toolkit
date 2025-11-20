@@ -6,8 +6,14 @@ import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Upload, CheckCircle, XCircle } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function FileHashVerifier() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('file-hash-verifier')
+  useSEO(metadata)
+
   const [file, setFile] = useState<File | null>(null)
   const [calculatedHash, setCalculatedHash] = useState('')
   const [expectedHash, setExpectedHash] = useState('')

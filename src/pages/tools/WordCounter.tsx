@@ -4,8 +4,14 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Copy, Trash } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function WordCounter() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('word-counter')
+  useSEO(metadata)
+
   const [text, setText] = useState('')
 
   const stats = useMemo(() => {

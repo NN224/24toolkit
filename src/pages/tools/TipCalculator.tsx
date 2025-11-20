@@ -4,8 +4,14 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Receipt } from '@phosphor-icons/react'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function TipCalculator() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('tip-calculator')
+  useSEO(metadata)
+
   const [billAmount, setBillAmount] = useState('')
   const [tipPercent, setTipPercent] = useState('15')
   const [numPeople, setNumPeople] = useState('1')

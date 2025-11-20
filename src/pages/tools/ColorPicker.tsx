@@ -6,6 +6,8 @@ import { Label } from '@/components/ui/label'
 import { Copy, Shuffle } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 interface ColorPalette {
   hex: string
@@ -14,6 +16,10 @@ interface ColorPalette {
 }
 
 export default function ColorPicker() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('color-picker')
+  useSEO(metadata)
+
   const [selectedColor, setSelectedColor] = useState('#4A90E2')
   const [palette, setPalette] = useState<ColorPalette[]>([])
   const copyColor = useCopyToClipboard()

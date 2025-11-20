@@ -6,8 +6,14 @@ import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Certificate, MagnifyingGlass, CheckCircle, XCircle } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function SSLChecker() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('ssl-checker')
+  useSEO(metadata)
+
   const [domain, setDomain] = useState('')
   const [result, setResult] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(false)

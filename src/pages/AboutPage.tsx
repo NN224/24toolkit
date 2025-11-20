@@ -2,8 +2,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Sparkle, Code, Lightning, Globe } from '@phosphor-icons/react'
 import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function AboutPage() {
+  // Set SEO metadata for about page
+  const aboutMetadata = getPageMetadata('about')
+  useSEO(aboutMetadata)
+  
   return (
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">

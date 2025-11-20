@@ -5,8 +5,14 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { NetworkSlash, Copy } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function IPAddressFinder() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('ip-address-finder')
+  useSEO(metadata)
+
   const [ipInfo, setIpInfo] = useState<{
     ip: string
     city?: string

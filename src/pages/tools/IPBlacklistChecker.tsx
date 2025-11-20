@@ -6,8 +6,14 @@ import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { ShieldCheck, ShieldWarning, MagnifyingGlass } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function IPBlacklistChecker() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('ip-blacklist-checker')
+  useSEO(metadata)
+
   const [ipAddress, setIpAddress] = useState('')
   const [result, setResult] = useState<any>(null)
 

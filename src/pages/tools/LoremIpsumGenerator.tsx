@@ -6,6 +6,8 @@ import { Textarea } from '@/components/ui/textarea'
 import { Copy, FileText } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 const loremParagraphs = [
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -16,6 +18,10 @@ const loremParagraphs = [
 ]
 
 export default function LoremIpsumGenerator() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('lorem-ipsum-generator')
+  useSEO(metadata)
+
   const [output, setOutput] = useState('')
   const [paragraphs, setParagraphs] = useState(3)
   const copyToClipboard = useCopyToClipboard()

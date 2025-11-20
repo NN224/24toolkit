@@ -12,8 +12,14 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderSelector'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { callAI } from '@/lib/ai'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function CodeFormatter() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('code-formatter')
+  useSEO(metadata)
+
   const [code, setCode] = useState('')
   const [formattedCode, setFormattedCode] = useState('')
   const [explanation, setExplanation] = useState('')

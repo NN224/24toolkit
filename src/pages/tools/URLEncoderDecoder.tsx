@@ -5,8 +5,14 @@ import { Textarea } from '@/components/ui/textarea'
 import { Copy, Trash, ArrowsLeftRight } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function URLEncoderDecoder() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('url-encoder-decoder')
+  useSEO(metadata)
+
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')
   const [mode, setMode] = useState<'encode' | 'decode'>('encode')
