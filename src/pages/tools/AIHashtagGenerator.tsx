@@ -9,8 +9,14 @@ import { toast } from 'sonner'
 import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderSelector'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { callAI } from '@/lib/ai'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function AIHashtagGenerator() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('ai-hashtag-generator')
+  useSEO(metadata)
+
   const [content, setContent] = useState('')
   const [hashtags, setHashtags] = useState<string[]>([])
   const [loading, setLoading] = useState(false)

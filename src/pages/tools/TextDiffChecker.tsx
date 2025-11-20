@@ -4,8 +4,14 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Trash, GitDiff } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function TextDiffChecker() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('text-diff-checker')
+  useSEO(metadata)
+
   const [text1, setText1] = useState('')
   const [text2, setText2] = useState('')
   const [showDiff, setShowDiff] = useState(false)

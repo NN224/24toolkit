@@ -5,8 +5,14 @@ import { Textarea } from '@/components/ui/textarea'
 import { Copy, Trash } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function TextCaseConverter() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('text-case-converter')
+  useSEO(metadata)
+
   const [text, setText] = useState('')
   const [result, setResult] = useState('')
   const copyToClipboard = useCopyToClipboard()

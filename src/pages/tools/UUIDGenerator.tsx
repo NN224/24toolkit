@@ -5,8 +5,14 @@ import { Copy, Sparkle } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { v4 as uuidv4 } from 'uuid'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function UUIDGenerator() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('uuid-generator')
+  useSEO(metadata)
+
   const [uuids, setUuids] = useState<string[]>([])
   const [count, setCount] = useState(1)
   const copyToClipboard = useCopyToClipboard()

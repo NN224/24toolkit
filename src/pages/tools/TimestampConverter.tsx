@@ -6,8 +6,14 @@ import { Label } from '@/components/ui/label'
 import { Copy, Trash, Calendar, Clock } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function TimestampConverter() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('timestamp-converter')
+  useSEO(metadata)
+
   const [timestamp, setTimestamp] = useState('')
   const [readable, setReadable] = useState('')
   const [mode, setMode] = useState<'toReadable' | 'toTimestamp'>('toReadable')

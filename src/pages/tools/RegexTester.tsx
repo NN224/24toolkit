@@ -6,8 +6,14 @@ import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Copy, Trash, CheckCircle, XCircle } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function RegexTester() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('regex-tester')
+  useSEO(metadata)
+
   const [pattern, setPattern] = useState('')
   const [flags, setFlags] = useState('g')
   const [testString, setTestString] = useState('')

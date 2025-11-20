@@ -4,8 +4,14 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { FloppyDisk, Trash, NotePencil } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function Notepad() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('notepad')
+  useSEO(metadata)
+
   const [note, setNote] = useState('')
 
   useEffect(() => {

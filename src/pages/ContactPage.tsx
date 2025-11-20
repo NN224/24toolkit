@@ -7,6 +7,8 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -16,6 +18,10 @@ export default function ContactPage() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
+  
+  // Set SEO metadata for contact page
+  const contactMetadata = getPageMetadata('contact')
+  useSEO(contactMetadata)
 
   useEffect(() => {
     document.title = 'Contact — 24Toolkit'

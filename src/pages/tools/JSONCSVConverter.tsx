@@ -6,8 +6,14 @@ import { Label } from '@/components/ui/label'
 import { Copy, Trash, ArrowRight, ArrowLeft } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import Papa from 'papaparse'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function JSONCSVConverter() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('json-csv-converter')
+  useSEO(metadata)
+
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')
 

@@ -5,8 +5,14 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Upload, Download, Trash, Image as ImageIcon } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function ImageResizer() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('image-resizer')
+  useSEO(metadata)
+
   const [image, setImage] = useState<string | null>(null)
   const [resizedImage, setResizedImage] = useState<string | null>(null)
   const [width, setWidth] = useState('')

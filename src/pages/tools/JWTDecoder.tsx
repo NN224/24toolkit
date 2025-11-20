@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Copy, Trash, Key } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 interface DecodedJWT {
   header: any
@@ -12,6 +14,10 @@ interface DecodedJWT {
 }
 
 export default function JWTDecoder() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('jwt-decoder')
+  useSEO(metadata)
+
   const [jwt, setJwt] = useState('')
   const [decoded, setDecoded] = useState<DecodedJWT | null>(null)
   const [error, setError] = useState('')

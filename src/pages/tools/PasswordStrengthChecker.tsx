@@ -6,8 +6,14 @@ import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { ShieldCheck, ShieldWarning, ShieldSlash, CheckCircle, XCircle } from '@phosphor-icons/react'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function PasswordStrengthChecker() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('password-strength-checker')
+  useSEO(metadata)
+
   const [password, setPassword] = useState('')
 
   const analyzePassword = (pwd: string) => {

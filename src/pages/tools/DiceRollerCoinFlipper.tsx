@@ -4,8 +4,14 @@ import { Button } from '@/components/ui/button'
 import { DiceSix, CoinVertical } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { motion } from 'framer-motion'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function DiceRollerCoinFlipper() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('dice-roller-coin-flipper')
+  useSEO(metadata)
+
   const [diceResult, setDiceResult] = useState<number | null>(null)
   const [coinResult, setCoinResult] = useState<'Heads' | 'Tails' | null>(null)
   const [diceCount, setDiceCount] = useState(1)

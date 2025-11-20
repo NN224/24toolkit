@@ -8,8 +8,14 @@ import { AIBadge } from '@/components/ai/AIBadge'
 import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderSelector'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { callAI } from '@/lib/ai'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function ImageCaptionGenerator() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('image-caption-generator')
+  useSEO(metadata)
+
   const [imageUrl, setImageUrl] = useState<string>('')
   const [caption, setCaption] = useState('')
   const [isLoading, setIsLoading] = useState(false)

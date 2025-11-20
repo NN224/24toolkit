@@ -4,6 +4,7 @@ import FuturisticSidebar from './FuturisticSidebar'
 import FuturisticHeader from './FuturisticHeader'
 import FloatingChatAssistant from './ai/ChatAssistant'
 import { ThemeProvider } from './ThemeProvider'
+import AdSense from './AdSense'
 
 export default function Layout() {
   return (
@@ -22,7 +23,17 @@ export default function Layout() {
         <FuturisticHeader />
         
         <main className="relative lg:ml-20 pt-20 min-h-screen">
+          {/* Top Ad Unit */}
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <AdSense slot="1234567890" format="horizontal" className="mb-6" />
+          </div>
+          
           <Outlet />
+          
+          {/* Bottom Ad Unit */}
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <AdSense slot="0987654321" format="horizontal" className="mt-6" />
+          </div>
         </main>
 
         <footer className="relative lg:ml-20 border-t border-border/50 bg-card/30 backdrop-blur-xl mt-20 opacity-70">

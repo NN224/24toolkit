@@ -6,8 +6,14 @@ import { Progress } from '@/components/ui/progress'
 import { Upload, Copy, Trash, Image as ImageIcon } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { createWorker } from 'tesseract.js'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function ImageToText() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('image-to-text')
+  useSEO(metadata)
+
   const [image, setImage] = useState<string | null>(null)
   const [extractedText, setExtractedText] = useState('')
   const [isProcessing, setIsProcessing] = useState(false)

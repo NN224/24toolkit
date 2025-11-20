@@ -7,8 +7,14 @@ import { Label } from '@/components/ui/label'
 import { Copy, Trash, LockKey } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function TextEncryptor() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('text-encryptor')
+  useSEO(metadata)
+
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')
   const [password, setPassword] = useState('')

@@ -7,8 +7,14 @@ import { toast } from 'sonner'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function HTMLFormatter() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('html-formatter')
+  useSEO(metadata)
+
   const [input, setInput] = useState('')
   const [formatted, setFormatted] = useState('')
   const [language, setLanguage] = useState<'html' | 'css' | 'javascript'>('html')

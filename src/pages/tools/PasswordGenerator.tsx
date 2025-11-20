@@ -9,8 +9,14 @@ import { Badge } from '@/components/ui/badge'
 import { Copy, Shuffle } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function PasswordGenerator() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('password-generator')
+  useSEO(metadata)
+
   const [password, setPassword] = useState('')
   const [length, setLength] = useState(16)
   const [options, setOptions] = useState({

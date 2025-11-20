@@ -4,8 +4,14 @@ import { Button } from '@/components/ui/button'
 import { Play, Pause, ArrowClockwise, CheckCircle } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { motion } from 'framer-motion'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function PomodoroTimer() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('pomodoro-timer')
+  useSEO(metadata)
+
   const [timeLeft, setTimeLeft] = useState(25 * 60)
   const [isRunning, setIsRunning] = useState(false)
   const [mode, setMode] = useState<'work' | 'break' | 'longBreak'>('work')

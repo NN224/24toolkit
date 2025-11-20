@@ -6,6 +6,8 @@ import { Sparkle, Lightbulb } from '@phosphor-icons/react';
 import { AIBadge } from '@/components/ai/AIBadge';
 import { callAI } from '@/lib/ai';
 import { toast } from 'sonner';
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 interface AnalysisResult {
   potential: string;
@@ -14,6 +16,10 @@ interface AnalysisResult {
 }
 
 export default function IdeaAnalyzer() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('idea-analyzer')
+  useSEO(metadata)
+
   const [idea, setIdea] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);

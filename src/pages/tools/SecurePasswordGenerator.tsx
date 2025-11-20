@@ -8,8 +8,14 @@ import { Switch } from '@/components/ui/switch'
 import { Badge } from '@/components/ui/badge'
 import { Copy, Sparkle } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function SecurePasswordGenerator() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('secure-password-generator')
+  useSEO(metadata)
+
   const [password, setPassword] = useState('')
   const [length, setLength] = useState(20)
   const [options, setOptions] = useState({

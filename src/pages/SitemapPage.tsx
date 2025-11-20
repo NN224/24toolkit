@@ -1,14 +1,15 @@
-import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowLeft } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { allTools } from '@/lib/tools-data'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function SitemapPage() {
-  useEffect(() => {
-    document.title = 'Sitemap — 24Toolkit'
-  }, [])
+  // Set SEO metadata for sitemap page
+  const sitemapMetadata = getPageMetadata('sitemap')
+  useSEO(sitemapMetadata)
 
   const staticPages = [
     { title: 'Home', path: '/' },

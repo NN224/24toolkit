@@ -6,8 +6,14 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { MagnifyingGlass, Copy } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function HTTPHeaderAnalyzer() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('http-header-analyzer')
+  useSEO(metadata)
+
   const [url, setUrl] = useState('')
   const [headers, setHeaders] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(false)

@@ -2,12 +2,13 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ArrowLeft } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
-import { useEffect } from 'react'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function PrivacyPolicyPage() {
-  useEffect(() => {
-    document.title = 'Privacy Policy — 24Toolkit'
-  }, [])
+  // Set SEO metadata for privacy policy page
+  const privacyMetadata = getPageMetadata('privacyPolicy')
+  useSEO(privacyMetadata)
 
   return (
     <div className="min-h-screen bg-background">

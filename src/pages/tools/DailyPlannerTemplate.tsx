@@ -4,8 +4,14 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { FileText, Copy } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function DailyPlannerTemplate() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('daily-planner-template')
+  useSEO(metadata)
+
   const [date, setDate] = useState(new Date().toISOString().split('T')[0])
 
   const generateTemplate = () => {

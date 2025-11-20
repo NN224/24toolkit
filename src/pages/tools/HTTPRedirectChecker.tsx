@@ -6,8 +6,14 @@ import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { ArrowRight, MagnifyingGlass, CheckCircle, Warning } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function HTTPRedirectChecker() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('http-redirect-checker')
+  useSEO(metadata)
+
   const [url, setUrl] = useState('')
   const [redirectChain, setRedirectChain] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(false)

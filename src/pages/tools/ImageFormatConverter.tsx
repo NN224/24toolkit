@@ -4,10 +4,16 @@ import { Button } from '@/components/ui/button'
 import { Upload, Download, Trash, ArrowsLeftRight } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 type ImageFormat = 'png' | 'jpeg' | 'webp'
 
 export default function ImageFormatConverter() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('image-format-converter')
+  useSEO(metadata)
+
   const [image, setImage] = useState<string | null>(null)
   const [originalFormat, setOriginalFormat] = useState<string>('')
   const [targetFormat, setTargetFormat] = useState<ImageFormat>('png')

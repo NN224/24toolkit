@@ -7,8 +7,14 @@ import { Progress } from '@/components/ui/progress'
 import { Upload, Download, Trash } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import imageCompression from 'browser-image-compression'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function ImageCompressor() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('image-compressor')
+  useSEO(metadata)
+
   const [originalImage, setOriginalImage] = useState<File | null>(null)
   const [originalPreview, setOriginalPreview] = useState<string>('')
   const [compressedImage, setCompressedImage] = useState<Blob | null>(null)

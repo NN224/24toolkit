@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Sparkle, Copy } from '@phosphor-icons/react'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
 
 const firstNames = [
   'James', 'Mary', 'John', 'Patricia', 'Robert', 'Jennifer', 'Michael', 'Linda',
@@ -22,6 +24,10 @@ const lastNames = [
 ]
 
 export default function RandomNameGenerator() {
+  // Set SEO metadata
+  const metadata = getPageMetadata('random-name-generator')
+  useSEO(metadata)
+
   const [names, setNames] = useState<string[]>([])
   const [count, setCount] = useState(5)
 
