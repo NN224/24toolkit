@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { useEasterEgg } from '@/hooks/use-easter-egg'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { AdBanner, AdSquare } from '@/components/GoogleAdSense'
 import { 
   Sparkle,
   Brain,
@@ -210,6 +211,11 @@ export default function HomePage() {
 
         {selectedFilter === 'all' ? (
           <>
+            {/* Ad after hero section */}
+            <div className="mb-16 flex justify-center">
+              <AdBanner className="w-full max-w-5xl" />
+            </div>
+
             <ToolSection
               id="ai"
               title="AI Tools"
@@ -247,6 +253,11 @@ export default function HomePage() {
               accentColor="from-orange-500 to-red-500"
             />
 
+            {/* Ad between sections */}
+            <div className="mb-20 flex justify-center">
+              <AdSquare className="max-w-md" />
+            </div>
+
             <ToolSection
               id="security"
               title="Security Tools"
@@ -273,13 +284,24 @@ export default function HomePage() {
               tools={getToolsByCategory('fun')}
               accentColor="from-pink-500 to-rose-500"
             />
+
+            {/* Ad at the end */}
+            <div className="mt-16 mb-10 flex justify-center">
+              <AdBanner className="w-full max-w-5xl" />
+            </div>
           </>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredTools.map((tool) => (
-              <ToolCard key={tool.id} tool={tool} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredTools.map((tool) => (
+                <ToolCard key={tool.id} tool={tool} />
+              ))}
+            </div>
+            {/* Ad for filtered view */}
+            <div className="mt-16 flex justify-center">
+              <AdBanner className="w-full max-w-5xl" />
+            </div>
+          </>
         )}
       </div>
     </div>

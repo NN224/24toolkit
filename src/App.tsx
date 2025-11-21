@@ -3,6 +3,7 @@ import React, { Suspense } from 'react'
 import { Toaster } from '@/components/ui/sonner'
 import Layout from '@/components/Layout'
 import ScrollToTop from '@/components/ScrollToTop'
+import { GoogleAnalytics } from '@/components/GoogleAnalytics'
 import HomePage from '@/pages/HomePage'
 import AboutPage from '@/pages/AboutPage'
 import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage'
@@ -91,6 +92,7 @@ import PomodoroTimer from '@/pages/tools/PomodoroTimer'
 function App() {
   return (
     <BrowserRouter>
+      <GoogleAnalytics />
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Layout />}>

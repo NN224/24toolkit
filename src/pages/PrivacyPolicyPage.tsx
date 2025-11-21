@@ -68,13 +68,13 @@ export default function PrivacyPolicyPage() {
                 <h2 className="text-2xl font-semibold text-accent mb-4">3. Cookies and Analytics</h2>
                 <div className="space-y-4 leading-relaxed">
                   <p>
-                    <strong>Analytics:</strong> We use privacy-focused analytics to understand how visitors use our site. This helps us improve the user experience and identify which tools are most valuable. The data collected is anonymized and includes information such as page views, session duration, and general geographic location (country/region level only).
+                    <strong>Google Analytics:</strong> We use Google Analytics 4 to understand how visitors use our site. This helps us improve the user experience and identify which tools are most valuable. The data collected is anonymized and includes information such as page views, session duration, and general geographic location (country/region level only). Google Analytics may use cookies to collect this information.
                   </p>
                   <p>
                     <strong>Essential Cookies:</strong> We use minimal cookies to remember your theme preferences (Dark, Cyber, or Minimal mode) and improve your browsing experience. These cookies do not track you across the web.
                   </p>
                   <p>
-                    <strong>Third-Party Cookies:</strong> We do not use third-party tracking cookies or sell your data to advertisers.
+                    <strong>Opt-Out:</strong> You can opt out of Google Analytics by installing the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">Google Analytics Opt-out Browser Add-on</a> or by disabling cookies in your browser settings.
                   </p>
                 </div>
               </section>
@@ -83,14 +83,18 @@ export default function PrivacyPolicyPage() {
                 <h2 className="text-2xl font-semibold text-accent mb-4">4. Third-Party Services</h2>
                 <div className="space-y-4 leading-relaxed">
                   <p>
-                    To maintain our free service and continue developing new tools, we may display advertisements through trusted partners such as Google AdSense. These services may use cookies to show you relevant ads based on your browsing habits across the web.
+                    To maintain our free service and continue developing new tools, we display advertisements through Google AdSense. Google AdSense uses cookies and web beacons to display personalized ads based on your browsing habits across the web. These ads help us keep our tools 100% free for all users.
                   </p>
                   <p>
-                    We carefully vet all third-party services to ensure they meet high privacy standards. However, we recommend reviewing their privacy policies:
+                    <strong>Third-Party Advertising:</strong> We use Google AdSense to serve ads on our website. Google may use the DART cookie and other technologies to serve ads based on your visits to this site and other websites. You can opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">Google Ads Settings</a> or <a href="http://www.aboutads.info/choices" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">aboutads.info</a>.
+                  </p>
+                  <p>
+                    We carefully vet all third-party services to ensure they meet high privacy standards. We recommend reviewing their privacy policies:
                   </p>
                   <ul className="list-disc list-inside space-y-2 ml-4">
-                    <li>Google AdSense: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">Google Privacy Policy</a></li>
-                    <li>Analytics: We use privacy-focused analytics that do not track individual users</li>
+                    <li><a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">Google Privacy Policy</a></li>
+                    <li><a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">How Google Uses Advertising</a></li>
+                    <li><a href="https://support.google.com/analytics/answer/6004245" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">Google Analytics Privacy</a></li>
                   </ul>
                 </div>
               </section>
