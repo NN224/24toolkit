@@ -8,25 +8,27 @@ declare global {
   }
 }
 
+const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID || 'G-14LLZYGXTN';
+
 /**
- * Google Tag Manager Consent Mode Integration
+ * Google Analytics 4 with Consent Mode v2
  * 
- * This component manages Google Consent Mode v2 for GTM.
- * GTM script is loaded in index.html, this component only handles consent.
+ * This component manages Google Consent Mode v2 for GA4.
+ * GA4 gtag.js is loaded in index.html, this component handles consent only.
  */
 export function GoogleAnalytics() {
   useEffect(() => {
-    // Initialize dataLayer if not already initialized by GTM
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function gtag(...args: any[]) {
-      window.dataLayer?.push(args);
-    };
+    // gtag is already initialized in index.html, just ensure it exists
+    if (!window.gtag) {
+      console.warn('Google Analytics: gtag not found, script may not be loaded');
+      return;
+    }
 
     // Get current consent state
     const consentState = getConsentState();
     
-    // Set default consent state for GTM
-    // This must be set BEFORE GTM loads (done in index.html)
+    // Set default consent state for GA4
+    // This configures consent AFTER gtag.js loads
     window.gtag('consent', 'default', {
       'ad_storage': consentState?.advertising ? 'granted' : 'denied',
       'ad_user_data': consentState?.advertising ? 'granted' : 'denied',
@@ -40,7 +42,7 @@ export function GoogleAnalytics() {
     // Redact ads data when ad_storage is denied
     window.gtag('set', 'ads_data_redaction', true);
 
-    console.log('Google Tag Manager: Consent Mode v2 initialized');
+    console.log('Google Analytics: Consent Mode v2 initialized');
 
     // Listen for consent updates
     const handleConsentUpdate = (event: CustomEvent) => {
@@ -54,7 +56,7 @@ export function GoogleAnalytics() {
         'analytics_storage': consent.analytics ? 'granted' : 'denied'
       });
       
-      console.log('Google Consent Mode: Updated via GTM', consent);
+      console.log('Google Consent Mode: Updated', consent);
     };
 
     window.addEventListener('cookie-consent-updated', handleConsentUpdate as EventListener);
@@ -67,16 +69,16 @@ export function GoogleAnalytics() {
   return null;
 }
 
-// Track page views via GTM
+// Track page views
 export function trackPageView(url: string) {
   if (window.gtag) {
-    window.gtag('event', 'page_view', {
+    window.gtag('config', GA_MEASUREMENT_ID, {
       page_path: url,
     });
   }
 }
 
-// Track custom events via GTM
+// Track custom events
 export function trackEvent(
   action: string,
   category: string,
@@ -92,7 +94,7 @@ export function trackEvent(
   }
 }
 
-// Track tool usage via GTM
+// Track tool usage
 export function trackToolUsage(toolName: string, action: string = 'use') {
   trackEvent(action, 'Tool', toolName);
 }
