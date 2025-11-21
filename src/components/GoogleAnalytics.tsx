@@ -8,17 +8,15 @@ declare global {
   }
 }
 
-const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
-
+/**
+ * Google Tag Manager Consent Mode Integration
+ * 
+ * This component manages Google Consent Mode v2 for GTM.
+ * GTM script is loaded in index.html, this component only handles consent.
+ */
 export function GoogleAnalytics() {
   useEffect(() => {
-    // Only initialize if ID is configured
-    if (!GA_MEASUREMENT_ID || GA_MEASUREMENT_ID === 'G-XXXXXXXXXX') {
-      console.log('Google Analytics: Not configured');
-      return;
-    }
-
-    // Initialize dataLayer and gtag function
+    // Initialize dataLayer if not already initialized by GTM
     window.dataLayer = window.dataLayer || [];
     window.gtag = function gtag(...args: any[]) {
       window.dataLayer?.push(args);
@@ -27,8 +25,8 @@ export function GoogleAnalytics() {
     // Get current consent state
     const consentState = getConsentState();
     
-    // Set default consent state BEFORE loading Google tag
-    // This is critical for Consent Mode v2
+    // Set default consent state for GTM
+    // This must be set BEFORE GTM loads (done in index.html)
     window.gtag('consent', 'default', {
       'ad_storage': consentState?.advertising ? 'granted' : 'denied',
       'ad_user_data': consentState?.advertising ? 'granted' : 'denied',
@@ -36,26 +34,13 @@ export function GoogleAnalytics() {
       'analytics_storage': consentState?.analytics ? 'granted' : 'denied'
     });
 
-    // Optional: Enable URL passthrough for better tracking when cookies denied
+    // Enable URL passthrough for better tracking without cookies
     window.gtag('set', 'url_passthrough', true);
     
-    // Optional: Redact ads data when ad_storage is denied
+    // Redact ads data when ad_storage is denied
     window.gtag('set', 'ads_data_redaction', true);
 
-    // Load Google Analytics script
-    const script = document.createElement('script');
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
-    script.async = true;
-    document.head.appendChild(script);
-
-    script.onload = () => {
-      // Initialize Google tag after script loads
-      window.gtag!('js', new Date());
-      window.gtag!('config', GA_MEASUREMENT_ID, {
-        page_path: window.location.pathname,
-      });
-      console.log('Google Analytics: Loaded with Consent Mode v2');
-    };
+    console.log('Google Tag Manager: Consent Mode v2 initialized');
 
     // Listen for consent updates
     const handleConsentUpdate = (event: CustomEvent) => {
@@ -69,32 +54,29 @@ export function GoogleAnalytics() {
         'analytics_storage': consent.analytics ? 'granted' : 'denied'
       });
       
-      console.log('Google Consent Mode: Updated', consent);
+      console.log('Google Consent Mode: Updated via GTM', consent);
     };
 
     window.addEventListener('cookie-consent-updated', handleConsentUpdate as EventListener);
 
     return () => {
       window.removeEventListener('cookie-consent-updated', handleConsentUpdate as EventListener);
-      if (script.parentNode) {
-        script.parentNode.removeChild(script);
-      }
     };
   }, []);
 
   return null;
 }
 
-// Track page views
+// Track page views via GTM
 export function trackPageView(url: string) {
   if (window.gtag) {
-    window.gtag('config', GA_MEASUREMENT_ID, {
+    window.gtag('event', 'page_view', {
       page_path: url,
     });
   }
 }
 
-// Track events
+// Track custom events via GTM
 export function trackEvent(
   action: string,
   category: string,
@@ -110,7 +92,7 @@ export function trackEvent(
   }
 }
 
-// Track tool usage
+// Track tool usage via GTM
 export function trackToolUsage(toolName: string, action: string = 'use') {
   trackEvent(action, 'Tool', toolName);
 }
