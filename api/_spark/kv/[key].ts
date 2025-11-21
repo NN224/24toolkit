@@ -126,7 +126,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       method: req.method 
     });
     const duration = Date.now() - startTime;
-    logger.logResponse(req.method, '/_spark/kv/:key', 500, duration);
+    logger.logResponse(req.method || 'UNKNOWN', '/_spark/kv/:key', 500, duration);
     return res.status(500).json({ error: sanitizeErrorMessage(error, false) });
   }
 }
