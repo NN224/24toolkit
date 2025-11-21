@@ -4,6 +4,7 @@ import { Toaster } from '@/components/ui/sonner'
 import Layout from '@/components/Layout'
 import ScrollToTop from '@/components/ScrollToTop'
 import { GoogleAnalytics } from '@/components/GoogleAnalytics'
+import { CookieConsent } from '@/components/CookieConsent'
 import HomePage from '@/pages/HomePage'
 import AboutPage from '@/pages/AboutPage'
 import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage'
@@ -93,6 +94,7 @@ function App() {
   return (
     <BrowserRouter>
       <GoogleAnalytics />
+      <CookieConsent />
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Layout />}>

@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { hasConsent } from './CookieConsent';
 
 declare global {
   interface Window {
@@ -10,10 +11,34 @@ declare global {
 const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
 
 export function GoogleAnalytics() {
+  const [consentGiven, setConsentGiven] = useState(false);
+
   useEffect(() => {
-    // Only load in production and if measurement ID is configured
-    if (!GA_MEASUREMENT_ID || GA_MEASUREMENT_ID === 'G-XXXXXXXXXX') {
-      console.log('Google Analytics: Not configured');
+    // Check initial consent
+    const initialConsent = hasConsent('analytics');
+    setConsentGiven(initialConsent);
+
+    // Listen for consent updates
+    const handleConsentUpdate = (event: CustomEvent) => {
+      const consent = event.detail;
+      setConsentGiven(consent.analytics);
+    };
+
+    window.addEventListener('cookie-consent-updated', handleConsentUpdate as EventListener);
+
+    return () => {
+      window.removeEventListener('cookie-consent-updated', handleConsentUpdate as EventListener);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Only load if consent is given and ID is configured
+    if (!consentGiven || !GA_MEASUREMENT_ID || GA_MEASUREMENT_ID === 'G-XXXXXXXXXX') {
+      if (!GA_MEASUREMENT_ID || GA_MEASUREMENT_ID === 'G-XXXXXXXXXX') {
+        console.log('Google Analytics: Not configured');
+      } else if (!consentGiven) {
+        console.log('Google Analytics: Waiting for consent');
+      }
       return;
     }
 
@@ -25,6 +50,7 @@ export function GoogleAnalytics() {
     window.gtag('js', new Date());
     window.gtag('config', GA_MEASUREMENT_ID, {
       page_path: window.location.pathname,
+      anonymize_ip: true, // GDPR compliance
     });
 
     // Load Google Analytics script
@@ -33,7 +59,7 @@ export function GoogleAnalytics() {
     script.async = true;
     document.head.appendChild(script);
 
-    console.log('Google Analytics: Loaded');
+    console.log('Google Analytics: Loaded with consent');
 
     return () => {
       // Cleanup on unmount
@@ -41,7 +67,7 @@ export function GoogleAnalytics() {
         script.parentNode.removeChild(script);
       }
     };
-  }, []);
+  }, [consentGiven]);
 
   return null;
 }

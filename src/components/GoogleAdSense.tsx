@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { hasConsent } from './CookieConsent';
 
 declare global {
   interface Window {
@@ -25,11 +26,34 @@ export function GoogleAdSense({
 }: GoogleAdSenseProps) {
   const adRef = useRef<HTMLModElement>(null);
   const isAdLoaded = useRef(false);
+  const [consentGiven, setConsentGiven] = useState(false);
 
   useEffect(() => {
-    // Only load in production and if publisher ID is configured
-    if (!ADSENSE_PUBLISHER_ID || ADSENSE_PUBLISHER_ID === 'ca-pub-xxxxxxxxxxxxxxxx') {
-      console.log('AdSense: Not configured');
+    // Check initial consent
+    const initialConsent = hasConsent('advertising');
+    setConsentGiven(initialConsent);
+
+    // Listen for consent updates
+    const handleConsentUpdate = (event: CustomEvent) => {
+      const consent = event.detail;
+      setConsentGiven(consent.advertising);
+    };
+
+    window.addEventListener('cookie-consent-updated', handleConsentUpdate as EventListener);
+
+    return () => {
+      window.removeEventListener('cookie-consent-updated', handleConsentUpdate as EventListener);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Only load if consent is given and publisher ID is configured
+    if (!consentGiven || !ADSENSE_PUBLISHER_ID || ADSENSE_PUBLISHER_ID === 'ca-pub-xxxxxxxxxxxxxxxx') {
+      if (!ADSENSE_PUBLISHER_ID || ADSENSE_PUBLISHER_ID === 'ca-pub-xxxxxxxxxxxxxxxx') {
+        console.log('AdSense: Not configured');
+      } else if (!consentGiven) {
+        console.log('AdSense: Waiting for consent');
+      }
       return;
     }
 
