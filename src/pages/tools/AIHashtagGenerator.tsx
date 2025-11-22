@@ -9,6 +9,7 @@ import { toast } from 'sonner'
 import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderSelector'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { callAI } from '@/lib/ai'
+import { AI_PROMPTS, validatePromptInput } from '@/lib/ai-prompts'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
@@ -25,17 +26,22 @@ export default function AIHashtagGenerator() {
 
   const generateHashtags = async () => {
     if (!content.trim()) {
-      toast.error('Please enter content to generate hashtags')
+      toast.error('Please enter some content or topic')
+      return
+    }
+
+    try {
+      validatePromptInput(content, 5, 5000)
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Invalid input')
       return
     }
 
     setLoading(true)
     setHashtags([])
-    
-    try {
-      const promptText = `Generate 15-20 relevant, popular hashtags for social media based on this content: "${content}"
 
-Return only the hashtags, one per line, each starting with #. Include a mix of popular and niche hashtags.`
+    try {
+      const promptText = AI_PROMPTS.HASHTAG_GENERATOR(content)
 
       let finalTags: string[] = []
       await callAI(promptText, provider, (accumulatedText) => {
