@@ -4,15 +4,18 @@ import {
   signInWithPopup,
   signOut as firebaseSignOut,
   onAuthStateChanged,
-  GoogleAuthProvider
+  AuthProvider
 } from 'firebase/auth'
-import { auth, googleProvider } from '@/lib/firebase'
+import { auth, googleProvider, githubProvider, microsoftProvider, appleProvider } from '@/lib/firebase'
 import { toast } from 'sonner'
 
 interface AuthContextType {
   user: User | null
   loading: boolean
   signInWithGoogle: () => Promise<void>
+  signInWithGithub: () => Promise<void>
+  signInWithMicrosoft: () => Promise<void>
+  signInWithApple: () => Promise<void>
   signOut: () => Promise<void>
 }
 
@@ -50,28 +53,32 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return unsubscribe
   }, [])
 
-  const signInWithGoogle = async () => {
+  // Generic sign in function
+  const signInWithProvider = async (provider: AuthProvider, providerName: string) => {
     try {
-      const result = await signInWithPopup(auth, googleProvider)
-      const credential = GoogleAuthProvider.credentialFromResult(result)
-      
-      toast.success(`Welcome ${result.user.displayName}! 👋`)
-      console.log('Sign in successful:', result.user)
+      const result = await signInWithPopup(auth, provider)
+      toast.success(`مرحباً ${result.user.displayName || result.user.email}!`)
     } catch (error: any) {
-      console.error('Sign in error:', error)
+      console.error(`${providerName} sign in error:`, error)
       
       // Handle specific errors
       if (error.code === 'auth/popup-closed-by-user') {
-        toast.error('Sign in cancelled')
+        toast.error('تم إلغاء تسجيل الدخول')
       } else if (error.code === 'auth/popup-blocked') {
-        toast.error('Popup blocked! Please allow popups for this site.')
+        toast.error('يرجى السماح بالنوافذ المنبثقة')
+      } else if (error.code === 'auth/account-exists-with-different-credential') {
+        toast.error('هذا البريد مستخدم مع طريقة تسجيل دخول أخرى')
       } else {
-        toast.error('Failed to sign in. Please try again.')
+        toast.error('فشل تسجيل الدخول. حاول مرة أخرى.')
       }
-      
       throw error
     }
   }
+
+  const signInWithGoogle = () => signInWithProvider(googleProvider, 'Google')
+  const signInWithGithub = () => signInWithProvider(githubProvider, 'GitHub')
+  const signInWithMicrosoft = () => signInWithProvider(microsoftProvider, 'Microsoft')
+  const signInWithApple = () => signInWithProvider(appleProvider, 'Apple')
 
   const signOut = async () => {
     try {
@@ -88,6 +95,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
     user,
     loading,
     signInWithGoogle,
+    signInWithGithub,
+    signInWithMicrosoft,
+    signInWithApple,
     signOut
   }
 

@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import { getAuth, GoogleAuthProvider } from 'firebase/auth'
+import { getAuth, GoogleAuthProvider, GithubAuthProvider, OAuthProvider } from 'firebase/auth'
 
 // Firebase configuration
 // Get these from Firebase Console: https://console.firebase.google.com/
@@ -18,12 +18,31 @@ const app = initializeApp(firebaseConfig)
 // Initialize Firebase Authentication
 export const auth = getAuth(app)
 
+// ============================================
+// Authentication Providers
+// ============================================
+
 // Google Auth Provider
 export const googleProvider = new GoogleAuthProvider()
-
-// Configure Google Provider
 googleProvider.setCustomParameters({
   prompt: 'select_account'
 })
+
+// GitHub Auth Provider
+export const githubProvider = new GithubAuthProvider()
+githubProvider.setCustomParameters({
+  allow_signup: 'true'
+})
+
+// Microsoft Auth Provider
+export const microsoftProvider = new OAuthProvider('microsoft.com')
+microsoftProvider.setCustomParameters({
+  prompt: 'select_account'
+})
+
+// Apple Auth Provider
+export const appleProvider = new OAuthProvider('apple.com')
+appleProvider.addScope('email')
+appleProvider.addScope('name')
 
 export default app

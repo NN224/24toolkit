@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { X, GoogleLogo, Lock, Sparkle } from '@phosphor-icons/react'
+import { X, GoogleLogo, Lock, Sparkle, CheckCircle, GithubLogo, MicrosoftOutlookLogo, AppleLogo } from '@phosphor-icons/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '@/contexts/AuthContext'
 
@@ -10,13 +10,28 @@ interface LoginModalProps {
 }
 
 export function LoginModal({ isOpen, onClose, redirectPath }: LoginModalProps) {
-  const { signInWithGoogle } = useAuth()
+  const { signInWithGoogle, signInWithGithub, signInWithMicrosoft, signInWithApple } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
+  const [loadingProvider, setLoadingProvider] = useState<string | null>(null)
 
-  const handleGoogleSignIn = async () => {
+  const handleSignIn = async (provider: 'google' | 'github' | 'microsoft' | 'apple') => {
     setIsLoading(true)
+    setLoadingProvider(provider)
     try {
-      await signInWithGoogle()
+      switch (provider) {
+        case 'google':
+          await signInWithGoogle()
+          break
+        case 'github':
+          await signInWithGithub()
+          break
+        case 'microsoft':
+          await signInWithMicrosoft()
+          break
+        case 'apple':
+          await signInWithApple()
+          break
+      }
       onClose()
       
       // Redirect if path provided
@@ -27,6 +42,7 @@ export function LoginModal({ isOpen, onClose, redirectPath }: LoginModalProps) {
       // Error already handled in AuthContext
     } finally {
       setIsLoading(false)
+      setLoadingProvider(null)
     }
   }
 
@@ -99,24 +115,64 @@ export function LoginModal({ isOpen, onClose, redirectPath }: LoginModalProps) {
                   </ul>
                 </div>
 
-                {/* Google Sign In Button */}
-                <button
-                  onClick={handleGoogleSignIn}
-                  disabled={isLoading}
-                  className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-white hover:bg-gray-50 text-gray-700 rounded-xl font-medium transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isLoading ? (
-                    <>
+                {/* Sign In Buttons */}
+                <div className="space-y-3">
+                  {/* Google */}
+                  <button
+                    onClick={() => handleSignIn('google')}
+                    disabled={isLoading}
+                    className="w-full flex items-center justify-center gap-3 px-6 py-3.5 bg-white hover:bg-gray-50 text-gray-700 rounded-xl font-medium transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed border border-gray-200"
+                  >
+                    {loadingProvider === 'google' ? (
                       <div className="w-5 h-5 border-2 border-gray-300 border-t-gray-700 rounded-full animate-spin" />
-                      <span>Signing in...</span>
-                    </>
-                  ) : (
-                    <>
-                      <GoogleLogo size={24} weight="bold" />
-                      <span>Continue with Google</span>
-                    </>
-                  )}
-                </button>
+                    ) : (
+                      <GoogleLogo size={22} weight="bold" />
+                    )}
+                    <span>Continue with Google</span>
+                  </button>
+
+                  {/* GitHub */}
+                  <button
+                    onClick={() => handleSignIn('github')}
+                    disabled={isLoading}
+                    className="w-full flex items-center justify-center gap-3 px-6 py-3.5 bg-gray-900 hover:bg-gray-800 text-white rounded-xl font-medium transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {loadingProvider === 'github' ? (
+                      <div className="w-5 h-5 border-2 border-gray-600 border-t-white rounded-full animate-spin" />
+                    ) : (
+                      <GithubLogo size={22} weight="bold" />
+                    )}
+                    <span>Continue with GitHub</span>
+                  </button>
+
+                  {/* Microsoft */}
+                  <button
+                    onClick={() => handleSignIn('microsoft')}
+                    disabled={isLoading}
+                    className="w-full flex items-center justify-center gap-3 px-6 py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {loadingProvider === 'microsoft' ? (
+                      <div className="w-5 h-5 border-2 border-blue-400 border-t-white rounded-full animate-spin" />
+                    ) : (
+                      <MicrosoftOutlookLogo size={22} weight="bold" />
+                    )}
+                    <span>Continue with Microsoft</span>
+                  </button>
+
+                  {/* Apple */}
+                  <button
+                    onClick={() => handleSignIn('apple')}
+                    disabled={isLoading}
+                    className="w-full flex items-center justify-center gap-3 px-6 py-3.5 bg-black hover:bg-gray-900 text-white rounded-xl font-medium transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {loadingProvider === 'apple' ? (
+                      <div className="w-5 h-5 border-2 border-gray-700 border-t-white rounded-full animate-spin" />
+                    ) : (
+                      <AppleLogo size={22} weight="bold" />
+                    )}
+                    <span>Continue with Apple</span>
+                  </button>
+                </div>
 
                 {/* Privacy Note */}
                 <p className="mt-4 text-xs text-center text-muted-foreground">
