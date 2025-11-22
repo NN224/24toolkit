@@ -6,6 +6,7 @@ import ScrollToTop from '@/components/ScrollToTop'
 import { GoogleAnalytics } from '@/components/GoogleAnalytics'
 import { CookieConsent } from '@/components/CookieConsent'
 import { UserProgress } from '@/components/UserProgress'
+import { AuthProvider } from '@/contexts/AuthContext'
 import HomePage from '@/pages/HomePage'
 import AboutPage from '@/pages/AboutPage'
 import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage'
@@ -93,12 +94,13 @@ import PomodoroTimer from '@/pages/tools/PomodoroTimer'
 
 function App() {
   return (
-    <BrowserRouter>
-      <GoogleAnalytics />
-      <CookieConsent />
-      <UserProgress />
-      <ScrollToTop />
-      <Routes>
+    <AuthProvider>
+      <BrowserRouter>
+        <GoogleAnalytics />
+        <CookieConsent />
+        <UserProgress />
+        <ScrollToTop />
+        <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="about" element={<AboutPage />} />
@@ -313,9 +315,10 @@ function App() {
           <Route path="tools/pomodoro-timer" element={<PomodoroTimer />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
-      </Routes>
-      <Toaster position="top-center" />
-    </BrowserRouter>
+        </Routes>
+        <Toaster position="top-center" />
+      </BrowserRouter>
+    </AuthProvider>
   )
 }
 

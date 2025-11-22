@@ -1,16 +1,21 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { MagnifyingGlass, Microphone, User, Moon, Sun, Lightning } from '@phosphor-icons/react'
+import { MagnifyingGlass, Microphone, User, Moon, Sun, Lightning, SignIn } from '@phosphor-icons/react'
 import { searchTools, type Tool } from '@/lib/tools-data'
 import { useTheme } from '@/components/ThemeProvider'
 import { toast } from 'sonner'
+import { UserMenu } from '@/components/UserMenu'
+import { useAuth } from '@/contexts/AuthContext'
+import { LoginModal } from '@/components/auth/LoginModal'
 
 export default function FuturisticHeader() {
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<Tool[]>([])
   const [isListening, setIsListening] = useState(false)
+  const [showLoginModal, setShowLoginModal] = useState(false)
   const { theme, setTheme } = useTheme()
+  const { user } = useAuth()
   const navigate = useNavigate()
   const recognitionRef = useRef<any>(null)
 
@@ -158,13 +163,29 @@ export default function FuturisticHeader() {
                 </button>
               </div>
 
-              <button className="p-2 rounded-lg bg-card/50 transition-all border border-white/10">
-                <User size={20} className="text-foreground" />
-              </button>
+              {/* User Menu or Sign In */}
+              {user ? (
+                <UserMenu />
+              ) : (
+                <button 
+                  onClick={() => setShowLoginModal(true)}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-sky-500 text-white font-medium transition-all hover:opacity-90 border border-white/10"
+                  style={{ boxShadow: '0 0 8px rgba(109,40,217,0.3)' }}
+                >
+                  <SignIn size={18} weight="bold" />
+                  <span className="hidden sm:inline">Sign In</span>
+                </button>
+              )}
             </div>
           </div>
         </div>
       </header>
+      
+      {/* Login Modal */}
+      <LoginModal 
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+      />
 
       {searchOpen && (
         <>
