@@ -7,6 +7,7 @@ import { toast } from 'sonner'
 import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderSelector'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { callAI } from '@/lib/ai'
+import { AI_PROMPTS, validatePromptInput } from '@/lib/ai-prompts'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
@@ -28,13 +29,18 @@ export default function GrammarCorrector() {
       return
     }
 
+    try {
+      validatePromptInput(text, 5, 10000)
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Invalid input')
+      return
+    }
+
     setIsLoading(true)
     setCorrectedText('')
     
     try {
-      const promptText = `You are a professional grammar and writing assistant. Correct the following text for grammar, spelling, punctuation, and style errors. Return ONLY the corrected text without any explanations or additional commentary:
-
-${text}`
+      const promptText = AI_PROMPTS.GRAMMAR_CORRECTOR(text)
 
       const result = await callAI(promptText, provider)
       

@@ -12,6 +12,7 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderSelector'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { callAI } from '@/lib/ai'
+import { AI_PROMPTS, validatePromptInput } from '@/lib/ai-prompts'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
@@ -43,16 +44,20 @@ export default function CodeFormatter() {
       return
     }
 
+    try {
+      validatePromptInput(code, 10, 20000)
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Invalid input')
+      return
+    }
+
     setIsLoading(true)
     setActiveTab('format')
     setFormattedCode('')
 
     const language = detectLanguage(code)
 
-    const promptText = `Format and beautify the following ${language} code. Ensure proper indentation, spacing, and follow best practices. Return only the formatted code without any explanations or markdown code blocks.
-
-Code:
-${code}`
+    const promptText = AI_PROMPTS.CODE_FORMATTER(code, language)
 
     try {
       const result = await callAI(promptText, provider)

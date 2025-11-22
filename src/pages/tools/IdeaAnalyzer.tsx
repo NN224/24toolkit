@@ -5,6 +5,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Sparkle, Lightbulb } from '@phosphor-icons/react';
 import { AIBadge } from '@/components/ai/AIBadge';
 import { callAI } from '@/lib/ai';
+import { AI_PROMPTS, validatePromptInput } from '@/lib/ai-prompts';
 import { toast } from 'sonner';
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
@@ -30,19 +31,17 @@ export default function IdeaAnalyzer() {
       return;
     }
 
+    try {
+      validatePromptInput(idea, 10, 1000);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Invalid input');
+      return;
+    }
+
     setIsLoading(true);
     setAnalysis(null);
 
-    const systemPrompt = `You are an expert business analyst and startup consultant. Analyze the following idea and provide a structured analysis.
-
-Idea: "${idea}"
-
-Provide the analysis in three parts:
-1.  **Potential**: What is the potential of this idea? Who is the target audience? What are its key strengths?
-2.  **Risks**: What are the primary risks and challenges? What are the potential market or execution hurdles?
-3.  **Suggestions**: What are 3-5 actionable suggestions to improve or execute this idea?
-
-Format your response as a JSON object with three keys: "potential", "risks", and "suggestions". Do not include any other text or markdown formatting.`;
+    const systemPrompt = AI_PROMPTS.IDEA_ANALYZER(idea);
 
     try {
       const result = await callAI(systemPrompt, 'anthropic');

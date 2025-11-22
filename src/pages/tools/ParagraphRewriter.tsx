@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderSelector'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { callAI } from '@/lib/ai'
+import { AI_PROMPTS, validatePromptInput } from '@/lib/ai-prompts'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
@@ -34,21 +35,23 @@ export default function ParagraphRewriter() {
       return
     }
 
+    try {
+      validatePromptInput(inputText, 10, 5000)
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Invalid input')
+      return
+    }
+
     setIsLoading(true)
     setOutputText('')
 
-    const toneDescriptions = {
-      formal: 'professional and formal, suitable for business or academic contexts',
-      neutral: 'clear and balanced, suitable for general communication',
-      casual: 'friendly and conversational, suitable for informal contexts'
+    const styleMap: Record<Tone, 'professional' | 'casual' | 'creative' | 'concise'> = {
+      formal: 'professional',
+      neutral: 'concise',
+      casual: 'casual'
     }
 
-    const promptText = `Rewrite the following text in a ${toneDescriptions[tone]} tone. Maintain the original meaning and key information, but express it differently with varied vocabulary and sentence structure.
-
-Original text:
-${inputText}
-
-Rewritten text:`
+    const promptText = AI_PROMPTS.PARAGRAPH_REWRITER(inputText, styleMap[tone])
 
     try {
       await callAI(promptText, provider, (accumulatedText) => {

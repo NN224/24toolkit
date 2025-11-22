@@ -5,6 +5,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Sparkle, ListChecks } from '@phosphor-icons/react';
 import { AIBadge } from '@/components/ai/AIBadge';
 import { callAI } from '@/lib/ai';
+import { AI_PROMPTS, validatePromptInput } from '@/lib/ai-prompts';
 import { toast } from 'sonner';
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
@@ -30,16 +31,17 @@ export default function AITaskBuilder() {
       return;
     }
 
+    try {
+      validatePromptInput(goal, 5, 500);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Invalid input');
+      return;
+    }
+
     setIsLoading(true);
     setTasks([]);
 
-    const systemPrompt = `You are an expert project manager. Your goal is to break down a user's goal into a series of small, actionable steps.
-
-User's Goal: "${goal}"
-
-Generate a list of 5-10 specific tasks to achieve this goal. The tasks should be clear and concise.
-
-Format your response as a JSON array of strings. For example: ["First task here", "Second task here", "Third task here"]. Do not include any other text or markdown formatting.`;
+    const systemPrompt = AI_PROMPTS.TASK_BUILDER(goal, '1 week');
 
     try {
       const result = await callAI(systemPrompt, 'anthropic');

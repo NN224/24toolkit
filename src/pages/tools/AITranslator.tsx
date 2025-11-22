@@ -9,6 +9,7 @@ import { toast } from 'sonner'
 import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderSelector'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { callAI } from '@/lib/ai'
+import { AI_PROMPTS, validatePromptInput } from '@/lib/ai-prompts'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
@@ -43,13 +44,19 @@ export default function AITranslator() {
       return
     }
 
+    try {
+      validatePromptInput(inputText, 1, 10000)
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Invalid input')
+      return
+    }
+
     setLoading(true)
     setTranslatedText('')
     
     try {
-      const promptText = `Translate the following text to ${languages.find(l => l.code === targetLang)?.name}. Return only the translation, nothing else:
-
-${inputText}`
+      const targetLanguage = languages.find(l => l.code === targetLang)?.name || 'English'
+      const promptText = AI_PROMPTS.TRANSLATOR(inputText, targetLanguage)
 
       await callAI(promptText, provider, (accumulatedText) => {
         setTranslatedText(accumulatedText)

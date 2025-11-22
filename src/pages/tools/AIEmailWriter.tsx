@@ -9,6 +9,7 @@ import { toast } from 'sonner'
 import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderSelector'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { callAI } from '@/lib/ai'
+import { AI_PROMPTS, validatePromptInput } from '@/lib/ai-prompts'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
@@ -32,19 +33,24 @@ export default function AIEmailWriter() {
       return
     }
 
+    try {
+      validatePromptInput(topic, 3, 500)
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Invalid input')
+      return
+    }
+
     setLoading(true)
     setGeneratedEmail('')
     
     try {
-      const modeInstructions = {
-        formal: 'Write a formal, professional email',
-        casual: 'Write a casual, friendly email',
-        business: 'Write a business-appropriate email'
+      const toneMap = {
+        formal: 'formal',
+        casual: 'friendly',
+        business: 'professional'
       }
-
-      const promptText = `${modeInstructions[mode]} about: ${topic}
-
-Include a subject line, greeting, body, and professional closing. Format it as a complete email.`
+      
+      const promptText = AI_PROMPTS.EMAIL_WRITER(topic, toneMap[mode])
 
       await callAI(promptText, provider, (accumulatedText) => {
         setGeneratedEmail(accumulatedText)

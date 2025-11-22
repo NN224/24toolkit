@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderSelector'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { callAI } from '@/lib/ai'
+import { AI_PROMPTS, validatePromptInput } from '@/lib/ai-prompts'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
@@ -35,26 +36,23 @@ export default function TextSummarizer() {
       return
     }
 
-    if (text.length > MAX_CHARS) {
-      toast.error(`Text is too long! Maximum ${MAX_CHARS.toLocaleString()} characters allowed.`)
+    try {
+      validatePromptInput(text, 50, MAX_CHARS)
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Invalid input')
       return
     }
 
     setIsLoading(true)
     setSummary('')
 
-    const lengthConfig = {
-      short: { bullets: 3, detail: 'concise' },
-      medium: { bullets: 5, detail: 'balanced' },
-      detailed: { bullets: 8, detail: 'comprehensive' }
+    const lengthMap: Record<SummaryLength, 'short' | 'medium' | 'long'> = {
+      short: 'short',
+      medium: 'medium',
+      detailed: 'long'
     }
-
-    const config = lengthConfig[summaryLength]
     
-    const promptText = `Summarize the following text into ${config.bullets} ${config.detail} bullet points. Keep each point clear and actionable. Return only the bullet points, one per line, starting with a bullet character (•).
-
-Text to summarize:
-${text}`
+    const promptText = AI_PROMPTS.TEXT_SUMMARIZER(text, lengthMap[summaryLength])
 
     try {
       await callAI(promptText, provider, (accumulatedText) => {
