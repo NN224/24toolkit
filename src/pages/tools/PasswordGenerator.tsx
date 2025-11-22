@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -11,11 +11,17 @@ import { toast } from 'sonner'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { trackToolUsage } from '@/components/UserProgress'
 
 export default function PasswordGenerator() {
   // Set SEO metadata
   const metadata = getPageMetadata('password-generator')
   useSEO(metadata)
+
+  // Track tool usage
+  useEffect(() => {
+    trackToolUsage('Password Generator')
+  }, [])
 
   const [password, setPassword] = useState('')
   const [length, setLength] = useState(16)

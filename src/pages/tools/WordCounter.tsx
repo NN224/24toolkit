@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -6,6 +6,7 @@ import { Copy, Trash } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { trackToolUsage } from '@/components/UserProgress'
 
 export default function WordCounter() {
   // Set SEO metadata
@@ -13,6 +14,11 @@ export default function WordCounter() {
   useSEO(metadata)
 
   const [text, setText] = useState('')
+
+  // Track tool usage
+  useEffect(() => {
+    trackToolUsage('Word Counter')
+  }, [])
 
   const stats = useMemo(() => {
     const trimmedText = text.trim()

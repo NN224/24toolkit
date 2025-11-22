@@ -5,6 +5,7 @@ import Layout from '@/components/Layout'
 import ScrollToTop from '@/components/ScrollToTop'
 import { GoogleAnalytics } from '@/components/GoogleAnalytics'
 import { CookieConsent } from '@/components/CookieConsent'
+import { UserProgress } from '@/components/UserProgress'
 import HomePage from '@/pages/HomePage'
 import AboutPage from '@/pages/AboutPage'
 import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage'
@@ -95,6 +96,7 @@ function App() {
     <BrowserRouter>
       <GoogleAnalytics />
       <CookieConsent />
+      <UserProgress />
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Layout />}>
