@@ -42,7 +42,7 @@ export function GoogleAnalytics() {
     // Redact ads data when ad_storage is denied
     window.gtag('set', 'ads_data_redaction', true);
 
-    console.log('Google Analytics: Consent Mode v2 initialized');
+    // Consent Mode v2 initialized
 
     // Listen for consent updates
     const handleConsentUpdate = (event: CustomEvent) => {
@@ -56,7 +56,7 @@ export function GoogleAnalytics() {
         'analytics_storage': consent.analytics ? 'granted' : 'denied'
       });
       
-      console.log('Google Consent Mode: Updated', consent);
+      // Consent updated
     };
 
     window.addEventListener('cookie-consent-updated', handleConsentUpdate as EventListener);

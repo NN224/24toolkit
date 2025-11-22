@@ -29,7 +29,7 @@ export function GoogleAdSense({
   useEffect(() => {
     // Only load if publisher ID is configured
     if (!ADSENSE_PUBLISHER_ID || ADSENSE_PUBLISHER_ID === 'ca-pub-xxxxxxxxxxxxxxxx') {
-      console.log('AdSense: Not configured');
+      // AdSense not configured
       return;
     }
 
@@ -40,7 +40,7 @@ export function GoogleAdSense({
       script.async = true;
       script.crossOrigin = 'anonymous';
       document.head.appendChild(script);
-      console.log('AdSense: Script loaded');
+      // Script loaded
     }
 
     // Push ad to AdSense
@@ -48,7 +48,7 @@ export function GoogleAdSense({
       if (!isAdLoaded.current && window.adsbygoogle) {
         (window.adsbygoogle = window.adsbygoogle || []).push({});
         isAdLoaded.current = true;
-        console.log('AdSense: Ad pushed');
+        // Ad pushed
       }
     } catch (error) {
       console.error('AdSense error:', error);

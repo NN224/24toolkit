@@ -43,11 +43,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setUser(user)
       setLoading(false)
       
-      if (user) {
-        console.log('User signed in:', user.email)
-      } else {
-        console.log('User signed out')
-      }
+      // User state changed
     })
 
     return unsubscribe
@@ -59,7 +55,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const result = await signInWithPopup(auth, provider)
       toast.success(`مرحباً ${result.user.displayName || result.user.email}!`)
     } catch (error: any) {
-      console.error(`${providerName} sign in error:`, error)
+      // Sign in error
       
       // Handle specific errors
       if (error.code === 'auth/popup-closed-by-user') {

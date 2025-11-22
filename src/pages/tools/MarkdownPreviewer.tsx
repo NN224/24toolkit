@@ -5,6 +5,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Copy, Trash, Eye } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { marked } from 'marked'
+import DOMPurify from 'dompurify'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
@@ -58,8 +59,17 @@ function hello() {
     }
 
     try {
-      const rendered = marked(markdown)
-      setHtml(rendered as string)
+      // Render markdown to HTML
+      const rendered = marked(markdown) as string
+      
+      // Sanitize HTML to prevent XSS attacks
+      const sanitizedHtml = DOMPurify.sanitize(rendered, {
+        ALLOWED_TAGS: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'a', 'ul', 'ol', 'li', 'strong', 'em', 'code', 'pre', 'blockquote', 'hr', 'br', 'table', 'thead', 'tbody', 'tr', 'th', 'td'],
+        ALLOWED_ATTR: ['href', 'title', 'class'],
+        ALLOW_DATA_ATTR: false
+      })
+      
+      setHtml(sanitizedHtml)
       toast.success('Markdown rendered!')
     } catch (error) {
       toast.error('Failed to render markdown')
