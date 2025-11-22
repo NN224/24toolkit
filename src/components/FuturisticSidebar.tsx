@@ -66,7 +66,7 @@ export default function FuturisticSidebar() {
                   <X size={24} className="text-foreground" />
                 </button>
               </div>
-              <SidebarContent onNavigate={() => setIsMobileOpen(false)} />
+              <SidebarContent user={user} onNavigate={() => setIsMobileOpen(false)} />
             </aside>
           </>
         )}
@@ -75,7 +75,7 @@ export default function FuturisticSidebar() {
           className="hidden lg:flex fixed left-0 top-0 bottom-0 z-40 w-20 flex-col bg-[#0a0f1e]/95 backdrop-blur-sm border-r border-white/10"
           style={{ boxShadow: 'inset 0 0 6px rgba(255,255,255,0.05)' }}
         >
-          <SidebarContent showTooltips={true} />
+          <SidebarContent user={user} showTooltips={true} />
         </aside>
       </>
     </TooltipProvider>
@@ -83,11 +83,12 @@ export default function FuturisticSidebar() {
 }
 
 interface SidebarContentProps {
+  user: any
   showTooltips?: boolean
   onNavigate?: () => void
 }
 
-function SidebarContent({ showTooltips = false, onNavigate }: SidebarContentProps) {
+function SidebarContent({ user, showTooltips = false, onNavigate }: SidebarContentProps) {
   const location = useLocation()
   const navigate = useNavigate()
   const isHomePage = location.pathname === '/'
