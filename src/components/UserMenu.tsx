@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from 'react'
-import { User, SignOut, CaretDown } from '@phosphor-icons/react'
+import { User, SignOut, CaretDown, Gear } from '@phosphor-icons/react'
 import { useAuth } from '@/contexts/AuthContext'
+import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export function UserMenu() {
   const { user, signOut } = useAuth()
+  const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -74,13 +76,28 @@ export function UserMenu() {
 
             {/* Menu Items */}
             <div className="p-2">
-              <button
-                onClick={handleSignOut}
-                className="w-full flex items-center gap-3 px-3 py-2 text-left text-sm text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
-              >
-                <SignOut size={18} weight="bold" />
-                <span>Sign Out</span>
-              </button>
+              <div className="px-4 py-2 border-t border-white/10">
+                <button
+                  onClick={() => {
+                    navigate('/settings')
+                    setIsOpen(false)
+                  }}
+                  className="w-full flex items-center gap-2 px-3 py-2 text-foreground hover:bg-white/5 rounded-lg transition-colors"
+                >
+                  <Gear size={18} />
+                  <span className="text-sm font-medium">الإعدادات</span>
+                </button>
+              </div>
+              
+              <div className="px-4 py-3 border-t border-white/10">
+                <button
+                  onClick={handleSignOut}
+                  className="w-full flex items-center gap-2 px-3 py-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+                >
+                  <SignOut size={18} />
+                  <span className="text-sm font-medium">تسجيل الخروج</span>
+                </button>
+              </div>
             </div>
           </motion.div>
         )}
