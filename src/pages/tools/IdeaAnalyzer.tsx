@@ -62,17 +62,36 @@ Format your response as a JSON object with three keys: "potential", "risks", and
         };
       }
       
-      // Validate that we have the required fields and ensure they are strings
-      const ensureString = (value: any): string => {
+      // Validate that we have the required fields and format them properly
+      const formatValue = (value: any): string => {
         if (typeof value === 'string') return value;
-        if (typeof value === 'object' && value !== null) return JSON.stringify(value, null, 2);
+        
+        // Handle arrays - convert to bullet points
+        if (Array.isArray(value)) {
+          return value.map(item => `• ${String(item)}`).join('\n');
+        }
+        
+        // Handle objects - convert to readable format
+        if (typeof value === 'object' && value !== null) {
+          return Object.entries(value)
+            .map(([key, val]) => {
+              const formattedKey = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+              if (Array.isArray(val)) {
+                const items = val.map(item => `  • ${String(item)}`).join('\n');
+                return `${formattedKey}:\n${items}`;
+              }
+              return `${formattedKey}: ${String(val)}`;
+            })
+            .join('\n\n');
+        }
+        
         return String(value || '');
       };
       
       parsedResult = {
-        potential: ensureString(parsedResult.potential) || result,
-        risks: ensureString(parsedResult.risks) || 'Analysis pending',
-        suggestions: ensureString(parsedResult.suggestions) || 'Analysis pending'
+        potential: formatValue(parsedResult.potential) || result,
+        risks: formatValue(parsedResult.risks) || 'Analysis pending',
+        suggestions: formatValue(parsedResult.suggestions) || 'Analysis pending'
       };
       
       setAnalysis(parsedResult);
