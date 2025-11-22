@@ -206,7 +206,7 @@ export default function SettingsPage() {
               {activeTab === 'profile' && (
                 <>
                   <div>
-                    <h2 className="text-2xl font-bold mb-4">الملف الشخصي</h2>
+                    <h2 className="text-2xl font-bold mb-4">Profile</h2>
                     
                     {/* User Avatar */}
                     <div className="flex items-center gap-4 mb-6">
@@ -222,7 +222,7 @@ export default function SettingsPage() {
                         </div>
                       )}
                       <div>
-                        <h3 className="text-xl font-semibold">{user?.displayName || 'مستخدم'}</h3>
+                        <h3 className="text-xl font-semibold">{user?.displayName || 'User'}</h3>
                         <p className="text-muted-foreground text-sm">{user?.email}</p>
                       </div>
                     </div>
@@ -230,19 +230,19 @@ export default function SettingsPage() {
                     {/* Profile Form */}
                     <div className="space-y-4">
                       <div>
-                        <label className="block text-sm font-medium mb-2">الاسم الكامل</label>
+                        <label className="block text-sm font-medium mb-2">Full Name</label>
                         <input
                           type="text"
                           value={displayName}
                           onChange={(e) => setDisplayName(e.target.value)}
-                          placeholder="أدخل اسمك الكامل"
+                          placeholder="Enter your full name"
                           className="w-full px-4 py-2 bg-background border border-white/10 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
                         />
                       </div>
 
                       <div>
                         <label className="block text-sm font-medium mb-2 flex items-center justify-between">
-                          <span>البريد الإلكتروني</span>
+                          <span>Email Address</span>
                           <button
                             onClick={() => setShowEmail(!showEmail)}
                             className="text-muted-foreground hover:text-foreground"
@@ -257,7 +257,7 @@ export default function SettingsPage() {
                           className="w-full px-4 py-2 bg-background/50 border border-white/10 rounded-lg opacity-70 cursor-not-allowed"
                         />
                         <p className="text-xs text-muted-foreground mt-1">
-                          مرتبط بحساب Google - لا يمكن تغييره
+                          Linked to Google account - Cannot be changed
                         </p>
                       </div>
 
@@ -266,7 +266,7 @@ export default function SettingsPage() {
                         disabled={isSaving || !displayName.trim()}
                         className="px-6 py-2 bg-gradient-to-r from-purple-600 to-sky-500 text-white rounded-lg font-medium hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        {isSaving ? 'جاري الحفظ...' : 'حفظ التغييرات'}
+                        {isSaving ? 'Saving...' : 'Save Changes'}
                       </button>
                     </div>
                   </div>
@@ -277,14 +277,14 @@ export default function SettingsPage() {
               {activeTab === 'preferences' && (
                 <>
                   <div>
-                    <h2 className="text-2xl font-bold mb-4">التفضيلات</h2>
+                    <h2 className="text-2xl font-bold mb-4">Preferences</h2>
                     
                     {/* Theme Settings */}
                     <div className="space-y-4">
                       <div>
                         <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
                           <Palette size={20} />
-                          المظهر
+                          Theme
                         </h3>
                         <div className="grid grid-cols-3 gap-3">
                           <button
@@ -296,7 +296,7 @@ export default function SettingsPage() {
                             }`}
                           >
                             <Moon size={24} className="mx-auto mb-2" weight={theme === 'dark' ? 'fill' : 'regular'} />
-                            <p className="text-sm font-medium">داكن</p>
+                            <p className="text-sm font-medium">Dark</p>
                           </button>
                           <button
                             onClick={() => setTheme('cyber')}
@@ -307,7 +307,7 @@ export default function SettingsPage() {
                             }`}
                           >
                             <Lightning size={24} className="mx-auto mb-2" weight={theme === 'cyber' ? 'fill' : 'regular'} />
-                            <p className="text-sm font-medium">سايبر</p>
+                            <p className="text-sm font-medium">Cyber</p>
                           </button>
                           <button
                             onClick={() => setTheme('minimal')}
@@ -318,7 +318,7 @@ export default function SettingsPage() {
                             }`}
                           >
                             <Sun size={24} className="mx-auto mb-2" weight={theme === 'minimal' ? 'fill' : 'regular'} />
-                            <p className="text-sm font-medium">بسيط</p>
+                            <p className="text-sm font-medium">Minimal</p>
                           </button>
                         </div>
                       </div>
@@ -327,19 +327,19 @@ export default function SettingsPage() {
                       <div className="pt-4">
                         <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
                           <Globe size={20} />
-                          اللغة
+                          Language
                         </h3>
                         <select
                           value={language}
                           onChange={(e) => {
                             setLanguage(e.target.value)
-                            toast.success('تم تغيير اللغة')
+                            toast.success('Language changed')
                           }}
                           className="w-full px-4 py-2 bg-background border border-white/10 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
                         >
-                          <option value="ar">العربية</option>
+                          <option value="ar">Arabic</option>
                           <option value="en">English</option>
-                          <option value="both">Both / كلاهما</option>
+                          <option value="both">Both</option>
                         </select>
                       </div>
 
@@ -347,15 +347,15 @@ export default function SettingsPage() {
                       <div className="pt-4">
                         <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
                           <Bell size={20} />
-                          الإشعارات
+                          Notifications
                         </h3>
                         <div className="space-y-3">
                           <label className="flex items-center justify-between p-3 bg-background rounded-lg cursor-pointer hover:bg-white/5 transition-colors">
                             <div className="flex items-center gap-3">
                               <EnvelopeSimple size={20} className="text-muted-foreground" />
                               <div>
-                                <p className="font-medium">إشعارات البريد</p>
-                                <p className="text-sm text-muted-foreground">استلام تحديثات عبر البريد الإلكتروني</p>
+                                <p className="font-medium">Email Notifications</p>
+                                <p className="text-sm text-muted-foreground">Receive updates via email</p>
                               </div>
                             </div>
                             <div className="relative">
@@ -373,8 +373,8 @@ export default function SettingsPage() {
                             <div className="flex items-center gap-3">
                               <Bell size={20} className="text-muted-foreground" />
                               <div>
-                                <p className="font-medium">الإشعارات الفورية</p>
-                                <p className="text-sm text-muted-foreground">إشعارات على سطح المكتب</p>
+                                <p className="font-medium">Push Notifications</p>
+                                <p className="text-sm text-muted-foreground">Desktop notifications</p>
                               </div>
                             </div>
                             <div className="relative">
@@ -398,7 +398,7 @@ export default function SettingsPage() {
               {activeTab === 'privacy' && (
                 <>
                   <div>
-                    <h2 className="text-2xl font-bold mb-4">الخصوصية والأمان</h2>
+                    <h2 className="text-2xl font-bold mb-4">Privacy & Security</h2>
                     
                     <div className="space-y-4">
                       {/* Privacy Info */}
@@ -406,22 +406,22 @@ export default function SettingsPage() {
                         <div className="flex items-start gap-3">
                           <Shield size={24} className="text-purple-500 mt-1" />
                           <div>
-                            <h3 className="font-semibold mb-2">معلومات الخصوصية</h3>
+                            <h3 className="font-semibold mb-2">Privacy Information</h3>
                             <p className="text-sm text-muted-foreground mb-3">
-                              نحن نحترم خصوصيتك ونحمي بياناتك الشخصية. جميع المعلومات مشفرة وآمنة.
+                              We respect your privacy and protect your personal data. All information is encrypted and secure.
                             </p>
                             <ul className="space-y-2 text-sm">
                               <li className="flex items-center gap-2">
                                 <CheckCircle size={16} className="text-green-500" weight="fill" />
-                                <span>بياناتك الشخصية محمية بتشفير SSL</span>
+                                <span>Your data is protected with SSL encryption</span>
                               </li>
                               <li className="flex items-center gap-2">
                                 <CheckCircle size={16} className="text-green-500" weight="fill" />
-                                <span>لا نشارك معلوماتك مع أطراف ثالثة</span>
+                                <span>We don't share your info with third parties</span>
                               </li>
                               <li className="flex items-center gap-2">
                                 <CheckCircle size={16} className="text-green-500" weight="fill" />
-                                <span>يمكنك حذف حسابك في أي وقت</span>
+                                <span>You can delete your account anytime</span>
                               </li>
                             </ul>
                           </div>
@@ -430,12 +430,12 @@ export default function SettingsPage() {
 
                       {/* Data Download */}
                       <div className="p-4 bg-background rounded-lg border border-white/10">
-                        <h3 className="font-semibold mb-2">تحميل بياناتك</h3>
+                        <h3 className="font-semibold mb-2">Download Your Data</h3>
                         <p className="text-sm text-muted-foreground mb-3">
-                          احصل على نسخة من جميع بياناتك المخزنة لدينا
+                          Get a copy of all your stored data
                         </p>
                         <button className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-sm font-medium transition-colors">
-                          طلب البيانات
+                          Request Data
                         </button>
                       </div>
                     </div>
@@ -447,30 +447,30 @@ export default function SettingsPage() {
               {activeTab === 'account' && (
                 <>
                   <div>
-                    <h2 className="text-2xl font-bold mb-4">إدارة الحساب</h2>
+                    <h2 className="text-2xl font-bold mb-4">Account Management</h2>
                     
                     <div className="space-y-4">
                       {/* Account Info */}
                       <div className="bg-background rounded-lg p-4 border border-white/10">
-                        <h3 className="font-semibold mb-3">معلومات الحساب</h3>
+                        <h3 className="font-semibold mb-3">Account Information</h3>
                         <div className="space-y-2 text-sm">
                           <div className="flex justify-between">
-                            <span className="text-muted-foreground">نوع الحساب:</span>
+                            <span className="text-muted-foreground">Account Type:</span>
                             <span className="font-medium">Google Account</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-muted-foreground">الحالة:</span>
+                            <span className="text-muted-foreground">Status:</span>
                             <span className="flex items-center gap-1 text-green-500">
                               <CheckCircle size={16} weight="fill" />
-                              نشط
+                              Active
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-muted-foreground">تاريخ الإنشاء:</span>
+                            <span className="text-muted-foreground">Created:</span>
                             <span className="font-medium">
                               {user?.metadata?.creationTime ? 
-                                new Date(user.metadata.creationTime).toLocaleDateString('ar') : 
-                                'غير متوفر'}
+                                new Date(user.metadata.creationTime).toLocaleDateString('en-US') : 
+                                'Not available'}
                             </span>
                           </div>
                         </div>
@@ -480,16 +480,16 @@ export default function SettingsPage() {
                       <div className="p-4 bg-background rounded-lg border border-white/10">
                         <h3 className="font-semibold mb-2 flex items-center gap-2">
                           <SignOut size={20} />
-                          تسجيل الخروج
+                          Sign Out
                         </h3>
                         <p className="text-sm text-muted-foreground mb-3">
-                          سيتم تسجيل خروجك من جميع الأجهزة
+                          You will be signed out from all devices
                         </p>
                         <button
                           onClick={handleSignOut}
                           className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
                         >
-                          تسجيل الخروج
+                          Sign Out
                         </button>
                       </div>
 
@@ -497,16 +497,16 @@ export default function SettingsPage() {
                       <div className="p-4 bg-red-500/10 rounded-lg border border-red-500/20">
                         <h3 className="font-semibold mb-2 flex items-center gap-2 text-red-500">
                           <Trash size={20} />
-                          حذف الحساب
+                          Delete Account
                         </h3>
                         <p className="text-sm text-muted-foreground mb-3">
-                          سيتم حذف جميع بياناتك ولا يمكن التراجع عن هذا الإجراء
+                          All your data will be deleted permanently
                         </p>
                         <button
                           onClick={() => setIsDeleteDialogOpen(true)}
                           className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium transition-colors"
                         >
-                          حذف الحساب نهائياً
+                          Delete Account Permanently
                         </button>
                       </div>
                     </div>
@@ -523,24 +523,24 @@ export default function SettingsPage() {
             <AlertDialogHeader>
               <AlertDialogTitle className="flex items-center gap-2 text-red-500">
                 <Trash size={24} />
-                هل أنت متأكد من حذف حسابك؟
+                Are you sure you want to delete your account?
               </AlertDialogTitle>
               <AlertDialogDescription className="text-right">
-                هذا الإجراء لا يمكن التراجع عنه. سيتم حذف جميع بياناتك بشكل نهائي:
+                This action cannot be undone. All your data will be permanently deleted:
                 <ul className="list-disc list-inside mt-2 space-y-1">
-                  <li>معلومات الحساب الشخصية</li>
-                  <li>التفضيلات والإعدادات</li>
-                  <li>سجل الاستخدام</li>
+                  <li>Personal account information</li>
+                  <li>Preferences and settings</li>
+                  <li>Usage history</li>
                 </ul>
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>إلغاء</AlertDialogCancel>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction
                 onClick={handleDeleteAccount}
                 className="bg-red-600 hover:bg-red-700"
               >
-                نعم، احذف حسابي
+                Yes, Delete My Account
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
