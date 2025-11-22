@@ -14,7 +14,7 @@
         "preview": "vite preview"
     },
     "dependencies": {
-        "@anthropic-ai/sdk": "^0.32.1",
+        "@anthropic-ai/sdk": "^0.69.0",
         "@github/spark": "^0.41.24",
         "@heroicons/react": "^2.2.0",
         "@hookform/resolvers": "^5.2.2",
