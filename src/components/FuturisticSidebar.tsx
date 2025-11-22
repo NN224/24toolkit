@@ -19,6 +19,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import Logo from '@/components/Logo'
+import { useAuth } from '@/contexts/AuthContext'
 
 const categories = [
   { id: 'ai', label: 'AI Tools', icon: Brain, color: 'from-purple-500 to-pink-500' },
@@ -31,6 +32,9 @@ const categories = [
 ]
 
 export default function FuturisticSidebar() {
+  const location = useLocation()
+  const navigate = useNavigate()
+  const { user } = useAuth()
   const [isMobileOpen, setIsMobileOpen] = useState(false)
 
   return (
