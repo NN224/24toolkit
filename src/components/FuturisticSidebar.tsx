@@ -161,10 +161,13 @@ function SidebarContent({ showTooltips = false, onNavigate }: SidebarContentProp
       </nav>
 
       <div className="pt-4 border-t border-white/10">
-        {showTooltips ? (
+        {user ? (
           <Tooltip delayDuration={100}>
             <TooltipTrigger asChild>
-              <button className="flex items-center justify-center p-3 rounded-xl text-muted-foreground hover:text-foreground hover:bg-white/5 transition-all w-full group border-2 border-transparent hover:border-white/10">
+              <button 
+                onClick={() => navigate('/settings')}
+                className="flex items-center justify-center p-3 rounded-xl text-muted-foreground hover:text-foreground hover:bg-white/5 transition-all w-full group border-2 border-transparent hover:border-white/10"
+              >
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center flex-shrink-0"
                   style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.3)' }}
                 >
@@ -177,7 +180,10 @@ function SidebarContent({ showTooltips = false, onNavigate }: SidebarContentProp
             </TooltipContent>
           </Tooltip>
         ) : (
-          <button className="flex items-center justify-center p-3 rounded-xl text-muted-foreground hover:text-foreground hover:bg-white/5 transition-all w-full group border-2 border-transparent hover:border-white/10">
+          <button 
+            onClick={() => navigate('/sign-in')}
+            className="flex items-center justify-center p-3 rounded-xl text-muted-foreground hover:text-foreground hover:bg-white/5 transition-all w-full group border-2 border-transparent hover:border-white/10"
+          >
             <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center flex-shrink-0"
               style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.3)' }}
             >
