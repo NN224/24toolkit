@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { checkRateLimit, getClientIdentifier, RATE_LIMITS } from '../_utils/rateLimit';
-import { logger } from '../_utils/logger';
+import { checkRateLimit, getClientIdentifier, RATE_LIMITS } from '../_utils/rateLimit.js';
+import { logger } from '../_utils/logger.js';
 
 /**
  * Spark Runtime - Telemetry / Loaded Stub

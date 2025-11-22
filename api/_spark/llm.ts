@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { validateLLMRequest, sanitizeErrorMessage } from '../_utils/validation';
-import { checkRateLimit, getClientIdentifier, RATE_LIMITS } from '../_utils/rateLimit';
-import { logger } from '../_utils/logger';
+import { validateLLMRequest, sanitizeErrorMessage } from '../_utils/validation.js';
+import { checkRateLimit, getClientIdentifier, RATE_LIMITS } from '../_utils/rateLimit.js';
+import { logger } from '../_utils/logger.js';
 
 export default async function handler(
   req: VercelRequest,
