@@ -6,7 +6,7 @@ import {
   onAuthStateChanged,
   AuthProvider
 } from 'firebase/auth'
-import { auth, googleProvider, githubProvider, microsoftProvider, appleProvider } from '@/lib/firebase'
+import { auth, googleProvider, githubProvider, facebookProvider, appleProvider } from '@/lib/firebase'
 import { toast } from 'sonner'
 
 interface AuthContextType {
@@ -14,7 +14,7 @@ interface AuthContextType {
   loading: boolean
   signInWithGoogle: () => Promise<void>
   signInWithGithub: () => Promise<void>
-  signInWithMicrosoft: () => Promise<void>
+  signInWithFacebook: () => Promise<void>
   signInWithApple: () => Promise<void>
   signOut: () => Promise<void>
 }
@@ -73,7 +73,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const signInWithGoogle = () => signInWithProvider(googleProvider, 'Google')
   const signInWithGithub = () => signInWithProvider(githubProvider, 'GitHub')
-  const signInWithMicrosoft = () => signInWithProvider(microsoftProvider, 'Microsoft')
+  const signInWithFacebook = () => signInWithProvider(facebookProvider, 'Facebook')
   const signInWithApple = () => signInWithProvider(appleProvider, 'Apple')
 
   const signOut = async () => {
@@ -92,7 +92,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     loading,
     signInWithGoogle,
     signInWithGithub,
-    signInWithMicrosoft,
+    signInWithFacebook,
     signInWithApple,
     signOut
   }

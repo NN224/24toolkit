@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import { getAuth, GoogleAuthProvider, GithubAuthProvider, OAuthProvider } from 'firebase/auth'
+import { getAuth, GoogleAuthProvider, GithubAuthProvider, FacebookAuthProvider, OAuthProvider } from 'firebase/auth'
 
 // Firebase configuration
 // Get these from Firebase Console: https://console.firebase.google.com/
@@ -34,10 +34,10 @@ githubProvider.setCustomParameters({
   allow_signup: 'true'
 })
 
-// Microsoft Auth Provider
-export const microsoftProvider = new OAuthProvider('microsoft.com')
-microsoftProvider.setCustomParameters({
-  prompt: 'select_account'
+// Facebook Auth Provider
+export const facebookProvider = new FacebookAuthProvider()
+facebookProvider.setCustomParameters({
+  display: 'popup'
 })
 
 // Apple Auth Provider
