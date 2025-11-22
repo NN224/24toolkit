@@ -544,14 +544,7 @@ export default function SettingsPage() {
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
-        </AlertDialog
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-          </motion.div>
-        </div>
+        </AlertDialog>
       </div>
     </div>
   )
