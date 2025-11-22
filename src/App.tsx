@@ -14,6 +14,7 @@ import TermsOfServicePage from '@/pages/TermsOfServicePage'
 import ContactPage from '@/pages/ContactPage'
 import SitemapPage from '@/pages/SitemapPage'
 import SettingsPage from '@/pages/SettingsPage'
+import SignInPage from '@/pages/SignInPage'
 import WordCounter from '@/pages/tools/WordCounter'
 import PasswordGenerator from '@/pages/tools/PasswordGenerator'
 import QRGenerator from '@/pages/tools/QRGenerator'
@@ -110,8 +111,9 @@ function App() {
           <Route path="contact" element={<ContactPage />} />
           <Route path="sitemap" element={<SitemapPage />} />
           <Route path="settings" element={<SettingsPage />} />
-          <Route path="tools" element={<Navigate to="/" replace />} />
-          <Route path="tools/word-counter" element={<WordCounter />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/sign-in" element={<SignInPage />} />
+          <Route path="/tools/word-counter" element={<WordCounter />} />
           <Route path="tools/password-generator" element={<PasswordGenerator />} />
           <Route path="tools/qr-generator" element={<QRGenerator />} />
           <Route path="tools/json-csv-converter" element={<JSONCSVConverter />} />
