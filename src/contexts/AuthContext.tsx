@@ -53,19 +53,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const signInWithProvider = async (provider: AuthProvider, providerName: string) => {
     try {
       const result = await signInWithPopup(auth, provider)
-      toast.success(`مرحباً ${result.user.displayName || result.user.email}!`)
+      toast.success(`Welcome ${result.user.displayName || result.user.email}!`)
     } catch (error: any) {
       // Sign in error
       
       // Handle specific errors
       if (error.code === 'auth/popup-closed-by-user') {
-        toast.error('تم إلغاء تسجيل الدخول')
+        toast.error('Sign-in cancelled')
       } else if (error.code === 'auth/popup-blocked') {
-        toast.error('يرجى السماح بالنوافذ المنبثقة')
+        toast.error('Please allow popups')
       } else if (error.code === 'auth/account-exists-with-different-credential') {
-        toast.error('هذا البريد مستخدم مع طريقة تسجيل دخول أخرى')
+        toast.error('This email is used with a different sign-in method')
       } else {
-        toast.error('فشل تسجيل الدخول. حاول مرة أخرى.')
+        toast.error('Sign-in failed. Please try again.')
       }
       throw error
     }

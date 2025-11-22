@@ -85,7 +85,7 @@ export function UserMenu() {
                   className="w-full flex items-center gap-2 px-3 py-2 text-foreground hover:bg-white/5 rounded-lg transition-colors"
                 >
                   <Gear size={18} />
-                  <span className="text-sm font-medium">الإعدادات</span>
+                  <span className="text-sm font-medium">Settings</span>
                 </button>
               </div>
               
@@ -95,7 +95,7 @@ export function UserMenu() {
                   className="w-full flex items-center gap-2 px-3 py-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
                 >
                   <SignOut size={18} />
-                  <span className="text-sm font-medium">تسجيل الخروج</span>
+                  <span className="text-sm font-medium">Sign Out</span>
                 </button>
               </div>
             </div>

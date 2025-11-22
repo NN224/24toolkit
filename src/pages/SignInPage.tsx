@@ -18,9 +18,9 @@ export default function SignInPage() {
 
   // SEO
   useSEO({
-    title: 'تسجيل الدخول | 24Toolkit',
-    description: 'سجل دخولك للوصول إلى جميع الأدوات واحفظ تفضيلاتك',
-    keywords: 'تسجيل دخول, sign in, login, 24toolkit'
+    title: 'Sign In | 24Toolkit',
+    description: 'Sign in to access all tools and save your preferences',
+    keywords: 'sign in, login, authentication, 24toolkit'
   })
 
   // Redirect if already logged in
@@ -80,10 +80,10 @@ export default function SignInPage() {
               <Logo className="w-16 h-16" />
             </div>
             <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-purple-400 to-sky-400 bg-clip-text text-transparent">
-              مرحباً بعودتك
+              Welcome Back
             </h1>
             <p className="text-muted-foreground">
-              سجل دخولك للوصول إلى جميع الأدوات
+              Sign in to access all tools
             </p>
           </div>
 
@@ -100,7 +100,7 @@ export default function SignInPage() {
                   className={`w-full flex items-center justify-center gap-3 px-6 py-3.5 rounded-xl font-medium transition-all border border-white/10 hover:border-white/20 bg-gradient-to-r ${provider.color} bg-opacity-10 hover:bg-opacity-20 text-foreground group`}
                 >
                   <Icon size={24} weight="bold" className="group-hover:scale-110 transition-transform" />
-                  <span>متابعة بواسطة {provider.name}</span>
+                  <span>Continue with {provider.name}</span>
                 </motion.button>
               )
             })}
@@ -123,20 +123,20 @@ export default function SignInPage() {
               whileTap={{ scale: 0.98 }}
               className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium transition-all border border-white/10 hover:border-white/20 text-muted-foreground hover:text-foreground"
             >
-              <span>المتابعة كزائر</span>
+              <span>Continue as Guest</span>
               <ArrowRight size={18} />
             </motion.button>
           </Link>
 
           {/* Terms */}
           <p className="mt-6 text-xs text-center text-muted-foreground">
-            بتسجيل الدخول، أنت توافق على{' '}
+            By signing in, you agree to our{' '}
             <Link to="/terms-of-service" className="text-purple-400 hover:text-purple-300">
-              شروط الخدمة
+              Terms of Service
             </Link>
-            {' '}و{' '}
+            {' '}and{' '}
             <Link to="/privacy-policy" className="text-purple-400 hover:text-purple-300">
-              سياسة الخصوصية
+              Privacy Policy
             </Link>
           </p>
         </div>
@@ -149,24 +149,24 @@ export default function SignInPage() {
           className="mt-6 p-4 bg-card/50 backdrop-blur-sm border border-white/10 rounded-xl"
         >
           <p className="text-sm text-muted-foreground text-center mb-3">
-            مميزات التسجيل:
+            Sign-in Benefits:
           </p>
           <div className="grid grid-cols-2 gap-3 text-xs">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" />
-              <span className="text-muted-foreground">حفظ التفضيلات</span>
+              <span className="text-muted-foreground">Save preferences</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" />
-              <span className="text-muted-foreground">وصول سريع</span>
+              <span className="text-muted-foreground">Quick access</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" />
-              <span className="text-muted-foreground">مزامنة الإعدادات</span>
+              <span className="text-muted-foreground">Sync settings</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" />
-              <span className="text-muted-foreground">تحديثات حصرية</span>
+              <span className="text-muted-foreground">Exclusive updates</span>
             </div>
           </div>
         </motion.div>

@@ -94,12 +94,12 @@ export default function SettingsPage() {
 
   const handleSaveProfile = async () => {
     if (!user) {
-      toast.error('يجب تسجيل الدخول أولاً')
+      toast.error('Please sign in first')
       return
     }
 
     if (!displayName.trim()) {
-      toast.error('الرجاء إدخال اسم')
+      toast.error('Please enter a name')
       return
     }
 
@@ -109,10 +109,10 @@ export default function SettingsPage() {
       await updateProfile(user, {
         displayName: displayName.trim()
       })
-      toast.success('تم حفظ التغييرات بنجاح!')
+      toast.success('Changes saved successfully!')
     } catch (error) {
       console.error('Failed to update profile:', error)
-      toast.error('فشل حفظ التغييرات. حاول مرة أخرى.')
+      toast.error('Failed to save changes. Please try again.')
     } finally {
       setIsSaving(false)
     }
@@ -124,29 +124,29 @@ export default function SettingsPage() {
     try {
       // Delete user account from Firebase
       await user.delete()
-      toast.success('تم حذف الحساب بنجاح')
+      toast.success('Account deleted successfully')
       // User will be redirected automatically by AuthContext
     } catch (error: any) {
       console.error('Failed to delete account:', error)
       if (error.code === 'auth/requires-recent-login') {
-        toast.error('يجب تسجيل الدخول مرة أخرى لحذف الحساب')
+        toast.error('Please sign in again to delete your account')
         await signOut()
       } else {
-        toast.error('فشل حذف الحساب. حاول مرة أخرى.')
+        toast.error('Failed to delete account. Please try again.')
       }
     }
   }
 
   const handleSignOut = async () => {
     await signOut()
-    toast.success('تم تسجيل الخروج بنجاح')
+    toast.success('Signed out successfully')
   }
 
   const tabs = [
-    { id: 'profile', label: 'الملف الشخصي', icon: User },
-    { id: 'preferences', label: 'التفضيلات', icon: Palette },
-    { id: 'privacy', label: 'الخصوصية', icon: Shield },
-    { id: 'account', label: 'الحساب', icon: Lock },
+    { id: 'profile', label: 'Profile', icon: User },
+    { id: 'preferences', label: 'Preferences', icon: Palette },
+    { id: 'privacy', label: 'Privacy', icon: Shield },
+    { id: 'account', label: 'Account', icon: Lock },
   ] as const
 
   return (
@@ -159,10 +159,10 @@ export default function SettingsPage() {
           className="mb-8"
         >
           <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-sky-500 bg-clip-text text-transparent mb-2">
-            الإعدادات
+            Settings
           </h1>
           <p className="text-muted-foreground">
-            إدارة حسابك وتفضيلاتك الشخصية
+            Manage your account and preferences
           </p>
         </motion.div>
 
