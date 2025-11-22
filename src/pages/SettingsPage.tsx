@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { 
   User, 
@@ -21,8 +21,31 @@ import {
 import { useAuth } from '@/contexts/AuthContext'
 import { useTheme } from '@/components/ThemeProvider'
 import { toast } from 'sonner'
+import { useSEO } from '@/hooks/useSEO'
+import { getPageMetadata } from '@/lib/seo-metadata'
+import { updateProfile } from 'firebase/auth'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
+
+interface UserSettings {
+  emailNotifications: boolean
+  pushNotifications: boolean
+  language: string
+}
 
 export default function SettingsPage() {
+  // SEO
+  const metadata = getPageMetadata('settings')
+  useSEO(metadata)
+
   const { user, signOut } = useAuth()
   const { theme, setTheme } = useTheme()
   
@@ -30,15 +53,87 @@ export default function SettingsPage() {
   const [emailNotifications, setEmailNotifications] = useState(true)
   const [pushNotifications, setPushNotifications] = useState(false)
   const [showEmail, setShowEmail] = useState(false)
-  const [language, setLanguage] = useState('en')
+  const [language, setLanguage] = useState('ar')
+  const [displayName, setDisplayName] = useState(user?.displayName || '')
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)
 
-  const handleSaveProfile = () => {
-    toast.success('تم حفظ التغييرات بنجاح!')
+  // Load settings from localStorage
+  useEffect(() => {
+    try {
+      const savedSettings = localStorage.getItem('userSettings')
+      if (savedSettings) {
+        const settings: UserSettings = JSON.parse(savedSettings)
+        setEmailNotifications(settings.emailNotifications ?? true)
+        setPushNotifications(settings.pushNotifications ?? false)
+        setLanguage(settings.language ?? 'ar')
+      }
+    } catch (error) {
+      console.error('Failed to load settings:', error)
+    }
+  }, [])
+
+  // Save settings to localStorage when changed
+  useEffect(() => {
+    try {
+      const settings: UserSettings = {
+        emailNotifications,
+        pushNotifications,
+        language
+      }
+      localStorage.setItem('userSettings', JSON.stringify(settings))
+    } catch (error) {
+      console.error('Failed to save settings:', error)
+    }
+  }, [emailNotifications, pushNotifications, language])
+
+  // Update displayName when user changes
+  useEffect(() => {
+    setDisplayName(user?.displayName || '')
+  }, [user])
+
+  const handleSaveProfile = async () => {
+    if (!user) {
+      toast.error('يجب تسجيل الدخول أولاً')
+      return
+    }
+
+    if (!displayName.trim()) {
+      toast.error('الرجاء إدخال اسم')
+      return
+    }
+
+    setIsSaving(true)
+    
+    try {
+      await updateProfile(user, {
+        displayName: displayName.trim()
+      })
+      toast.success('تم حفظ التغييرات بنجاح!')
+    } catch (error) {
+      console.error('Failed to update profile:', error)
+      toast.error('فشل حفظ التغييرات. حاول مرة أخرى.')
+    } finally {
+      setIsSaving(false)
+    }
   }
 
-  const handleDeleteAccount = () => {
-    if (confirm('هل أنت متأكد من حذف حسابك؟ هذا الإجراء لا يمكن التراجع عنه.')) {
-      toast.error('تم إرسال طلب حذف الحساب')
+  const handleDeleteAccount = async () => {
+    if (!user) return
+    
+    try {
+      // Delete user account from Firebase
+      await user.delete()
+      toast.success('تم حذف الحساب بنجاح')
+      // User will be redirected automatically by AuthContext
+    } catch (error: any) {
+      console.error('Failed to delete account:', error)
+      if (error.code === 'auth/requires-recent-login') {
+        toast.error('يجب تسجيل الدخول مرة أخرى لحذف الحساب')
+        await signOut()
+      } else {
+        toast.error('فشل حذف الحساب. حاول مرة أخرى.')
+      }
     }
   }
 
@@ -138,7 +233,9 @@ export default function SettingsPage() {
                         <label className="block text-sm font-medium mb-2">الاسم الكامل</label>
                         <input
                           type="text"
-                          defaultValue={user?.displayName || ''}
+                          value={displayName}
+                          onChange={(e) => setDisplayName(e.target.value)}
+                          placeholder="أدخل اسمك الكامل"
                           className="w-full px-4 py-2 bg-background border border-white/10 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
                         />
                       </div>
@@ -166,9 +263,10 @@ export default function SettingsPage() {
 
                       <button
                         onClick={handleSaveProfile}
-                        className="px-6 py-2 bg-gradient-to-r from-purple-600 to-sky-500 text-white rounded-lg font-medium hover:opacity-90 transition-all"
+                        disabled={isSaving || !displayName.trim()}
+                        className="px-6 py-2 bg-gradient-to-r from-purple-600 to-sky-500 text-white rounded-lg font-medium hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        حفظ التغييرات
+                        {isSaving ? 'جاري الحفظ...' : 'حفظ التغييرات'}
                       </button>
                     </div>
                   </div>
@@ -405,12 +503,48 @@ export default function SettingsPage() {
                           سيتم حذف جميع بياناتك ولا يمكن التراجع عن هذا الإجراء
                         </p>
                         <button
-                          onClick={handleDeleteAccount}
+                          onClick={() => setIsDeleteDialogOpen(true)}
                           className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium transition-colors"
                         >
                           حذف الحساب نهائياً
                         </button>
                       </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Delete Account Confirmation Dialog */}
+        <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle className="flex items-center gap-2 text-red-500">
+                <Trash size={24} />
+                هل أنت متأكد من حذف حسابك؟
+              </AlertDialogTitle>
+              <AlertDialogDescription className="text-right">
+                هذا الإجراء لا يمكن التراجع عنه. سيتم حذف جميع بياناتك بشكل نهائي:
+                <ul className="list-disc list-inside mt-2 space-y-1">
+                  <li>معلومات الحساب الشخصية</li>
+                  <li>التفضيلات والإعدادات</li>
+                  <li>سجل الاستخدام</li>
+                </ul>
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>إلغاء</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleDeleteAccount}
+                className="bg-red-600 hover:bg-red-700"
+              >
+                نعم، احذف حسابي
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog
                     </div>
                   </div>
                 </>
