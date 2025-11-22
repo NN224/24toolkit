@@ -62,14 +62,18 @@ Format your response as a JSON object with three keys: "potential", "risks", and
         };
       }
       
-      // Validate that we have the required fields
-      if (!parsedResult.potential || !parsedResult.risks || !parsedResult.suggestions) {
-        parsedResult = {
-          potential: parsedResult.potential || result,
-          risks: parsedResult.risks || 'Analysis pending',
-          suggestions: parsedResult.suggestions || 'Analysis pending'
-        };
-      }
+      // Validate that we have the required fields and ensure they are strings
+      const ensureString = (value: any): string => {
+        if (typeof value === 'string') return value;
+        if (typeof value === 'object' && value !== null) return JSON.stringify(value, null, 2);
+        return String(value || '');
+      };
+      
+      parsedResult = {
+        potential: ensureString(parsedResult.potential) || result,
+        risks: ensureString(parsedResult.risks) || 'Analysis pending',
+        suggestions: ensureString(parsedResult.suggestions) || 'Analysis pending'
+      };
       
       setAnalysis(parsedResult);
       toast.success('Idea analysis complete!');
@@ -137,17 +141,17 @@ Format your response as a JSON object with three keys: "potential", "risks", and
               <CardContent className="space-y-4">
                 <div>
                   <h3 className="font-semibold text-lg">Potential</h3>
-                  <p className="text-muted-foreground whitespace-pre-wrap">{analysis.potential}</p>
+                  <p className="text-muted-foreground whitespace-pre-wrap">{String(analysis.potential)}</p>
                 </div>
                 <hr />
                 <div>
                   <h3 className="font-semibold text-lg">Risks</h3>
-                  <p className="text-muted-foreground whitespace-pre-wrap">{analysis.risks}</p>
+                  <p className="text-muted-foreground whitespace-pre-wrap">{String(analysis.risks)}</p>
                 </div>
                 <hr />
                 <div>
                   <h3 className="font-semibold text-lg">Suggestions</h3>
-                  <p className="text-muted-foreground whitespace-pre-wrap">{analysis.suggestions}</p>
+                  <p className="text-muted-foreground whitespace-pre-wrap">{String(analysis.suggestions)}</p>
                 </div>
               </CardContent>
             </Card>
