@@ -46,7 +46,31 @@ Format your response as a JSON object with three keys: "potential", "risks", and
 
     try {
       const result = await callAI(systemPrompt, 'anthropic');
-      const parsedResult: AnalysisResult = JSON.parse(result);
+      
+      // Try to parse JSON response
+      let parsedResult: AnalysisResult;
+      try {
+        parsedResult = JSON.parse(result);
+      } catch (parseError) {
+        console.error('JSON parsing error:', parseError);
+        // If JSON parsing fails, try to extract sections manually
+        const sections = result.split(/\n\n+/);
+        parsedResult = {
+          potential: sections[0] || result,
+          risks: sections[1] || 'Please review the complete analysis above.',
+          suggestions: sections[2] || 'Please review the complete analysis above.'
+        };
+      }
+      
+      // Validate that we have the required fields
+      if (!parsedResult.potential || !parsedResult.risks || !parsedResult.suggestions) {
+        parsedResult = {
+          potential: parsedResult.potential || result,
+          risks: parsedResult.risks || 'Analysis pending',
+          suggestions: parsedResult.suggestions || 'Analysis pending'
+        };
+      }
+      
       setAnalysis(parsedResult);
       toast.success('Idea analysis complete!');
     } catch (error) {

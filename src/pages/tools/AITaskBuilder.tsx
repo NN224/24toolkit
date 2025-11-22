@@ -43,7 +43,22 @@ Format your response as a JSON array of strings. For example: ["First task here"
 
     try {
       const result = await callAI(systemPrompt, 'anthropic');
-      const taskStrings: string[] = JSON.parse(result);
+      
+      // Try to parse JSON response
+      let taskStrings: string[];
+      try {
+        taskStrings = JSON.parse(result);
+      } catch (parseError) {
+        console.error('JSON parsing error:', parseError);
+        // If JSON parsing fails, try to extract tasks manually
+        const lines = result.split('\n').filter(line => line.trim());
+        taskStrings = lines.map(line => line.replace(/^[-•*]\s*/, '').replace(/^\d+\.\s*/, '').replace(/^["']|["']$/g, '').trim());
+      }
+      
+      if (!Array.isArray(taskStrings) || taskStrings.length === 0) {
+        throw new Error('Invalid AI response format');
+      }
+      
       const newTasks: Task[] = taskStrings.map((text, index) => ({
         id: index + 1,
         text,

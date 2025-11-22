@@ -69,13 +69,13 @@ export default async function handler(
     if (anthropicKey) {
       logger.debug('Using Anthropic Claude API');
       
-      // Map model names to Claude models
+      // Map model names to Claude models (updated to latest versions)
       const modelMap: Record<string, string> = {
         'gpt-4o': 'claude-3-5-sonnet-20241022',
         'gpt-4o-mini': 'claude-3-5-haiku-20241022',
-        'claude-3-opus': 'claude-3-opus-20240229',
-        'claude-3-sonnet': 'claude-3-sonnet-20240229',
-        'claude-3-haiku': 'claude-3-haiku-20240307',
+        'claude-3-opus': 'claude-3-opus-20240229', // Latest available
+        'claude-3-sonnet': 'claude-3-5-sonnet-20241022', // Updated to 3.5
+        'claude-3-haiku': 'claude-3-5-haiku-20241022', // Updated to 3.5
       };
       
       const requestedModel = req.body.model || 'gpt-4o-mini';

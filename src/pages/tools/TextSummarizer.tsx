@@ -27,9 +27,16 @@ export default function TextSummarizer() {
   const [provider, setProvider] = useState<AIProvider>('anthropic')
   const copyToClipboard = useCopyToClipboard()
 
+  const MAX_CHARS = 10000
+
   const handleSummarize = async () => {
     if (!text.trim()) {
       toast.error('Please enter some text to summarize')
+      return
+    }
+
+    if (text.length > MAX_CHARS) {
+      toast.error(`Text is too long! Maximum ${MAX_CHARS.toLocaleString()} characters allowed.`)
       return
     }
 
@@ -95,13 +102,22 @@ ${text}`
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <Textarea
-                id="text-input"
-                placeholder="Paste your article, document, or any long text here..."
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                className="min-h-[400px] resize-y font-normal"
-              />
+              <div className="space-y-2">
+                <Textarea
+                  id="text-input"
+                  placeholder="Paste your article, document, or any long text here..."
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
+                  className="min-h-[400px] resize-y font-normal"
+                  maxLength={MAX_CHARS}
+                />
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>{text.length.toLocaleString()} / {MAX_CHARS.toLocaleString()} characters</span>
+                  <span className={text.length > MAX_CHARS * 0.9 ? 'text-orange-500 font-medium' : ''}>
+                    {text.length > MAX_CHARS * 0.9 && 'Approaching limit'}
+                  </span>
+                </div>
+              </div>
               
               <div className="space-y-3">
                 <AIProviderSelector value={provider} onValueChange={setProvider} />

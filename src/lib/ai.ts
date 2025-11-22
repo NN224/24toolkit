@@ -11,8 +11,8 @@ export async function callAI(
   onUpdate?: (text: string) => void
 ): Promise<string> {
   const modelMap = {
-    anthropic: 'claude-3-haiku-20240307',
-    groq: 'llama3-8b-8192'
+    anthropic: 'claude-3-5-haiku-20241022',
+    groq: 'llama-3.3-70b-versatile'
   }
 
   const response = await fetch('/api/ai', {

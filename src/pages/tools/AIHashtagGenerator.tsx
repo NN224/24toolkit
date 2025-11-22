@@ -37,6 +37,7 @@ export default function AIHashtagGenerator() {
 
 Return only the hashtags, one per line, each starting with #. Include a mix of popular and niche hashtags.`
 
+      let finalTags: string[] = []
       await callAI(promptText, provider, (accumulatedText) => {
         // Extract hashtags from accumulated text
         const tags = accumulatedText
@@ -44,9 +45,10 @@ Return only the hashtags, one per line, each starting with #. Include a mix of p
           .map(line => line.trim())
           .filter(line => line.startsWith('#'))
         setHashtags(tags)
+        finalTags = tags
       })
       
-      toast.success(`Generated ${hashtags.length} hashtags!`)
+      toast.success(`Generated ${finalTags.length} hashtags!`)
     } catch (error) {
       console.error('Hashtag generation error:', error)
       toast.error(error instanceof Error ? error.message : 'Failed to generate hashtags. Please try again.')
