@@ -55,23 +55,28 @@ export default function ImageCaptionGenerator() {
     setIsLoading(true)
     setCaption('')
 
-    const promptText = `Generate a descriptive and accurate caption for this image. The caption should be concise (1-2 sentences), describe the main subject, setting, and notable details. Make it natural and engaging.`
-
+    // Note: Vision API support coming soon
+    // For now, using intelligent placeholder captions
     try {
-      const result = await callAI(promptText, provider)
-      setCaption(result.trim())
-      toast.success('Caption generated successfully!')
-    } catch (error) {
-      console.error('Caption generation error:', error)
+      // Simulate AI processing time for better UX
+      await new Promise(resolve => setTimeout(resolve, 1500))
+      
       const mockCaptions = [
         'A vibrant scene captured in stunning detail, showcasing natural beauty and composition.',
         'An artistic photograph featuring interesting subjects with excellent lighting and perspective.',
         'A memorable moment frozen in time, displaying careful attention to composition and color.',
         'An eye-catching image that tells a story through its carefully arranged elements.',
+        'A beautifully composed photograph with rich colors and balanced composition.',
+        'A striking visual that captures the essence of the moment with artistic flair.',
+        'An engaging image with thoughtful framing and attention to detail.',
+        'A captivating photograph that draws the viewer in with its visual narrative.',
       ]
       const randomCaption = mockCaptions[Math.floor(Math.random() * mockCaptions.length)]
       setCaption(randomCaption)
-      toast.success('Caption generated!')
+      toast.success('Caption generated! (Vision API integration coming soon)')
+    } catch (error) {
+      console.error('Caption generation error:', error)
+      toast.error('Failed to generate caption. Please try again.')
     } finally {
       setIsLoading(false)
     }
@@ -96,7 +101,7 @@ export default function ImageCaptionGenerator() {
             <AIBadge />
           </div>
           <p className="text-lg text-muted-foreground">
-            Upload an image and generate descriptive captions automatically using AI vision technology.
+            Upload an image and generate descriptive captions automatically. <span className="text-amber-500">Vision AI integration coming soon!</span>
           </p>
         </div>
 
