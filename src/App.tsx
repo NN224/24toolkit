@@ -7,6 +7,7 @@ import { GoogleAnalytics } from '@/components/GoogleAnalytics'
 import { CookieConsent } from '@/components/CookieConsent'
 import { UserProgress } from '@/components/UserProgress'
 import { AuthProvider } from '@/contexts/AuthContext'
+import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
 import HomePage from '@/pages/HomePage'
 import AboutPage from '@/pages/AboutPage'
 import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage'
@@ -120,48 +121,58 @@ function App() {
           <Route
             path="tools/image-compressor"
             element={
-              <Suspense fallback={<div className="p-4 text-center">Loading Image Compressor...</div>}>
-                <ImageCompressor />
-              </Suspense>
+              <ProtectedRoute>
+                <Suspense fallback={<div className="p-4 text-center">Loading Image Compressor...</div>}>
+                  <ImageCompressor />
+                </Suspense>
+              </ProtectedRoute>
             }
           />
-          <Route path="tools/text-to-speech" element={<TextToSpeech />} />
-          <Route path="tools/pdf-to-word" element={<PDFToWord />} />
+          <Route path="tools/text-to-speech" element={<ProtectedRoute><TextToSpeech /></ProtectedRoute>} />
+          <Route path="tools/pdf-to-word" element={<ProtectedRoute><PDFToWord /></ProtectedRoute>} />
           <Route path="tools/color-picker" element={<ColorPicker />} />
           <Route
             path="tools/image-to-text"
             element={
-              <Suspense fallback={<div className="p-4 text-center">Loading Image to Text...</div>}>
-                <ImageToText />
-              </Suspense>
+              <ProtectedRoute>
+                <Suspense fallback={<div className="p-4 text-center">Loading Image to Text...</div>}>
+                  <ImageToText />
+                </Suspense>
+              </ProtectedRoute>
             }
           />
           <Route path="tools/unit-converter" element={<UnitConverter />} />
-          <Route path="tools/text-summarizer" element={<TextSummarizer />} />
-          <Route path="tools/paragraph-rewriter" element={<ParagraphRewriter />} />
-          <Route path="tools/code-formatter" element={<CodeFormatter />} />
+          <Route path="tools/text-summarizer" element={<ProtectedRoute><TextSummarizer /></ProtectedRoute>} />
+          <Route path="tools/paragraph-rewriter" element={<ProtectedRoute><ParagraphRewriter /></ProtectedRoute>} />
+          <Route path="tools/code-formatter" element={<ProtectedRoute><CodeFormatter /></ProtectedRoute>} />
           <Route
             path="tools/image-caption-generator"
             element={
-              <Suspense fallback={<div className="p-4 text-center">Loading Image Caption Generator...</div>}>
-                <ImageCaptionGenerator />
-              </Suspense>
+              <ProtectedRoute>
+                <Suspense fallback={<div className="p-4 text-center">Loading Image Caption Generator...</div>}>
+                  <ImageCaptionGenerator />
+                </Suspense>
+              </ProtectedRoute>
             }
           />
           <Route
             path="tools/ai-task-builder"
             element={
-              <Suspense fallback={<div className="p-4 text-center">Loading AI Task Builder...</div>}>
-                <AITaskBuilder />
-              </Suspense>
+              <ProtectedRoute>
+                <Suspense fallback={<div className="p-4 text-center">Loading AI Task Builder...</div>}>
+                  <AITaskBuilder />
+                </Suspense>
+              </ProtectedRoute>
             }
           />
           <Route
             path="tools/idea-analyzer"
             element={
-              <Suspense fallback={<div className="p-4 text-center">Loading Idea Analyzer...</div>}>
-                <IdeaAnalyzer />
-              </Suspense>
+              <ProtectedRoute>
+                <Suspense fallback={<div className="p-4 text-center">Loading Idea Analyzer...</div>}>
+                  <IdeaAnalyzer />
+                </Suspense>
+              </ProtectedRoute>
             }
           />
           <Route path="tools/text-case-converter" element={<TextCaseConverter />} />
@@ -172,7 +183,7 @@ function App() {
           <Route path="tools/text-diff-checker" element={<TextDiffChecker />} />
           <Route path="tools/text-reverser" element={<TextReverser />} />
           <Route path="tools/palindrome-checker" element={<PalindromeChecker />} />
-          <Route path="tools/grammar-corrector" element={<GrammarCorrector />} />
+          <Route path="tools/grammar-corrector" element={<ProtectedRoute><GrammarCorrector /></ProtectedRoute>} />
           <Route path="tools/sentence-counter" element={<SentenceCounter />} />
           <Route path="tools/html-formatter" element={<HTMLFormatter />} />
           <Route path="tools/regex-tester" element={<RegexTester />} />
@@ -273,25 +284,31 @@ function App() {
           <Route
             path="tools/ai-translator"
             element={
-              <Suspense fallback={<div className="p-4 text-center">Loading AI Translator...</div>}>
-                <AITranslator />
-              </Suspense>
+              <ProtectedRoute>
+                <Suspense fallback={<div className="p-4 text-center">Loading AI Translator...</div>}>
+                  <AITranslator />
+                </Suspense>
+              </ProtectedRoute>
             }
           />
           <Route
             path="tools/ai-email-writer"
             element={
-              <Suspense fallback={<div className="p-4 text-center">Loading AI Email Writer...</div>}>
-                <AIEmailWriter />
-              </Suspense>
+              <ProtectedRoute>
+                <Suspense fallback={<div className="p-4 text-center">Loading AI Email Writer...</div>}>
+                  <AIEmailWriter />
+                </Suspense>
+              </ProtectedRoute>
             }
           />
           <Route
             path="tools/ai-hashtag-generator"
             element={
-              <Suspense fallback={<div className="p-4 text-center">Loading AI Hashtag Generator...</div>}>
-                <AIHashtagGenerator />
-              </Suspense>
+              <ProtectedRoute>
+                <Suspense fallback={<div className="p-4 text-center">Loading AI Hashtag Generator...</div>}>
+                  <AIHashtagGenerator />
+                </Suspense>
+              </ProtectedRoute>
             }
           />
           <Route path="tools/meta-tag-generator" element={<MetaTagGenerator />} />
