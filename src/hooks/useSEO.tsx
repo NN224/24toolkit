@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet-async'
+import { useEffect } from 'react'
 
 interface SEOProps {
   title: string
@@ -7,8 +7,26 @@ interface SEOProps {
 }
 
 /**
+ * Update or create a meta tag in the document head.
+ * This is a safe DOM manipulation approach that updates existing tags
+ * rather than appending duplicates.
+ */
+function updateMetaTag(attribute: 'name' | 'property', value: string, content: string) {
+  let element = document.querySelector(`meta[${attribute}="${value}"]`)
+  if (!element) {
+    element = document.createElement('meta')
+    element.setAttribute(attribute, value)
+    document.head.appendChild(element)
+  }
+  element.setAttribute('content', content)
+}
+
+/**
  * A React component that declaratively manages document head tags.
- * Uses react-helmet-async for SPA-safe meta tag management.
+ * Uses React 19's native support for document metadata.
+ * 
+ * In React 19, <title> and <meta> tags rendered anywhere in the component
+ * tree are automatically hoisted to the document <head>.
  * 
  * @example
  * ```tsx
@@ -27,32 +45,55 @@ interface SEOProps {
  * ```
  */
 export function SEO({ title, description, keywords }: SEOProps) {
-  return (
-    <Helmet>
-      {/* Primary Meta Tags */}
-      <title>{title}</title>
-      <meta name="description" content={description} />
-      {keywords && <meta name="keywords" content={keywords} />}
-      
-      {/* Open Graph / Facebook */}
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      
-      {/* Twitter Card */}
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={description} />
-    </Helmet>
-  )
+  useEffect(() => {
+    // Update document title
+    document.title = title
+    
+    // Update meta tags (these update existing tags, not append)
+    updateMetaTag('name', 'description', description)
+    if (keywords) {
+      updateMetaTag('name', 'keywords', keywords)
+    }
+    
+    // Open Graph tags
+    updateMetaTag('property', 'og:title', title)
+    updateMetaTag('property', 'og:description', description)
+    
+    // Twitter Card tags
+    updateMetaTag('name', 'twitter:title', title)
+    updateMetaTag('name', 'twitter:description', description)
+  }, [title, description, keywords])
+  
+  return null
 }
 
 /**
- * Hook wrapper for backwards compatibility.
- * Prefer using the <SEO /> component directly in JSX.
+ * Hook for managing SEO meta tags.
  * 
- * @deprecated Use <SEO /> component instead for cleaner JSX
+ * @example
+ * ```tsx
+ * function MyPage() {
+ *   useSEO({
+ *     title: 'Page Title | 24Toolkit',
+ *     description: 'Page description',
+ *     keywords: 'keyword1, keyword2'
+ *   })
+ *   return <div>Page content</div>
+ * }
+ * ```
  */
-export function useSEO(props: SEOProps) {
-  // Return a component to be rendered, maintaining hook API
-  // Users should migrate to using <SEO /> component directly
-  return { SEOComponent: () => <SEO {...props} /> }
+export function useSEO({ title, description, keywords }: SEOProps) {
+  useEffect(() => {
+    document.title = title
+    
+    updateMetaTag('name', 'description', description)
+    if (keywords) {
+      updateMetaTag('name', 'keywords', keywords)
+    }
+    
+    updateMetaTag('property', 'og:title', title)
+    updateMetaTag('property', 'og:description', description)
+    updateMetaTag('name', 'twitter:title', title)
+    updateMetaTag('name', 'twitter:description', description)
+  }, [title, description, keywords])
 }
