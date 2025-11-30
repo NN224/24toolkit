@@ -40,9 +40,4 @@ facebookProvider.setCustomParameters({
   display: 'popup'
 })
 
-// Apple Auth Provider
-export const appleProvider = new OAuthProvider('apple.com')
-appleProvider.addScope('email')
-appleProvider.addScope('name')
-
 export default app

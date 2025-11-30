@@ -4,10 +4,10 @@ import { useAuth } from '@/contexts/AuthContext'
 import { useEffect } from 'react'
 import { useSEO } from '@/hooks/useSEO'
 import Logo from '@/components/Logo'
-import { GoogleLogo, GithubLogo, FacebookLogo, AppleLogo, ArrowRight } from '@phosphor-icons/react'
+import { GoogleLogo, GithubLogo, FacebookLogo, ArrowRight } from '@phosphor-icons/react'
 
 export default function SignInPage() {
-  const { user, signInWithGoogle, signInWithGithub, signInWithFacebook, signInWithApple } = useAuth()
+  const { user, signInWithGoogle, signInWithGithub, signInWithFacebook } = useAuth()
   const navigate = useNavigate()
 
   // SEO
@@ -42,12 +42,6 @@ export default function SignInPage() {
       icon: FacebookLogo,
       color: 'from-blue-600 to-blue-700',
       onClick: signInWithFacebook
-    },
-    {
-      name: 'Apple',
-      icon: AppleLogo,
-      color: 'from-gray-800 to-black',
-      onClick: signInWithApple
     }
   ]
 
