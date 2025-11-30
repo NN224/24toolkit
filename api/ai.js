@@ -145,22 +145,28 @@ export default async function handler(req, res) {
         messages: [{ role: 'user', content: prompt }],
       });
 
+      logger.info('Starting Anthropic stream', { model, promptLength: prompt.length });
+      
       const stream = await Promise.race([streamPromise, timeoutPromise]);
 
+      let hasReceivedText = false;
+      
       stream.on('text', async (text) => {
+        hasReceivedText = true;
         // Deduct credit on first successful text chunk
         await deductCreditsOnce();
         res.write(`data: ${JSON.stringify({ text })}\n\n`);
       });
 
       stream.on('end', () => {
+        logger.info('Anthropic stream ended', { hasReceivedText });
         res.write('data: [DONE]\n\n');
         res.end();
         logger.logResponse(req.method, '/api/ai', 200, Date.now() - startTime, { provider });
       });
 
       stream.on('error', (error) => {
-        logger.error('Anthropic streaming error', error, { provider, model });
+        logger.error('Anthropic streaming error', error, { provider, model, errorMessage: error.message });
         res.write(`data: ${JSON.stringify({ error: sanitizeErrorMessage(error) })}\n\n`);
         res.end();
       });
