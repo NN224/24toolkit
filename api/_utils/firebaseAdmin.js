@@ -11,13 +11,16 @@ function initializeFirebaseAdmin() {
   const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT;
   
   if (!serviceAccountJson) {
+    console.error('FIREBASE_SERVICE_ACCOUNT is not set');
     throw new Error('FIREBASE_SERVICE_ACCOUNT environment variable is not set');
   }
 
   let serviceAccount;
   try {
     serviceAccount = JSON.parse(serviceAccountJson);
+    console.log('Firebase Admin: Initializing with project:', serviceAccount.project_id);
   } catch (error) {
+    console.error('Failed to parse FIREBASE_SERVICE_ACCOUNT:', error.message);
     throw new Error('Invalid FIREBASE_SERVICE_ACCOUNT JSON format');
   }
 
@@ -65,7 +68,8 @@ export async function verifyIdToken(idToken) {
       name: decodedToken.name || null,
     };
   } catch (error) {
-    throw new Error('Invalid or expired authentication token');
+    console.error('Token verification error:', error.code, error.message);
+    throw new Error(`Invalid or expired authentication token: ${error.code || error.message}`);
   }
 }
 

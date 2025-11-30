@@ -79,7 +79,7 @@ export default async function handler(req, res) {
     } catch (authError) {
       logger.warn('Authentication failed', { error: authError.message, endpoint: '/api/ai' });
       return res.status(401).json({
-        error: 'Authentication failed. Please sign in again.',
+        error: `Authentication failed: ${authError.message}`,
         code: 'AUTH_FAILED'
       });
     }
