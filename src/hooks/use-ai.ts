@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { toast } from 'sonner'
-import { callAI } from '@/lib/ai'
+import { callAI, AIError } from '@/lib/ai'
+import { useAuth } from '@/contexts/AuthContext'
+import { openSubscriptionModal } from '@/components/SubscriptionModal'
 import type { AIProvider } from '@/components/ai/AIProviderSelector'
 
 interface UseAIOptions {
@@ -12,18 +14,39 @@ interface UseAIOptions {
 }
 
 /**
- * Custom hook for handling AI operations with loading state, error handling, and streaming
+ * Custom hook for handling AI operations with loading state, error handling, streaming,
+ * and credit system integration
  * @param options Configuration options for AI calls
  * @returns Object with loading state and a function to call AI
  */
 export function useAI(options: UseAIOptions) {
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState('')
+  const { user, userProfile, refreshUserProfile } = useAuth()
 
   const execute = async (
     prompt: string,
     onStream?: (text: string) => void
   ): Promise<string> => {
+    // Check if user is logged in
+    if (!user) {
+      toast.error('Please sign in to use AI features', {
+        description: 'Create a free account to get 5 AI credits per day.',
+        action: {
+          label: 'Sign In',
+          onClick: () => window.dispatchEvent(new CustomEvent('open-login-modal'))
+        }
+      })
+      throw new AIError('Please sign in to use AI features', 'AUTH_REQUIRED')
+    }
+
+    // Check credits locally before making API call (for non-premium users)
+    if (userProfile && !userProfile.isPremium && userProfile.aiCredits <= 0) {
+      // Open subscription/upgrade modal
+      openSubscriptionModal()
+      throw new AIError('Daily limit reached', 'CREDITS_EXHAUSTED', 0, false)
+    }
+
     setLoading(true)
     setResult('')
 
@@ -33,6 +56,9 @@ export function useAI(options: UseAIOptions) {
         onStream?.(accumulatedText)
       })
 
+      // Refresh user profile to get updated credit count
+      await refreshUserProfile()
+
       if (options.successMessage) {
         toast.success(options.successMessage)
       }
@@ -41,6 +67,27 @@ export function useAI(options: UseAIOptions) {
       return response
     } catch (error) {
       console.error('AI error:', error)
+      
+      // Handle specific AI errors
+      if (error instanceof AIError) {
+        if (error.code === 'CREDITS_EXHAUSTED') {
+          // Open subscription/upgrade modal
+          openSubscriptionModal()
+        } else if (error.code === 'AUTH_REQUIRED') {
+          toast.error('Please sign in', {
+            description: 'Create a free account to use AI features.',
+            action: {
+              label: 'Sign In',
+              onClick: () => window.dispatchEvent(new CustomEvent('open-login-modal'))
+            }
+          })
+        } else {
+          toast.error(error.message)
+        }
+        options.onError?.(error)
+        throw error
+      }
+      
       const errorMsg = error instanceof Error ? error.message : (options.errorMessage || 'AI request failed')
       toast.error(errorMsg)
       options.onError?.(error instanceof Error ? error : new Error(errorMsg))
@@ -53,6 +100,10 @@ export function useAI(options: UseAIOptions) {
   return {
     loading,
     result,
-    execute
+    execute,
+    // Expose credit info for components that need it
+    hasCredits: userProfile ? (userProfile.isPremium || userProfile.aiCredits > 0) : false,
+    credits: userProfile?.aiCredits ?? 0,
+    isPremium: userProfile?.isPremium ?? false
   }
 }

@@ -7,6 +7,7 @@ import { toast } from 'sonner'
 import { UserMenu } from '@/components/UserMenu'
 import { useAuth } from '@/contexts/AuthContext'
 import { LoginModal } from '@/components/auth/LoginModal'
+import { CreditsBadge } from '@/components/ai/CreditsBadge'
 
 /**
  * Get the SpeechRecognition constructor from the window object.
@@ -61,6 +62,16 @@ export default function FuturisticHeader() {
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
+
+  // Listen for login modal open events (from AI tools when credits exhausted)
+  useEffect(() => {
+    const handleOpenLoginModal = () => {
+      setShowLoginModal(true)
+    }
+
+    window.addEventListener('open-login-modal', handleOpenLoginModal)
+    return () => window.removeEventListener('open-login-modal', handleOpenLoginModal)
   }, [])
 
   useEffect(() => {
@@ -198,6 +209,9 @@ export default function FuturisticHeader() {
                   Minimal
                 </button>
               </div>
+
+              {/* AI Credits Badge - shown for logged-in users */}
+              {user && <CreditsBadge />}
 
               {/* User Menu or Sign In */}
               {user ? (

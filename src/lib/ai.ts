@@ -1,3 +1,37 @@
+import { auth } from './firebase'
+
+/**
+ * AI API Error with additional metadata
+ */
+export class AIError extends Error {
+  code: string
+  creditsRemaining?: number
+  isPremium?: boolean
+
+  constructor(message: string, code: string, creditsRemaining?: number, isPremium?: boolean) {
+    super(message)
+    this.name = 'AIError'
+    this.code = code
+    this.creditsRemaining = creditsRemaining
+    this.isPremium = isPremium
+  }
+}
+
+/**
+ * Get the current user's Firebase ID token
+ */
+async function getAuthToken(): Promise<string | null> {
+  const user = auth.currentUser
+  if (!user) return null
+  
+  try {
+    return await user.getIdToken()
+  } catch (error) {
+    console.error('Error getting auth token:', error)
+    return null
+  }
+}
+
 /**
  * Call the AI API with streaming support
  * @param prompt - The prompt to send to the AI
@@ -15,11 +49,20 @@ export async function callAI(
     groq: 'llama-3.3-70b-versatile'
   }
 
+  // Get auth token for credit system
+  const authToken = await getAuthToken()
+  
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  }
+  
+  if (authToken) {
+    headers['Authorization'] = `Bearer ${authToken}`
+  }
+
   const response = await fetch('/api/ai', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers,
     body: JSON.stringify({
       prompt: prompt,
       provider: provider,
@@ -29,6 +72,31 @@ export async function callAI(
 
   if (!response.ok) {
     const errorData = await response.json()
+    
+    // Handle specific error codes
+    if (errorData.code === 'CREDITS_EXHAUSTED') {
+      throw new AIError(
+        errorData.error || 'Daily limit reached',
+        'CREDITS_EXHAUSTED',
+        errorData.creditsRemaining,
+        errorData.isPremium
+      )
+    }
+    
+    if (errorData.code === 'AUTH_REQUIRED') {
+      throw new AIError(
+        errorData.error || 'Please sign in to use AI features',
+        'AUTH_REQUIRED'
+      )
+    }
+    
+    if (errorData.code === 'AUTH_FAILED') {
+      throw new AIError(
+        errorData.error || 'Authentication failed',
+        'AUTH_FAILED'
+      )
+    }
+    
     throw new Error(errorData.error || 'Failed to process AI request')
   }
 

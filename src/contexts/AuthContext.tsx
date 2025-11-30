@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react'
 import { 
   User,
   signInWithPopup,
@@ -6,16 +6,19 @@ import {
   onAuthStateChanged,
   AuthProvider
 } from 'firebase/auth'
-import { auth, googleProvider, githubProvider, facebookProvider } from '@/lib/firebase'
+import { auth, googleProvider, githubProvider, facebookProvider, getUserProfile, type UserProfile } from '@/lib/firebase'
 import { toast } from 'sonner'
 
 interface AuthContextType {
   user: User | null
+  userProfile: UserProfile | null
   loading: boolean
   signInWithGoogle: () => Promise<void>
   signInWithGithub: () => Promise<void>
   signInWithFacebook: () => Promise<void>
   signOut: () => Promise<void>
+  refreshUserProfile: () => Promise<void>
+  getIdToken: () => Promise<string | null>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -34,19 +37,67 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null)
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
   const [loading, setLoading] = useState(true)
+
+  // Fetch user profile from Firestore
+  const fetchUserProfile = useCallback(async (firebaseUser: User) => {
+    try {
+      const profile = await getUserProfile(
+        firebaseUser.uid,
+        firebaseUser.email,
+        firebaseUser.displayName
+      )
+      setUserProfile(profile)
+    } catch (error) {
+      console.error('Error fetching user profile:', error)
+      // Set default profile on error
+      setUserProfile({
+        aiCredits: 5,
+        isPremium: false,
+        lastResetDate: new Date(),
+        createdAt: new Date(),
+        email: firebaseUser.email,
+        displayName: firebaseUser.displayName
+      })
+    }
+  }, [])
+
+  // Refresh user profile (useful after AI usage)
+  const refreshUserProfile = useCallback(async () => {
+    if (user) {
+      await fetchUserProfile(user)
+    }
+  }, [user, fetchUserProfile])
+
+  // Get Firebase ID token for API calls
+  const getIdToken = useCallback(async (): Promise<string | null> => {
+    if (!user) return null
+    try {
+      return await user.getIdToken()
+    } catch (error) {
+      console.error('Error getting ID token:', error)
+      return null
+    }
+  }, [user])
 
   useEffect(() => {
     // Listen for auth state changes
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user)
-      setLoading(false)
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      setUser(firebaseUser)
       
-      // User state changed
+      if (firebaseUser) {
+        // Fetch/create user profile when user signs in
+        await fetchUserProfile(firebaseUser)
+      } else {
+        setUserProfile(null)
+      }
+      
+      setLoading(false)
     })
 
     return unsubscribe
-  }, [])
+  }, [fetchUserProfile])
 
   // Generic sign in function
   const signInWithProvider = async (provider: AuthProvider, providerName: string) => {
@@ -77,6 +128,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const signOut = async () => {
     try {
       await firebaseSignOut(auth)
+      setUserProfile(null)
       toast.success('Signed out successfully')
     } catch (error) {
       console.error('Sign out error:', error)
@@ -87,11 +139,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const value = {
     user,
+    userProfile,
     loading,
     signInWithGoogle,
     signInWithGithub,
     signInWithFacebook,
-    signOut
+    signOut,
+    refreshUserProfile,
+    getIdToken
   }
 
   return (

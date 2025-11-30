@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Users collection - profile data and credits
+    match /users/{userId} {
+      // Users can read their own profile
+      allow read: if request.auth != null && request.auth.uid == userId;
+      
+      // Users can create their own profile (first sign in)
+      allow create: if request.auth != null && request.auth.uid == userId
+                    && request.resource.data.aiCredits == 5
+                    && request.resource.data.isPremium == false;
+      
+      // Users can update their profile, but NOT credits or premium status
+      // Credits and premium status can only be modified by the server (Admin SDK)
+      allow update: if request.auth != null && request.auth.uid == userId
+                    && request.resource.data.aiCredits == resource.data.aiCredits
+                    && request.resource.data.isPremium == resource.data.isPremium;
+      
+      // Users cannot delete their profile
+      allow delete: if false;
+    }
+    
+    // Default deny all other collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

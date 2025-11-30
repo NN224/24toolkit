@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import React, { Suspense } from 'react'
+import React, { Suspense, useState, useEffect } from 'react'
 import { Toaster } from '@/components/ui/sonner'
 import Layout from '@/components/Layout'
 import ScrollToTop from '@/components/ScrollToTop'
@@ -9,6 +9,7 @@ import { UserProgress } from '@/components/UserProgress'
 import { AuthProvider } from '@/contexts/AuthContext'
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
+import { SubscriptionModal } from '@/components/SubscriptionModal'
 import HomePage from '@/pages/HomePage'
 import AboutPage from '@/pages/AboutPage'
 import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage'
@@ -125,6 +126,15 @@ const LoadingFallback = ({ name = 'tool' }: { name?: string }) => (
 )
 
 function App() {
+  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false)
+
+  // Listen for subscription modal open events
+  useEffect(() => {
+    const handleOpenModal = () => setShowSubscriptionModal(true)
+    window.addEventListener('open-subscription-modal', handleOpenModal)
+    return () => window.removeEventListener('open-subscription-modal', handleOpenModal)
+  }, [])
+
   return (
     <AuthProvider>
       <BrowserRouter>
@@ -132,6 +142,10 @@ function App() {
         <CookieConsent />
         <UserProgress />
         <ScrollToTop />
+        <SubscriptionModal 
+          isOpen={showSubscriptionModal} 
+          onClose={() => setShowSubscriptionModal(false)} 
+        />
         <ErrorBoundary>
         <Routes>
         <Route path="/" element={<Layout />}>

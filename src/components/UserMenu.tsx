@@ -3,6 +3,7 @@ import { User, SignOut, CaretDown, Gear } from '@phosphor-icons/react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import { CreditsBadge, CreditsDisplay } from '@/components/ai/CreditsBadge'
 
 export function UserMenu() {
   const { user, signOut } = useAuth()
@@ -50,6 +51,9 @@ export function UserMenu() {
           </div>
         )}
         
+        {/* Credits Badge - shown next to avatar */}
+        <CreditsBadge showLabel={false} className="hidden sm:flex" />
+        
         <span className="hidden md:block text-sm font-medium text-foreground max-w-[150px] truncate">
           {user.displayName || user.email}
         </span>
@@ -66,12 +70,17 @@ export function UserMenu() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="absolute right-0 mt-2 w-64 bg-card border border-border rounded-xl shadow-xl overflow-hidden z-50"
+            className="absolute right-0 mt-2 w-72 bg-card border border-border rounded-xl shadow-xl overflow-hidden z-50"
           >
             {/* User Info */}
             <div className="p-4 border-b border-border">
               <p className="font-medium text-foreground truncate">{user.displayName}</p>
               <p className="text-sm text-muted-foreground truncate">{user.email}</p>
+            </div>
+            
+            {/* Credits Display */}
+            <div className="p-3 border-b border-border">
+              <CreditsDisplay />
             </div>
 
             {/* Menu Items */}

@@ -3,6 +3,7 @@ import Groq from 'groq-sdk';
 import { validateAIRequest, sanitizeErrorMessage } from './_utils/validation.js';
 import { checkRateLimit, getClientIdentifier, RATE_LIMITS } from './_utils/rateLimit.js';
 import { logger } from './_utils/logger.js';
+import { verifyIdToken, checkAIUsageAllowed, decrementUserCredits } from './_utils/firebaseAdmin.js';
 
 export default async function handler(req, res) {
   const startTime = Date.now();
@@ -10,7 +11,7 @@ export default async function handler(req, res) {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
   // Handle OPTIONS preflight request
   if (req.method === 'OPTIONS') {
@@ -38,6 +39,59 @@ export default async function handler(req, res) {
     });
   }
 
+  // ============================================
+  // AI Credit System - Authentication & Usage Check
+  // ============================================
+  
+  let userId = null;
+  let isPremiumUser = false;
+  let creditsRemaining = 0;
+  
+  // Check for Authorization header (Bearer token)
+  const authHeader = req.headers.authorization;
+  
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    const idToken = authHeader.substring(7);
+    
+    try {
+      // Verify the Firebase ID token
+      const userData = await verifyIdToken(idToken);
+      userId = userData.uid;
+      
+      // Check if user can use AI (has credits or is premium)
+      const usageCheck = await checkAIUsageAllowed(userId);
+      
+      if (!usageCheck.allowed) {
+        logger.warn('AI usage denied - no credits', { userId, endpoint: '/api/ai' });
+        return res.status(403).json({
+          error: usageCheck.reason,
+          creditsRemaining: 0,
+          isPremium: false,
+          code: 'CREDITS_EXHAUSTED'
+        });
+      }
+      
+      isPremiumUser = usageCheck.isPremium;
+      creditsRemaining = usageCheck.creditsRemaining;
+      
+      logger.info('AI usage allowed', { userId, isPremium: isPremiumUser, creditsRemaining });
+      
+    } catch (authError) {
+      logger.warn('Authentication failed', { error: authError.message, endpoint: '/api/ai' });
+      return res.status(401).json({
+        error: 'Authentication failed. Please sign in again.',
+        code: 'AUTH_FAILED'
+      });
+    }
+  } else {
+    // No auth header - guest user, require sign in for AI features
+    logger.warn('Unauthenticated AI request', { clientId, endpoint: '/api/ai' });
+    return res.status(401).json({
+      error: 'Please sign in to use AI features. Free users get 5 AI requests per day.',
+      code: 'AUTH_REQUIRED'
+    });
+  }
+
   // Validate request body
   const validation = validateAIRequest(req.body);
   if (!validation.isValid) {
@@ -47,7 +101,19 @@ export default async function handler(req, res) {
 
   const { prompt, provider, model } = req.body;
   
-  logger.logRequest(req.method, '/api/ai', { provider, model, promptLength: prompt.length });
+  logger.logRequest(req.method, '/api/ai', { provider, model, promptLength: prompt.length, userId });
+
+  // Flag to track if credits were decremented (only once per request)
+  let creditsDeducted = false;
+  
+  // Helper function to decrement credits on first successful response
+  const deductCreditsOnce = async () => {
+    if (!creditsDeducted && !isPremiumUser && userId) {
+      creditsDeducted = true;
+      creditsRemaining = await decrementUserCredits(userId);
+      logger.info('Credits decremented after successful start', { userId, creditsRemaining });
+    }
+  };
 
   try {
     if (provider === 'anthropic') {
@@ -81,7 +147,9 @@ export default async function handler(req, res) {
 
       const stream = await Promise.race([streamPromise, timeoutPromise]);
 
-      stream.on('text', (text) => {
+      stream.on('text', async (text) => {
+        // Deduct credit on first successful text chunk
+        await deductCreditsOnce();
         res.write(`data: ${JSON.stringify({ text })}\n\n`);
       });
 
@@ -132,6 +200,8 @@ export default async function handler(req, res) {
       for await (const chunk of stream) {
         const content = chunk.choices[0]?.delta?.content || '';
         if (content) {
+          // Deduct credit on first successful text chunk
+          await deductCreditsOnce();
           res.write(`data: ${JSON.stringify({ text: content })}\n\n`);
         }
       }
