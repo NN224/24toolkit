@@ -186,10 +186,10 @@ export function UserProgress() {
 
   return (
     <>
-      {/* Progress Button */}
+      {/* Progress Button - positioned to avoid sidebar on desktop (lg:left-24 = 96px, sidebar is 80px) */}
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 left-6 z-40 bg-gradient-to-r from-purple-600 to-sky-500 text-white p-4 rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300"
+        className="fixed bottom-6 left-6 lg:left-24 z-40 bg-gradient-to-r from-purple-600 to-sky-500 text-white p-4 rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300"
         style={{ boxShadow: '0 0 30px rgba(109,40,217,0.5)' }}
         aria-label="View progress and achievements"
       >
@@ -208,7 +208,7 @@ export function UserProgress() {
             initial={{ x: -400, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -400, opacity: 0 }}
-            className="fixed top-6 left-6 z-50 max-w-sm"
+            className="fixed top-6 left-6 lg:left-24 z-50 max-w-sm"
           >
             <div className={`bg-gradient-to-r ${newAchievement.color} p-1 rounded-xl shadow-2xl`}>
               <div className="bg-card p-4 rounded-lg">
