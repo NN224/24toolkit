@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { MagnifyingGlass, Microphone, User, Moon, Sun, Lightning, SignIn } from '@phosphor-icons/react'
-import { searchTools, type Tool } from '@/lib/tools-data'
+import { searchTools, allTools, type Tool } from '@/lib/tools-data'
 import { useTheme } from '@/components/ThemeProvider'
 import { toast } from 'sonner'
 import { UserMenu } from '@/components/UserMenu'
@@ -16,6 +16,21 @@ function getSpeechRecognition(): SpeechRecognitionConstructor | undefined {
   return window.SpeechRecognition || window.webkitSpeechRecognition
 }
 
+/**
+ * Detect if the user is on macOS.
+ * Uses navigator.platform (deprecated but widely supported) with userAgent fallback.
+ */
+function getIsMac(): boolean {
+  if (typeof window === 'undefined') return false
+  // Modern approach with userAgentData (Chrome 90+)
+  const uaData = (navigator as { userAgentData?: { platform?: string } }).userAgentData
+  if (uaData?.platform) {
+    return uaData.platform.toLowerCase().includes('mac')
+  }
+  // Fallback to navigator.platform and userAgent
+  return /mac/i.test(navigator.platform) || /mac/i.test(navigator.userAgent)
+}
+
 export default function FuturisticHeader() {
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -26,6 +41,11 @@ export default function FuturisticHeader() {
   const { user } = useAuth()
   const navigate = useNavigate()
   const recognitionRef = useRef<SpeechRecognition | null>(null)
+  
+  // Dynamic tool count and OS-aware keyboard shortcut
+  const toolCount = useMemo(() => allTools.length, [])
+  const isMac = useMemo(() => getIsMac(), [])
+  const shortcutHint = isMac ? '⌘K' : 'Ctrl+K'
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -121,10 +141,10 @@ export default function FuturisticHeader() {
             >
               <MagnifyingGlass size={20} className="text-muted-foreground" />
               <span className="text-sm text-muted-foreground flex-1 text-left">
-                Search 80+ tools... 
+                Search {toolCount}+ tools... 
               </span>
               <kbd className="hidden sm:inline-flex px-2 py-1 text-xs font-semibold text-muted-foreground bg-white/5 border border-white/10 rounded">
-                ⌘K
+                {shortcutHint}
               </kbd>
             </button>
 
@@ -224,7 +244,7 @@ export default function FuturisticHeader() {
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search for tools..."
                     className="flex-1 bg-transparent border-none outline-none text-foreground text-lg placeholder:text-muted-foreground"
-                    autoFocus
+                    aria-label="Search tools"
                   />
                   <button 
                     onClick={startVoiceSearch}
@@ -245,7 +265,7 @@ export default function FuturisticHeader() {
                     </div>
                     <div className="px-3 py-8 text-center">
                       <p className="text-sm text-muted-foreground mb-4">
-                        Type to search from 80+ tools
+                        Type to search from {toolCount}+ tools
                       </p>
                       <p className="text-xs text-muted-foreground">
                         Try: "compress image", "convert json", "password generator"

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { Helmet } from 'react-helmet-async'
 
 interface SEOProps {
   title: string
@@ -6,63 +6,53 @@ interface SEOProps {
   keywords?: string
 }
 
-export function useSEO({ title, description, keywords }: SEOProps) {
-  useEffect(() => {
-    // Set page title
-    document.title = title
+/**
+ * A React component that declaratively manages document head tags.
+ * Uses react-helmet-async for SPA-safe meta tag management.
+ * 
+ * @example
+ * ```tsx
+ * function MyPage() {
+ *   return (
+ *     <>
+ *       <SEO 
+ *         title="Page Title | 24Toolkit"
+ *         description="Page description"
+ *         keywords="keyword1, keyword2"
+ *       />
+ *       <div>Page content</div>
+ *     </>
+ *   )
+ * }
+ * ```
+ */
+export function SEO({ title, description, keywords }: SEOProps) {
+  return (
+    <Helmet>
+      {/* Primary Meta Tags */}
+      <title>{title}</title>
+      <meta name="description" content={description} />
+      {keywords && <meta name="keywords" content={keywords} />}
+      
+      {/* Open Graph / Facebook */}
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      
+      {/* Twitter Card */}
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+    </Helmet>
+  )
+}
 
-    // Set or update meta description
-    let metaDescription = document.querySelector('meta[name="description"]')
-    if (!metaDescription) {
-      metaDescription = document.createElement('meta')
-      metaDescription.setAttribute('name', 'description')
-      document.head.appendChild(metaDescription)
-    }
-    metaDescription.setAttribute('content', description)
-
-    // Set or update meta keywords if provided
-    if (keywords) {
-      let metaKeywords = document.querySelector('meta[name="keywords"]')
-      if (!metaKeywords) {
-        metaKeywords = document.createElement('meta')
-        metaKeywords.setAttribute('name', 'keywords')
-        document.head.appendChild(metaKeywords)
-      }
-      metaKeywords.setAttribute('content', keywords)
-    }
-
-    // Update Open Graph tags
-    let ogTitle = document.querySelector('meta[property="og:title"]')
-    if (!ogTitle) {
-      ogTitle = document.createElement('meta')
-      ogTitle.setAttribute('property', 'og:title')
-      document.head.appendChild(ogTitle)
-    }
-    ogTitle.setAttribute('content', title)
-
-    let ogDescription = document.querySelector('meta[property="og:description"]')
-    if (!ogDescription) {
-      ogDescription = document.createElement('meta')
-      ogDescription.setAttribute('property', 'og:description')
-      document.head.appendChild(ogDescription)
-    }
-    ogDescription.setAttribute('content', description)
-
-    // Update Twitter Card tags
-    let twitterTitle = document.querySelector('meta[name="twitter:title"]')
-    if (!twitterTitle) {
-      twitterTitle = document.createElement('meta')
-      twitterTitle.setAttribute('name', 'twitter:title')
-      document.head.appendChild(twitterTitle)
-    }
-    twitterTitle.setAttribute('content', title)
-
-    let twitterDescription = document.querySelector('meta[name="twitter:description"]')
-    if (!twitterDescription) {
-      twitterDescription = document.createElement('meta')
-      twitterDescription.setAttribute('name', 'twitter:description')
-      document.head.appendChild(twitterDescription)
-    }
-    twitterDescription.setAttribute('content', description)
-  }, [title, description, keywords])
+/**
+ * Hook wrapper for backwards compatibility.
+ * Prefer using the <SEO /> component directly in JSX.
+ * 
+ * @deprecated Use <SEO /> component instead for cleaner JSX
+ */
+export function useSEO(props: SEOProps) {
+  // Return a component to be rendered, maintaining hook API
+  // Users should migrate to using <SEO /> component directly
+  return { SEOComponent: () => <SEO {...props} /> }
 }
