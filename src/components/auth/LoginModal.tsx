@@ -166,7 +166,7 @@ export function LoginModal({ isOpen, onClose, redirectPath }: LoginModalProps) {
                   </button>
                 </div>
 
-                {/* Privacy Note */}}
+                {/* Privacy Note */}
                 <p className="mt-4 text-xs text-center text-muted-foreground">
                   By signing in, you agree to our Terms of Service and Privacy Policy.
                   Your data is encrypted and secure.
