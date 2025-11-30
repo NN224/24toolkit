@@ -62,7 +62,6 @@
         "dompurify": "^3.3.0",
         "dotenv": "^17.2.3",
         "embla-carousel-react": "^8.5.2",
-        "express": "^5.1.0",
         "firebase": "^12.6.0",
         "framer-motion": "^12.23.24",
         "groq-sdk": "^0.35.0",
@@ -94,6 +93,7 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.21.0",
+        "express": "^5.1.0",
         "@tailwindcss/postcss": "^4.1.8",
         "@types/dompurify": "^3.0.5",
         "@types/react": "^19.0.10",

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
@@ -23,6 +23,14 @@ export default function ImageCompressor() {
   const [isCompressing, setIsCompressing] = useState(false)
   const [progress, setProgress] = useState(0)
 
+  // Cleanup object URLs on unmount or when previews change to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      if (originalPreview) URL.revokeObjectURL(originalPreview)
+      if (compressedPreview) URL.revokeObjectURL(compressedPreview)
+    }
+  }, [originalPreview, compressedPreview])
+
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
@@ -37,12 +45,13 @@ export default function ImageCompressor() {
       return
     }
 
+    // Revoke previous object URL to free memory
+    if (originalPreview) URL.revokeObjectURL(originalPreview)
+    if (compressedPreview) URL.revokeObjectURL(compressedPreview)
+
     setOriginalImage(file)
-    const reader = new FileReader()
-    reader.onload = (event) => {
-      setOriginalPreview(event.target?.result as string)
-    }
-    reader.readAsDataURL(file)
+    // Use URL.createObjectURL instead of FileReader for better performance
+    setOriginalPreview(URL.createObjectURL(file))
     setCompressedImage(null)
     setCompressedPreview('')
     toast.success('Image loaded!')
@@ -68,11 +77,10 @@ export default function ImageCompressor() {
       const compressed = await imageCompression(originalImage, options)
       setCompressedImage(compressed)
 
-      const reader = new FileReader()
-      reader.onload = (event) => {
-        setCompressedPreview(event.target?.result as string)
-      }
-      reader.readAsDataURL(compressed)
+      // Revoke previous compressed preview URL to free memory
+      if (compressedPreview) URL.revokeObjectURL(compressedPreview)
+      // Use URL.createObjectURL instead of FileReader for better performance
+      setCompressedPreview(URL.createObjectURL(compressed))
 
       toast.success('Image compressed successfully!')
     } catch (err) {
@@ -98,6 +106,10 @@ export default function ImageCompressor() {
   }
 
   const handleClear = () => {
+    // Revoke object URLs to free memory
+    if (originalPreview) URL.revokeObjectURL(originalPreview)
+    if (compressedPreview) URL.revokeObjectURL(compressedPreview)
+    
     setOriginalImage(null)
     setOriginalPreview('')
     setCompressedImage(null)

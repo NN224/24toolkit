@@ -8,6 +8,7 @@ import { CookieConsent } from '@/components/CookieConsent'
 import { UserProgress } from '@/components/UserProgress'
 import { AuthProvider } from '@/contexts/AuthContext'
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
 import HomePage from '@/pages/HomePage'
 import AboutPage from '@/pages/AboutPage'
 import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage'
@@ -16,42 +17,65 @@ import ContactPage from '@/pages/ContactPage'
 import SitemapPage from '@/pages/SitemapPage'
 import SettingsPage from '@/pages/SettingsPage'
 import SignInPage from '@/pages/SignInPage'
-import WordCounter from '@/pages/tools/WordCounter'
-import PasswordGenerator from '@/pages/tools/PasswordGenerator'
-import QRGenerator from '@/pages/tools/QRGenerator'
-import JSONCSVConverter from '@/pages/tools/JSONCSVConverter'
+
+/*
+ * React 19 Compatibility Notes:
+ * 
+ * This app uses React 19 (^19.0.0). Some dependencies may have peer dependency warnings:
+ * 
+ * 1. recharts (^2.15.1) - Charts library
+ *    - May show peer dep warning for React 18, but works with React 19 at runtime.
+ *    - Wrapped in ErrorBoundary to gracefully handle any render issues.
+ * 
+ * 2. react-day-picker (^9.6.7) - Date picker component
+ *    - v9.x has React 19 support. Should work without issues.
+ * 
+ * 3. react-easy-crop (^5.5.3) - Image cropping
+ *    - May need monitoring for React 19 compatibility.
+ * 
+ * If encountering crashes, check browser console and consider:
+ * - Using stable React 18 for production until deps catch up
+ * - Adding try-catch in affected components
+ * - Pinning problematic dep versions
+ */
+
+// Lazy load all tool pages for optimal bundle splitting
+const WordCounter = React.lazy(() => import('@/pages/tools/WordCounter'))
+const PasswordGenerator = React.lazy(() => import('@/pages/tools/PasswordGenerator'))
+const QRGenerator = React.lazy(() => import('@/pages/tools/QRGenerator'))
+const JSONCSVConverter = React.lazy(() => import('@/pages/tools/JSONCSVConverter'))
 const ImageCompressor = React.lazy(() => import('@/pages/tools/ImageCompressor'))
-import TextToSpeech from '@/pages/tools/TextToSpeech'
-import PDFToWord from '@/pages/tools/PDFToWord'
-import ColorPicker from '@/pages/tools/ColorPicker'
+const TextToSpeech = React.lazy(() => import('@/pages/tools/TextToSpeech'))
+const PDFToWord = React.lazy(() => import('@/pages/tools/PDFToWord'))
+const ColorPicker = React.lazy(() => import('@/pages/tools/ColorPicker'))
 const ImageToText = React.lazy(() => import('@/pages/tools/ImageToText'))
-import UnitConverter from '@/pages/tools/UnitConverter'
-import TextSummarizer from '@/pages/tools/TextSummarizer'
-import ParagraphRewriter from '@/pages/tools/ParagraphRewriter'
-import CodeFormatter from '@/pages/tools/CodeFormatter'
+const UnitConverter = React.lazy(() => import('@/pages/tools/UnitConverter'))
+const TextSummarizer = React.lazy(() => import('@/pages/tools/TextSummarizer'))
+const ParagraphRewriter = React.lazy(() => import('@/pages/tools/ParagraphRewriter'))
+const CodeFormatter = React.lazy(() => import('@/pages/tools/CodeFormatter'))
 const ImageCaptionGenerator = React.lazy(() => import('@/pages/tools/ImageCaptionGenerator'))
 const AITaskBuilder = React.lazy(() => import('@/pages/tools/AITaskBuilder'))
 const IdeaAnalyzer = React.lazy(() => import('@/pages/tools/IdeaAnalyzer'))
-import TextCaseConverter from '@/pages/tools/TextCaseConverter'
-import RemoveLineBreaks from '@/pages/tools/RemoveLineBreaks'
-import WordFrequencyAnalyzer from '@/pages/tools/WordFrequencyAnalyzer'
-import FindReplace from '@/pages/tools/FindReplace'
-import EmojiTool from '@/pages/tools/EmojiTool'
-import TextDiffChecker from '@/pages/tools/TextDiffChecker'
-import TextReverser from '@/pages/tools/TextReverser'
-import PalindromeChecker from '@/pages/tools/PalindromeChecker'
-import GrammarCorrector from '@/pages/tools/GrammarCorrector'
-import SentenceCounter from '@/pages/tools/SentenceCounter'
-import HTMLFormatter from '@/pages/tools/HTMLFormatter'
-import RegexTester from '@/pages/tools/RegexTester'
-import JSONBeautifier from '@/pages/tools/JSONBeautifier'
-import Base64Tool from '@/pages/tools/Base64Tool'
-import URLEncoderDecoder from '@/pages/tools/URLEncoderDecoder'
-import UUIDGenerator from '@/pages/tools/UUIDGenerator'
-import TimestampConverter from '@/pages/tools/TimestampConverter'
-import JWTDecoder from '@/pages/tools/JWTDecoder'
-import TextEncryptor from '@/pages/tools/TextEncryptor'
-import MarkdownPreviewer from '@/pages/tools/MarkdownPreviewer'
+const TextCaseConverter = React.lazy(() => import('@/pages/tools/TextCaseConverter'))
+const RemoveLineBreaks = React.lazy(() => import('@/pages/tools/RemoveLineBreaks'))
+const WordFrequencyAnalyzer = React.lazy(() => import('@/pages/tools/WordFrequencyAnalyzer'))
+const FindReplace = React.lazy(() => import('@/pages/tools/FindReplace'))
+const EmojiTool = React.lazy(() => import('@/pages/tools/EmojiTool'))
+const TextDiffChecker = React.lazy(() => import('@/pages/tools/TextDiffChecker'))
+const TextReverser = React.lazy(() => import('@/pages/tools/TextReverser'))
+const PalindromeChecker = React.lazy(() => import('@/pages/tools/PalindromeChecker'))
+const GrammarCorrector = React.lazy(() => import('@/pages/tools/GrammarCorrector'))
+const SentenceCounter = React.lazy(() => import('@/pages/tools/SentenceCounter'))
+const HTMLFormatter = React.lazy(() => import('@/pages/tools/HTMLFormatter'))
+const RegexTester = React.lazy(() => import('@/pages/tools/RegexTester'))
+const JSONBeautifier = React.lazy(() => import('@/pages/tools/JSONBeautifier'))
+const Base64Tool = React.lazy(() => import('@/pages/tools/Base64Tool'))
+const URLEncoderDecoder = React.lazy(() => import('@/pages/tools/URLEncoderDecoder'))
+const UUIDGenerator = React.lazy(() => import('@/pages/tools/UUIDGenerator'))
+const TimestampConverter = React.lazy(() => import('@/pages/tools/TimestampConverter'))
+const JWTDecoder = React.lazy(() => import('@/pages/tools/JWTDecoder'))
+const TextEncryptor = React.lazy(() => import('@/pages/tools/TextEncryptor'))
+const MarkdownPreviewer = React.lazy(() => import('@/pages/tools/MarkdownPreviewer'))
 const ImageResizer = React.lazy(() => import('@/pages/tools/ImageResizer'))
 const ImageCropper = React.lazy(() => import('@/pages/tools/ImageCropper'))
 const BackgroundRemover = React.lazy(() => import('@/pages/tools/BackgroundRemover'))
@@ -62,38 +86,43 @@ const ImageFormatConverter = React.lazy(() => import('@/pages/tools/ImageFormatC
 const ImageRotator = React.lazy(() => import('@/pages/tools/ImageRotator'))
 const ImageColorExtractor = React.lazy(() => import('@/pages/tools/ImageColorExtractor'))
 const ImageCompressorV2 = React.lazy(() => import('@/pages/tools/ImageCompressorV2'))
-import PercentageCalculator from '@/pages/tools/PercentageCalculator'
-import AgeCalculator from '@/pages/tools/AgeCalculator'
-import BMICalculator from '@/pages/tools/BMICalculator'
-import TipCalculator from '@/pages/tools/TipCalculator'
-import DiscountCalculator from '@/pages/tools/DiscountCalculator'
-import CurrencyConverter from '@/pages/tools/CurrencyConverter'
+const PercentageCalculator = React.lazy(() => import('@/pages/tools/PercentageCalculator'))
+const AgeCalculator = React.lazy(() => import('@/pages/tools/AgeCalculator'))
+const BMICalculator = React.lazy(() => import('@/pages/tools/BMICalculator'))
+const TipCalculator = React.lazy(() => import('@/pages/tools/TipCalculator'))
+const DiscountCalculator = React.lazy(() => import('@/pages/tools/DiscountCalculator'))
+const CurrencyConverter = React.lazy(() => import('@/pages/tools/CurrencyConverter'))
 const AITranslator = React.lazy(() => import('@/pages/tools/AITranslator'))
 const AIEmailWriter = React.lazy(() => import('@/pages/tools/AIEmailWriter'))
 const AIHashtagGenerator = React.lazy(() => import('@/pages/tools/AIHashtagGenerator'))
-import MetaTagGenerator from '@/pages/tools/MetaTagGenerator'
-import IPAddressFinder from '@/pages/tools/IPAddressFinder'
-import HTTPHeaderAnalyzer from '@/pages/tools/HTTPHeaderAnalyzer'
-import HashGenerator from '@/pages/tools/HashGenerator'
-import PasswordStrengthChecker from '@/pages/tools/PasswordStrengthChecker'
-import FileHashVerifier from '@/pages/tools/FileHashVerifier'
-import URLPhishingChecker from '@/pages/tools/URLPhishingChecker'
-import AESEncryptor from '@/pages/tools/AESEncryptor'
-import SecurePasswordGenerator from '@/pages/tools/SecurePasswordGenerator'
-import SSLChecker from '@/pages/tools/SSLChecker'
-import RandomStringGenerator from '@/pages/tools/RandomStringGenerator'
-import IPBlacklistChecker from '@/pages/tools/IPBlacklistChecker'
-import HTTPRedirectChecker from '@/pages/tools/HTTPRedirectChecker'
-import RandomQuoteGenerator from '@/pages/tools/RandomQuoteGenerator'
-import RandomNameGenerator from '@/pages/tools/RandomNameGenerator'
-import LoremIpsumGenerator from '@/pages/tools/LoremIpsumGenerator'
-import RandomNumberPicker from '@/pages/tools/RandomNumberPicker'
-import DiceRollerCoinFlipper from '@/pages/tools/DiceRollerCoinFlipper'
-import CountdownTimer from '@/pages/tools/CountdownTimer'
-import Stopwatch from '@/pages/tools/Stopwatch'
-import Notepad from '@/pages/tools/Notepad'
-import DailyPlannerTemplate from '@/pages/tools/DailyPlannerTemplate'
-import PomodoroTimer from '@/pages/tools/PomodoroTimer'
+const MetaTagGenerator = React.lazy(() => import('@/pages/tools/MetaTagGenerator'))
+const IPAddressFinder = React.lazy(() => import('@/pages/tools/IPAddressFinder'))
+const HTTPHeaderAnalyzer = React.lazy(() => import('@/pages/tools/HTTPHeaderAnalyzer'))
+const HashGenerator = React.lazy(() => import('@/pages/tools/HashGenerator'))
+const PasswordStrengthChecker = React.lazy(() => import('@/pages/tools/PasswordStrengthChecker'))
+const FileHashVerifier = React.lazy(() => import('@/pages/tools/FileHashVerifier'))
+const URLPhishingChecker = React.lazy(() => import('@/pages/tools/URLPhishingChecker'))
+const AESEncryptor = React.lazy(() => import('@/pages/tools/AESEncryptor'))
+const SecurePasswordGenerator = React.lazy(() => import('@/pages/tools/SecurePasswordGenerator'))
+const SSLChecker = React.lazy(() => import('@/pages/tools/SSLChecker'))
+const RandomStringGenerator = React.lazy(() => import('@/pages/tools/RandomStringGenerator'))
+const IPBlacklistChecker = React.lazy(() => import('@/pages/tools/IPBlacklistChecker'))
+const HTTPRedirectChecker = React.lazy(() => import('@/pages/tools/HTTPRedirectChecker'))
+const RandomQuoteGenerator = React.lazy(() => import('@/pages/tools/RandomQuoteGenerator'))
+const RandomNameGenerator = React.lazy(() => import('@/pages/tools/RandomNameGenerator'))
+const LoremIpsumGenerator = React.lazy(() => import('@/pages/tools/LoremIpsumGenerator'))
+const RandomNumberPicker = React.lazy(() => import('@/pages/tools/RandomNumberPicker'))
+const DiceRollerCoinFlipper = React.lazy(() => import('@/pages/tools/DiceRollerCoinFlipper'))
+const CountdownTimer = React.lazy(() => import('@/pages/tools/CountdownTimer'))
+const Stopwatch = React.lazy(() => import('@/pages/tools/Stopwatch'))
+const Notepad = React.lazy(() => import('@/pages/tools/Notepad'))
+const DailyPlannerTemplate = React.lazy(() => import('@/pages/tools/DailyPlannerTemplate'))
+const PomodoroTimer = React.lazy(() => import('@/pages/tools/PomodoroTimer'))
+
+// Reusable loading fallback component
+const LoadingFallback = ({ name = 'tool' }: { name?: string }) => (
+  <div className="p-4 text-center">Loading {name}...</div>
+)
 
 function App() {
   return (
@@ -103,6 +132,7 @@ function App() {
         <CookieConsent />
         <UserProgress />
         <ScrollToTop />
+        <ErrorBoundary>
         <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
@@ -112,12 +142,11 @@ function App() {
           <Route path="contact" element={<ContactPage />} />
           <Route path="sitemap" element={<SitemapPage />} />
           <Route path="settings" element={<SettingsPage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          <Route path="/sign-in" element={<SignInPage />} />
-          <Route path="/tools/word-counter" element={<WordCounter />} />
-          <Route path="tools/password-generator" element={<PasswordGenerator />} />
-          <Route path="tools/qr-generator" element={<QRGenerator />} />
-          <Route path="tools/json-csv-converter" element={<JSONCSVConverter />} />
+          <Route path="sign-in" element={<SignInPage />} />
+          <Route path="tools/word-counter" element={<Suspense fallback={<LoadingFallback name="Word Counter" />}><WordCounter /></Suspense>} />
+          <Route path="tools/password-generator" element={<Suspense fallback={<LoadingFallback name="Password Generator" />}><PasswordGenerator /></Suspense>} />
+          <Route path="tools/qr-generator" element={<Suspense fallback={<LoadingFallback name="QR Generator" />}><QRGenerator /></Suspense>} />
+          <Route path="tools/json-csv-converter" element={<Suspense fallback={<LoadingFallback name="JSON/CSV Converter" />}><JSONCSVConverter /></Suspense>} />
           <Route
             path="tools/image-compressor"
             element={
@@ -128,9 +157,9 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="tools/text-to-speech" element={<ProtectedRoute><TextToSpeech /></ProtectedRoute>} />
-          <Route path="tools/pdf-to-word" element={<ProtectedRoute><PDFToWord /></ProtectedRoute>} />
-          <Route path="tools/color-picker" element={<ColorPicker />} />
+          <Route path="tools/text-to-speech" element={<ProtectedRoute><Suspense fallback={<LoadingFallback name="Text to Speech" />}><TextToSpeech /></Suspense></ProtectedRoute>} />
+          <Route path="tools/pdf-to-word" element={<ProtectedRoute><Suspense fallback={<LoadingFallback name="PDF to Word" />}><PDFToWord /></Suspense></ProtectedRoute>} />
+          <Route path="tools/color-picker" element={<Suspense fallback={<LoadingFallback name="Color Picker" />}><ColorPicker /></Suspense>} />
           <Route
             path="tools/image-to-text"
             element={
@@ -141,10 +170,10 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="tools/unit-converter" element={<UnitConverter />} />
-          <Route path="tools/text-summarizer" element={<ProtectedRoute><TextSummarizer /></ProtectedRoute>} />
-          <Route path="tools/paragraph-rewriter" element={<ProtectedRoute><ParagraphRewriter /></ProtectedRoute>} />
-          <Route path="tools/code-formatter" element={<ProtectedRoute><CodeFormatter /></ProtectedRoute>} />
+          <Route path="tools/unit-converter" element={<Suspense fallback={<LoadingFallback name="Unit Converter" />}><UnitConverter /></Suspense>} />
+          <Route path="tools/text-summarizer" element={<ProtectedRoute><Suspense fallback={<LoadingFallback name="Text Summarizer" />}><TextSummarizer /></Suspense></ProtectedRoute>} />
+          <Route path="tools/paragraph-rewriter" element={<ProtectedRoute><Suspense fallback={<LoadingFallback name="Paragraph Rewriter" />}><ParagraphRewriter /></Suspense></ProtectedRoute>} />
+          <Route path="tools/code-formatter" element={<ProtectedRoute><Suspense fallback={<LoadingFallback name="Code Formatter" />}><CodeFormatter /></Suspense></ProtectedRoute>} />
           <Route
             path="tools/image-caption-generator"
             element={
@@ -175,26 +204,26 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="tools/text-case-converter" element={<TextCaseConverter />} />
-          <Route path="tools/remove-line-breaks" element={<RemoveLineBreaks />} />
-          <Route path="tools/word-frequency-analyzer" element={<WordFrequencyAnalyzer />} />
-          <Route path="tools/find-replace" element={<FindReplace />} />
-          <Route path="tools/emoji-tool" element={<EmojiTool />} />
-          <Route path="tools/text-diff-checker" element={<TextDiffChecker />} />
-          <Route path="tools/text-reverser" element={<TextReverser />} />
-          <Route path="tools/palindrome-checker" element={<PalindromeChecker />} />
-          <Route path="tools/grammar-corrector" element={<ProtectedRoute><GrammarCorrector /></ProtectedRoute>} />
-          <Route path="tools/sentence-counter" element={<SentenceCounter />} />
-          <Route path="tools/html-formatter" element={<HTMLFormatter />} />
-          <Route path="tools/regex-tester" element={<RegexTester />} />
-          <Route path="tools/json-beautifier" element={<JSONBeautifier />} />
-          <Route path="tools/base64-tool" element={<Base64Tool />} />
-          <Route path="tools/url-encoder-decoder" element={<URLEncoderDecoder />} />
-          <Route path="tools/uuid-generator" element={<UUIDGenerator />} />
-          <Route path="tools/timestamp-converter" element={<TimestampConverter />} />
-          <Route path="tools/jwt-decoder" element={<JWTDecoder />} />
-          <Route path="tools/text-encryptor" element={<TextEncryptor />} />
-          <Route path="tools/markdown-previewer" element={<MarkdownPreviewer />} />
+          <Route path="tools/text-case-converter" element={<Suspense fallback={<LoadingFallback name="Text Case Converter" />}><TextCaseConverter /></Suspense>} />
+          <Route path="tools/remove-line-breaks" element={<Suspense fallback={<LoadingFallback name="Remove Line Breaks" />}><RemoveLineBreaks /></Suspense>} />
+          <Route path="tools/word-frequency-analyzer" element={<Suspense fallback={<LoadingFallback name="Word Frequency Analyzer" />}><WordFrequencyAnalyzer /></Suspense>} />
+          <Route path="tools/find-replace" element={<Suspense fallback={<LoadingFallback name="Find & Replace" />}><FindReplace /></Suspense>} />
+          <Route path="tools/emoji-tool" element={<Suspense fallback={<LoadingFallback name="Emoji Tool" />}><EmojiTool /></Suspense>} />
+          <Route path="tools/text-diff-checker" element={<Suspense fallback={<LoadingFallback name="Text Diff Checker" />}><TextDiffChecker /></Suspense>} />
+          <Route path="tools/text-reverser" element={<Suspense fallback={<LoadingFallback name="Text Reverser" />}><TextReverser /></Suspense>} />
+          <Route path="tools/palindrome-checker" element={<Suspense fallback={<LoadingFallback name="Palindrome Checker" />}><PalindromeChecker /></Suspense>} />
+          <Route path="tools/grammar-corrector" element={<ProtectedRoute><Suspense fallback={<LoadingFallback name="Grammar Corrector" />}><GrammarCorrector /></Suspense></ProtectedRoute>} />
+          <Route path="tools/sentence-counter" element={<Suspense fallback={<LoadingFallback name="Sentence Counter" />}><SentenceCounter /></Suspense>} />
+          <Route path="tools/html-formatter" element={<Suspense fallback={<LoadingFallback name="HTML Formatter" />}><HTMLFormatter /></Suspense>} />
+          <Route path="tools/regex-tester" element={<Suspense fallback={<LoadingFallback name="Regex Tester" />}><RegexTester /></Suspense>} />
+          <Route path="tools/json-beautifier" element={<Suspense fallback={<LoadingFallback name="JSON Beautifier" />}><JSONBeautifier /></Suspense>} />
+          <Route path="tools/base64-tool" element={<Suspense fallback={<LoadingFallback name="Base64 Tool" />}><Base64Tool /></Suspense>} />
+          <Route path="tools/url-encoder-decoder" element={<Suspense fallback={<LoadingFallback name="URL Encoder/Decoder" />}><URLEncoderDecoder /></Suspense>} />
+          <Route path="tools/uuid-generator" element={<Suspense fallback={<LoadingFallback name="UUID Generator" />}><UUIDGenerator /></Suspense>} />
+          <Route path="tools/timestamp-converter" element={<Suspense fallback={<LoadingFallback name="Timestamp Converter" />}><TimestampConverter /></Suspense>} />
+          <Route path="tools/jwt-decoder" element={<Suspense fallback={<LoadingFallback name="JWT Decoder" />}><JWTDecoder /></Suspense>} />
+          <Route path="tools/text-encryptor" element={<Suspense fallback={<LoadingFallback name="Text Encryptor" />}><TextEncryptor /></Suspense>} />
+          <Route path="tools/markdown-previewer" element={<Suspense fallback={<LoadingFallback name="Markdown Previewer" />}><MarkdownPreviewer /></Suspense>} />
           <Route
             path="tools/image-resizer"
             element={
@@ -275,12 +304,12 @@ function App() {
               </Suspense>
             }
           />
-          <Route path="tools/percentage-calculator" element={<PercentageCalculator />} />
-          <Route path="tools/age-calculator" element={<AgeCalculator />} />
-          <Route path="tools/bmi-calculator" element={<BMICalculator />} />
-          <Route path="tools/tip-calculator" element={<TipCalculator />} />
-          <Route path="tools/discount-calculator" element={<DiscountCalculator />} />
-          <Route path="tools/currency-converter" element={<CurrencyConverter />} />
+          <Route path="tools/percentage-calculator" element={<Suspense fallback={<LoadingFallback name="Percentage Calculator" />}><PercentageCalculator /></Suspense>} />
+          <Route path="tools/age-calculator" element={<Suspense fallback={<LoadingFallback name="Age Calculator" />}><AgeCalculator /></Suspense>} />
+          <Route path="tools/bmi-calculator" element={<Suspense fallback={<LoadingFallback name="BMI Calculator" />}><BMICalculator /></Suspense>} />
+          <Route path="tools/tip-calculator" element={<Suspense fallback={<LoadingFallback name="Tip Calculator" />}><TipCalculator /></Suspense>} />
+          <Route path="tools/discount-calculator" element={<Suspense fallback={<LoadingFallback name="Discount Calculator" />}><DiscountCalculator /></Suspense>} />
+          <Route path="tools/currency-converter" element={<Suspense fallback={<LoadingFallback name="Currency Converter" />}><CurrencyConverter /></Suspense>} />
           <Route
             path="tools/ai-translator"
             element={
@@ -311,32 +340,33 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="tools/meta-tag-generator" element={<MetaTagGenerator />} />
-          <Route path="tools/ip-address-finder" element={<IPAddressFinder />} />
-          <Route path="tools/http-header-analyzer" element={<HTTPHeaderAnalyzer />} />
-          <Route path="tools/hash-generator" element={<HashGenerator />} />
-          <Route path="tools/password-strength-checker" element={<PasswordStrengthChecker />} />
-          <Route path="tools/file-hash-verifier" element={<FileHashVerifier />} />
-          <Route path="tools/url-phishing-checker" element={<URLPhishingChecker />} />
-          <Route path="tools/aes-encryptor" element={<AESEncryptor />} />
-          <Route path="tools/secure-password-generator" element={<SecurePasswordGenerator />} />
-          <Route path="tools/ssl-checker" element={<SSLChecker />} />
-          <Route path="tools/random-string-generator" element={<RandomStringGenerator />} />
-          <Route path="tools/ip-blacklist-checker" element={<IPBlacklistChecker />} />
-          <Route path="tools/http-redirect-checker" element={<HTTPRedirectChecker />} />
-          <Route path="tools/random-quote-generator" element={<RandomQuoteGenerator />} />
-          <Route path="tools/random-name-generator" element={<RandomNameGenerator />} />
-          <Route path="tools/lorem-ipsum-generator" element={<LoremIpsumGenerator />} />
-          <Route path="tools/random-number-picker" element={<RandomNumberPicker />} />
-          <Route path="tools/dice-roller-coin-flipper" element={<DiceRollerCoinFlipper />} />
-          <Route path="tools/countdown-timer" element={<CountdownTimer />} />
-          <Route path="tools/stopwatch" element={<Stopwatch />} />
-          <Route path="tools/notepad" element={<Notepad />} />
-          <Route path="tools/daily-planner-template" element={<DailyPlannerTemplate />} />
-          <Route path="tools/pomodoro-timer" element={<PomodoroTimer />} />
+          <Route path="tools/meta-tag-generator" element={<Suspense fallback={<LoadingFallback name="Meta Tag Generator" />}><MetaTagGenerator /></Suspense>} />
+          <Route path="tools/ip-address-finder" element={<Suspense fallback={<LoadingFallback name="IP Address Finder" />}><IPAddressFinder /></Suspense>} />
+          <Route path="tools/http-header-analyzer" element={<Suspense fallback={<LoadingFallback name="HTTP Header Analyzer" />}><HTTPHeaderAnalyzer /></Suspense>} />
+          <Route path="tools/hash-generator" element={<Suspense fallback={<LoadingFallback name="Hash Generator" />}><HashGenerator /></Suspense>} />
+          <Route path="tools/password-strength-checker" element={<Suspense fallback={<LoadingFallback name="Password Strength Checker" />}><PasswordStrengthChecker /></Suspense>} />
+          <Route path="tools/file-hash-verifier" element={<Suspense fallback={<LoadingFallback name="File Hash Verifier" />}><FileHashVerifier /></Suspense>} />
+          <Route path="tools/url-phishing-checker" element={<Suspense fallback={<LoadingFallback name="URL Phishing Checker" />}><URLPhishingChecker /></Suspense>} />
+          <Route path="tools/aes-encryptor" element={<Suspense fallback={<LoadingFallback name="AES Encryptor" />}><AESEncryptor /></Suspense>} />
+          <Route path="tools/secure-password-generator" element={<Suspense fallback={<LoadingFallback name="Secure Password Generator" />}><SecurePasswordGenerator /></Suspense>} />
+          <Route path="tools/ssl-checker" element={<Suspense fallback={<LoadingFallback name="SSL Checker" />}><SSLChecker /></Suspense>} />
+          <Route path="tools/random-string-generator" element={<Suspense fallback={<LoadingFallback name="Random String Generator" />}><RandomStringGenerator /></Suspense>} />
+          <Route path="tools/ip-blacklist-checker" element={<Suspense fallback={<LoadingFallback name="IP Blacklist Checker" />}><IPBlacklistChecker /></Suspense>} />
+          <Route path="tools/http-redirect-checker" element={<Suspense fallback={<LoadingFallback name="HTTP Redirect Checker" />}><HTTPRedirectChecker /></Suspense>} />
+          <Route path="tools/random-quote-generator" element={<Suspense fallback={<LoadingFallback name="Random Quote Generator" />}><RandomQuoteGenerator /></Suspense>} />
+          <Route path="tools/random-name-generator" element={<Suspense fallback={<LoadingFallback name="Random Name Generator" />}><RandomNameGenerator /></Suspense>} />
+          <Route path="tools/lorem-ipsum-generator" element={<Suspense fallback={<LoadingFallback name="Lorem Ipsum Generator" />}><LoremIpsumGenerator /></Suspense>} />
+          <Route path="tools/random-number-picker" element={<Suspense fallback={<LoadingFallback name="Random Number Picker" />}><RandomNumberPicker /></Suspense>} />
+          <Route path="tools/dice-roller-coin-flipper" element={<Suspense fallback={<LoadingFallback name="Dice Roller & Coin Flipper" />}><DiceRollerCoinFlipper /></Suspense>} />
+          <Route path="tools/countdown-timer" element={<Suspense fallback={<LoadingFallback name="Countdown Timer" />}><CountdownTimer /></Suspense>} />
+          <Route path="tools/stopwatch" element={<Suspense fallback={<LoadingFallback name="Stopwatch" />}><Stopwatch /></Suspense>} />
+          <Route path="tools/notepad" element={<Suspense fallback={<LoadingFallback name="Notepad" />}><Notepad /></Suspense>} />
+          <Route path="tools/daily-planner-template" element={<Suspense fallback={<LoadingFallback name="Daily Planner" />}><DailyPlannerTemplate /></Suspense>} />
+          <Route path="tools/pomodoro-timer" element={<Suspense fallback={<LoadingFallback name="Pomodoro Timer" />}><PomodoroTimer /></Suspense>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
         </Routes>
+        </ErrorBoundary>
         <Toaster position="top-center" />
       </BrowserRouter>
     </AuthProvider>

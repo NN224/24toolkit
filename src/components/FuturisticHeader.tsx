@@ -8,6 +8,14 @@ import { UserMenu } from '@/components/UserMenu'
 import { useAuth } from '@/contexts/AuthContext'
 import { LoginModal } from '@/components/auth/LoginModal'
 
+/**
+ * Get the SpeechRecognition constructor from the window object.
+ * Supports both standard and webkit-prefixed versions.
+ */
+function getSpeechRecognition(): SpeechRecognitionConstructor | undefined {
+  return window.SpeechRecognition || window.webkitSpeechRecognition
+}
+
 export default function FuturisticHeader() {
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -17,7 +25,7 @@ export default function FuturisticHeader() {
   const { theme, setTheme } = useTheme()
   const { user } = useAuth()
   const navigate = useNavigate()
-  const recognitionRef = useRef<any>(null)
+  const recognitionRef = useRef<SpeechRecognition | null>(null)
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -51,14 +59,15 @@ export default function FuturisticHeader() {
   }
 
   const startVoiceSearch = () => {
-    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    const SpeechRecognitionCtor = getSpeechRecognition()
+    
+    if (!SpeechRecognitionCtor) {
       toast.error('Voice search not supported in your browser')
       return
     }
 
     try {
-      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
-      const recognition = new SpeechRecognition()
+      const recognition = new SpeechRecognitionCtor()
       
       recognition.lang = 'en-US'
       recognition.continuous = false
@@ -69,16 +78,23 @@ export default function FuturisticHeader() {
         toast.info('Listening... Speak now!')
       }
 
-      recognition.onresult = (event: any) => {
+      recognition.onresult = (event: SpeechRecognitionEvent) => {
         const transcript = event.results[0][0].transcript
         setSearchQuery(transcript)
         setSearchOpen(true)
         toast.success(`Searching for: "${transcript}"`)
       }
 
-      recognition.onerror = (event: any) => {
+      recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
         setIsListening(false)
-        toast.error('Voice recognition error')
+        // Provide more helpful error messages based on error type
+        const errorMessages: Record<string, string> = {
+          'no-speech': 'No speech detected. Please try again.',
+          'audio-capture': 'Microphone not available.',
+          'not-allowed': 'Microphone permission denied.',
+          'network': 'Network error occurred.',
+        }
+        toast.error(errorMessages[event.error] || 'Voice recognition error')
       }
 
       recognition.onend = () => {
