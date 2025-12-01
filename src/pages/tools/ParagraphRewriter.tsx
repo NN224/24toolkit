@@ -61,7 +61,6 @@ export default function ParagraphRewriter() {
     } catch (error) {
       console.error('Rewrite error:', error)
       toast.error(error instanceof Error ? error.message : 'Failed to rewrite text')
-      setOutputText('AI rewriting temporarily unavailable. The text has been preserved.')
     } finally {
       setIsLoading(false)
     }

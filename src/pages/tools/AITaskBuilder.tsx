@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Sparkle, ListChecks } from '@phosphor-icons/react';
 import { AIBadge } from '@/components/ai/AIBadge';
+import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderSelector';
 import { callAI } from '@/lib/ai';
 import { AI_PROMPTS, validatePromptInput } from '@/lib/ai-prompts';
 import { toast } from 'sonner';
@@ -24,6 +25,7 @@ export default function AITaskBuilder() {
   const [goal, setGoal] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [provider, setProvider] = useState<AIProvider>('anthropic');
 
   const handleGenerateTasks = async () => {
     if (!goal.trim()) {
@@ -44,7 +46,7 @@ export default function AITaskBuilder() {
     const systemPrompt = AI_PROMPTS.TASK_BUILDER(goal, '1 week');
 
     try {
-      const result = await callAI(systemPrompt, 'anthropic');
+      const result = await callAI(systemPrompt, provider);
       
       // Try to parse JSON response
       let taskStrings: string[];
@@ -111,6 +113,9 @@ export default function AITaskBuilder() {
               rows={4}
               disabled={isLoading}
             />
+            
+            <AIProviderSelector value={provider} onValueChange={setProvider} />
+            
             <Button onClick={handleGenerateTasks} disabled={isLoading || !goal.trim()} className="w-full gap-2">
               <Sparkle size={18} weight="fill" />
               {isLoading ? 'Building Plan...' : 'Build My Plan'}

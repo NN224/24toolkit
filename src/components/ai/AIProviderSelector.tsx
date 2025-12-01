@@ -1,8 +1,10 @@
 import { Label } from '@/components/ui/label'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { Sparkle, Lightning, GoogleLogo, Globe } from '@phosphor-icons/react'
+import type { AIProvider } from '@/lib/ai'
 
-export type AIProvider = 'anthropic' | 'groq' | 'gemini' | 'openrouter'
+// Re-export for convenience
+export type { AIProvider }
 
 interface AIProviderSelectorProps {
   value: AIProvider

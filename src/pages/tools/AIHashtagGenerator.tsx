@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
-import { Copy, Hash } from '@phosphor-icons/react'
+import { Copy, Hash, ShareNetwork, Check, TwitterLogo, LinkedinLogo, WhatsappLogo } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderSelector'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
@@ -12,6 +12,12 @@ import { callAI } from '@/lib/ai'
 import { AI_PROMPTS, validatePromptInput } from '@/lib/ai-prompts'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 export default function AIHashtagGenerator() {
   // Set SEO metadata
@@ -22,7 +28,34 @@ export default function AIHashtagGenerator() {
   const [hashtags, setHashtags] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
   const [provider, setProvider] = useState<AIProvider>('anthropic')
+  const [copied, setCopied] = useState(false)
+  const [isArabic, setIsArabic] = useState(false)
   const copyToClipboard = useCopyToClipboard()
+
+  // Detect if content is Arabic
+  useEffect(() => {
+    setIsArabic(/[\u0600-\u06FF]/.test(content))
+  }, [content])
+
+  const handleCopyAll = () => {
+    copyToClipboard(hashtags.join(' '), isArabic ? 'تم نسخ الهاشتاقات!' : 'All hashtags copied!')
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  const handleShare = (platform: 'twitter' | 'linkedin' | 'whatsapp') => {
+    const text = hashtags.join(' ')
+    const encodedText = encodeURIComponent(text + ' - Created with 24Toolkit')
+    
+    const urls = {
+      twitter: `https://twitter.com/intent/tweet?text=${encodedText}`,
+      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`,
+      whatsapp: `https://wa.me/?text=${encodedText}`
+    }
+
+    window.open(urls[platform], '_blank', 'width=600,height=400')
+    toast.success(isArabic ? 'جاري المشاركة...' : 'Sharing...')
+  }
 
   const generateHashtags = async () => {
     if (!content.trim()) {
@@ -116,29 +149,73 @@ export default function AIHashtagGenerator() {
           {hashtags.length > 0 && (
             <div className="space-y-4 mt-4">
               <div className="flex items-center justify-between">
-                <Label>Generated Hashtags ({hashtags.length})</Label>
-                <Button variant="ghost" size="sm" onClick={() => copyToClipboard(hashtags.join(' '), 'All hashtags copied!')}>
-                  <Copy size={16} className="mr-2" />
-                  Copy All
-                </Button>
+                <Label>{isArabic ? `الهاشتاقات (${hashtags.length})` : `Generated Hashtags (${hashtags.length})`}</Label>
               </div>
-              <div className="p-4 bg-gradient-to-br from-pink-50 to-rose-50 rounded-lg border border-pink-200">
-                <div className="flex flex-wrap gap-2">
+              <div className="p-4 bg-gradient-to-br from-pink-50/50 to-rose-50/50 dark:from-pink-950/20 dark:to-rose-950/20 rounded-xl border-2 border-pink-200 dark:border-pink-800">
+                <div className="flex flex-wrap gap-2" dir={isArabic ? 'rtl' : 'ltr'}>
                   {hashtags.map((tag, index) => (
                     <Badge
                       key={index}
                       variant="secondary"
-                      className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
-                      onClick={() => copyToClipboard(tag, 'Hashtag copied!')}
+                      className="cursor-pointer hover:bg-pink-500 hover:text-white transition-colors text-sm py-1 px-3"
+                      onClick={() => copyToClipboard(tag, isArabic ? 'تم النسخ!' : 'Hashtag copied!')}
                     >
                       {tag}
                     </Badge>
                   ))}
                 </div>
               </div>
+              
+              {/* Action Buttons */}
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  onClick={handleCopyAll}
+                  variant="outline"
+                  className="gap-2 flex-1 min-w-[120px]"
+                >
+                  {copied ? (
+                    <>
+                      <Check size={16} className="text-green-500" />
+                      {isArabic ? 'تم النسخ!' : 'Copied!'}
+                    </>
+                  ) : (
+                    <>
+                      <Copy size={16} />
+                      {isArabic ? 'نسخ الكل' : 'Copy All'}
+                    </>
+                  )}
+                </Button>
+
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" className="gap-2 flex-1 min-w-[120px]">
+                      <ShareNetwork size={16} />
+                      {isArabic ? 'مشاركة' : 'Share'}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48">
+                    <DropdownMenuItem onClick={() => handleShare('twitter')} className="gap-2 cursor-pointer">
+                      <TwitterLogo size={18} weight="fill" className="text-[#1DA1F2]" />
+                      Twitter / X
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleShare('linkedin')} className="gap-2 cursor-pointer">
+                      <LinkedinLogo size={18} weight="fill" className="text-[#0077B5]" />
+                      LinkedIn
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleShare('whatsapp')} className="gap-2 cursor-pointer">
+                      <WhatsappLogo size={18} weight="fill" className="text-[#25D366]" />
+                      WhatsApp
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+
               <div className="p-3 bg-muted/50 rounded-lg">
                 <p className="text-xs text-muted-foreground">
-                  💡 Tip: Click any hashtag to copy it individually, or use "Copy All" to copy all hashtags at once.
+                  {isArabic 
+                    ? '💡 نصيحة: اضغط على أي هاشتاق لنسخه مباشرة'
+                    : '💡 Tip: Click any hashtag to copy it individually'
+                  }
                 </p>
               </div>
             </div>

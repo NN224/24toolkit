@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import { toast } from 'sonner'
-import { callAI, AIError } from '@/lib/ai'
+import { callAI, AIError, type AIProvider } from '@/lib/ai'
 import { useAuth } from '@/contexts/AuthContext'
 import { openSubscriptionModal } from '@/components/SubscriptionModal'
-import type { AIProvider } from '@/components/ai/AIProviderSelector'
 
 interface UseAIOptions {
   provider: AIProvider

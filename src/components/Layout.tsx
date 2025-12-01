@@ -3,6 +3,7 @@ import { GithubLogo, TwitterLogo, YoutubeLogo } from '@phosphor-icons/react'
 import FuturisticSidebar from './FuturisticSidebar'
 import FuturisticHeader from './FuturisticHeader'
 import FloatingChatAssistant from './ai/ChatAssistant'
+import { ContextualAIHelper } from './ContextualAIHelper'
 import { ThemeProvider } from './ThemeProvider'
 import AdSense from './AdSense'
 
@@ -104,6 +105,7 @@ export default function Layout() {
         </footer>
 
         <FloatingChatAssistant />
+        <ContextualAIHelper />
       </div>
     </ThemeProvider>
   )

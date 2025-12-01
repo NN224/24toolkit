@@ -38,6 +38,31 @@ export const seoMetadata: Record<string, PageMetadata> = {
   },
 
   // AI Tools
+  'multi-tool-chat': {
+    title: 'Multi-Tool AI Chat - Smart AI Assistant | 24Toolkit',
+    description: 'Chat with an intelligent AI assistant that automatically uses the right tools for translation, summarization, email writing, and more.',
+    keywords: 'AI chat, smart assistant, multi-tool AI, AI chatbot, intelligent assistant'
+  },
+  'smart-history': {
+    title: 'Smart History - View & Reuse Past AI Results | 24Toolkit',
+    description: 'Access your complete history of AI tool usage. Search, favorite, and reuse any previous result. Never lose your AI-generated content.',
+    keywords: 'AI history, tool history, usage history, saved results, AI archive'
+  },
+  'ai-prompt-presets': {
+    title: 'AI Prompt Presets - Ready-Made Templates for AI Tools | 24Toolkit',
+    description: 'Use ready-made prompt templates to save time and get better AI results. Templates for emails, content, social media, translation, and code.',
+    keywords: 'AI prompts, prompt templates, AI presets, prompt library, AI templates'
+  },
+  'ai-usage-dashboard': {
+    title: 'AI Usage Dashboard - Track Your AI Tool Usage | 24Toolkit',
+    description: 'Track your AI tool usage with detailed insights, statistics, and personalized recommendations. See your favorite tools, success rates, and usage patterns.',
+    keywords: 'AI dashboard, usage analytics, AI insights, AI statistics, usage tracking'
+  },
+  'ai-tool-chains': {
+    title: 'AI Tool Chains - Connect Multiple AI Tools in Workflows | 24Toolkit',
+    description: 'Create powerful automated workflows by chaining multiple AI tools together. Translate → Summarize → Expand and more. Free AI workflow automation tool.',
+    keywords: 'AI tool chains, AI workflow, automated workflows, AI automation, multi-tool AI'
+  },
   'ai-task-builder': {
     title: 'AI Task Builder - Turn Goals into Step-by-Step Plans | 24Toolkit',
     description: 'Use AI to transform any goal into a structured, actionable step-by-step plan. Free AI task builder that helps you break down complex projects into manageable tasks.',

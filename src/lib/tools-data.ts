@@ -53,7 +53,8 @@ import {
   Notepad,
   ListBullets,
   Lightbulb,
-  ListChecks
+  ListChecks,
+  Lightning
 } from '@phosphor-icons/react'
 
 export interface Tool {
@@ -68,6 +69,56 @@ export interface Tool {
 }
 
 export const allTools: Tool[] = [
+  {
+    id: 'multi-tool-chat',
+    title: 'Multi-Tool AI Chat',
+    description: 'Chat with AI that uses multiple tools automatically',
+    icon: ChatCircleDots,
+    path: '/tools/multi-tool-chat',
+    color: 'from-purple-500 to-sky-500',
+    category: 'ai',
+    isAI: true
+  },
+  {
+    id: 'smart-history',
+    title: 'Smart History',
+    description: 'View and reuse your past AI tool results',
+    icon: Clock,
+    path: '/tools/smart-history',
+    color: 'from-sky-500 to-purple-500',
+    category: 'ai',
+    isAI: true
+  },
+  {
+    id: 'ai-prompt-presets',
+    title: 'AI Prompt Presets',
+    description: 'Ready-made templates to save time with AI tools',
+    icon: Lightning,
+    path: '/tools/ai-prompt-presets',
+    color: 'from-yellow-500 to-orange-500',
+    category: 'ai',
+    isAI: true
+  },
+  {
+    id: 'ai-usage-dashboard',
+    title: 'AI Usage Dashboard',
+    description: 'Track your AI usage with insights and personalized recommendations',
+    icon: ChartBar,
+    path: '/tools/ai-usage-dashboard',
+    color: 'from-purple-600 to-pink-500',
+    category: 'ai',
+    isAI: true
+  },
+  {
+    id: 'ai-tool-chains',
+    title: 'AI Tool Chains',
+    description: 'Connect multiple AI tools in automated workflows',
+    icon: Lightning,
+    path: '/tools/ai-tool-chains',
+    color: 'from-purple-600 to-sky-500',
+    category: 'ai',
+    isAI: true
+  },
   {
     id: 'ai-task-builder',
     title: 'AI Task Builder',

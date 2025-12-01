@@ -34,6 +34,7 @@ async function getAuthToken(): Promise<string | null> {
 
 /**
  * Supported AI providers
+ * This is the single source of truth for AI provider types
  */
 export type AIProvider = 'anthropic' | 'groq' | 'gemini' | 'openrouter'
 
@@ -147,7 +148,11 @@ export async function callAI(
         }
         
         if (parsed.error) {
-          throw new Error(parsed.message || 'Stream error')
+          // Handle streaming error from server
+          throw new AIError(
+            parsed.message || 'Stream error occurred',
+            'STREAM_ERROR'
+          )
         }
       } catch (parseError) {
         // Skip invalid JSON lines (not an error, just incomplete data)

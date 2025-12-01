@@ -9,11 +9,15 @@ import { toast } from 'sonner'
 import imageCompression from 'browser-image-compression'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { ToolRecommendations, useToolRecommendations } from '@/components/ToolRecommendations'
 
 export default function ImageCompressor() {
   // Set SEO metadata
   const metadata = getPageMetadata('image-compressor')
   useSEO(metadata)
+
+  // Smart tool recommendations
+  const { triggerRecommendations, PopupComponent } = useToolRecommendations('image-compressor')
 
   const [originalImage, setOriginalImage] = useState<File | null>(null)
   const [originalPreview, setOriginalPreview] = useState<string>('')
@@ -83,6 +87,9 @@ export default function ImageCompressor() {
       setCompressedPreview(URL.createObjectURL(compressed))
 
       toast.success('Image compressed successfully!')
+      
+      // Trigger recommendations after successful compression
+      triggerRecommendations('Image compressed successfully!')
     } catch (err) {
       toast.error('Failed to compress image')
     } finally {
@@ -302,7 +309,13 @@ export default function ImageCompressor() {
               </CardContent>
             </Card>
           )}
+
+          {/* Smart Tool Recommendations */}
+          <ToolRecommendations currentToolId="image-compressor" />
         </div>
+
+        {/* Recommendations Popup */}
+        <PopupComponent />
       </div>
     </div>
   )

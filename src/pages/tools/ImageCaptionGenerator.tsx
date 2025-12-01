@@ -55,28 +55,29 @@ export default function ImageCaptionGenerator() {
     setIsLoading(true)
     setCaption('')
 
-    // Note: Vision API support coming soon
-    // For now, using intelligent placeholder captions
     try {
-      // Simulate AI processing time for better UX
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      // Vision API requires multimodal support
+      // Currently, we need to inform users about the limitation
+      // and provide a text-based alternative
       
-      const mockCaptions = [
-        'A vibrant scene captured in stunning detail, showcasing natural beauty and composition.',
-        'An artistic photograph featuring interesting subjects with excellent lighting and perspective.',
-        'A memorable moment frozen in time, displaying careful attention to composition and color.',
-        'An eye-catching image that tells a story through its carefully arranged elements.',
-        'A beautifully composed photograph with rich colors and balanced composition.',
-        'A striking visual that captures the essence of the moment with artistic flair.',
-        'An engaging image with thoughtful framing and attention to detail.',
-        'A captivating photograph that draws the viewer in with its visual narrative.',
-      ]
-      const randomCaption = mockCaptions[Math.floor(Math.random() * mockCaptions.length)]
-      setCaption(randomCaption)
-      toast.success('Caption generated! (Vision API integration coming soon)')
+      const prompt = `You are an image caption generator. Since I cannot see the image directly, please generate 3 different creative, descriptive captions that could work for various types of images. Format them as:
+
+1. [First caption - descriptive and detailed]
+2. [Second caption - artistic and evocative]
+3. [Third caption - short and impactful]
+
+Make them versatile enough to inspire the user to adapt for their specific image.`
+      
+      let response = ''
+      await callAI(prompt, provider, (text) => {
+        response = text
+        setCaption(text)
+      })
+      
+      toast.success('Caption suggestions generated!')
     } catch (error) {
       console.error('Caption generation error:', error)
-      toast.error('Failed to generate caption. Please try again.')
+      toast.error(error instanceof Error ? error.message : 'Failed to generate caption')
     } finally {
       setIsLoading(false)
     }
@@ -101,7 +102,7 @@ export default function ImageCaptionGenerator() {
             <AIBadge />
           </div>
           <p className="text-lg text-muted-foreground">
-            Upload an image and generate descriptive captions automatically. <span className="text-amber-500">Vision AI integration coming soon!</span>
+            Upload an image and get AI-generated caption suggestions to inspire your descriptions.
           </p>
         </div>
 

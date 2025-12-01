@@ -1,13 +1,13 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Copy, Envelope } from '@phosphor-icons/react'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Envelope } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderSelector'
-import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
+import { AIResponseCard } from '@/components/ai/AIResponseCard'
 import { callAI } from '@/lib/ai'
 import { AI_PROMPTS, validatePromptInput } from '@/lib/ai-prompts'
 import { useSEO } from '@/hooks/useSEO'
@@ -25,7 +25,12 @@ export default function AIEmailWriter() {
   const [generatedEmail, setGeneratedEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [provider, setProvider] = useState<AIProvider>('anthropic')
-  const copyToClipboard = useCopyToClipboard()
+  const [isArabic, setIsArabic] = useState(false)
+
+  // Detect if topic is Arabic
+  useEffect(() => {
+    setIsArabic(/[\u0600-\u06FF]/.test(topic))
+  }, [topic])
 
   const generateEmail = async () => {
     if (!topic.trim()) {
@@ -123,19 +128,14 @@ export default function AIEmailWriter() {
           </Button>
 
           {generatedEmail && (
-            <div className="space-y-2 mt-4">
-              <div className="flex items-center justify-between">
-                <Label>Generated Email</Label>
-                <Button variant="ghost" size="sm" onClick={() => copyToClipboard(generatedEmail, 'Email copied to clipboard!')}>
-                  <Copy size={16} className="mr-2" />
-                  Copy
-                </Button>
-              </div>
-              <div className="p-4 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg border border-indigo-200">
-                <pre className="text-foreground whitespace-pre-wrap font-sans text-sm">
-                  {generatedEmail}
-                </pre>
-              </div>
+            <div className="mt-4">
+              <AIResponseCard
+                title={isArabic ? 'البريد الإلكتروني' : 'Generated Email'}
+                content={generatedEmail}
+                variant="blue"
+                showShare={true}
+                shareText={`Check out this email I created with AI! - 24Toolkit`}
+              />
             </div>
           )}
         </CardContent>

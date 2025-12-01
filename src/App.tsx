@@ -56,6 +56,11 @@ const ParagraphRewriter = React.lazy(() => import('@/pages/tools/ParagraphRewrit
 const CodeFormatter = React.lazy(() => import('@/pages/tools/CodeFormatter'))
 const ImageCaptionGenerator = React.lazy(() => import('@/pages/tools/ImageCaptionGenerator'))
 const AITaskBuilder = React.lazy(() => import('@/pages/tools/AITaskBuilder'))
+const AIToolChains = React.lazy(() => import('@/pages/tools/AIToolChains'))
+const AIUsageDashboard = React.lazy(() => import('@/pages/tools/AIUsageDashboard'))
+const AIPromptPresets = React.lazy(() => import('@/pages/tools/AIPromptPresets'))
+const SmartHistory = React.lazy(() => import('@/pages/tools/SmartHistory'))
+const MultiToolChat = React.lazy(() => import('@/pages/tools/MultiToolChat'))
 const IdeaAnalyzer = React.lazy(() => import('@/pages/tools/IdeaAnalyzer'))
 const TextCaseConverter = React.lazy(() => import('@/pages/tools/TextCaseConverter'))
 const RemoveLineBreaks = React.lazy(() => import('@/pages/tools/RemoveLineBreaks'))
@@ -204,6 +209,56 @@ function App() {
               <ProtectedRoute>
                 <Suspense fallback={<div className="p-4 text-center">Loading AI Task Builder...</div>}>
                   <AITaskBuilder />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="tools/ai-tool-chains"
+            element={
+              <ProtectedRoute>
+                <Suspense fallback={<div className="p-4 text-center">Loading AI Tool Chains...</div>}>
+                  <AIToolChains />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="tools/ai-usage-dashboard"
+            element={
+              <ProtectedRoute>
+                <Suspense fallback={<div className="p-4 text-center">Loading AI Usage Dashboard...</div>}>
+                  <AIUsageDashboard />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="tools/ai-prompt-presets"
+            element={
+              <ProtectedRoute>
+                <Suspense fallback={<div className="p-4 text-center">Loading AI Prompt Presets...</div>}>
+                  <AIPromptPresets />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="tools/smart-history"
+            element={
+              <ProtectedRoute>
+                <Suspense fallback={<div className="p-4 text-center">Loading Smart History...</div>}>
+                  <SmartHistory />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="tools/multi-tool-chat"
+            element={
+              <ProtectedRoute>
+                <Suspense fallback={<div className="p-4 text-center">Loading Multi-Tool Chat...</div>}>
+                  <MultiToolChat />
                 </Suspense>
               </ProtectedRoute>
             }

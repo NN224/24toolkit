@@ -66,7 +66,7 @@ export default function CodeFormatter() {
     } catch (error) {
       console.error('Format error:', error)
       toast.error(error instanceof Error ? error.message : 'Failed to format code')
-      setFormattedCode(code)
+      // Don't set fallback - keep empty to indicate failure
     } finally {
       setIsLoading(false)
     }
@@ -97,7 +97,6 @@ ${code}`
     } catch (error) {
       console.error('Explanation error:', error)
       toast.error(error instanceof Error ? error.message : 'Failed to explain code')
-      setExplanation('AI explanation temporarily unavailable.')
     } finally {
       setIsLoading(false)
     }
