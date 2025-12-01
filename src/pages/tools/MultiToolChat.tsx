@@ -208,9 +208,9 @@ Respond naturally and helpfully:`
           </p>
         </div>
 
-        <Card className="h-[600px] flex flex-col">
+        <Card className="flex flex-col" style={{ height: 'calc(100vh - 280px)', minHeight: '400px', maxHeight: '700px' }}>
           {/* Chat Header */}
-          <CardHeader className="pb-2 border-b">
+          <CardHeader className="pb-2 border-b flex-shrink-0">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-sky-500 flex items-center justify-center">
