@@ -10,7 +10,8 @@ import {
   Calculator,
   Gear,
   List,
-  X
+  X,
+  CreditCard
 } from '@phosphor-icons/react'
 import {
   Tooltip,
@@ -165,13 +166,42 @@ function SidebarContent({ user, showTooltips = false, onNavigate }: SidebarConte
         })}
       </nav>
 
-      <div className="pt-4 border-t border-white/10">
+      <div className="pt-4 border-t border-white/10 space-y-3">
+        {/* Pricing Button */}
+        <Tooltip delayDuration={100}>
+          <TooltipTrigger asChild>
+            <button 
+              onClick={() => { navigate('/pricing'); onNavigate?.() }}
+              className={`flex items-center justify-center p-3 rounded-xl transition-all w-full group border-2 ${
+                location.pathname === '/pricing'
+                  ? 'bg-purple-500/20 border-purple-500/50'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-white/5 border-transparent hover:border-white/10'
+              }`}
+              style={location.pathname === '/pricing' ? { boxShadow: '0 0 8px rgba(109,40,217,0.3)' } : {}}
+            >
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-sky-500 flex items-center justify-center flex-shrink-0"
+                style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.3)' }}
+              >
+                <CreditCard size={20} weight="bold" className="text-white" />
+              </div>
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="right" className="font-medium">
+            Pricing
+          </TooltipContent>
+        </Tooltip>
+
+        {/* Settings Button */}
         {user ? (
           <Tooltip delayDuration={100}>
             <TooltipTrigger asChild>
               <button 
-                onClick={() => navigate('/settings')}
-                className="flex items-center justify-center p-3 rounded-xl text-muted-foreground hover:text-foreground hover:bg-white/5 transition-all w-full group border-2 border-transparent hover:border-white/10"
+                onClick={() => { navigate('/settings'); onNavigate?.() }}
+                className={`flex items-center justify-center p-3 rounded-xl transition-all w-full group border-2 ${
+                  location.pathname === '/settings'
+                    ? 'bg-white/10 border-white/20'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-white/5 border-transparent hover:border-white/10'
+                }`}
               >
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center flex-shrink-0"
                   style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.3)' }}
@@ -185,16 +215,23 @@ function SidebarContent({ user, showTooltips = false, onNavigate }: SidebarConte
             </TooltipContent>
           </Tooltip>
         ) : (
-          <button 
-            onClick={() => navigate('/sign-in')}
-            className="flex items-center justify-center p-3 rounded-xl text-muted-foreground hover:text-foreground hover:bg-white/5 transition-all w-full group border-2 border-transparent hover:border-white/10"
-          >
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center flex-shrink-0"
-              style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.3)' }}
-            >
-              <Gear size={20} weight="bold" className="text-white" />
-            </div>
-          </button>
+          <Tooltip delayDuration={100}>
+            <TooltipTrigger asChild>
+              <button 
+                onClick={() => { navigate('/sign-in'); onNavigate?.() }}
+                className="flex items-center justify-center p-3 rounded-xl text-muted-foreground hover:text-foreground hover:bg-white/5 transition-all w-full group border-2 border-transparent hover:border-white/10"
+              >
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center flex-shrink-0"
+                  style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.3)' }}
+                >
+                  <Gear size={20} weight="bold" className="text-white" />
+                </div>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="right" className="font-medium">
+              Sign In
+            </TooltipContent>
+          </Tooltip>
         )}
       </div>
     </div>

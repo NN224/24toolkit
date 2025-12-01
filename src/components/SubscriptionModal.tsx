@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react'
-import { X, Sparkle, Lightning, Rocket, Crown, Check } from '@phosphor-icons/react'
+import { useNavigate } from 'react-router-dom'
+import { X, Sparkle, Lightning, Rocket, Crown, Check, ArrowRight } from '@phosphor-icons/react'
 import type { Icon as PhosphorIcon } from '@phosphor-icons/react'
+import { useAuth } from '@/contexts/AuthContext'
+import { PLAN_LIMITS } from '@/contexts/SubscriptionContext'
+import { toast } from 'sonner'
 
 interface SubscriptionModalProps {
   isOpen: boolean
@@ -16,28 +20,31 @@ interface Feature {
 const features: Feature[] = [
   {
     icon: Sparkle,
-    title: 'Unlimited Generations',
-    description: 'No daily limits on AI-powered tools'
+    title: 'More AI Credits',
+    description: 'Pro: 100/month • Unlimited: No limits!'
   },
   {
     icon: Lightning,
-    title: 'Faster Processing',
-    description: 'Priority queue for faster responses'
+    title: 'No Advertisements',
+    description: 'Enjoy a clean, ad-free experience'
   },
   {
     icon: Rocket,
-    title: 'Premium AI Models',
-    description: 'Access to Claude 3.5 Sonnet & GPT-4'
+    title: 'Priority Processing',
+    description: 'Faster responses with priority queue'
   },
   {
     icon: Crown,
-    title: 'Early Access',
-    description: 'Be first to try new AI features'
+    title: 'Premium Features',
+    description: 'Smart History, early access & more'
   }
 ]
 
 export function SubscriptionModal({ isOpen, onClose }: SubscriptionModalProps) {
   const [isAnimating, setIsAnimating] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const { user, signInWithGoogle } = useAuth()
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (isOpen) {
@@ -45,10 +52,54 @@ export function SubscriptionModal({ isOpen, onClose }: SubscriptionModalProps) {
     }
   }, [isOpen])
 
-  const handleUpgrade = () => {
-    console.log('Redirect to Stripe')
-    // TODO: Implement Stripe checkout
-    // window.location.href = '/api/checkout'
+  const handleUpgrade = async (plan: 'pro' | 'unlimited') => {
+    if (!user) {
+      try {
+        await signInWithGoogle()
+        toast.success('Signed in! Now select a plan.')
+      } catch (error) {
+        toast.error('Please sign in to subscribe')
+      }
+      return
+    }
+
+    setLoading(true)
+
+    try {
+      const priceId = plan === 'pro' 
+        ? PLAN_LIMITS.pro.priceId 
+        : PLAN_LIMITS.unlimited.priceId
+
+      const response = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          priceId,
+          userId: user.uid,
+          userEmail: user.email,
+          successUrl: `${window.location.origin}/settings?success=true`,
+          cancelUrl: `${window.location.origin}?canceled=true`,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (data.url) {
+        window.location.href = data.url
+      } else {
+        throw new Error('Failed to create checkout session')
+      }
+    } catch (error) {
+      console.error('Checkout error:', error)
+      toast.error('Failed to start checkout. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const goToPricing = () => {
+    onClose()
+    navigate('/pricing')
   }
 
   if (!isOpen) return null
@@ -89,7 +140,7 @@ export function SubscriptionModal({ isOpen, onClose }: SubscriptionModalProps) {
               Unlock Unlimited AI Power 🚀
             </h2>
             <p className="text-muted-foreground">
-              You've used all your free credits today. Upgrade to Pro for unlimited access!
+              You've used all your free credits today. Upgrade for more!
             </p>
           </div>
 
@@ -115,33 +166,54 @@ export function SubscriptionModal({ isOpen, onClose }: SubscriptionModalProps) {
             })}
           </div>
 
-          {/* Pricing */}
-          <div className="relative px-6 py-6 border-t border-white/10">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <p className="text-sm text-muted-foreground">Pro Plan</p>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-3xl font-bold text-foreground">$4.99</span>
-                  <span className="text-muted-foreground">/ month</span>
+          {/* Quick Plans */}
+          <div className="relative px-6 py-4 border-t border-white/10">
+            <div className="grid grid-cols-2 gap-3">
+              {/* Pro Plan */}
+              <button
+                onClick={() => handleUpgrade('pro')}
+                disabled={loading}
+                className="p-4 rounded-xl bg-purple-500/10 border border-purple-500/30 hover:border-purple-500/50 transition-all text-left"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <Lightning size={18} weight="fill" className="text-purple-400" />
+                  <span className="text-sm font-medium text-purple-400">Pro</span>
                 </div>
-              </div>
-              <div className="px-3 py-1 rounded-full bg-green-500/20 border border-green-500/30">
-                <span className="text-xs font-medium text-green-400">Save 50%</span>
-              </div>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-2xl font-bold text-foreground">${PLAN_LIMITS.pro.price}</span>
+                  <span className="text-xs text-muted-foreground">/mo</span>
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">100 AI/month</p>
+              </button>
+
+              {/* Unlimited Plan */}
+              <button
+                onClick={() => handleUpgrade('unlimited')}
+                disabled={loading}
+                className="p-4 rounded-xl bg-gradient-to-br from-purple-500/10 to-sky-500/10 border border-sky-500/30 hover:border-sky-500/50 transition-all text-left relative overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 px-2 py-0.5 bg-gradient-to-r from-purple-600 to-sky-500 text-white text-[10px] font-bold rounded-bl">
+                  BEST
+                </div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Crown size={18} weight="fill" className="text-sky-400" />
+                  <span className="text-sm font-medium bg-gradient-to-r from-purple-400 to-sky-400 bg-clip-text text-transparent">Unlimited</span>
+                </div>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-2xl font-bold text-foreground">${PLAN_LIMITS.unlimited.price}</span>
+                  <span className="text-xs text-muted-foreground">/mo</span>
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">∞ Unlimited AI</p>
+              </button>
             </div>
 
-            {/* CTA Button */}
             <button
-              onClick={handleUpgrade}
-              className="w-full py-4 rounded-xl bg-gradient-to-r from-purple-600 to-sky-500 text-white font-semibold text-lg transition-all hover:opacity-90 hover:shadow-lg hover:shadow-purple-500/25 active:scale-[0.98]"
-              style={{ boxShadow: '0 0 20px rgba(109, 40, 217, 0.4)' }}
+              onClick={goToPricing}
+              className="w-full mt-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center justify-center gap-1"
             >
-              Upgrade Now
+              Compare all plans
+              <ArrowRight size={14} />
             </button>
-
-            <p className="text-center text-xs text-muted-foreground mt-4">
-              Cancel anytime. No questions asked.
-            </p>
           </div>
 
           {/* Free tier reminder */}

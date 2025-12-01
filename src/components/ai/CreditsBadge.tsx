@@ -1,6 +1,7 @@
-import { Sparkle, Crown, Rocket } from '@phosphor-icons/react'
+import { Sparkle, Crown, Lightning, Rocket } from '@phosphor-icons/react'
 import { useAuth } from '@/contexts/AuthContext'
-import { openSubscriptionModal } from '@/components/SubscriptionModal'
+import { useSubscription } from '@/contexts/SubscriptionContext'
+import { useNavigate } from 'react-router-dom'
 
 interface CreditsBadgeProps {
   className?: string
@@ -8,42 +9,70 @@ interface CreditsBadgeProps {
 }
 
 /**
- * Displays the user's remaining AI credits or Premium status
+ * Displays the user's remaining AI credits based on subscription
  */
 export function CreditsBadge({ className = '', showLabel = true }: CreditsBadgeProps) {
-  const { user, userProfile } = useAuth()
+  const { user } = useAuth()
+  const { currentPlan, isPaid, getCreditsDisplay, openUpgradeModal } = useSubscription()
+  const navigate = useNavigate()
   
-  if (!user || !userProfile) {
+  if (!user) {
     return null
   }
   
-  // Premium user
-  if (userProfile.isPremium) {
+  // Unlimited user
+  if (currentPlan === 'unlimited') {
     return (
-      <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-500/20 to-yellow-500/20 border border-amber-500/30 ${className}`}>
-        <Crown size={14} weight="fill" className="text-amber-400" />
+      <button 
+        onClick={() => navigate('/pricing')}
+        className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gradient-to-r from-purple-500/20 to-sky-500/20 border border-sky-500/30 hover:opacity-80 transition-all ${className}`}
+        title="Unlimited Plan"
+      >
+        <Crown size={14} weight="fill" className="text-sky-400" />
         {showLabel && (
-          <span className="text-xs font-medium text-amber-400">Premium</span>
+          <span className="text-xs font-medium bg-gradient-to-r from-purple-400 to-sky-400 bg-clip-text text-transparent">Unlimited</span>
         )}
-      </div>
+      </button>
+    )
+  }
+  
+  // Pro user
+  if (currentPlan === 'pro') {
+    const creditsStr = getCreditsDisplay()
+    return (
+      <button 
+        onClick={() => navigate('/pricing')}
+        className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-500/20 border border-purple-500/30 hover:opacity-80 transition-all ${className}`}
+        title={`Pro Plan - ${creditsStr}`}
+      >
+        <Lightning size={14} weight="fill" className="text-purple-400" />
+        {showLabel && (
+          <span className="text-xs font-medium text-purple-400">{creditsStr}</span>
+        )}
+      </button>
     )
   }
   
   // Free user with credits
-  const credits = userProfile.aiCredits
-  const isLow = credits <= 2
-  const isEmpty = credits === 0
+  const creditsStr = getCreditsDisplay()
+  const creditsMatch = creditsStr.match(/(\d+)\/(\d+)/)
+  const remaining = creditsMatch ? parseInt(creditsMatch[1]) : 0
+  const total = creditsMatch ? parseInt(creditsMatch[2]) : 5
+  
+  const isLow = remaining <= 2
+  const isEmpty = remaining === 0
   
   return (
-    <div 
-      className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border transition-colors ${
+    <button 
+      onClick={openUpgradeModal}
+      className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border transition-all hover:opacity-80 ${
         isEmpty 
           ? 'bg-red-500/20 border-red-500/30' 
           : isLow 
             ? 'bg-orange-500/20 border-orange-500/30'
             : 'bg-purple-500/20 border-purple-500/30'
       } ${className}`}
-      title={`${credits} AI credits remaining today`}
+      title={`${remaining} AI credits remaining today - Click to upgrade`}
     >
       <Sparkle 
         size={14} 
@@ -54,10 +83,10 @@ export function CreditsBadge({ className = '', showLabel = true }: CreditsBadgeP
         <span className={`text-xs font-medium ${
           isEmpty ? 'text-red-400' : isLow ? 'text-orange-400' : 'text-purple-400'
         }`}>
-          {credits}/5
+          {remaining}/{total}
         </span>
       )}
-    </div>
+    </button>
   )
 }
 
@@ -65,26 +94,75 @@ export function CreditsBadge({ className = '', showLabel = true }: CreditsBadgeP
  * Full credits display with more details
  */
 export function CreditsDisplay() {
-  const { user, userProfile } = useAuth()
+  const { user } = useAuth()
+  const { currentPlan, getCreditsDisplay, openUpgradeModal } = useSubscription()
+  const navigate = useNavigate()
   
-  if (!user || !userProfile) {
+  if (!user) {
     return null
   }
   
-  if (userProfile.isPremium) {
+  // Unlimited user
+  if (currentPlan === 'unlimited') {
     return (
-      <div className="flex items-center gap-2 p-3 rounded-lg bg-gradient-to-r from-amber-500/10 to-yellow-500/10 border border-amber-500/20">
-        <Crown size={20} weight="fill" className="text-amber-400" />
+      <div className="flex items-center gap-2 p-3 rounded-lg bg-gradient-to-r from-purple-500/10 to-sky-500/10 border border-sky-500/20">
+        <Crown size={20} weight="fill" className="text-sky-400" />
         <div>
-          <p className="text-sm font-medium text-amber-400">Premium Member</p>
-          <p className="text-xs text-muted-foreground">Unlimited AI access</p>
+          <p className="text-sm font-medium bg-gradient-to-r from-purple-400 to-sky-400 bg-clip-text text-transparent">Unlimited Plan</p>
+          <p className="text-xs text-muted-foreground">Unlimited AI access with priority</p>
         </div>
       </div>
     )
   }
   
-  const credits = userProfile.aiCredits
-  const percentage = (credits / 5) * 100
+  // Pro user
+  if (currentPlan === 'pro') {
+    const creditsStr = getCreditsDisplay()
+    const match = creditsStr.match(/(\d+)\/(\d+)/)
+    const remaining = match ? parseInt(match[1]) : 0
+    const total = match ? parseInt(match[2]) : 100
+    const percentage = (remaining / total) * 100
+    
+    return (
+      <div className="p-3 rounded-lg bg-purple-500/10 border border-purple-500/20">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <Lightning size={18} weight="fill" className="text-purple-400" />
+            <span className="text-sm font-medium text-purple-400">Pro Plan</span>
+          </div>
+          <span className="text-sm font-bold text-purple-400">{remaining}/{total}</span>
+        </div>
+        
+        {/* Progress bar */}
+        <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+          <div 
+            className="h-full rounded-full bg-gradient-to-r from-purple-500 to-purple-400 transition-all duration-300"
+            style={{ width: `${percentage}%` }}
+          />
+        </div>
+        
+        <p className="text-xs text-muted-foreground mt-2">
+          {remaining} AI requests remaining this month
+        </p>
+        
+        {/* Upgrade button */}
+        <button
+          onClick={() => navigate('/pricing')}
+          className="w-full mt-3 py-2 px-3 rounded-lg bg-gradient-to-r from-purple-600/20 to-sky-500/20 border border-sky-500/30 text-sky-400 text-xs font-medium hover:from-purple-600/30 hover:to-sky-500/30 transition-all flex items-center justify-center gap-1.5"
+        >
+          <Crown size={14} weight="fill" />
+          Upgrade to Unlimited
+        </button>
+      </div>
+    )
+  }
+  
+  // Free user
+  const creditsStr = getCreditsDisplay()
+  const match = creditsStr.match(/(\d+)\/(\d+)/)
+  const remaining = match ? parseInt(match[1]) : 0
+  const total = match ? parseInt(match[2]) : 5
+  const percentage = (remaining / total) * 100
   
   // Calculate time until midnight UTC (credit reset)
   const getTimeUntilReset = () => {
@@ -102,18 +180,18 @@ export function CreditsDisplay() {
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <Sparkle size={18} weight="fill" className="text-purple-400" />
-          <span className="text-sm font-medium">AI Credits</span>
+          <span className="text-sm font-medium">Free Plan</span>
         </div>
-        <span className="text-sm font-bold text-purple-400">{credits}/5</span>
+        <span className="text-sm font-bold text-purple-400">{remaining}/{total}</span>
       </div>
       
       {/* Progress bar */}
       <div className="h-2 bg-white/10 rounded-full overflow-hidden">
         <div 
           className={`h-full rounded-full transition-all duration-300 ${
-            credits === 0 
+            remaining === 0 
               ? 'bg-red-500' 
-              : credits <= 2 
+              : remaining <= 2 
                 ? 'bg-orange-500'
                 : 'bg-gradient-to-r from-purple-500 to-sky-500'
           }`}
@@ -122,15 +200,15 @@ export function CreditsDisplay() {
       </div>
       
       <p className="text-xs text-muted-foreground mt-2">
-        {credits === 0 
+        {remaining === 0 
           ? `Credits reset in ${getTimeUntilReset()}`
-          : `${credits} free AI request${credits !== 1 ? 's' : ''} remaining today`
+          : `${remaining} free AI request${remaining !== 1 ? 's' : ''} remaining today`
         }
       </p>
       
-      {/* Upgrade button for free users */}
+      {/* Upgrade button */}
       <button
-        onClick={() => openSubscriptionModal()}
+        onClick={openUpgradeModal}
         className="w-full mt-3 py-2 px-3 rounded-lg bg-gradient-to-r from-purple-600/20 to-sky-500/20 border border-purple-500/30 text-purple-400 text-xs font-medium hover:from-purple-600/30 hover:to-sky-500/30 transition-all flex items-center justify-center gap-1.5"
       >
         <Rocket size={14} weight="fill" />

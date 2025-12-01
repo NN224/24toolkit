@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 import { 
   User, 
   Bell, 
@@ -16,9 +17,15 @@ import {
   EnvelopeSimple,
   Lock,
   Eye,
-  EyeSlash
+  EyeSlash,
+  CreditCard,
+  Crown,
+  Rocket,
+  ArrowRight,
+  Sparkle
 } from '@phosphor-icons/react'
 import { useAuth } from '@/contexts/AuthContext'
+import { useSubscription, PLAN_LIMITS } from '@/contexts/SubscriptionContext'
 import { useTheme } from '@/components/ThemeProvider'
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
@@ -47,9 +54,11 @@ export default function SettingsPage() {
   useSEO(metadata)
 
   const { user, signOut } = useAuth()
+  const { currentPlan, isPaid, getCreditsDisplay, subscription } = useSubscription()
   const { theme, setTheme } = useTheme()
+  const navigate = useNavigate()
   
-  const [activeTab, setActiveTab] = useState<'profile' | 'preferences' | 'privacy' | 'account'>('profile')
+  const [activeTab, setActiveTab] = useState<'profile' | 'subscription' | 'preferences' | 'privacy' | 'account'>('profile')
   const [emailNotifications, setEmailNotifications] = useState(true)
   const [pushNotifications, setPushNotifications] = useState(false)
   const [showEmail, setShowEmail] = useState(false)
@@ -144,6 +153,7 @@ export default function SettingsPage() {
 
   const tabs = [
     { id: 'profile', label: 'Profile', icon: User },
+    { id: 'subscription', label: 'Subscription', icon: CreditCard },
     { id: 'preferences', label: 'Preferences', icon: Palette },
     { id: 'privacy', label: 'Privacy', icon: Shield },
     { id: 'account', label: 'Account', icon: Lock },
@@ -267,6 +277,152 @@ export default function SettingsPage() {
                         className="px-6 py-2 bg-gradient-to-r from-purple-600 to-sky-500 text-white rounded-lg font-medium hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {isSaving ? 'Saving...' : 'Save Changes'}
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* Subscription Tab */}
+              {activeTab === 'subscription' && (
+                <>
+                  <div>
+                    <h2 className="text-2xl font-bold mb-4">Subscription</h2>
+                    
+                    {/* Current Plan */}
+                    <div className={`p-6 rounded-xl border-2 mb-6 ${
+                      currentPlan === 'unlimited' 
+                        ? 'bg-gradient-to-br from-purple-500/10 to-sky-500/10 border-sky-500/30'
+                        : currentPlan === 'pro'
+                          ? 'bg-purple-500/10 border-purple-500/30'
+                          : 'bg-card border-white/10'
+                    }`}>
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                          {currentPlan === 'unlimited' ? (
+                            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-sky-500 flex items-center justify-center">
+                              <Crown size={24} weight="fill" className="text-white" />
+                            </div>
+                          ) : currentPlan === 'pro' ? (
+                            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
+                              <Lightning size={24} weight="fill" className="text-white" />
+                            </div>
+                          ) : (
+                            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gray-500 to-gray-600 flex items-center justify-center">
+                              <Sparkle size={24} weight="fill" className="text-white" />
+                            </div>
+                          )}
+                          <div>
+                            <h3 className="text-xl font-bold">
+                              {currentPlan === 'unlimited' ? 'Unlimited' : currentPlan === 'pro' ? 'Pro' : 'Free'} Plan
+                            </h3>
+                            <p className="text-muted-foreground text-sm">
+                              {currentPlan === 'free' ? 'Basic access' : 'Premium features enabled'}
+                            </p>
+                          </div>
+                        </div>
+                        {isPaid && (
+                          <span className="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-medium">
+                            Active
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Credits Display */}
+                      <div className="p-4 bg-white/5 rounded-lg mb-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-muted-foreground">AI Credits</span>
+                          <span className="font-bold">{getCreditsDisplay()}</span>
+                        </div>
+                        <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                          <div 
+                            className={`h-full rounded-full bg-gradient-to-r ${
+                              currentPlan === 'unlimited' 
+                                ? 'from-purple-500 to-sky-500 w-full'
+                                : currentPlan === 'pro'
+                                  ? 'from-purple-500 to-purple-400'
+                                  : 'from-purple-500 to-sky-500'
+                            }`}
+                            style={{ 
+                              width: currentPlan === 'unlimited' ? '100%' : undefined 
+                            }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Actions */}
+                      {isPaid ? (
+                        <button
+                          onClick={async () => {
+                            try {
+                              const response = await fetch('/api/customer-portal', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ 
+                                  customerId: subscription?.stripeCustomerId,
+                                  returnUrl: window.location.href 
+                                }),
+                              })
+                              const data = await response.json()
+                              if (data.url) {
+                                window.location.href = data.url
+                              }
+                            } catch (error) {
+                              toast.error('Failed to open customer portal')
+                            }
+                          }}
+                          className="w-full py-3 rounded-lg bg-white/10 hover:bg-white/20 text-foreground font-medium transition-colors"
+                        >
+                          Manage Subscription
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => navigate('/pricing')}
+                          className="w-full py-3 rounded-lg bg-gradient-to-r from-purple-600 to-sky-500 text-white font-medium hover:opacity-90 transition-all flex items-center justify-center gap-2"
+                        >
+                          <Rocket size={18} weight="fill" />
+                          Upgrade Now
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Plan Comparison */}
+                    <div className="space-y-4">
+                      <h3 className="font-semibold">Compare Plans</h3>
+                      <div className="grid gap-3">
+                        {[
+                          { plan: 'free', name: 'Free', price: '$0', credits: '5/day' },
+                          { plan: 'pro', name: 'Pro', price: '$4.99/mo', credits: '100/month' },
+                          { plan: 'unlimited', name: 'Unlimited', price: '$9.99/mo', credits: '∞ Unlimited' },
+                        ].map((p) => (
+                          <div 
+                            key={p.plan}
+                            className={`flex items-center justify-between p-4 rounded-lg border ${
+                              currentPlan === p.plan 
+                                ? 'border-purple-500 bg-purple-500/10' 
+                                : 'border-white/10 bg-card'
+                            }`}
+                          >
+                            <div className="flex items-center gap-3">
+                              <span className="font-medium">{p.name}</span>
+                              {currentPlan === p.plan && (
+                                <span className="px-2 py-0.5 rounded text-xs bg-purple-500 text-white">Current</span>
+                              )}
+                            </div>
+                            <div className="text-right">
+                              <div className="font-bold">{p.price}</div>
+                              <div className="text-xs text-muted-foreground">{p.credits}</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      
+                      <button
+                        onClick={() => navigate('/pricing')}
+                        className="text-sm text-purple-400 hover:text-purple-300 flex items-center gap-1"
+                      >
+                        View full comparison
+                        <ArrowRight size={14} />
                       </button>
                     </div>
                   </div>

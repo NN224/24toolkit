@@ -17,6 +17,11 @@
 
   "rewrites": [
     { "source": "/api/ai", "destination": "/api/ai.js" },
+    { "source": "/api/create-checkout-session", "destination": "/api/create-checkout-session.js" },
+    { "source": "/api/stripe-webhook", "destination": "/api/stripe-webhook.js" },
+    { "source": "/api/customer-portal", "destination": "/api/customer-portal.js" },
+    { "source": "/api/ssl-check", "destination": "/api/ssl-check.js" },
+    { "source": "/api/ip-check", "destination": "/api/ip-check.js" },
     { "source": "/_spark/llm", "destination": "/api/_spark/llm.ts" },
     { "source": "/_spark/user", "destination": "/api/_spark/user.ts" },
     { "source": "/_spark/loaded", "destination": "/api/_spark/loaded.ts" },
@@ -29,6 +34,22 @@
   "headers": [
     {
       "source": "/api/ai",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "POST, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
+      ]
+    },
+    {
+      "source": "/api/create-checkout-session",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "POST, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
+      ]
+    },
+    {
+      "source": "/api/customer-portal",
       "headers": [
         { "key": "Access-Control-Allow-Origin", "value": "*" },
         { "key": "Access-Control-Allow-Methods", "value": "POST, OPTIONS" },

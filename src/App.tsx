@@ -7,6 +7,7 @@ import { GoogleAnalytics } from '@/components/GoogleAnalytics'
 import { CookieConsent } from '@/components/CookieConsent'
 import { UserProgress } from '@/components/UserProgress'
 import { AuthProvider } from '@/contexts/AuthContext'
+import { SubscriptionProvider } from '@/contexts/SubscriptionContext'
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { SubscriptionModal } from '@/components/SubscriptionModal'
@@ -18,6 +19,7 @@ import ContactPage from '@/pages/ContactPage'
 import SitemapPage from '@/pages/SitemapPage'
 import SettingsPage from '@/pages/SettingsPage'
 import SignInPage from '@/pages/SignInPage'
+import PricingPage from '@/pages/PricingPage'
 
 /*
  * React 19 Compatibility Notes:
@@ -142,6 +144,7 @@ function App() {
 
   return (
     <AuthProvider>
+      <SubscriptionProvider>
       <BrowserRouter>
         <GoogleAnalytics />
         <CookieConsent />
@@ -162,6 +165,7 @@ function App() {
           <Route path="sitemap" element={<SitemapPage />} />
           <Route path="settings" element={<SettingsPage />} />
           <Route path="sign-in" element={<SignInPage />} />
+          <Route path="pricing" element={<PricingPage />} />
           <Route path="tools/word-counter" element={<Suspense fallback={<LoadingFallback name="Word Counter" />}><WordCounter /></Suspense>} />
           <Route path="tools/password-generator" element={<Suspense fallback={<LoadingFallback name="Password Generator" />}><PasswordGenerator /></Suspense>} />
           <Route path="tools/qr-generator" element={<Suspense fallback={<LoadingFallback name="QR Generator" />}><QRGenerator /></Suspense>} />
@@ -438,6 +442,7 @@ function App() {
         </ErrorBoundary>
         <Toaster position="top-center" />
       </BrowserRouter>
+      </SubscriptionProvider>
     </AuthProvider>
   )
 }
