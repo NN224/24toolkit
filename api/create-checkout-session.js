@@ -4,31 +4,29 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: '2023-10-16',
 });
 
-export const config = {
-  runtime: 'edge',
-};
+export default async function handler(req, res) {
+  // CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-export default async function handler(req) {
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   if (req.method !== 'POST') {
-    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
-      status: 405,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    const body = await req.json();
-    const { priceId, userId, userEmail, successUrl, cancelUrl } = body;
+    const { priceId, userId, userEmail, successUrl, cancelUrl } = req.body;
 
     if (!priceId || !userId) {
-      return new Response(JSON.stringify({ error: 'Missing required fields' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return res.status(400).json({ error: 'Missing required fields' });
     }
 
     // Determine plan details for custom display
-    const isPro = priceId.includes('pro');
+    const isPro = priceId.includes('eID'); // Pro price ID contains 'eID'
     const planName = isPro ? 'Pro Plan' : 'Unlimited Plan';
     const planDescription = isPro 
       ? '100 AI requests/month • No ads • Smart History'
@@ -44,10 +42,8 @@ export default async function handler(req) {
           quantity: 1,
         },
       ],
-      // Custom product display with image
-      line_item_overrides: undefined, // Use price's default
-      success_url: successUrl || `${process.env.NEXT_PUBLIC_URL || 'https://24toolkit.com'}/settings?success=true`,
-      cancel_url: cancelUrl || `${process.env.NEXT_PUBLIC_URL || 'https://24toolkit.com'}/pricing?canceled=true`,
+      success_url: successUrl || 'https://24toolkit.com/settings?success=true',
+      cancel_url: cancelUrl || 'https://24toolkit.com/pricing?canceled=true',
       customer_email: userEmail,
       client_reference_id: userId,
       metadata: {
@@ -61,30 +57,17 @@ export default async function handler(req) {
         },
       },
       allow_promotion_codes: true,
-      // Branding customization
       custom_text: {
         submit: {
           message: `🚀 Unlock ${planName} - ${planDescription}`,
         },
-        terms_of_service_acceptance: {
-          message: 'I agree to the [Terms of Service](https://24toolkit.com/terms-of-service)',
-        },
-      },
-      consent_collection: {
-        terms_of_service: 'required',
       },
     });
 
-    return new Response(JSON.stringify({ url: session.url }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return res.status(200).json({ url: session.url });
 
   } catch (error) {
     console.error('Checkout error:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return res.status(500).json({ error: error.message });
   }
 }
