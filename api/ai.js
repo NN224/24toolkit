@@ -133,43 +133,36 @@ export default async function handler(req, res) {
       res.setHeader('Cache-Control', 'no-cache');
       res.setHeader('Connection', 'keep-alive');
 
-      // Add timeout for API call
-      const timeoutMs = 30000; // 30 seconds
-      const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error('Request timeout')), timeoutMs);
-      });
+      logger.info('Starting Anthropic request', { model, promptLength: prompt.length });
 
-      const streamPromise = anthropic.messages.stream({
-        model: model,
-        max_tokens: 2048,
-        messages: [{ role: 'user', content: prompt }],
-      });
+      try {
+        // Use streaming with proper async handling
+        const stream = anthropic.messages.stream({
+          model: model,
+          max_tokens: 2048,
+          messages: [{ role: 'user', content: prompt }],
+        });
 
-      logger.info('Starting Anthropic stream', { model, promptLength: prompt.length });
-      
-      const stream = await Promise.race([streamPromise, timeoutPromise]);
+        // Handle the stream using the async iterator
+        for await (const event of stream) {
+          if (event.type === 'content_block_delta' && event.delta?.text) {
+            await deductCreditsOnce();
+            res.write(`data: ${JSON.stringify({ text: event.delta.text })}\n\n`);
+          }
+        }
 
-      let hasReceivedText = false;
-      
-      stream.on('text', async (text) => {
-        hasReceivedText = true;
-        // Deduct credit on first successful text chunk
-        await deductCreditsOnce();
-        res.write(`data: ${JSON.stringify({ text })}\n\n`);
-      });
-
-      stream.on('end', () => {
-        logger.info('Anthropic stream ended', { hasReceivedText });
         res.write('data: [DONE]\n\n');
         res.end();
         logger.logResponse(req.method, '/api/ai', 200, Date.now() - startTime, { provider });
-      });
-
-      stream.on('error', (error) => {
-        logger.error('Anthropic streaming error', error, { provider, model, errorMessage: error.message });
-        res.write(`data: ${JSON.stringify({ error: sanitizeErrorMessage(error) })}\n\n`);
+        
+      } catch (streamError) {
+        logger.error('Anthropic error', streamError, { provider, model });
+        if (!res.headersSent) {
+          return res.status(500).json({ error: streamError.message });
+        }
+        res.write(`data: ${JSON.stringify({ error: streamError.message })}\n\n`);
         res.end();
-      });
+      }
 
     } else if (provider === 'groq') {
       const apiKey = process.env.GROQ_API_KEY;
