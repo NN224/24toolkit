@@ -33,22 +33,22 @@ async function getAuthToken(): Promise<string | null> {
 }
 
 /**
- * Call the AI API with streaming support
+ * Supported AI providers
+ */
+export type AIProvider = 'anthropic' | 'groq' | 'gemini' | 'openrouter'
+
+/**
+ * Call the AI API with streaming support and automatic fallback
  * @param prompt - The prompt to send to the AI
- * @param provider - The AI provider ('anthropic' or 'groq')
+ * @param provider - The preferred AI provider (will fallback to others if unavailable)
  * @param onUpdate - Callback function called with accumulated text as it streams
  * @returns The final accumulated text
  */
 export async function callAI(
   prompt: string,
-  provider: 'anthropic' | 'groq',
+  provider: AIProvider = 'anthropic',
   onUpdate?: (text: string) => void
 ): Promise<string> {
-  const modelMap = {
-    anthropic: 'claude-3-5-haiku-20241022',
-    groq: 'llama-3.3-70b-versatile'
-  }
-
   // Get auth token for credit system
   const authToken = await getAuthToken()
   
@@ -64,46 +64,52 @@ export async function callAI(
     method: 'POST',
     headers,
     body: JSON.stringify({
-      prompt: prompt,
-      provider: provider,
-      model: modelMap[provider]
+      prompt,
+      provider,
     }),
   })
 
   if (!response.ok) {
-    const errorData = await response.json()
+    let errorData
+    try {
+      errorData = await response.json()
+    } catch {
+      throw new Error(`HTTP error ${response.status}`)
+    }
     
     // Handle specific error codes
-    if (errorData.code === 'CREDITS_EXHAUSTED') {
+    if (errorData.error === 'NO_CREDITS' || errorData.code === 'CREDITS_EXHAUSTED') {
       throw new AIError(
-        errorData.error || 'Daily limit reached',
+        errorData.message || errorData.error || 'Daily limit reached',
         'CREDITS_EXHAUSTED',
-        errorData.creditsRemaining,
+        errorData.remainingCredits || errorData.creditsRemaining,
         errorData.isPremium
       )
     }
     
-    if (errorData.code === 'AUTH_REQUIRED') {
+    if (errorData.error === 'AUTH_FAILED' || errorData.code === 'AUTH_FAILED') {
       throw new AIError(
-        errorData.error || 'Please sign in to use AI features',
-        'AUTH_REQUIRED'
-      )
-    }
-    
-    if (errorData.code === 'AUTH_FAILED') {
-      throw new AIError(
-        errorData.error || 'Authentication failed',
+        errorData.message || errorData.error || 'Authentication failed',
         'AUTH_FAILED'
       )
     }
     
-    throw new Error(errorData.error || 'Failed to process AI request')
+    if (errorData.error === 'ALL_PROVIDERS_FAILED') {
+      throw new AIError(
+        errorData.message || 'All AI providers are currently unavailable',
+        'SERVICE_UNAVAILABLE'
+      )
+    }
+    
+    throw new Error(errorData.message || errorData.error || 'Failed to process AI request')
   }
 
-  // Handle streaming response
+  // Handle SSE streaming response
   const reader = response.body?.getReader()
   const decoder = new TextDecoder()
   let accumulatedText = ''
+  let usedProvider: string | undefined
+  let buffer = ''
 
   if (!reader) {
     throw new Error('No response body')
@@ -113,35 +119,72 @@ export async function callAI(
     const { done, value } = await reader.read()
     if (done) break
 
-    const chunk = decoder.decode(value)
-    const lines = chunk.split('\n')
+    buffer += decoder.decode(value, { stream: true })
+    const lines = buffer.split('\n')
+    
+    // Keep the last incomplete line in the buffer
+    buffer = lines.pop() || ''
 
     for (const line of lines) {
-      if (line.startsWith('data: ')) {
-        const data = line.slice(6)
-        if (data === '[DONE]') {
-          break
+      const trimmedLine = line.trim()
+      if (!trimmedLine || !trimmedLine.startsWith('data: ')) continue
+      
+      const data = trimmedLine.slice(6).trim()
+      if (data === '[DONE]') continue
+      
+      try {
+        const parsed = JSON.parse(data)
+        
+        if (parsed.text) {
+          accumulatedText += parsed.text
+          if (onUpdate) {
+            onUpdate(accumulatedText)
+          }
         }
         
-        try {
-          const parsed = JSON.parse(data)
-          if (parsed.text) {
-            accumulatedText += parsed.text
-            if (onUpdate) {
-              onUpdate(accumulatedText)
-            }
-          } else if (parsed.error) {
-            throw new Error(parsed.error)
+        if (parsed.done && parsed.provider) {
+          usedProvider = parsed.provider
+        }
+        
+        if (parsed.error) {
+          throw new Error(parsed.message || 'Stream error')
+        }
+      } catch (parseError) {
+        // Skip invalid JSON lines (not an error, just incomplete data)
+        if (data && !data.startsWith('{')) {
+          // This might be raw text from an older format
+          accumulatedText += data
+          if (onUpdate) {
+            onUpdate(accumulatedText)
           }
-        } catch (parseError) {
-          // Skip invalid JSON lines
         }
       }
+    }
+  }
+  
+  // Process any remaining data in buffer
+  if (buffer.trim().startsWith('data: ')) {
+    try {
+      const data = buffer.trim().slice(6).trim()
+      const parsed = JSON.parse(data)
+      if (parsed.text) {
+        accumulatedText += parsed.text
+        if (onUpdate) {
+          onUpdate(accumulatedText)
+        }
+      }
+    } catch {
+      // Ignore final buffer parsing errors
     }
   }
 
   if (!accumulatedText) {
     throw new Error('No response from AI')
+  }
+
+  // Log which provider was used (for debugging)
+  if (usedProvider) {
+    console.debug(`AI response from: ${usedProvider}`)
   }
 
   return accumulatedText
