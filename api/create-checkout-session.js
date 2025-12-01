@@ -20,9 +20,14 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Stripe is not configured' });
   }
 
+  // Log key prefix for debugging (safe - only first 10 chars)
+  console.log('Stripe key prefix:', process.env.STRIPE_SECRET_KEY.substring(0, 10));
+
   try {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-      apiVersion: '2023-10-16',
+      apiVersion: '2024-11-20.acacia',
+      timeout: 30000,
+      maxNetworkRetries: 3,
     });
 
     // Parse body if needed
