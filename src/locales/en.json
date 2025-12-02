@@ -830,7 +830,26 @@
       "type": "Type",
       "quality": "Quality",
       "width": "Width",
-      "height": "Height"
+      "height": "Height",
+      "aiPowered": "AI-Powered",
+      "approachingLimit": "Approaching daily limit",
+      "characters": "Characters",
+      "clearAll": "Clear All",
+      "copiedToClipboard": "Copied to clipboard!",
+      "copyFailed": "Failed to copy",
+      "copyResult": "Copy Result",
+      "copyText": "Copy Text",
+      "delete": "Delete",
+      "imageLoaded": "Image loaded!",
+      "invalidInput": "Invalid input",
+      "loading": "Loading...",
+      "note": "Note",
+      "pleaseEnterText": "Please enter some text",
+      "pleaseSelectImage": "Please select an image",
+      "pleaseUploadImage": "Please upload an image first",
+      "poweredByAI": "Powered by AI",
+      "share": "Share",
+      "typeOrPaste": "Type or paste your text here..."
     },
     "aiIdeaAnalyzer": {
       "name": "AI Idea Analyzer",
@@ -854,7 +873,16 @@
       "name": "AI Text Summarizer",
       "description": "Transform long articles into concise summaries",
       "summaryResult": "Summary Result",
-      "summaryAppear": "Your summary will appear here"
+      "summaryAppear": "Your summary will appear here",
+      "detailed": "Detailed",
+      "inputText": "Input Text",
+      "medium": "Medium",
+      "pasteText": "Paste your text here",
+      "placeholder": "Paste the text you want to summarize...",
+      "short": "Short",
+      "summarize": "Summarize",
+      "summarized": "Text summarized!",
+      "summaryLength": "Summary Length"
     },
     "paragraphRewriter": {
       "name": "AI Paragraph Rewriter",
@@ -894,7 +922,11 @@
       "formatFailed": "Failed to format code",
       "explained": "Code explained!",
       "explainFailed": "Failed to explain code",
-      "enterCode": "Please enter code"
+      "enterCode": "Please enter code",
+      "format": "Format",
+      "formattedCode": "Formatted Code",
+      "inputCode": "Input Code",
+      "selectLanguage": "Select Language"
     },
     "imageCaptionGenerator": {
       "name": "AI Image Caption",
@@ -925,11 +957,27 @@
       "description": "Fix grammar, spelling, and style errors",
       "corrected": "Grammar corrected!",
       "noCorrections": "No corrections needed",
-      "checkFailed": "Failed to check grammar"
+      "checkFailed": "Failed to check grammar",
+      "correct": "Correct Grammar",
+      "correctedText": "Corrected Text",
+      "correctedTextDescription": "Your grammar-corrected text",
+      "correcting": "Correcting...",
+      "correctionsMade": "corrections made",
+      "enterText": "Enter text to check",
+      "enterTextDescription": "Type or paste text to check grammar"
     },
     "aiTranslator": {
       "name": "AI Translator",
-      "description": "Translate text between multiple languages"
+      "description": "Translate text between multiple languages",
+      "aiPoweredTranslation": "AI-Powered Translation",
+      "enterTextToTranslate": "Enter text to translate",
+      "naturalTranslations": "Natural, context-aware translations",
+      "targetLanguage": "Target Language",
+      "textToTranslate": "Text to Translate",
+      "translate": "Translate",
+      "translating": "Translating...",
+      "translation": "Translation",
+      "translationComplete": "Translation complete!"
     },
     "aiEmailWriter": {
       "name": "AI Email Writer",
@@ -981,11 +1029,25 @@
       "sentences": "Sentences",
       "paragraphs": "Paragraphs",
       "readingTime": "Reading Time",
-      "speakingTime": "Speaking Time"
+      "speakingTime": "Speaking Time",
+      "charactersNoSpaces": "Characters (no spaces)",
+      "enterText": "Enter your text here",
+      "minuteShort": "min",
+      "startTyping": "Start typing to see statistics"
     },
     "textCaseConverter": {
       "name": "Text Case Converter",
       "description": "Convert text between multiple case formats",
+      "enterText": "Enter Your Text",
+      "typeOrPaste": "Type or paste your text to convert",
+      "convertedResult": "Converted Result",
+      "textReady": "Your converted text is ready to use",
+      "convertedToUppercase": "Converted to UPPERCASE",
+      "convertedToLowercase": "Converted to lowercase",
+      "convertedToTitleCase": "Converted to Title Case",
+      "convertedToSentenceCase": "Converted to Sentence case",
+      "convertedToCamelCase": "Converted to camelCase",
+      "convertedToSnakeCase": "Converted to snake_case",
       "uppercase": "UPPERCASE",
       "lowercase": "lowercase",
       "titleCase": "Title Case",
@@ -1037,14 +1099,24 @@
       "replaceAll": "Replace All",
       "caseSensitive": "Case Sensitive",
       "useRegex": "Use Regex",
-      "matchesFound": "matches found"
+      "matchesFound": "matches found",
+      "enterText": "Enter text to search and replace",
+      "noMatches": "No matches found",
+      "replaced": "Text replaced!"
     },
     "emojiTool": {
       "name": "Emoji Tool",
       "description": "Add or remove emojis from text",
       "addEmojis": "Add Emojis",
       "removeEmojis": "Remove Emojis",
-      "emojiCount": "Emoji Count"
+      "emojiCount": "Emoji Count",
+      "addRandomEmojis": "Add Random Emojis",
+      "cardDescription": "Add or remove emojis from your text",
+      "emojisRemoved": "Emojis removed!",
+      "enterYourText": "Enter your text",
+      "quickAddEmojis": "Quick Add Emojis",
+      "randomEmojisAdded": "Random emojis added!",
+      "removeAllEmojis": "Remove All Emojis"
     },
     "textDiffChecker": {
       "name": "Text Diff Checker",
@@ -1167,15 +1239,49 @@
       "validJson": "Valid JSON",
       "invalidJson": "Invalid JSON",
       "minify": "Minify",
-      "beautify": "Beautify"
+      "beautify": "Beautify",
+      "beautified": "JSON beautified!",
+      "copyJson": "Copy JSON",
+      "enterJson": "Enter JSON to format",
+      "enterJsonToMinify": "Enter JSON to minify",
+      "formattedJson": "Formatted JSON",
+      "formattedWillAppear": "Formatted JSON will appear here",
+      "inputJson": "Input JSON",
+      "minified": "JSON minified!",
+      "output": "Output",
+      "pasteJson": "Paste your JSON here"
     },
     "base64Tool": {
       "name": "Base64 Encoder/Decoder",
-      "description": "Encode and decode Base64 strings"
+      "description": "Encode and decode Base64 strings",
+      "aboutBase64": "About Base64",
+      "aboutDescription": "Base64 is a binary-to-text encoding scheme",
+      "decode": "Decode",
+      "decoded": "Decoded!",
+      "decodedResult": "Decoded Result",
+      "encode": "Encode",
+      "encoded": "Encoded!",
+      "encodedResult": "Encoded Result",
+      "enterBase64String": "Enter Base64 string",
+      "enterBase64ToDecode": "Enter Base64 text to decode",
+      "enterPlainText": "Enter plain text",
+      "enterTextToEncode": "Enter text to encode",
+      "input": "Input",
+      "invalidBase64": "Invalid Base64 string",
+      "output": "Output",
+      "resultWillAppear": "Result will appear here"
     },
     "urlEncoderDecoder": {
       "name": "URL Encoder/Decoder",
-      "description": "Encode and decode URLs"
+      "description": "Encode and decode URLs",
+      "decode": "Decode",
+      "decoded": "Decoded!",
+      "encode": "Encode",
+      "encoded": "Encoded!",
+      "enterText": "Enter text or URL",
+      "input": "Input",
+      "output": "Output",
+      "resultWillAppear": "Result will appear here"
     },
     "uuidGenerator": {
       "name": "UUID Generator",
@@ -1249,7 +1355,12 @@
       "markdownCopied": "Markdown copied!",
       "htmlCopied": "HTML copied!",
       "copyFailed": "Failed to copy",
-      "cleared": "Cleared"
+      "cleared": "Cleared",
+      "editor": "Editor",
+      "preview": "Preview",
+      "previewPlaceholder": "Markdown preview will appear here...",
+      "quickReference": "Quick Reference",
+      "renderedOutput": "Rendered Output"
     },
     "jsonCsvConverter": {
       "name": "JSON ⇄ CSV",
@@ -1285,7 +1396,18 @@
       "description": "Resize images with custom dimensions",
       "maintainRatio": "Maintain Aspect Ratio",
       "originalSize": "Original Size",
-      "newSize": "New Size"
+      "newSize": "New Size",
+      "download": "Download",
+      "enterDimensions": "Enter dimensions",
+      "height": "Height",
+      "resize": "Resize",
+      "resized": "Image resized!",
+      "resizedPreview": "Resized Preview",
+      "resizedWillAppear": "Resized image will appear here",
+      "selectImageDimensions": "Select image and set dimensions",
+      "uploadConfigure": "Upload and configure",
+      "uploadImage": "Upload Image",
+      "width": "Width"
     },
     "imageCropper": {
       "name": "Image Cropper",
@@ -1477,7 +1599,23 @@
       "compressionLevel": "Compression Level",
       "originalSize": "Original Size",
       "compressedSize": "Compressed Size",
-      "savings": "Savings"
+      "savings": "Savings",
+      "chooseImage": "Choose Image",
+      "chooseToStart": "Choose an image to start",
+      "compressImage": "Compress Image",
+      "compressed": "Image compressed!",
+      "compressing": "Compressing...",
+      "compressionQuality": "Compression Quality",
+      "downloaded": "Image downloaded!",
+      "fileSizeLimit": "Max file size: 10MB",
+      "imageLoaded": "Image loaded!",
+      "noImageSelected": "No image selected",
+      "original": "Original",
+      "saved": "Saved",
+      "selectImage": "Select Image",
+      "selectImageFile": "Select an image file",
+      "smaller": "smaller",
+      "uploadImage": "Upload Image"
     },
     "imageToText": {
       "name": "Image to Text (OCR)",
@@ -1512,7 +1650,15 @@
       "name": "Hash Generator",
       "description": "Generate cryptographic hashes",
       "algorithm": "Algorithm",
-      "hashValue": "Hash Value"
+      "hashValue": "Hash Value",
+      "enterTextToHash": "Enter text to generate hash",
+      "generate": "Generate Hash",
+      "generated": "Hash generated!",
+      "generatedHashes": "Generated Hashes",
+      "hashResults": "Hash Results",
+      "inputText": "Input Text",
+      "placeholder": "Enter text to hash...",
+      "text": "Text"
     },
     "passwordStrengthChecker": {
       "name": "Password Strength Checker",
@@ -1633,7 +1779,34 @@
       "issuer": "Issuer",
       "validFrom": "Valid From",
       "validTo": "Valid To",
-      "daysRemaining": "Days Remaining"
+      "daysRemaining": "Days Remaining",
+      "certificateDetails": "Certificate Details",
+      "certificateExpired": "Certificate has expired!",
+      "certificateType": "Certificate Type",
+      "certificateValid": "Certificate is valid",
+      "checkCertificate": "Check Certificate",
+      "checkCompleted": "SSL check completed!",
+      "checkDomain": "Check Domain",
+      "checkDomainDescription": "Enter a domain name to check its SSL certificate",
+      "checkFailed": "Failed to check SSL certificate",
+      "checking": "Checking...",
+      "cipher": "Cipher",
+      "domain": "Domain",
+      "domainName": "Domain Name",
+      "enterDomain": "Enter a domain name",
+      "expired": "Expired",
+      "expiresIn": "Expires in",
+      "networkError": "Network error occurred",
+      "protocol": "Protocol",
+      "renewSoon": "Certificate expires soon - renew recommended",
+      "sha256Fingerprint": "SHA-256 Fingerprint",
+      "sslCheckFailed": "SSL certificate check failed",
+      "statusExpired": "Expired",
+      "statusInvalid": "Invalid",
+      "statusValid": "Valid",
+      "subject": "Subject",
+      "subtitle": "Check SSL certificate validity and details for any domain",
+      "title": "SSL Certificate Checker"
     },
     "textEncryptor": {
       "name": "Text Encryptor",
@@ -1709,7 +1882,22 @@
       "description": "Calculate percentages easily",
       "whatIsPercent": "What is X% of Y?",
       "xIsWhatPercent": "X is what % of Y?",
-      "percentChange": "Percent Change"
+      "percentChange": "Percent Change",
+      "basePlaceholder": "Enter base value",
+      "baseValue": "Base Value",
+      "calculateAfterChange": "Calculate after change",
+      "change": "Change",
+      "changePlaceholder": "Enter change percentage",
+      "findPercentage": "Find Percentage",
+      "increaseDecrease": "Increase/Decrease",
+      "newValue": "New Value",
+      "num1Placeholder": "Enter first number",
+      "ofValue": "of",
+      "outOf": "out of",
+      "percentPlaceholder": "Enter percentage",
+      "percentage": "Percentage",
+      "value": "Value",
+      "valuePlaceholder": "Enter value"
     },
     "ageCalculator": {
       "name": "Age Calculator",
@@ -1719,7 +1907,14 @@
       "years": "Years",
       "months": "Months",
       "days": "Days",
-      "nextBirthday": "Next Birthday"
+      "nextBirthday": "Next Birthday",
+      "enterBirthDate": "Enter your birth date",
+      "leaveEmptyForToday": "Leave empty for today",
+      "targetDate": "Target Date",
+      "toNextBirthday": "Days to next birthday",
+      "totalDays": "Total Days",
+      "totalHours": "Total Hours",
+      "yourAge": "Your Age"
     },
     "bmiCalculator": {
       "name": "BMI Calculator",
@@ -1764,7 +1959,8 @@
       "originalPrice": "Original Price",
       "discountPercent": "Discount %",
       "discountAmount": "Discount Amount",
-      "finalPrice": "Final Price"
+      "finalPrice": "Final Price",
+      "customPercent": "Custom %"
     },
     "currencyConverter": {
       "name": "Currency Converter",
@@ -1780,11 +1976,33 @@
       "description": "Convert between various units",
       "category": "Category",
       "fromUnit": "From Unit",
-      "toUnit": "To Unit"
+      "toUnit": "To Unit",
+      "from": "From",
+      "selectCategory": "Select Category",
+      "to": "To",
+      "value": "Value"
     },
     "passwordGenerator": {
       "name": "Password Generator",
-      "description": "Generate secure random passwords"
+      "description": "Generate secure random passwords",
+      "clickGenerate": "Click Generate to create a password",
+      "customize": "Customize",
+      "generate": "Generate",
+      "generated": "Password generated!",
+      "generatedPassword": "Generated Password",
+      "length": "Length",
+      "lowercase": "Lowercase",
+      "medium": "Medium",
+      "none": "None",
+      "numbers": "Numbers",
+      "options": "Options",
+      "passwordWillAppear": "Your password will appear here",
+      "selectCharType": "Select at least one character type",
+      "strength": "Strength",
+      "strong": "Strong",
+      "symbols": "Symbols",
+      "uppercase": "Uppercase",
+      "weak": "Weak"
     },
     "qrGenerator": {
       "name": "QR Code Generator",
@@ -1792,7 +2010,17 @@
       "content": "Content",
       "size": "Size",
       "color": "Color",
-      "backgroundColor": "Background Color"
+      "backgroundColor": "Background Color",
+      "downloadPng": "Download PNG",
+      "downloaded": "QR code downloaded!",
+      "enterTextFirst": "Enter text first",
+      "enterTextOrUrl": "Enter text or URL",
+      "enterToGenerate": "Enter text or URL to generate QR code",
+      "placeholder": "Enter text or URL...",
+      "preview": "Preview",
+      "previewDescription": "Your QR code preview",
+      "settings": "Settings",
+      "textOrUrl": "Text or URL"
     },
     "colorPicker": {
       "name": "Color Picker",
@@ -1802,7 +2030,14 @@
       "hsl": "HSL",
       "complementary": "Complementary",
       "analogous": "Analogous",
-      "triadic": "Triadic"
+      "triadic": "Triadic",
+      "colorPickerCard": "Color Picker",
+      "generatePalette": "Generate Palette",
+      "paletteDescription": "Generate beautiful color palettes",
+      "paletteGenerated": "Palette generated!",
+      "paletteGenerator": "Palette Generator",
+      "pickColor": "Pick Color",
+      "selectColor": "Select a Color"
     },
     "randomQuoteGenerator": {
       "name": "Random Quote Generator",
@@ -1826,7 +2061,11 @@
       "description": "Generate placeholder text",
       "paragraphCount": "Paragraphs",
       "wordCount": "Words",
-      "sentenceCount": "Sentences"
+      "sentenceCount": "Sentences",
+      "generate": "Generate",
+      "generatedText": "Generated Text",
+      "options": "Options",
+      "paragraphs": "Paragraphs"
     },
     "randomNumberPicker": {
       "name": "Random Number Picker",

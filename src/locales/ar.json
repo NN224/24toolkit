@@ -894,7 +894,11 @@
       "formatFailed": "فشل تنسيق الكود",
       "explained": "تم شرح الكود!",
       "explainFailed": "فشل شرح الكود",
-      "enterCode": "الرجاء إدخال كود"
+      "enterCode": "الرجاء إدخال كود",
+      "format": "تنسيق",
+      "formattedCode": "الكود المُنسَّق",
+      "inputCode": "إدخال الكود",
+      "selectLanguage": "اختر اللغة"
     },
     "imageCaptionGenerator": {
       "name": "مولد وصف الصور",
@@ -925,7 +929,14 @@
       "description": "إصلاح الأخطاء النحوية والإملائية والأسلوبية",
       "corrected": "تم تصحيح القواعد!",
       "noCorrections": "لا توجد تصحيحات مطلوبة",
-      "checkFailed": "فشل التحقق من القواعد"
+      "checkFailed": "فشل التحقق من القواعد",
+      "correct": "تصحيح القواعد",
+      "correctedText": "النص المُصحَّح",
+      "correctedTextDescription": "نصك المُصحَّح نحوياً",
+      "correcting": "جارٍ التصحيح...",
+      "correctionsMade": "تصحيحات",
+      "enterText": "أدخل نصاً للفحص",
+      "enterTextDescription": "اكتب أو الصق نصاً لفحص القواعد"
     },
     "aiTranslator": {
       "name": "المترجم الذكي",
@@ -981,11 +992,25 @@
       "sentences": "الجمل",
       "paragraphs": "الفقرات",
       "readingTime": "وقت القراءة",
-      "speakingTime": "وقت التحدث"
+      "speakingTime": "وقت التحدث",
+      "charactersNoSpaces": "الأحرف (بدون مسافات)",
+      "enterText": "أدخل نصك هنا",
+      "minuteShort": "د",
+      "startTyping": "ابدأ الكتابة لرؤية الإحصائيات"
     },
     "textCaseConverter": {
       "name": "محول حالة النص",
       "description": "تحويل النص بين صيغ متعددة",
+      "enterText": "أدخل النص",
+      "typeOrPaste": "اكتب أو الصق النص للتحويل",
+      "convertedResult": "النتيجة المحولة",
+      "textReady": "النص المحول جاهز للاستخدام",
+      "convertedToUppercase": "تم التحويل لأحرف كبيرة",
+      "convertedToLowercase": "تم التحويل لأحرف صغيرة",
+      "convertedToTitleCase": "تم التحويل لحالة العنوان",
+      "convertedToSentenceCase": "تم التحويل لحالة الجملة",
+      "convertedToCamelCase": "تم التحويل لـ camelCase",
+      "convertedToSnakeCase": "تم التحويل لـ snake_case",
       "uppercase": "أحرف كبيرة",
       "lowercase": "أحرف صغيرة",
       "titleCase": "حالة العنوان",
@@ -1037,14 +1062,24 @@
       "replaceAll": "استبدال الكل",
       "caseSensitive": "حساس لحالة الأحرف",
       "useRegex": "استخدام Regex",
-      "matchesFound": "تطابقات"
+      "matchesFound": "تطابقات",
+      "enterText": "أدخل نصاً للبحث والاستبدال",
+      "noMatches": "لا توجد تطابقات",
+      "replaced": "تم الاستبدال!"
     },
     "emojiTool": {
       "name": "أداة الإيموجي",
       "description": "إضافة أو إزالة الإيموجي من النص",
       "addEmojis": "إضافة إيموجي",
       "removeEmojis": "إزالة الإيموجي",
-      "emojiCount": "عدد الإيموجي"
+      "emojiCount": "عدد الإيموجي",
+      "addRandomEmojis": "إضافة إيموجي عشوائية",
+      "cardDescription": "إضافة أو إزالة الإيموجي من نصك",
+      "emojisRemoved": "تم إزالة الإيموجي!",
+      "enterYourText": "أدخل نصك",
+      "quickAddEmojis": "إضافة سريعة للإيموجي",
+      "randomEmojisAdded": "تم إضافة إيموجي عشوائية!",
+      "removeAllEmojis": "إزالة جميع الإيموجي"
     },
     "textDiffChecker": {
       "name": "مقارن النصوص",
@@ -1167,7 +1202,17 @@
       "validJson": "JSON صالح",
       "invalidJson": "JSON غير صالح",
       "minify": "تصغير",
-      "beautify": "تجميل"
+      "beautify": "تجميل",
+      "beautified": "تم تجميل JSON!",
+      "copyJson": "نسخ JSON",
+      "enterJson": "أدخل JSON للتنسيق",
+      "enterJsonToMinify": "أدخل JSON للتصغير",
+      "formattedJson": "JSON المُنسَّق",
+      "formattedWillAppear": "سيظهر JSON المُنسَّق هنا",
+      "inputJson": "إدخال JSON",
+      "minified": "تم تصغير JSON!",
+      "output": "الإخراج",
+      "pasteJson": "الصق JSON هنا"
     },
     "base64Tool": {
       "name": "Base64 ترميز/فك",
@@ -1249,7 +1294,12 @@
       "markdownCopied": "تم نسخ Markdown!",
       "htmlCopied": "تم نسخ HTML!",
       "copyFailed": "فشل النسخ",
-      "cleared": "تم المسح"
+      "cleared": "تم المسح",
+      "editor": "المحرر",
+      "preview": "المعاينة",
+      "previewPlaceholder": "ستظهر معاينة Markdown هنا...",
+      "quickReference": "مرجع سريع",
+      "renderedOutput": "الإخراج المُعالَج"
     },
     "jsonCsvConverter": {
       "name": "JSON ⇄ CSV",
@@ -1285,7 +1335,18 @@
       "description": "تغيير حجم الصور بأبعاد مخصصة",
       "maintainRatio": "الحفاظ على النسبة",
       "originalSize": "الحجم الأصلي",
-      "newSize": "الحجم الجديد"
+      "newSize": "الحجم الجديد",
+      "download": "تحميل",
+      "enterDimensions": "أدخل الأبعاد",
+      "height": "الارتفاع",
+      "resize": "تغيير الحجم",
+      "resized": "تم تغيير الحجم!",
+      "resizedPreview": "معاينة الحجم الجديد",
+      "resizedWillAppear": "ستظهر الصورة المُعدَّلة هنا",
+      "selectImageDimensions": "اختر صورة وحدد الأبعاد",
+      "uploadConfigure": "رفع وتكوين",
+      "uploadImage": "رفع صورة",
+      "width": "العرض"
     },
     "imageCropper": {
       "name": "قص الصور",
@@ -1455,7 +1516,23 @@
       "compressionLevel": "مستوى الضغط",
       "originalSize": "الحجم الأصلي",
       "compressedSize": "الحجم المضغوط",
-      "savings": "التوفير"
+      "savings": "التوفير",
+      "chooseImage": "اختيار صورة",
+      "chooseToStart": "اختر صورة للبدء",
+      "compressImage": "ضغط الصورة",
+      "compressed": "تم ضغط الصورة!",
+      "compressing": "جارٍ الضغط...",
+      "compressionQuality": "جودة الضغط",
+      "downloaded": "تم تحميل الصورة!",
+      "fileSizeLimit": "الحد الأقصى: 10 ميجابايت",
+      "imageLoaded": "تم تحميل الصورة!",
+      "noImageSelected": "لم يتم اختيار صورة",
+      "original": "الأصل",
+      "saved": "توفير",
+      "selectImage": "اختيار صورة",
+      "selectImageFile": "اختر ملف صورة",
+      "smaller": "أصغر",
+      "uploadImage": "رفع صورة"
     },
     "imageToText": {
       "name": "صورة إلى نص (OCR)",
@@ -1490,7 +1567,15 @@
       "name": "مولد Hash",
       "description": "توليد تشفير Hash",
       "algorithm": "الخوارزمية",
-      "hashValue": "قيمة Hash"
+      "hashValue": "قيمة Hash",
+      "enterTextToHash": "أدخل نصاً لتوليد Hash",
+      "generate": "توليد Hash",
+      "generated": "تم توليد Hash!",
+      "generatedHashes": "قيم Hash المُولَّدة",
+      "hashResults": "نتائج Hash",
+      "inputText": "النص المُدخل",
+      "placeholder": "أدخل نصاً لتشفيره...",
+      "text": "نص"
     },
     "passwordStrengthChecker": {
       "name": "فاحص قوة كلمة المرور",
@@ -1611,7 +1696,34 @@
       "issuer": "المُصدر",
       "validFrom": "صالح من",
       "validTo": "صالح حتى",
-      "daysRemaining": "الأيام المتبقية"
+      "daysRemaining": "الأيام المتبقية",
+      "certificateDetails": "تفاصيل الشهادة",
+      "certificateExpired": "انتهت صلاحية الشهادة!",
+      "certificateType": "نوع الشهادة",
+      "certificateValid": "الشهادة صالحة",
+      "checkCertificate": "فحص الشهادة",
+      "checkCompleted": "اكتمل فحص SSL!",
+      "checkDomain": "فحص النطاق",
+      "checkDomainDescription": "أدخل اسم نطاق للتحقق من شهادة SSL الخاصة به",
+      "checkFailed": "فشل فحص شهادة SSL",
+      "checking": "جارٍ الفحص...",
+      "cipher": "التشفير",
+      "domain": "النطاق",
+      "domainName": "اسم النطاق",
+      "enterDomain": "أدخل اسم نطاق",
+      "expired": "منتهي",
+      "expiresIn": "تنتهي خلال",
+      "networkError": "حدث خطأ في الشبكة",
+      "protocol": "البروتوكول",
+      "renewSoon": "تنتهي الشهادة قريباً - يُنصح بالتجديد",
+      "sha256Fingerprint": "بصمة SHA-256",
+      "sslCheckFailed": "فشل فحص شهادة SSL",
+      "statusExpired": "منتهي",
+      "statusInvalid": "غير صالح",
+      "statusValid": "صالح",
+      "subject": "الموضوع",
+      "subtitle": "تحقق من صلاحية وتفاصيل شهادة SSL لأي نطاق",
+      "title": "فاحص شهادة SSL"
     },
     "textEncryptor": {
       "name": "تشفير النص",
@@ -1687,7 +1799,22 @@
       "description": "حساب النسب المئوية بسهولة",
       "whatIsPercent": "ما هو X% من Y؟",
       "xIsWhatPercent": "X هو كم % من Y؟",
-      "percentChange": "تغيير النسبة"
+      "percentChange": "تغيير النسبة",
+      "basePlaceholder": "أدخل القيمة الأساسية",
+      "baseValue": "القيمة الأساسية",
+      "calculateAfterChange": "حساب بعد التغيير",
+      "change": "التغيير",
+      "changePlaceholder": "أدخل نسبة التغيير",
+      "findPercentage": "إيجاد النسبة المئوية",
+      "increaseDecrease": "زيادة/نقصان",
+      "newValue": "القيمة الجديدة",
+      "num1Placeholder": "أدخل الرقم الأول",
+      "ofValue": "من",
+      "outOf": "من أصل",
+      "percentPlaceholder": "أدخل النسبة المئوية",
+      "percentage": "النسبة المئوية",
+      "value": "القيمة",
+      "valuePlaceholder": "أدخل القيمة"
     },
     "ageCalculator": {
       "name": "حاسبة العمر",
@@ -1742,7 +1869,8 @@
       "originalPrice": "السعر الأصلي",
       "discountPercent": "نسبة الخصم",
       "discountAmount": "مبلغ الخصم",
-      "finalPrice": "السعر النهائي"
+      "finalPrice": "السعر النهائي",
+      "customPercent": "نسبة مخصصة"
     },
     "currencyConverter": {
       "name": "محول العملات",
@@ -1758,11 +1886,33 @@
       "description": "التحويل بين وحدات متنوعة",
       "category": "الفئة",
       "fromUnit": "من وحدة",
-      "toUnit": "إلى وحدة"
+      "toUnit": "إلى وحدة",
+      "from": "من",
+      "selectCategory": "اختر الفئة",
+      "to": "إلى",
+      "value": "القيمة"
     },
     "passwordGenerator": {
       "name": "مولد كلمات المرور",
-      "description": "توليد كلمات مرور عشوائية آمنة"
+      "description": "توليد كلمات مرور عشوائية آمنة",
+      "clickGenerate": "انقر توليد لإنشاء كلمة مرور",
+      "customize": "تخصيص",
+      "generate": "توليد",
+      "generated": "تم توليد كلمة المرور!",
+      "generatedPassword": "كلمة المرور المُولَّدة",
+      "length": "الطول",
+      "lowercase": "أحرف صغيرة",
+      "medium": "متوسط",
+      "none": "لا شيء",
+      "numbers": "أرقام",
+      "options": "خيارات",
+      "passwordWillAppear": "ستظهر كلمة المرور هنا",
+      "selectCharType": "اختر نوع حرف واحد على الأقل",
+      "strength": "القوة",
+      "strong": "قوي",
+      "symbols": "رموز",
+      "uppercase": "أحرف كبيرة",
+      "weak": "ضعيف"
     },
     "qrGenerator": {
       "name": "مولد رمز QR",
@@ -1770,7 +1920,17 @@
       "content": "المحتوى",
       "size": "الحجم",
       "color": "اللون",
-      "backgroundColor": "لون الخلفية"
+      "backgroundColor": "لون الخلفية",
+      "downloadPng": "تحميل PNG",
+      "downloaded": "تم تحميل رمز QR!",
+      "enterTextFirst": "أدخل نصاً أولاً",
+      "enterTextOrUrl": "أدخل نصاً أو رابطاً",
+      "enterToGenerate": "أدخل نصاً أو رابطاً لتوليد رمز QR",
+      "placeholder": "أدخل نصاً أو رابطاً...",
+      "preview": "معاينة",
+      "previewDescription": "معاينة رمز QR",
+      "settings": "الإعدادات",
+      "textOrUrl": "نص أو رابط"
     },
     "colorPicker": {
       "name": "منتقي الألوان",
@@ -1780,7 +1940,14 @@
       "hsl": "HSL",
       "complementary": "مكمل",
       "analogous": "متماثل",
-      "triadic": "ثلاثي"
+      "triadic": "ثلاثي",
+      "colorPickerCard": "منتقي الألوان",
+      "generatePalette": "توليد لوحة",
+      "paletteDescription": "توليد لوحات ألوان جميلة",
+      "paletteGenerated": "تم توليد اللوحة!",
+      "paletteGenerator": "مولد اللوحات",
+      "pickColor": "اختيار لون",
+      "selectColor": "اختر لوناً"
     },
     "randomQuoteGenerator": {
       "name": "مولد الاقتباسات",
@@ -1804,7 +1971,11 @@
       "description": "توليد نص بديل",
       "paragraphCount": "الفقرات",
       "wordCount": "الكلمات",
-      "sentenceCount": "الجمل"
+      "sentenceCount": "الجمل",
+      "generate": "توليد",
+      "generatedText": "النص المُولَّد",
+      "options": "الخيارات",
+      "paragraphs": "فقرات"
     },
     "randomNumberPicker": {
       "name": "منتقي الأرقام العشوائية",
