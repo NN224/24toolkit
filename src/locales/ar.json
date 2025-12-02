@@ -1,0 +1,186 @@
+{
+  "common": {
+    "search": "ابحث في 82+ أداة...",
+    "signIn": "تسجيل الدخول",
+    "signOut": "تسجيل الخروج",
+    "loading": "جاري التحميل...",
+    "error": "خطأ",
+    "success": "نجاح",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "copy": "نسخ",
+    "copied": "تم النسخ!",
+    "share": "مشاركة",
+    "download": "تحميل",
+    "upload": "رفع",
+    "clear": "مسح",
+    "reset": "إعادة تعيين",
+    "submit": "إرسال",
+    "generate": "توليد",
+    "analyze": "تحليل",
+    "process": "معالجة",
+    "viewAll": "عرض الكل",
+    "learnMore": "اعرف المزيد",
+    "getStarted": "ابدأ الآن"
+  },
+  "home": {
+    "title": "مجموعة أدواتك",
+    "titleHighlight": "الكاملة على الإنترنت",
+    "subtitle": "أكثر من 80 أداة مجانية وقوية للمطورين والمبدعين والمستخدمين العاديين. كل شيء يعمل في متصفحك - سريع وآمن وخاص.",
+    "tagline": "الابتكار هو الاختصار — 24Toolkit",
+    "feelingLucky": "أشعر بالحظ",
+    "allTools": "جميع الأدوات",
+    "aiTools": "أدوات الذكاء الاصطناعي",
+    "textTools": "أدوات النص",
+    "devTools": "أدوات المطورين",
+    "imageTools": "أدوات الصور",
+    "securityTools": "أدوات الأمان",
+    "calculators": "الآلات الحاسبة",
+    "funTools": "المرح والإنتاجية",
+    "featuredTools": "أدوات مميزة",
+    "popularTools": "الأدوات الشائعة",
+    "newTools": "أدوات جديدة"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "tools": "الأدوات",
+    "pricing": "الأسعار",
+    "settings": "الإعدادات",
+    "profile": "الملف الشخصي",
+    "favorites": "المفضلة",
+    "history": "السجل",
+    "about": "حول",
+    "contact": "اتصل بنا",
+    "privacy": "سياسة الخصوصية",
+    "terms": "شروط الخدمة"
+  },
+  "categories": {
+    "all": "جميع الأدوات",
+    "ai": "أدوات الذكاء الاصطناعي",
+    "text": "أدوات النص",
+    "developer": "أدوات المطورين",
+    "image": "أدوات الصور",
+    "security": "أدوات الأمان",
+    "calculators": "الآلات الحاسبة",
+    "productivity": "الإنتاجية",
+    "fun": "المرح والألعاب"
+  },
+  "credits": {
+    "remaining": "رصيد متبقي",
+    "daily": "يومي",
+    "monthly": "شهري",
+    "unlimited": "غير محدود",
+    "upgrade": "ترقية",
+    "limitReached": "تم الوصول للحد اليومي",
+    "free": "مجاني",
+    "pro": "احترافي",
+    "usageToday": "الاستخدام اليوم"
+  },
+  "auth": {
+    "signInWith": "تسجيل الدخول بواسطة",
+    "signInGoogle": "تسجيل الدخول بواسطة Google",
+    "signInGithub": "تسجيل الدخول بواسطة GitHub",
+    "signInApple": "تسجيل الدخول بواسطة Apple",
+    "signOut": "تسجيل الخروج",
+    "welcome": "مرحباً بعودتك",
+    "createAccount": "إنشاء حساب",
+    "alreadyHaveAccount": "لديك حساب بالفعل؟",
+    "dontHaveAccount": "ليس لديك حساب؟"
+  },
+  "pricing": {
+    "title": "أسعار بسيطة وشفافة",
+    "subtitle": "اختر الخطة المناسبة لك",
+    "free": "مجاني",
+    "pro": "احترافي",
+    "unlimited": "غير محدود",
+    "month": "شهر",
+    "year": "سنة",
+    "popular": "الأكثر شعبية",
+    "currentPlan": "الخطة الحالية",
+    "upgrade": "ترقية",
+    "downgrade": "تخفيض",
+    "features": "الميزات",
+    "perMonth": "شهرياً",
+    "billedAnnually": "تُدفع سنوياً"
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "appearance": "المظهر",
+    "theme": "السمة",
+    "language": "اللغة",
+    "notifications": "الإشعارات",
+    "account": "الحساب",
+    "subscription": "الاشتراك",
+    "billing": "الفواتير",
+    "security": "الأمان",
+    "privacy": "الخصوصية",
+    "data": "البيانات والتخزين",
+    "deleteAccount": "حذف الحساب",
+    "darkMode": "الوضع الداكن",
+    "lightMode": "الوضع الفاتح",
+    "systemMode": "وضع النظام"
+  },
+  "errors": {
+    "generic": "حدث خطأ ما",
+    "network": "خطأ في الشبكة. يرجى المحاولة مرة أخرى.",
+    "notFound": "الصفحة غير موجودة",
+    "unauthorized": "يرجى تسجيل الدخول للمتابعة",
+    "forbidden": "الوصول مرفوض",
+    "serverError": "خطأ في الخادم. يرجى المحاولة لاحقاً.",
+    "timeout": "انتهت مهلة الطلب",
+    "invalidInput": "إدخال غير صالح",
+    "required": "هذا الحقل مطلوب",
+    "tooLong": "الإدخال طويل جداً",
+    "tooShort": "الإدخال قصير جداً"
+  },
+  "footer": {
+    "madeWith": "صنع بـ",
+    "by": "بواسطة",
+    "allRightsReserved": "جميع الحقوق محفوظة",
+    "followUs": "تابعنا"
+  },
+  "tools": {
+    "wordCounter": {
+      "name": "عداد الكلمات",
+      "description": "عد الكلمات والأحرف والجمل والفقرات"
+    },
+    "passwordGenerator": {
+      "name": "مولد كلمات المرور",
+      "description": "توليد كلمات مرور آمنة وعشوائية"
+    },
+    "qrGenerator": {
+      "name": "مولد رموز QR",
+      "description": "إنشاء رموز QR للروابط والنصوص والمزيد"
+    },
+    "jsonCsvConverter": {
+      "name": "محول JSON/CSV",
+      "description": "التحويل بين صيغ JSON و CSV"
+    },
+    "imageCompressor": {
+      "name": "ضاغط الصور",
+      "description": "ضغط الصور بدون فقدان الجودة"
+    },
+    "textToSpeech": {
+      "name": "تحويل النص إلى كلام",
+      "description": "تحويل النص إلى كلام طبيعي"
+    },
+    "aiTranslator": {
+      "name": "مترجم الذكاء الاصطناعي",
+      "description": "ترجمة النص بدقة الذكاء الاصطناعي"
+    },
+    "aiWriter": {
+      "name": "كاتب الذكاء الاصطناعي",
+      "description": "توليد المحتوى بمساعدة الذكاء الاصطناعي"
+    },
+    "codeFormatter": {
+      "name": "منسق الأكواد",
+      "description": "تنسيق وتجميل الأكواد"
+    },
+    "colorPicker": {
+      "name": "منتقي الألوان",
+      "description": "اختيار وتحويل الألوان"
+    }
+  }
+}

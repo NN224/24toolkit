@@ -1,0 +1,186 @@
+{
+  "common": {
+    "search": "Search 82+ tools...",
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "share": "Share",
+    "download": "Download",
+    "upload": "Upload",
+    "clear": "Clear",
+    "reset": "Reset",
+    "submit": "Submit",
+    "generate": "Generate",
+    "analyze": "Analyze",
+    "process": "Process",
+    "viewAll": "View All",
+    "learnMore": "Learn More",
+    "getStarted": "Get Started"
+  },
+  "home": {
+    "title": "Your Complete",
+    "titleHighlight": "Online Toolkit",
+    "subtitle": "80+ free, powerful tools for developers, creators, and everyday users. Everything runs in your browser - fast, secure, and private.",
+    "tagline": "Innovation is a shortcut — 24Toolkit",
+    "feelingLucky": "I'm Feeling Lucky",
+    "allTools": "All Tools",
+    "aiTools": "AI-Powered Tools",
+    "textTools": "Text Utilities",
+    "devTools": "Developer Tools",
+    "imageTools": "Image Tools",
+    "securityTools": "Security Tools",
+    "calculators": "Calculators",
+    "funTools": "Fun & Productivity",
+    "featuredTools": "Featured Tools",
+    "popularTools": "Popular Tools",
+    "newTools": "New Tools"
+  },
+  "nav": {
+    "home": "Home",
+    "tools": "Tools",
+    "pricing": "Pricing",
+    "settings": "Settings",
+    "profile": "Profile",
+    "favorites": "Favorites",
+    "history": "History",
+    "about": "About",
+    "contact": "Contact",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  },
+  "categories": {
+    "all": "All Tools",
+    "ai": "AI Tools",
+    "text": "Text Tools",
+    "developer": "Developer Tools",
+    "image": "Image Tools",
+    "security": "Security Tools",
+    "calculators": "Calculators",
+    "productivity": "Productivity",
+    "fun": "Fun & Games"
+  },
+  "credits": {
+    "remaining": "credits remaining",
+    "daily": "Daily",
+    "monthly": "Monthly",
+    "unlimited": "Unlimited",
+    "upgrade": "Upgrade",
+    "limitReached": "Daily limit reached",
+    "free": "Free",
+    "pro": "Pro",
+    "usageToday": "Usage today"
+  },
+  "auth": {
+    "signInWith": "Sign in with",
+    "signInGoogle": "Sign in with Google",
+    "signInGithub": "Sign in with GitHub",
+    "signInApple": "Sign in with Apple",
+    "signOut": "Sign Out",
+    "welcome": "Welcome back",
+    "createAccount": "Create Account",
+    "alreadyHaveAccount": "Already have an account?",
+    "dontHaveAccount": "Don't have an account?"
+  },
+  "pricing": {
+    "title": "Simple, Transparent Pricing",
+    "subtitle": "Choose the plan that works for you",
+    "free": "Free",
+    "pro": "Pro",
+    "unlimited": "Unlimited",
+    "month": "month",
+    "year": "year",
+    "popular": "Most Popular",
+    "currentPlan": "Current Plan",
+    "upgrade": "Upgrade",
+    "downgrade": "Downgrade",
+    "features": "Features",
+    "perMonth": "per month",
+    "billedAnnually": "billed annually"
+  },
+  "settings": {
+    "title": "Settings",
+    "appearance": "Appearance",
+    "theme": "Theme",
+    "language": "Language",
+    "notifications": "Notifications",
+    "account": "Account",
+    "subscription": "Subscription",
+    "billing": "Billing",
+    "security": "Security",
+    "privacy": "Privacy",
+    "data": "Data & Storage",
+    "deleteAccount": "Delete Account",
+    "darkMode": "Dark Mode",
+    "lightMode": "Light Mode",
+    "systemMode": "System"
+  },
+  "errors": {
+    "generic": "Something went wrong",
+    "network": "Network error. Please try again.",
+    "notFound": "Page not found",
+    "unauthorized": "Please sign in to continue",
+    "forbidden": "Access denied",
+    "serverError": "Server error. Please try again later.",
+    "timeout": "Request timed out",
+    "invalidInput": "Invalid input",
+    "required": "This field is required",
+    "tooLong": "Input is too long",
+    "tooShort": "Input is too short"
+  },
+  "footer": {
+    "madeWith": "Made with",
+    "by": "by",
+    "allRightsReserved": "All rights reserved",
+    "followUs": "Follow us"
+  },
+  "tools": {
+    "wordCounter": {
+      "name": "Word Counter",
+      "description": "Count words, characters, sentences, and paragraphs"
+    },
+    "passwordGenerator": {
+      "name": "Password Generator",
+      "description": "Generate secure random passwords"
+    },
+    "qrGenerator": {
+      "name": "QR Code Generator",
+      "description": "Create QR codes for URLs, text, and more"
+    },
+    "jsonCsvConverter": {
+      "name": "JSON/CSV Converter",
+      "description": "Convert between JSON and CSV formats"
+    },
+    "imageCompressor": {
+      "name": "Image Compressor",
+      "description": "Compress images without losing quality"
+    },
+    "textToSpeech": {
+      "name": "Text to Speech",
+      "description": "Convert text to natural speech"
+    },
+    "aiTranslator": {
+      "name": "AI Translator",
+      "description": "Translate text with AI accuracy"
+    },
+    "aiWriter": {
+      "name": "AI Writer",
+      "description": "Generate content with AI assistance"
+    },
+    "codeFormatter": {
+      "name": "Code Formatter",
+      "description": "Format and beautify code"
+    },
+    "colorPicker": {
+      "name": "Color Picker",
+      "description": "Pick and convert colors"
+    }
+  }
+}

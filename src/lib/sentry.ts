@@ -121,20 +121,21 @@ export function initSentry() {
       return event
     },
     
-    // ==========================================================================
-    // General Settings
-    // ==========================================================================
-    // Enable when DSN is configured (works in all environments)
-    enabled: !!SENTRY_DSN,
-    
-    // Attach stack traces to messages
-    attachStacktrace: true,
-    
-    // Send default PII (IP address, etc) - disable for privacy
-    sendDefaultPii: false,
-    
-    // Auto session tracking
-    autoSessionTracking: true,
+  // ==========================================================================
+  // General Settings
+  // ==========================================================================
+  // Enable when DSN is configured (works in all environments)
+  enabled: !!SENTRY_DSN,
+  
+  // Attach stack traces to messages
+  attachStacktrace: true,
+  
+  // Send default PII (IP address, etc) - disable for privacy
+  sendDefaultPii: false,
+  
+  // Note: session tracking should use the SDK defaults or be configured
+  // via supported APIs; the `autoSessionTracking` option is not recognized
+  // by the current BrowserOptions types and has been removed.
   })
 
   console.log('[Sentry] Error tracking initialized (Performance + Replay enabled)')

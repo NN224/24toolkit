@@ -37,3 +37,12 @@ pids
 .vercel
 .env*.local
 *.json
+!src/locales/*.json
+!package.json
+!package-lock.json
+!tsconfig.json
+!components.json
+!spark.meta.json
+!theme.json
+!vercel.json
+!runtime.config.json
