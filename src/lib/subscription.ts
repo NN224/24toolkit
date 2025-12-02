@@ -152,7 +152,7 @@ export async function getUserSubscription(userId: string): Promise<UserSubscript
       dailyCredits: PLAN_LIMITS.free.dailyCredits,
       dailyCreditsUsed: 0,
       lastDailyReset: now,
-      monthlyCredits: 0,
+      monthlyCredits: PLAN_LIMITS.pro.monthlyCredits,
       monthlyCreditsUsed: 0,
       lastMonthlyReset: now,
       dailyUnlimitedUsed: 0,
@@ -165,13 +165,10 @@ export async function getUserSubscription(userId: string): Promise<UserSubscript
   if (!userSnap.exists()) {
     // Create new user with default subscription
     await setDoc(userRef, {
-      ...defaultData,
-      credits: {
-        ...defaultData.credits,
-        lastDailyReset: Timestamp.fromDate(now),
-        lastMonthlyReset: Timestamp.fromDate(now),
-        lastUnlimitedReset: Timestamp.fromDate(now),
-      },
+      plan: 'free',
+      status: 'active',
+      aiCredits: PLAN_LIMITS.free.dailyCredits,
+      lastResetDate: Timestamp.fromDate(now),
       createdAt: Timestamp.fromDate(now),
       updatedAt: Timestamp.fromDate(now),
     })
@@ -179,35 +176,112 @@ export async function getUserSubscription(userId: string): Promise<UserSubscript
   }
   
   const data = userSnap.data()
-  const credits = data.credits || {}
+  const plan = data.plan || 'free'
+  const status = data.status || 'active'
   
-  // Parse dates
-  const lastDailyReset = credits.lastDailyReset?.toDate() || now
+  // Handle both old format (aiCredits) and new format (credits object)
+  const credits = data.credits || {}
+  const lastResetDate = data.lastResetDate?.toDate() || now
+  
+  // Parse dates - support both formats
+  const lastDailyReset = credits.lastDailyReset?.toDate() || lastResetDate
   const lastMonthlyReset = credits.lastMonthlyReset?.toDate() || now
   const lastUnlimitedReset = credits.lastUnlimitedReset?.toDate() || now
   
   // Check if we need to reset credits
   let needsUpdate = false
-  const updates: any = { credits: { ...credits } }
+  const updates: Record<string, unknown> = {}
   
-  // Reset daily credits for Free users
-  if (!isSameDay(lastDailyReset, now)) {
-    updates.credits.dailyCreditsUsed = 0
-    updates.credits.lastDailyReset = Timestamp.fromDate(now)
-    needsUpdate = true
+  // For free users, use aiCredits field (compatible with server)
+  if (plan === 'free') {
+    const aiCredits = data.aiCredits ?? PLAN_LIMITS.free.dailyCredits
+    
+    // Reset daily credits if new day
+    if (!isSameDay(lastDailyReset, now)) {
+      updates.aiCredits = PLAN_LIMITS.free.dailyCredits
+      updates.lastResetDate = Timestamp.fromDate(now)
+      needsUpdate = true
+    }
+    
+    if (needsUpdate) {
+      updates.updatedAt = Timestamp.fromDate(now)
+      await updateDoc(userRef, updates)
+    }
+    
+    const currentAiCredits = needsUpdate ? PLAN_LIMITS.free.dailyCredits : aiCredits
+    const dailyCreditsUsed = PLAN_LIMITS.free.dailyCredits - currentAiCredits
+    
+    return {
+      odg: plan,
+      status: status,
+      credits: {
+        dailyCredits: PLAN_LIMITS.free.dailyCredits,
+        dailyCreditsUsed: Math.max(0, dailyCreditsUsed),
+        lastDailyReset: needsUpdate ? now : lastDailyReset,
+        monthlyCredits: PLAN_LIMITS.pro.monthlyCredits,
+        monthlyCreditsUsed: 0,
+        lastMonthlyReset: now,
+        dailyUnlimitedUsed: 0,
+        lastUnlimitedReset: now,
+      },
+      stripeCustomerId: data.stripeCustomerId,
+      stripeSubscriptionId: data.stripeSubscriptionId,
+      currentPeriodStart: data.currentPeriodStart?.toDate(),
+      currentPeriodEnd: data.currentPeriodEnd?.toDate(),
+      cancelAtPeriodEnd: data.cancelAtPeriodEnd,
+      createdAt: data.createdAt?.toDate() || now,
+      updatedAt: data.updatedAt?.toDate() || now,
+    }
   }
   
-  // Reset monthly credits for Pro users
-  if (!isSameMonth(lastMonthlyReset, now)) {
-    updates.credits.monthlyCreditsUsed = 0
-    updates.credits.lastMonthlyReset = Timestamp.fromDate(now)
-    needsUpdate = true
+  // For pro users, use credits.monthlyCreditsUsed
+  if (plan === 'pro') {
+    const monthlyCredits = credits.monthlyCredits || PLAN_LIMITS.pro.monthlyCredits
+    let monthlyCreditsUsed = credits.monthlyCreditsUsed || 0
+    
+    // Reset monthly credits if new month
+    if (!isSameMonth(lastMonthlyReset, now)) {
+      updates['credits.monthlyCreditsUsed'] = 0
+      updates['credits.lastMonthlyReset'] = Timestamp.fromDate(now)
+      monthlyCreditsUsed = 0
+      needsUpdate = true
+    }
+    
+    if (needsUpdate) {
+      updates.updatedAt = Timestamp.fromDate(now)
+      await updateDoc(userRef, updates)
+    }
+    
+    return {
+      odg: plan,
+      status: status,
+      credits: {
+        dailyCredits: PLAN_LIMITS.free.dailyCredits,
+        dailyCreditsUsed: 0,
+        lastDailyReset: now,
+        monthlyCredits: monthlyCredits,
+        monthlyCreditsUsed: monthlyCreditsUsed,
+        lastMonthlyReset: needsUpdate ? now : lastMonthlyReset,
+        dailyUnlimitedUsed: 0,
+        lastUnlimitedReset: now,
+      },
+      stripeCustomerId: data.stripeCustomerId,
+      stripeSubscriptionId: data.stripeSubscriptionId,
+      currentPeriodStart: data.currentPeriodStart?.toDate(),
+      currentPeriodEnd: data.currentPeriodEnd?.toDate(),
+      cancelAtPeriodEnd: data.cancelAtPeriodEnd,
+      createdAt: data.createdAt?.toDate() || now,
+      updatedAt: data.updatedAt?.toDate() || now,
+    }
   }
   
-  // Reset daily unlimited for Unlimited users
+  // For unlimited users
+  let dailyUnlimitedUsed = credits.dailyUnlimitedUsed || 0
+  
   if (!isSameDay(lastUnlimitedReset, now)) {
-    updates.credits.dailyUnlimitedUsed = 0
-    updates.credits.lastUnlimitedReset = Timestamp.fromDate(now)
+    updates['credits.dailyUnlimitedUsed'] = 0
+    updates['credits.lastUnlimitedReset'] = Timestamp.fromDate(now)
+    dailyUnlimitedUsed = 0
     needsUpdate = true
   }
   
@@ -217,16 +291,16 @@ export async function getUserSubscription(userId: string): Promise<UserSubscript
   }
   
   return {
-    odg: data.plan || 'free',
-    status: data.status || 'active',
+    odg: plan,
+    status: status,
     credits: {
-      dailyCredits: credits.dailyCredits ?? PLAN_LIMITS.free.dailyCredits,
-      dailyCreditsUsed: needsUpdate && !isSameDay(lastDailyReset, now) ? 0 : (credits.dailyCreditsUsed ?? 0),
-      lastDailyReset: needsUpdate ? now : lastDailyReset,
-      monthlyCredits: credits.monthlyCredits ?? PLAN_LIMITS.pro.monthlyCredits,
-      monthlyCreditsUsed: needsUpdate && !isSameMonth(lastMonthlyReset, now) ? 0 : (credits.monthlyCreditsUsed ?? 0),
-      lastMonthlyReset: needsUpdate ? now : lastMonthlyReset,
-      dailyUnlimitedUsed: needsUpdate && !isSameDay(lastUnlimitedReset, now) ? 0 : (credits.dailyUnlimitedUsed ?? 0),
+      dailyCredits: PLAN_LIMITS.free.dailyCredits,
+      dailyCreditsUsed: 0,
+      lastDailyReset: now,
+      monthlyCredits: PLAN_LIMITS.pro.monthlyCredits,
+      monthlyCreditsUsed: 0,
+      lastMonthlyReset: now,
+      dailyUnlimitedUsed: dailyUnlimitedUsed,
       lastUnlimitedReset: needsUpdate ? now : lastUnlimitedReset,
     },
     stripeCustomerId: data.stripeCustomerId,
