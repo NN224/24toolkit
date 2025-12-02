@@ -149,15 +149,15 @@ export default function CommandPalette() {
                     <div className="flex items-center gap-4 text-xs text-muted-foreground">
                       <div className="flex items-center gap-2">
                         <kbd className="px-2 py-1 bg-white/10 rounded border border-white/20 font-mono">↑↓</kbd>
-                        <span>Navigate</span>
+                        <span>{t('components.commandPalette.navigate')}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <kbd className="px-2 py-1 bg-white/10 rounded border border-white/20 font-mono">Enter</kbd>
-                        <span>Select</span>
+                        <span>{t('components.commandPalette.select')}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <kbd className="px-2 py-1 bg-white/10 rounded border border-white/20 font-mono">Esc</kbd>
-                        <span>Close</span>
+                        <span>{t('common.close')}</span>
                       </div>
                     </div>
                   </div>

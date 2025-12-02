@@ -29,6 +29,7 @@
     "backToHome": "Back to Home",
     "or": "or",
     "continueAsGuest": "Continue as Guest",
+    "tryAgain": "Try Again",
     "sendMessage": "Send Message",
     "sending": "Sending...",
     "messageSent": "Message Sent!",
@@ -46,7 +47,8 @@
     "copyFailed": "Failed to copy to clipboard",
     "sharing": "Sharing...",
     "easterEggFound": "Easter Egg Found! 🥚",
-    "premium": "Premium"
+    "premium": "Premium",
+    "close": "Close"
   },
   "ai": {
     "signInRequired": "Please sign in to use AI features",
@@ -60,6 +62,11 @@
     "serviceUnavailable": "Service Temporarily Unavailable",
     "serviceUnavailableDesc": "All AI providers are currently busy. Please try again in a few moments.",
     "unexpectedError": "An unexpected error occurred"
+  },
+  "errorFallback": {
+    "title": "This app has encountered a runtime error",
+    "description": "Something unexpected happened while running the application. The error details are shown below.",
+    "errorDetails": "Error Details:"
   },
   "aiProvider": {
     "label": "AI Provider",
@@ -80,7 +87,17 @@
     "remainingClickUpgrade": "{{remaining}} AI credits remaining today - Click to upgrade",
     "resetIn": "Credits reset in {{time}}",
     "upgradeToUnlimited": "Upgrade to Unlimited",
-    "upgradeToPro": "Upgrade to Pro"
+    "upgradeToPro": "Upgrade to Pro",
+    "remaining": "credits remaining",
+    "daily": "Daily",
+    "monthly": "Monthly",
+    "unlimited": "Unlimited",
+    "upgrade": "Upgrade",
+    "limitReached": "Daily limit reached",
+    "free": "Free",
+    "pro": "Pro",
+    "usageToday": "Usage today",
+    "aiCredits": "AI Credits"
   },
   "progress": {
     "title": "Your Progress",
@@ -173,18 +190,6 @@
     "calculators": "Calculators",
     "productivity": "Productivity",
     "fun": "Fun & Games"
-  },
-  "credits": {
-    "remaining": "credits remaining",
-    "daily": "Daily",
-    "monthly": "Monthly",
-    "unlimited": "Unlimited",
-    "upgrade": "Upgrade",
-    "limitReached": "Daily limit reached",
-    "free": "Free",
-    "pro": "Pro",
-    "usageToday": "Usage today",
-    "aiCredits": "AI Credits"
   },
   "auth": {
     "signInWith": "Sign in with",
@@ -290,6 +295,35 @@
       }
     }
   },
+  "upgradeModal": {
+    "titles": {
+      "creditsExhausted": "🎯 You're on a Roll!",
+      "featureLock": "🚀 Unlock Premium Features",
+      "default": "✨ Upgrade Your Experience"
+    },
+    "descriptions": {
+      "creditsExhausted": "You've used all your free AI requests for today. Upgrade now to keep the momentum going!",
+      "featureLock": "This feature is available for Pro and Unlimited users. Upgrade to unlock all features.",
+      "default": "Get more AI requests, remove ads, and unlock premium features."
+    },
+    "dailyLimitReached": "Daily Limit Reached",
+    "currentPlan": "Current plan",
+    "credits": "Credits",
+    "popular": "POPULAR",
+    "bestValue": "BEST VALUE",
+    "forRegularUsers": "For regular users",
+    "forPowerUsers": "For power users",
+    "upgradeToPro": "Upgrade to Pro",
+    "goUnlimited": "Go Unlimited",
+    "currentFreePlan": "Current: Free Plan",
+    "freePrice": "0$/month",
+    "freeFeatures": {
+      "aiRequests": "5 AI requests/day",
+      "adsDisplayed": "Ads displayed",
+      "noPrioritySupport": "No priority support"
+    },
+    "guarantee": "✨ 100% satisfaction guaranteed • Cancel anytime • Secure payment"
+  },
   "settings": {
     "title": "Settings",
     "subtitle": "Manage your account and preferences",
@@ -315,6 +349,7 @@
     "preferences": "Preferences",
     "accountManagement": "Account Management",
     "fullName": "Full Name",
+    "fullNamePlaceholder": "Enter your full name",
     "emailAddress": "Email Address",
     "linkedToGoogle": "Linked to Google account - Cannot be changed",
     "emailNotifications": "Email Notifications",
@@ -2084,7 +2119,18 @@
   },
   "components": {
     "commandPalette": {
-      "searchPlaceholder": "Search 80+ tools or ask: convert pdf to word"
+      "searchPlaceholder": "Search 80+ tools or ask: convert pdf to word",
+      "navigate": "Navigate",
+      "select": "Select"
+    },
+    "toolRecommendations": {
+      "relatedTools": "Related Tools",
+      "whatsNext": "What's next?",
+      "noThanks": "No thanks, I'm done"
+    },
+    "contextualHelper": {
+      "help": "Help",
+      "tipsForTool": "Tips for this tool"
     }
   }
 }

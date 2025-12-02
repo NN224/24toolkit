@@ -6,6 +6,7 @@ import { Crown, Lightning, Sparkle, Check, X, Rocket } from '@phosphor-icons/rea
 import { useNavigate } from 'react-router-dom'
 import { useSubscription, PLAN_LIMITS } from '@/contexts/SubscriptionContext'
 import { Card } from '@/components/ui/card'
+import { useTranslation } from 'react-i18next'
 
 interface UpgradeModalProps {
   isOpen?: boolean
@@ -14,6 +15,7 @@ interface UpgradeModalProps {
 }
 
 export function UpgradeModal({ isOpen: controlledOpen, onClose, trigger = 'manual' }: UpgradeModalProps) {
+  const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const navigate = useNavigate()
   const { currentPlan, getCreditsDisplay } = useSubscription()
@@ -45,22 +47,22 @@ export function UpgradeModal({ isOpen: controlledOpen, onClose, trigger = 'manua
   const getTitle = () => {
     switch (trigger) {
       case 'credits-exhausted':
-        return '🎯 You\'re on a Roll!'
+        return t('upgradeModal.titles.creditsExhausted')
       case 'feature-lock':
-        return '🚀 Unlock Premium Features'
+        return t('upgradeModal.titles.featureLock')
       default:
-        return '✨ Upgrade Your Experience'
+        return t('upgradeModal.titles.default')
     }
   }
 
   const getDescription = () => {
     switch (trigger) {
       case 'credits-exhausted':
-        return 'You\'ve used all your free AI requests for today. Upgrade now to keep the momentum going!'
+        return t('upgradeModal.descriptions.creditsExhausted')
       case 'feature-lock':
-        return 'This feature is available for Pro and Unlimited users. Upgrade to unlock all features.'
+        return t('upgradeModal.descriptions.featureLock')
       default:
-        return 'Get more AI requests, remove ads, and unlock premium features.'
+        return t('upgradeModal.descriptions.default')
     }
   }
 
@@ -81,10 +83,10 @@ export function UpgradeModal({ isOpen: controlledOpen, onClose, trigger = 'manua
           <div className="p-4 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center gap-3">
             <Sparkle size={24} weight="fill" className="text-orange-500 flex-shrink-0" />
             <div>
-              <p className="font-medium text-orange-500">Daily Limit Reached</p>
+              <p className="font-medium text-orange-500">{t('upgradeModal.dailyLimitReached')}</p>
               <p className="text-sm text-muted-foreground">
-                Current plan: <span className="font-medium">{currentPlan === 'free' ? 'Free' : currentPlan}</span> • 
-                Credits: <span className="font-medium">{getCreditsDisplay()}</span>
+                {t('upgradeModal.currentPlan')}: <span className="font-medium">{currentPlan === 'free' ? t('pricing.free') : currentPlan}</span> • 
+                {t('upgradeModal.credits')}: <span className="font-medium">{getCreditsDisplay()}</span>
               </p>
             </div>
           </div>
@@ -95,7 +97,7 @@ export function UpgradeModal({ isOpen: controlledOpen, onClose, trigger = 'manua
           {/* Pro Plan */}
           <Card className="relative overflow-hidden border-2 border-purple-500/30 hover:border-purple-500/50 transition-all">
             <div className="absolute top-0 right-0 bg-gradient-to-br from-purple-500 to-purple-600 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
-              POPULAR
+              {t('upgradeModal.popular')}
             </div>
             <div className="p-6 space-y-4">
               <div className="flex items-center gap-3">
@@ -103,8 +105,8 @@ export function UpgradeModal({ isOpen: controlledOpen, onClose, trigger = 'manua
                   <Lightning size={24} weight="fill" className="text-purple-500" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg">Pro</h3>
-                  <p className="text-sm text-muted-foreground">For regular users</p>
+                  <h3 className="font-bold text-lg">{t('pricing.pro')}</h3>
+                  <p className="text-sm text-muted-foreground">{t('upgradeModal.forRegularUsers')}</p>
                 </div>
               </div>
 
@@ -127,7 +129,7 @@ export function UpgradeModal({ isOpen: controlledOpen, onClose, trigger = 'manua
                 className="w-full bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600"
               >
                 <Rocket size={18} weight="fill" className="mr-2" />
-                Upgrade to Pro
+                {t('upgradeModal.upgradeToPro')}
               </Button>
             </div>
           </Card>
@@ -135,7 +137,7 @@ export function UpgradeModal({ isOpen: controlledOpen, onClose, trigger = 'manua
           {/* Unlimited Plan */}
           <Card className="relative overflow-hidden border-2 border-sky-500/30 hover:border-sky-500/50 transition-all bg-gradient-to-br from-purple-500/5 to-sky-500/5">
             <div className="absolute top-0 right-0 bg-gradient-to-br from-purple-500 to-sky-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
-              BEST VALUE
+              {t('upgradeModal.bestValue')}
             </div>
             <div className="p-6 space-y-4">
               <div className="flex items-center gap-3">
@@ -143,8 +145,8 @@ export function UpgradeModal({ isOpen: controlledOpen, onClose, trigger = 'manua
                   <Crown size={24} weight="fill" className="text-sky-500" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg">Unlimited</h3>
-                  <p className="text-sm text-muted-foreground">For power users</p>
+                  <h3 className="font-bold text-lg">{t('pricing.unlimited')}</h3>
+                  <p className="text-sm text-muted-foreground">{t('upgradeModal.forPowerUsers')}</p>
                 </div>
               </div>
 
@@ -167,7 +169,7 @@ export function UpgradeModal({ isOpen: controlledOpen, onClose, trigger = 'manua
                 className="w-full bg-gradient-to-r from-purple-600 to-sky-500 hover:from-purple-700 hover:to-sky-600"
               >
                 <Crown size={18} weight="fill" className="mr-2" />
-                Go Unlimited
+                {t('upgradeModal.goUnlimited')}
               </Button>
             </div>
           </Card>
@@ -178,29 +180,29 @@ export function UpgradeModal({ isOpen: controlledOpen, onClose, trigger = 'manua
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <Sparkle size={18} className="text-muted-foreground" />
-              <span className="font-medium text-sm">Current: Free Plan</span>
+              <span className="font-medium text-sm">{t('upgradeModal.currentFreePlan')}</span>
             </div>
-            <Badge variant="secondary">0$/month</Badge>
+            <Badge variant="secondary">{t('upgradeModal.freePrice')}</Badge>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
             <div className="flex items-center gap-2">
               <Check size={14} className="text-green-500" />
-              <span>5 AI requests/day</span>
+              <span>{t('upgradeModal.freeFeatures.aiRequests')}</span>
             </div>
             <div className="flex items-center gap-2">
               <X size={14} className="text-red-500" />
-              <span>Ads displayed</span>
+              <span>{t('upgradeModal.freeFeatures.adsDisplayed')}</span>
             </div>
             <div className="flex items-center gap-2">
               <X size={14} className="text-red-500" />
-              <span>No priority support</span>
+              <span>{t('upgradeModal.freeFeatures.noPrioritySupport')}</span>
             </div>
           </div>
         </div>
 
         {/* Money Back Guarantee */}
         <div className="text-center text-sm text-muted-foreground mt-4">
-          <p>✨ 100% satisfaction guaranteed • Cancel anytime • Secure payment</p>
+          <p>{t('upgradeModal.guarantee')}</p>
         </div>
 
         {/* Close button */}

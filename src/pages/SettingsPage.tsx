@@ -247,7 +247,7 @@ export default function SettingsPage() {
                           type="text"
                           value={displayName}
                           onChange={(e) => setDisplayName(e.target.value)}
-                          placeholder="Enter your full name"
+                          placeholder={t('settings.fullNamePlaceholder')}
                           className="w-full px-4 py-2 bg-background border border-white/10 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
                         />
                       </div>

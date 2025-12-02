@@ -92,7 +92,7 @@ export default function DiscountCalculator() {
             <Input
               id="discount-percent"
               type="number"
-              placeholder="Custom %"
+              placeholder={t('tools.discountCalculator.customPercent')}
               value={discountPercent}
               onChange={(e) => setDiscountPercent(e.target.value)}
               max="100"

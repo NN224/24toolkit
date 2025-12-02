@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, Lightbulb, Sparkle, ArrowRight, Question } from '@phosphor-icons/react'
 import { Link, useLocation } from 'react-router-dom'
 import { allTools } from '@/lib/tools-data'
+import { useTranslation } from 'react-i18next'
 
 interface ContextualTip {
   title: string
@@ -257,6 +258,7 @@ interface ToolHelpButtonProps {
 
 export function ToolHelpButton({ toolId }: ToolHelpButtonProps) {
   const [showHelp, setShowHelp] = useState(false)
+  const { t } = useTranslation()
   const [isArabic, setIsArabic] = useState(false)
 
   useEffect(() => {
@@ -274,7 +276,7 @@ export function ToolHelpButton({ toolId }: ToolHelpButtonProps) {
       <button
         onClick={() => setShowHelp(!showHelp)}
         className="p-2 rounded-lg hover:bg-muted transition-colors"
-        title="Help"
+        title={t('components.contextualHelper.help')}
       >
         <Question size={20} className="text-muted-foreground" />
       </button>
@@ -291,7 +293,7 @@ export function ToolHelpButton({ toolId }: ToolHelpButtonProps) {
               <div className="flex items-center gap-2">
                 <Sparkle size={16} weight="fill" className="text-yellow-500" />
                 <span className="font-medium text-sm">
-                  Tips for this tool
+                  {t('components.contextualHelper.tipsForTool')}
                 </span>
               </div>
             </div>

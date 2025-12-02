@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { X, ArrowRight, Sparkle } from '@phosphor-icons/react'
 import { getRecommendationsForTool, trackToolUsage, type ToolRecommendation } from '@/lib/tool-recommendations'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 
 interface ToolRecommendationsProps {
   currentToolId: string
@@ -19,6 +20,7 @@ export function ToolRecommendations({
   showAfterAction = false,
   className = '' 
 }: ToolRecommendationsProps) {
+  const { t } = useTranslation()
   const [recommendations, setRecommendations] = useState<ToolRecommendation[]>([])
   const [dismissed, setDismissed] = useState(false)
   const [isArabic, setIsArabic] = useState(false)
@@ -51,12 +53,12 @@ export function ToolRecommendations({
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
           <Sparkle size={20} weight="fill" className="text-purple-500" />
-          Related Tools
+          {t('components.toolRecommendations.relatedTools')}
         </h3>
         <button
           onClick={() => setDismissed(true)}
           className="text-muted-foreground hover:text-foreground transition-colors"
-          title="Dismiss"
+          title={t('common.close')}
         >
           <X size={18} />
         </button>
@@ -107,6 +109,7 @@ export function ToolRecommendationsPopup({
   onClose,
   actionCompleted
 }: ToolRecommendationsPopupProps) {
+  const { t } = useTranslation()
   const [recommendations, setRecommendations] = useState<ToolRecommendation[]>([])
   const [isArabic, setIsArabic] = useState(false)
 
@@ -139,7 +142,7 @@ export function ToolRecommendationsPopup({
                 <div className="flex items-center gap-2">
                   <Sparkle size={18} weight="fill" className="text-white" />
                   <span className="font-semibold text-white text-sm">
-                    What's next?
+                    {t('components.toolRecommendations.whatsNext')}
                   </span>
                 </div>
                 <button
@@ -186,7 +189,7 @@ export function ToolRecommendationsPopup({
                 onClick={onClose}
                 className="text-xs text-muted-foreground hover:text-foreground transition-colors"
               >
-                No thanks, I'm done
+                {t('components.toolRecommendations.noThanks')}
               </button>
             </div>
           </div>
