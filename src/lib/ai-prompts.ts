@@ -159,51 +159,41 @@ IMPORTANT: Return ONLY the JSON array, no markdown, no explanation.`
   IDEA_ANALYZER: (idea: string) => {
     // Detect if input is Arabic
     const isArabic = /[\u0600-\u06FF]/.test(idea)
-    const langInstruction = isArabic 
-      ? 'IMPORTANT: The idea is in Arabic. Write ALL JSON values in Arabic.'
-      : ''
+    const lang = isArabic ? 'Arabic' : 'English'
     
     return `You are an expert business analyst and startup consultant with 15+ years of experience.
 
 IDEA TO ANALYZE: "${idea}"
 
-TASK: Provide a comprehensive, honest analysis in JSON format.
-
-${langInstruction}
+TASK: Provide a comprehensive, honest analysis.
 
 RULES:
-1. Return ONLY valid JSON, no other text
+1. Write in plain text format (NOT JSON)
 2. Be brutally honest - include real risks
 3. Provide actionable, specific advice
 4. Use data-driven insights when possible
-5. WRITE ALL TEXT IN THE SAME LANGUAGE as the idea
+5. WRITE EVERYTHING IN ${lang.toUpperCase()}
 
-JSON STRUCTURE:
-{
-  "potential": {
-    "overview": "1-2 sentence summary",
-    "target_audience": ["Specific audience 1", "Specific audience 2", ...],
-    "key_strengths": ["Specific strength 1", "Specific strength 2", ...],
-    "market_size_estimate": "Realistic market size or 'Requires research'"
-  },
-  "risks": [
-    "Specific, real risk 1",
-    "Specific, real risk 2",
-    "Specific, real risk 3 (minimum 3, maximum 5)"
-  ],
-  "suggestions": [
-    "Actionable suggestion 1 with specific steps",
-    "Actionable suggestion 2 with specific steps",
-    "Actionable suggestion 3 with specific steps (minimum 3, maximum 5)"
-  ]
-}
+FORMAT YOUR RESPONSE EXACTLY LIKE THIS:
 
-IMPORTANT: 
+## ${isArabic ? 'الإمكانيات' : 'POTENTIAL'}
+[Write 2-3 paragraphs about the potential, target audience, key strengths, and market opportunity]
+
+## ${isArabic ? 'المخاطر' : 'RISKS'}
+• [Risk 1 with explanation]
+• [Risk 2 with explanation]
+• [Risk 3 with explanation]
+
+## ${isArabic ? 'الاقتراحات' : 'SUGGESTIONS'}
+• [Actionable suggestion 1 with specific steps]
+• [Actionable suggestion 2 with specific steps]
+• [Actionable suggestion 3 with specific steps]
+
+IMPORTANT:
 - Be specific, not generic
 - Include numbers/estimates when relevant
 - Focus on actionability
-- Return ONLY the JSON object
-- All text must be in the same language as the input`
+- Write in ${lang} only`
   },
 
   /**

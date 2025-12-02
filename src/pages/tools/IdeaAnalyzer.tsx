@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Sparkle, Lightbulb, CheckCircle, Warning, ArrowRight } from '@phosphor-icons/react';
+import { Sparkle, Lightbulb, Copy, Check, ShareNetwork } from '@phosphor-icons/react';
 import { AIBadge } from '@/components/ai/AIBadge';
 import { AILoadingSpinner } from '@/components/ai/AILoadingSpinner';
 import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderSelector';
@@ -12,12 +12,6 @@ import { toast } from 'sonner';
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
-interface AnalysisResult {
-  potential: string;
-  risks: string;
-  suggestions: string;
-}
-
 export default function IdeaAnalyzer() {
   // Set SEO metadata
   const metadata = getPageMetadata('idea-analyzer')
@@ -25,14 +19,37 @@ export default function IdeaAnalyzer() {
 
   const [idea, setIdea] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
+  const [analysis, setAnalysis] = useState<string>('');
   const [provider, setProvider] = useState<AIProvider>('anthropic');
   const [isArabic, setIsArabic] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   // Detect if input is Arabic
   useEffect(() => {
     setIsArabic(/[\u0600-\u06FF]/.test(idea));
   }, [idea]);
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(analysis);
+    setCopied(true);
+    toast.success(isArabic ? 'تم النسخ!' : 'Copied!');
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleShare = () => {
+    const shareText = `${isArabic ? 'تحليل فكرتي من 24Toolkit:\n\n' : 'My idea analysis from 24Toolkit:\n\n'}${analysis.slice(0, 500)}...`;
+    
+    if (navigator.share) {
+      navigator.share({
+        title: '24Toolkit - Idea Analysis',
+        text: shareText,
+        url: window.location.href,
+      });
+    } else {
+      navigator.clipboard.writeText(shareText);
+      toast.success(isArabic ? 'تم نسخ الرابط!' : 'Link copied!');
+    }
+  };
 
   const handleAnalyze = async () => {
     if (!idea.trim()) {
@@ -48,61 +65,15 @@ export default function IdeaAnalyzer() {
     }
 
     setIsLoading(true);
-    setAnalysis(null);
+    setAnalysis('');
 
     const systemPrompt = AI_PROMPTS.IDEA_ANALYZER(idea);
 
     try {
-      const result = await callAI(systemPrompt, provider);
+      await callAI(systemPrompt, provider, (text) => {
+        setAnalysis(text);
+      });
       
-      // Try to parse JSON response
-      let parsedResult: AnalysisResult;
-      try {
-        parsedResult = JSON.parse(result);
-      } catch (parseError) {
-        console.error('JSON parsing error:', parseError);
-        // If JSON parsing fails, try to extract sections manually
-        const sections = result.split(/\n\n+/);
-        parsedResult = {
-          potential: sections[0] || result,
-          risks: sections[1] || (isArabic ? 'يرجى مراجعة التحليل الكامل أعلاه.' : 'Please review the complete analysis above.'),
-          suggestions: sections[2] || (isArabic ? 'يرجى مراجعة التحليل الكامل أعلاه.' : 'Please review the complete analysis above.')
-        };
-      }
-      
-      // Validate that we have the required fields and format them properly
-      const formatValue = (value: any): string => {
-        if (typeof value === 'string') return value;
-        
-        // Handle arrays - convert to bullet points
-        if (Array.isArray(value)) {
-          return value.map(item => `• ${String(item)}`).join('\n');
-        }
-        
-        // Handle objects - convert to readable format
-        if (typeof value === 'object' && value !== null) {
-          return Object.entries(value)
-            .map(([key, val]) => {
-              const formattedKey = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-              if (Array.isArray(val)) {
-                const items = val.map(item => `  • ${String(item)}`).join('\n');
-                return `${formattedKey}:\n${items}`;
-              }
-              return `${formattedKey}: ${String(val)}`;
-            })
-            .join('\n\n');
-        }
-        
-        return String(value || '');
-      };
-      
-      parsedResult = {
-        potential: formatValue(parsedResult.potential) || result,
-        risks: formatValue(parsedResult.risks) || (isArabic ? 'التحليل قيد المعالجة' : 'Analysis pending'),
-        suggestions: formatValue(parsedResult.suggestions) || (isArabic ? 'التحليل قيد المعالجة' : 'Analysis pending')
-      };
-      
-      setAnalysis(parsedResult);
       toast.success(isArabic ? 'تم تحليل الفكرة بنجاح!' : 'Idea analysis complete!');
     } catch (error) {
       console.error('Analysis error:', error);
@@ -175,46 +146,41 @@ export default function IdeaAnalyzer() {
         )}
 
         {analysis && (
-          <div className="mt-8 space-y-4" dir={isArabic ? 'rtl' : 'ltr'}>
-            {/* Potential Card */}
-            <Card className="border-2 border-green-200 dark:border-green-800 bg-gradient-to-br from-green-50/50 to-emerald-50/50 dark:from-green-950/20 dark:to-emerald-950/20">
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center gap-2 text-green-700 dark:text-green-400">
-                  <CheckCircle size={24} weight="fill" />
-                  {isArabic ? 'الإمكانيات' : 'Potential'}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-foreground whitespace-pre-wrap leading-relaxed">{String(analysis.potential)}</p>
-              </CardContent>
-            </Card>
-
-            {/* Risks Card */}
-            <Card className="border-2 border-orange-200 dark:border-orange-800 bg-gradient-to-br from-orange-50/50 to-amber-50/50 dark:from-orange-950/20 dark:to-amber-950/20">
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center gap-2 text-orange-700 dark:text-orange-400">
-                  <Warning size={24} weight="fill" />
-                  {isArabic ? 'المخاطر' : 'Risks'}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-foreground whitespace-pre-wrap leading-relaxed">{String(analysis.risks)}</p>
-              </CardContent>
-            </Card>
-
-            {/* Suggestions Card */}
-            <Card className="border-2 border-blue-200 dark:border-blue-800 bg-gradient-to-br from-blue-50/50 to-indigo-50/50 dark:from-blue-950/20 dark:to-indigo-950/20">
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center gap-2 text-blue-700 dark:text-blue-400">
-                  <ArrowRight size={24} weight="bold" />
-                  {isArabic ? 'الاقتراحات' : 'Suggestions'}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-foreground whitespace-pre-wrap leading-relaxed">{String(analysis.suggestions)}</p>
-              </CardContent>
-            </Card>
-          </div>
+          <Card className="mt-8" dir={isArabic ? 'rtl' : 'ltr'}>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle className="flex items-center gap-2">
+                <Lightbulb size={24} className="text-yellow-500" />
+                {isArabic ? 'نتيجة التحليل' : 'Analysis Result'}
+              </CardTitle>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={copyToClipboard}
+                  className="gap-2"
+                >
+                  {copied ? <Check size={16} /> : <Copy size={16} />}
+                  {copied ? (isArabic ? 'تم!' : 'Copied!') : (isArabic ? 'نسخ' : 'Copy')}
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleShare}
+                  className="gap-2"
+                >
+                  <ShareNetwork size={16} />
+                  {isArabic ? 'مشاركة' : 'Share'}
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="prose dark:prose-invert max-w-none">
+                <div className="whitespace-pre-wrap leading-relaxed text-foreground">
+                  {analysis}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         )}
       </div>
     </div>
