@@ -1,6 +1,7 @@
 import Stripe from 'stripe';
 import { initializeApp, cert, getApps } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
+import { initSentryBackend, captureBackendError, flushSentry } from './_utils/sentry.js';
 
 // Initialize Firebase Admin
 if (!getApps().length) {
@@ -36,6 +37,8 @@ async function getRawBody(req) {
 }
 
 export default async function handler(req, res) {
+  initSentryBackend();
+  
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -49,6 +52,8 @@ export default async function handler(req, res) {
     event = stripe.webhooks.constructEvent(rawBody, sig, endpointSecret);
   } catch (err) {
     console.error('Webhook signature verification failed:', err.message);
+    captureBackendError(err, { context: 'stripe-webhook', step: 'signature-verification' });
+    await flushSentry();
     return res.status(400).json({ error: `Webhook Error: ${err.message}` });
   }
 
@@ -92,6 +97,12 @@ export default async function handler(req, res) {
     res.status(200).json({ received: true });
   } catch (error) {
     console.error('Webhook handler error:', error);
+    captureBackendError(error, { 
+      context: 'stripe-webhook', 
+      eventType: event?.type,
+      step: 'event-handling' 
+    });
+    await flushSentry();
     res.status(500).json({ error: 'Webhook handler failed' });
   }
 }

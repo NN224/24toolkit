@@ -1,6 +1,8 @@
 import Stripe from 'stripe';
+import { initSentryBackend, captureBackendError, flushSentry } from './_utils/sentry.js';
 
 export default async function handler(req, res) {
+  initSentryBackend();
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -67,6 +69,12 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error('Checkout error:', error.message, error.stack);
+    captureBackendError(error, { 
+      context: 'checkout-session',
+      priceId: body?.priceId,
+      userId: body?.userId 
+    });
+    await flushSentry();
     return res.status(500).json({ 
       error: 'Failed to create checkout session',
       details: error.message 

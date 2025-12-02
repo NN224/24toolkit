@@ -19,6 +19,7 @@ import {
 } from './_utils/providers.js';
 import { verifyIdToken, checkAIUsageAllowed, decrementUserCredits } from './_utils/firebaseAdmin.js';
 import { logger } from './_utils/logger.js';
+import { initSentryBackend, captureBackendError, flushSentry } from './_utils/sentry.js';
 
 // =============================================================================
 // Waterfall Fallback Configuration
@@ -65,6 +66,8 @@ function getProviderStream(providerName, prompt) {
 // =============================================================================
 
 export default async function handler(req, res) {
+  // Initialize Sentry for error tracking
+  initSentryBackend();
   // Set headers for SSE streaming
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Cache-Control', 'no-cache, no-transform');
@@ -211,6 +214,13 @@ export default async function handler(req, res) {
       attemptedProviders: fallbackChain 
     });
     
+    // Report to Sentry
+    captureBackendError(lastError, {
+      endpoint: '/api/ai',
+      userId,
+      extra: { attemptedProviders: fallbackChain }
+    });
+    
     if (!res.headersSent) {
       res.status(503).json({ 
         error: 'ALL_PROVIDERS_FAILED',
@@ -225,5 +235,8 @@ export default async function handler(req, res) {
       })}\n\n`);
       res.end();
     }
+    
+    // Flush Sentry events before function ends
+    await flushSentry();
   }
 }

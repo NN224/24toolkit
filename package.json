@@ -49,6 +49,7 @@
         "@radix-ui/react-toggle-group": "^1.1.2",
         "@radix-ui/react-tooltip": "^1.2.8",
         "@sentry/browser": "^10.27.0",
+        "@sentry/node": "^10.27.0",
         "@sentry/react": "^10.27.0",
         "@tailwindcss/container-queries": "^0.1.1",
         "@tailwindcss/vite": "^4.1.17",

@@ -1,6 +1,7 @@
 import Stripe from 'stripe';
 import { initializeApp, cert, getApps } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
+import { initSentryBackend, captureBackendError, flushSentry } from './_utils/sentry.js';
 
 // Initialize Firebase Admin
 if (!getApps().length) {
@@ -19,6 +20,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 });
 
 export default async function handler(req, res) {
+  initSentryBackend();
   // CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -63,6 +65,8 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error('Customer portal error:', error);
+    captureBackendError(error, { context: 'customer-portal', userId: req.body?.userId });
+    await flushSentry();
     return res.status(500).json({ error: error.message });
   }
 }
