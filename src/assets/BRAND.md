@@ -32,7 +32,7 @@ The favicon is automatically loaded via the `index.html` file:
 <link rel="icon" type="image/svg+xml" href="/src/assets/favicon.svg" />
 ```
 
-### OG Image (`og-image.svg`)
+### OG Image (`og-image.png`)
 Social media preview image (1200x630px) featuring:
 - Dark gradient background with motion wave effects
 - Large 24Toolkit branding
@@ -44,8 +44,8 @@ Social media preview image (1200x630px) featuring:
 **Usage:**
 Automatically set in `index.html` meta tags:
 ```html
-<meta property="og:image" content="/src/assets/og-image.svg">
-<meta name="twitter:image" content="/src/assets/og-image.svg">
+<meta property="og:image" content="/src/assets/og-image.png">
+<meta name="twitter:image" content="/src/assets/og-image.png">
 ```
 
 ## Brand Colors

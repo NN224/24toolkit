@@ -1,3 +1,15 @@
+# OG Image and Social Media Images
+/og-image.png
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: image/png
+  Access-Control-Allow-Origin: *
+
+/og-image.png
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: image/svg+xml
+  Access-Control-Allow-Origin: *
+
+# API Routes
 /_spark/*
   Access-Control-Allow-Origin: *
   Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS

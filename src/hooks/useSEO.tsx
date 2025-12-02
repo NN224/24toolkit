@@ -6,6 +6,7 @@ interface SEOProps {
   description: string
   keywords?: string
   canonicalPath?: string
+  image?: string
 }
 
 const BASE_URL = 'https://24toolkit.com'
@@ -61,7 +62,7 @@ function updateCanonicalLink(url: string) {
  * }
  * ```
  */
-export function SEO({ title, description, keywords, canonicalPath }: SEOProps) {
+export function SEO({ title, description, keywords, canonicalPath, image }: SEOProps) {
   const location = useLocation()
   
   useEffect(() => {
@@ -71,6 +72,9 @@ export function SEO({ title, description, keywords, canonicalPath }: SEOProps) {
     // Build canonical URL
     const path = canonicalPath || location.pathname
     const canonicalUrl = `${BASE_URL}${path === '/' ? '' : path}`
+    
+    // Build image URL
+    const imageUrl = image ? `${BASE_URL}${image}` : `${BASE_URL}/og-image.png`
     
     // Update canonical link
     updateCanonicalLink(canonicalUrl)
@@ -85,11 +89,17 @@ export function SEO({ title, description, keywords, canonicalPath }: SEOProps) {
     updateMetaTag('property', 'og:title', title)
     updateMetaTag('property', 'og:description', description)
     updateMetaTag('property', 'og:url', canonicalUrl)
+    updateMetaTag('property', 'og:image', imageUrl)
+    updateMetaTag('property', 'og:image:width', '2848')
+    updateMetaTag('property', 'og:image:height', '1504')
+    updateMetaTag('property', 'og:image:type', 'image/png')
     
     // Twitter Card tags
+    updateMetaTag('name', 'twitter:card', 'summary_large_image')
     updateMetaTag('name', 'twitter:title', title)
     updateMetaTag('name', 'twitter:description', description)
-  }, [title, description, keywords, canonicalPath, location.pathname])
+    updateMetaTag('name', 'twitter:image', imageUrl)
+  }, [title, description, keywords, canonicalPath, image, location.pathname])
   
   return null
 }
@@ -109,7 +119,7 @@ export function SEO({ title, description, keywords, canonicalPath }: SEOProps) {
  * }
  * ```
  */
-export function useSEO({ title, description, keywords, canonicalPath }: SEOProps) {
+export function useSEO({ title, description, keywords, canonicalPath, image }: SEOProps) {
   const location = useLocation()
   
   useEffect(() => {
@@ -118,6 +128,9 @@ export function useSEO({ title, description, keywords, canonicalPath }: SEOProps
     // Build canonical URL
     const path = canonicalPath || location.pathname
     const canonicalUrl = `${BASE_URL}${path === '/' ? '' : path}`
+    
+    // Build image URL
+    const imageUrl = image ? `${BASE_URL}${image}` : `${BASE_URL}/og-image.png`
     
     // Update canonical link
     updateCanonicalLink(canonicalUrl)
@@ -130,7 +143,13 @@ export function useSEO({ title, description, keywords, canonicalPath }: SEOProps
     updateMetaTag('property', 'og:title', title)
     updateMetaTag('property', 'og:description', description)
     updateMetaTag('property', 'og:url', canonicalUrl)
+    updateMetaTag('property', 'og:image', imageUrl)
+    updateMetaTag('property', 'og:image:width', '2848')
+    updateMetaTag('property', 'og:image:height', '1504')
+    updateMetaTag('property', 'og:image:type', 'image/png')
+    updateMetaTag('name', 'twitter:card', 'summary_large_image')
     updateMetaTag('name', 'twitter:title', title)
     updateMetaTag('name', 'twitter:description', description)
-  }, [title, description, keywords, canonicalPath, location.pathname])
+    updateMetaTag('name', 'twitter:image', imageUrl)
+  }, [title, description, keywords, canonicalPath, image, location.pathname])
 }

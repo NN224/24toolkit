@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OG Image Test - 24Toolkit</title>
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="24Toolkit — Your Complete Online Toolkit">
+    <meta property="og:description" content="80+ free, fast, and AI-powered tools for developers, creators, and everyday users.">
+    <meta property="og:image" content="https://24toolkit.com/og-image.png">
+    <meta property="og:image:width" content="2848">
+    <meta property="og:image:height" content="1504">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:url" content="https://24toolkit.com">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="24Toolkit — Your Complete Online Toolkit">
+    <meta name="twitter:description" content="80+ free, fast, and AI-powered tools for developers, creators, and everyday users.">
+    <meta name="twitter:image" content="https://24toolkit.com/og-image.png">
+</head>
+<body>
+    <h1>OG Image Test Page</h1>
+    <p>This page is for testing Open Graph image tags.</p>
+    <img src="/og-image.png" alt="OG Image Preview" style="max-width: 100%; height: auto;">
+    
+    <h2>Meta Tags:</h2>
+    <pre id="meta-tags"></pre>
+    
+    <script>
+        const metaTags = document.querySelectorAll('meta[property^="og:"], meta[name^="twitter:"]');
+        let output = '';
+        metaTags.forEach(tag => {
+            const attr = tag.getAttribute('property') || tag.getAttribute('name');
+            const content = tag.getAttribute('content');
+            output += `${attr}: ${content}\n`;
+        });
+        document.getElementById('meta-tags').textContent = output;
+    </script>
+</body>
+</html>
