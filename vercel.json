@@ -15,6 +15,15 @@
   ],
   "cleanUrls": false,
 
+  "redirects": [
+    {
+      "source": "/:path((?!api/).*)",
+      "has": [{ "type": "host", "value": "www.24toolkit.com" }],
+      "destination": "https://24toolkit.com/:path",
+      "permanent": true
+    }
+  ],
+
   "rewrites": [
     { "source": "/api/ai", "destination": "/api/ai.js" },
     { "source": "/api/create-checkout-session", "destination": "/api/create-checkout-session.js" },

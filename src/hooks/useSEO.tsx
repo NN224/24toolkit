@@ -8,7 +8,7 @@ interface SEOProps {
   canonicalPath?: string
 }
 
-const BASE_URL = 'https://www.24toolkit.com'
+const BASE_URL = 'https://24toolkit.com'
 
 /**
  * Update or create a meta tag in the document head.

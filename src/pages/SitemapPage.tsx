@@ -104,7 +104,7 @@ export default function SitemapPage() {
                           <div className="flex items-center gap-2">
                             <Icon size={18} className="text-muted-foreground group-hover:text-accent transition-colors" />
                             <span className="text-sm text-foreground group-hover:text-accent transition-colors">
-                              {tool.title}
+                              {t(`tools.${tool.id}.title`, { defaultValue: tool.title })}
                             </span>
                           </div>
                         </Link>
