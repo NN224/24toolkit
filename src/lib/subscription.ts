@@ -81,7 +81,7 @@ export const PLAN_LIMITS = {
     monthlyCredits: 100,
     name: 'Pro',
     price: 4.99,
-    priceId: 'price_1SZeIDK0Ev35OPTiuUT8wWnV',
+    priceId: 'price_1SZhqYGTzfQcDdsZ0iQtvcz6',
     features: [
       '100 AI requests per month',
       'All standard tools',
@@ -97,7 +97,7 @@ export const PLAN_LIMITS = {
     dailyFairUse: 50,
     name: 'Unlimited',
     price: 9.99,
-    priceId: 'price_1SZegyK0Ev35OPTix1BNel9W',
+    priceId: 'price_1SZhrYGTzfQcDdsZkzR4nCMU',
     features: [
       'Unlimited AI requests*',
       'All standard tools',
