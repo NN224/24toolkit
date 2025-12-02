@@ -116,12 +116,12 @@ function SidebarContent({ user, showTooltips = false, onNavigate }: SidebarConte
   return (
     <div className="flex flex-col h-full p-3 gap-4">
       <Link to="/" onClick={onNavigate} className="flex items-center justify-center group mb-2">
-        <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-gradient-to-br from-violet-600/20 to-cyan-500/20 backdrop-blur-md border border-violet-500/30 hover:border-violet-400/50 hover:scale-105 transition-all overflow-hidden shadow-lg shadow-violet-500/10">
+        <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-gradient-to-br from-violet-500/30 to-cyan-400/30 backdrop-blur-md border border-violet-400/50 hover:border-violet-300/70 hover:scale-105 transition-all overflow-hidden shadow-lg shadow-violet-500/30 ring-2 ring-violet-500/20">
           <Logo 
             width={44} 
             height={44}
             compact={true}
-            className="drop-shadow-[0_0_8px_rgba(139,92,246,0.5)]"
+            className="brightness-150 contrast-125 drop-shadow-[0_0_12px_rgba(139,92,246,0.8)]"
           />
         </div>
       </Link>
