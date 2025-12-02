@@ -121,7 +121,7 @@ export default function RegexTester() {
                       id="regex-pattern"
                       value={pattern}
                       onChange={(e) => setPattern(e.target.value)}
-                      placeholder="e.g., \d{3}-\d{3}-\d{4}"
+                      placeholder={t('tools.regexTester.patternExample')}
                       className="font-mono"
                     />
                     {pattern && (

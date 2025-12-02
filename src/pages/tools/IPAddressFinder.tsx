@@ -121,10 +121,10 @@ export default function IPAddressFinder() {
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="space-y-2">
-              <Label htmlFor="custom-ip">IP Address</Label>
+              <Label htmlFor="custom-ip">{t('tools.ipAddressFinder.ipAddress')}</Label>
               <Input
                 id="custom-ip"
-                placeholder="e.g., 8.8.8.8"
+                placeholder={t('tools.ipAddressFinder.ipExample')}
                 value={customIp}
                 onChange={(e) => setCustomIp(e.target.value)}
               />

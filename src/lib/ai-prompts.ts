@@ -339,12 +339,27 @@ OUTPUT: [Formatted code only, no markdown wrapper]`
 
 /**
  * Prompt validation helper
+ * Throws errors with codes that can be translated in components
  */
+export class ValidationError extends Error {
+  code: 'TOO_SHORT' | 'TOO_LONG'
+  min?: number
+  max?: number
+
+  constructor(code: 'TOO_SHORT' | 'TOO_LONG', min?: number, max?: number) {
+    super(code)
+    this.name = 'ValidationError'
+    this.code = code
+    this.min = min
+    this.max = max
+  }
+}
+
 export function validatePromptInput(input: string, minLength: number = 3, maxLength: number = 10000): void {
   if (!input || input.trim().length < minLength) {
-    throw new Error(`Input must be at least ${minLength} characters long`)
+    throw new ValidationError('TOO_SHORT', minLength)
   }
   if (input.length > maxLength) {
-    throw new Error(`Input must not exceed ${maxLength} characters`)
+    throw new ValidationError('TOO_LONG', undefined, maxLength)
   }
 }

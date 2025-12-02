@@ -155,7 +155,7 @@ export default function ImageResizer() {
               {image && (
                 <>
                   <div className="border rounded-lg p-4">
-                    <img src={image} alt="Original" className="w-full h-auto max-h-[200px] object-contain" />
+                    <img src={image} alt={t('tools.common.original')} className="w-full h-auto max-h-[200px] object-contain" />
                     <p className="text-xs text-muted-foreground mt-2 text-center">
                       Original: {originalDimensions.width} × {originalDimensions.height}
                     </p>

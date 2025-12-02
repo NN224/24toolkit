@@ -99,8 +99,9 @@ export default function MultiToolChat() {
 
   // Build context-aware prompt
   const buildPrompt = (userMessage: string, intent: DetectedIntent, conversationHistory: Message[]): string => {
+    const { t } = useTranslation()
     const historyContext = conversationHistory.slice(-4).map(m => 
-      `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.content}`
+      `${m.role === 'user' ? t('chat.chatAssistant.user') : t('chat.chatAssistant.assistant')}: ${m.content}`
     ).join('\n\n')
 
     const toolsContext = `Available tools: ${allTools.filter(t => t.isAI).map(t => t.title).join(', ')}`
@@ -110,7 +111,7 @@ export default function MultiToolChat() {
 ${toolsContext}
 
 Previous conversation:
-${historyContext || 'No previous messages'}
+${historyContext || t('chat.chatAssistant.noPreviousMessages')}
 
 Current user intent detected: ${intent.action} (confidence: ${Math.round(intent.confidence * 100)}%)
 ${intent.tool ? `Suggested tool: ${intent.tool}` : ''}
@@ -122,7 +123,7 @@ Instructions:
 4. Be conversational but efficient
 5. Support both English and Arabic
 
-User message: ${userMessage}
+${t('chat.chatAssistant.userMessage')}: ${userMessage}
 
 Respond naturally and helpfully:`
 
@@ -217,9 +218,9 @@ Respond naturally and helpfully:`
                   <Robot size={18} className="text-white" />
                 </div>
                 <div>
-                  <CardTitle className="text-base">AI Assistant</CardTitle>
+                  <CardTitle className="text-base">{t('chat.chatAssistant.aiAssistant')}</CardTitle>
                   <p className="text-xs text-muted-foreground">
-                    Uses multiple tools
+                    {t('chat.chatAssistant.usesMultipleTools')}
                   </p>
                 </div>
               </div>

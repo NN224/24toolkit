@@ -50,7 +50,15 @@ export default function CodeFormatter() {
     try {
       validatePromptInput(code, 10, 20000)
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : t('tools.common.invalidInput'))
+      if (error instanceof Error && 'code' in error && error.code === 'TOO_SHORT') {
+        const validationError = error as { code: string; min?: number }
+        toast.error(t('tools.common.inputTooShort', { min: validationError.min || 10 }))
+      } else if (error instanceof Error && 'code' in error && error.code === 'TOO_LONG') {
+        const validationError = error as { code: string; max?: number }
+        toast.error(t('tools.common.inputTooLong', { max: validationError.max || 20000 }))
+      } else {
+        toast.error(error instanceof Error ? error.message : t('tools.common.invalidInput'))
+      }
       return
     }
 

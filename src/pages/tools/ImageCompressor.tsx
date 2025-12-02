@@ -246,7 +246,7 @@ export default function ImageCompressor() {
                   <CardContent>
                     <img
                       src={originalPreview}
-                      alt="Original"
+                      alt={t('tools.common.original')}
                       className="w-full h-auto rounded-lg border border-border"
                     />
                   </CardContent>
@@ -276,7 +276,7 @@ export default function ImageCompressor() {
                   <CardContent className="space-y-4">
                     <img
                       src={compressedPreview}
-                      alt="Compressed"
+                      alt={t('tools.common.compressed')}
                       className="w-full h-auto rounded-lg border border-border"
                     />
                     <div className="flex items-center justify-center gap-2 text-sm">

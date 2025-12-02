@@ -132,7 +132,7 @@ export default function ImageFormatConverter() {
               {image && (
                 <>
                   <div className="border rounded-lg p-4 bg-muted">
-                    <img src={image} alt="Original" className="w-full h-auto max-h-[300px] object-contain" />
+                    <img src={image} alt={t('tools.common.original')} className="w-full h-auto max-h-[300px] object-contain" />
                   </div>
 
                   <div className="space-y-2">

@@ -153,7 +153,7 @@ export default function BackgroundRemover() {
               {image && (
                 <>
                   <div className="border rounded-lg p-4 bg-muted">
-                    <img src={image} alt="Original" className="w-full h-auto max-h-[300px] object-contain" />
+                    <img src={image} alt={t('tools.common.original')} className="w-full h-auto max-h-[300px] object-contain" />
                   </div>
 
                   <div className="flex gap-2">
@@ -192,7 +192,7 @@ export default function BackgroundRemover() {
               {processedImage ? (
                 <>
                   <div className="border rounded-lg p-4 bg-checkered relative">
-                    <img src={processedImage} alt="Processed" className="w-full h-auto max-h-[300px] object-contain" />
+                    <img src={processedImage} alt={t('tools.common.processed')} className="w-full h-auto max-h-[300px] object-contain" />
                   </div>
 
                   <Button onClick={handleDownload} className="w-full">

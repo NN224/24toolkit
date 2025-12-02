@@ -93,10 +93,10 @@ export default function FloatingChatAssistant() {
       try {
         const context = buildToolsContext()
         const conversationHistory = messages.slice(-6).map(m => 
-          `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.content}`
+          `${m.role === 'user' ? t('chat.chatAssistant.user') : t('chat.chatAssistant.assistant')}: ${m.content}`
         ).join('\n')
         
-        const prompt = `${context}\n\nConversation History:\n${conversationHistory}\n\nUser: ${userMessage}\n\nAssistant:`
+        const prompt = `${context}\n\n${t('chat.chatAssistant.conversationHistory')}:\n${conversationHistory}\n\n${t('chat.chatAssistant.user')}: ${userMessage}\n\n${t('chat.chatAssistant.assistant')}:`
         
         let response = ''
         await callAI(prompt, 'anthropic', (text) => {

@@ -151,7 +151,7 @@ export default function ImageFilterEditor() {
                   <div className="border rounded-lg p-4 bg-muted">
                     <img 
                       src={image} 
-                      alt="Preview" 
+                      alt={t('tools.common.preview')} 
                       style={getFilterStyle()}
                       className="w-full h-auto max-h-[500px] object-contain"
                     />

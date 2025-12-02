@@ -193,7 +193,7 @@ export function UserProgress() {
         onClick={() => setIsOpen(true)}
         className="fixed bottom-6 left-6 lg:left-24 z-40 bg-gradient-to-r from-purple-600 to-sky-500 text-white p-4 rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300"
         style={{ boxShadow: '0 0 30px rgba(109,40,217,0.5)' }}
-        aria-label="View progress and achievements"
+        aria-label={t('progress.viewProgress')}
       >
         <Trophy size={24} weight="fill" />
         {stats.toolsUsed.size > 0 && (

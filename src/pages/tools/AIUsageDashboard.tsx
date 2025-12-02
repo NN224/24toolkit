@@ -72,12 +72,12 @@ export default function AIUsageDashboard() {
   }
 
   const formatDuration = (ms: number) => {
-    if (ms < 1000) return `${ms}ms`
-    return `${(ms / 1000).toFixed(1)}s`
+    if (ms < 1000) return `${ms}${t('tools.aiUsageDashboard.milliseconds')}`
+    return `${(ms / 1000).toFixed(1)}${t('tools.aiUsageDashboard.seconds')}`
   }
 
   const formatHour = (hour: number) => {
-    const period = hour >= 12 ? 'PM' : 'AM'
+    const period = hour >= 12 ? t('tools.aiUsageDashboard.pm') : t('tools.aiUsageDashboard.am')
     const displayHour = hour % 12 || 12
     return `${displayHour}:00 ${period}`
   }
@@ -86,7 +86,7 @@ export default function AIUsageDashboard() {
     return (
       <div className="py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="animate-pulse">Loading...</div>
+          <div className="animate-pulse">{t('common.loading')}</div>
         </div>
       </div>
     )
@@ -100,23 +100,23 @@ export default function AIUsageDashboard() {
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-3">
               <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-                AI Usage Dashboard
+                {t('tools.aiUsageDashboard.title')}
               </h1>
               <AIBadge />
             </div>
             <div className="flex gap-2">
               <Button variant="outline" size="sm" onClick={handleExportData}>
                 <Download size={16} className="mr-1" />
-                Export
+                {t('tools.aiUsageDashboard.export')}
               </Button>
               <Button variant="outline" size="sm" onClick={handleClearData}>
                 <Trash size={16} className="mr-1" />
-                Clear
+                {t('tools.aiUsageDashboard.clear')}
               </Button>
             </div>
           </div>
           <p className="text-lg text-muted-foreground">
-            Track your AI tool usage and get personalized recommendations
+            {t('tools.aiUsageDashboard.subtitle')}
           </p>
         </div>
 
@@ -128,15 +128,15 @@ export default function AIUsageDashboard() {
                 <ChartLine size={40} className="text-purple-500" />
               </div>
               <h2 className="text-xl font-semibold mb-2">
-                No usage data yet
+                {t('tools.aiUsageDashboard.noUsageData')}
               </h2>
               <p className="text-muted-foreground mb-6">
-                Start using AI tools to see your analytics
+                {t('tools.aiUsageDashboard.startUsingTools')}
               </p>
               <Link to="/tools/text-summarizer">
                 <Button className="gap-2 bg-gradient-to-r from-purple-600 to-sky-500">
                   <Sparkle size={18} weight="fill" />
-                  Try Text Summarizer
+                  {t('tools.aiUsageDashboard.tryTextSummarizer')}
                   <ArrowRight size={16} />
                 </Button>
               </Link>
@@ -151,7 +151,7 @@ export default function AIUsageDashboard() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-muted-foreground">
-                        Total Requests
+                        {t('tools.aiUsageDashboard.totalRequests')}
                       </p>
                       <p className="text-3xl font-bold text-foreground">
                         {insights.totalRequests}
@@ -169,7 +169,7 @@ export default function AIUsageDashboard() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-muted-foreground">
-                        Success Rate
+                        {t('tools.aiUsageDashboard.successRate')}
                       </p>
                       <p className="text-3xl font-bold text-foreground">
                         {insights.successRate}%
@@ -188,7 +188,7 @@ export default function AIUsageDashboard() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-muted-foreground">
-                        Avg Response Time
+                        {t('tools.aiUsageDashboard.avgResponseTime')}
                       </p>
                       <p className="text-3xl font-bold text-foreground">
                         {formatDuration(insights.averageResponseTime)}
@@ -206,7 +206,7 @@ export default function AIUsageDashboard() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-muted-foreground">
-                        Tools Used
+                        {t('tools.aiUsageDashboard.toolsUsed')}
                       </p>
                       <p className="text-3xl font-bold text-foreground">
                         {insights.totalToolsUsed}
@@ -226,10 +226,10 @@ export default function AIUsageDashboard() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <TrendUp size={20} className="text-purple-500" />
-                    Your Favorite Tools
+                    {t('tools.aiUsageDashboard.yourFavoriteTools')}
                   </CardTitle>
                   <CardDescription>
-                    Most frequently used tools
+                    {t('tools.aiUsageDashboard.mostFrequentlyUsed')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -248,7 +248,7 @@ export default function AIUsageDashboard() {
                                 className="h-1.5 flex-1" 
                               />
                               <span className="text-xs text-muted-foreground">
-                                {tool.count} uses
+                                {tool.count} {t('tools.aiUsageDashboard.uses')}
                               </span>
                             </div>
                           </div>
@@ -257,7 +257,7 @@ export default function AIUsageDashboard() {
                     </div>
                   ) : (
                     <p className="text-muted-foreground text-center py-8">
-                      No data yet
+                      {t('tools.aiUsageDashboard.noData')}
                     </p>
                   )}
                 </CardContent>
@@ -268,10 +268,10 @@ export default function AIUsageDashboard() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Sparkle size={20} weight="fill" className="text-purple-500" />
-                    Personalized Suggestions
+                    {t('tools.aiUsageDashboard.personalizedSuggestions')}
                   </CardTitle>
                   <CardDescription>
-                    Based on your usage patterns
+                    {t('tools.aiUsageDashboard.basedOnUsage')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -294,7 +294,7 @@ export default function AIUsageDashboard() {
               <Card>
                 <CardHeader>
                   <CardTitle>
-                    Today's Summary
+                    {t('tools.aiUsageDashboard.todaySummary')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -302,19 +302,19 @@ export default function AIUsageDashboard() {
                     <div className="text-center p-4 rounded-lg bg-muted/50">
                       <p className="text-2xl font-bold text-foreground">{todaySummary.totalRequests}</p>
                       <p className="text-sm text-muted-foreground">
-                        Requests
+                        {t('tools.aiUsageDashboard.requests')}
                       </p>
                     </div>
                     <div className="text-center p-4 rounded-lg bg-muted/50">
                       <p className="text-2xl font-bold text-green-500">{todaySummary.successfulRequests}</p>
                       <p className="text-sm text-muted-foreground">
-                        Successful
+                        {t('tools.aiUsageDashboard.successful')}
                       </p>
                     </div>
                     <div className="text-center p-4 rounded-lg bg-muted/50">
                       <p className="text-2xl font-bold text-red-500">{todaySummary.failedRequests}</p>
                       <p className="text-sm text-muted-foreground">
-                        Failed
+                        {t('tools.aiUsageDashboard.failed')}
                       </p>
                     </div>
                     <div className="text-center p-4 rounded-lg bg-muted/50">
@@ -322,7 +322,7 @@ export default function AIUsageDashboard() {
                         {formatDuration(todaySummary.averageDuration)}
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        Avg Time
+                        {t('tools.aiUsageDashboard.avgTime')}
                       </p>
                     </div>
                   </div>
@@ -333,13 +333,13 @@ export default function AIUsageDashboard() {
             {/* Usage Patterns */}
             <Card>
               <CardHeader>
-                <CardTitle>Usage Patterns</CardTitle>
+                <CardTitle>{t('tools.aiUsageDashboard.usagePatterns')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <p className="text-sm text-muted-foreground mb-2">
-                      Peak Usage Time
+                      {t('tools.aiUsageDashboard.peakUsageTime')}
                     </p>
                     <div className="flex items-center gap-2">
                       <Clock size={20} className="text-sky-500" />
@@ -348,10 +348,10 @@ export default function AIUsageDashboard() {
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground mb-2">
-                      Preferred Provider
+                      {t('tools.aiUsageDashboard.preferredProvider')}
                     </p>
                     <Badge variant="secondary" className="text-sm">
-                      {insights.favoriteProvider || 'N/A'}
+                      {insights.favoriteProvider || t('tools.aiUsageDashboard.notAvailable')}
                     </Badge>
                   </div>
                 </div>

@@ -125,6 +125,7 @@
     "achievementsTitle": "Achievements",
     "achievementUnlocked": "Achievement Unlocked!",
     "keepExploring": "Keep exploring to unlock all achievements! 🚀",
+    "viewProgress": "View progress and achievements",
     "achievements": {
       "firstTool": {
         "title": "Getting Started",
@@ -259,7 +260,26 @@
     "chat": "Chat",
     "finder": "Finder",
     "typeMessage": "Type a message...",
-    "searchTools": "Search tools..."
+    "searchTools": "Search tools...",
+    "user": "User",
+    "assistant": "Assistant",
+    "aiAssistant": "AI Assistant",
+    "conversationHistory": "Conversation History",
+    "userMessage": "User message",
+    "noPreviousMessages": "No previous messages",
+    "usesMultipleTools": "Uses multiple tools"
+  },
+  "chat": {
+    "chatAssistant": {
+      "title": "AI Chat Assistant",
+      "user": "User",
+      "assistant": "Assistant",
+      "aiAssistant": "AI Assistant",
+      "conversationHistory": "Conversation History",
+      "userMessage": "User message",
+      "noPreviousMessages": "No previous messages",
+      "usesMultipleTools": "Uses multiple tools"
+    }
   },
   "pricing": {
     "title": "Choose Your Plan",
@@ -800,8 +820,12 @@
     "mainPages": "Main Pages",
     "total": "Total: {{tools}} tools + {{pages}} pages"
   },
-  "tools": {
+    "tools": {
     "common": {
+      "original": "Original",
+      "compressed": "Compressed",
+      "preview": "Preview",
+      "processed": "Processed",
       "input": "Input",
       "output": "Output",
       "result": "Result",
@@ -859,6 +883,8 @@
       "delete": "Delete",
       "imageLoaded": "Image loaded!",
       "invalidInput": "Invalid input",
+      "inputTooShort": "Input must be at least {{min}} characters long",
+      "inputTooLong": "Input must not exceed {{max}} characters",
       "loading": "Loading...",
       "note": "Note",
       "pleaseEnterText": "Please enter some text",
@@ -981,7 +1007,10 @@
       "correcting": "Correcting...",
       "correctionsMade": "corrections made",
       "enterText": "Enter text to check",
-      "enterTextDescription": "Type or paste text to check grammar"
+      "enterTextDescription": "Type or paste text to check grammar",
+      "textLengthAdjusted": "Text length adjusted",
+      "grammarSpellingCorrected": "Grammar and spelling corrected",
+      "punctuationImproved": "Punctuation improved"
     },
     "aiTranslator": {
       "name": "AI Translator",
@@ -1248,7 +1277,8 @@
       "matchCopied": "Match copied!",
       "cleared": "Cleared",
       "flagsHint": "Common flags: g (global), i (case-insensitive), m (multiline)",
-      "enterTestText": "Enter text to test..."
+      "enterTestText": "Enter text to test...",
+      "patternExample": "e.g., \\d{3}-\\d{3}-\\d{4}"
     },
     "jsonBeautifier": {
       "name": "JSON Beautifier",
@@ -1334,7 +1364,9 @@
       "converted": "Converted successfully!",
       "enterDate": "Please enter a date",
       "invalidDate": "Invalid date format",
-      "currentTimeLoaded": "Current time loaded!"
+      "currentTimeLoaded": "Current time loaded!",
+      "timestampExample": "e.g., 1672531200",
+      "dateExample": "e.g., 2024-01-01 or 2024-01-01T00:00:00Z"
     },
     "jwtDecoder": {
       "name": "JWT Decoder",
@@ -1947,7 +1979,15 @@
       "imperial": "Imperial (lbs, in)",
       "calculateBmi": "Calculate BMI",
       "yourBmi": "Your BMI",
-      "categories": "BMI Categories"
+      "categories": "BMI Categories",
+      "kg": "kg",
+      "lbs": "lbs",
+      "cm": "cm",
+      "inches": "inches",
+      "weightExampleMetric": "e.g., 70",
+      "weightExampleImperial": "e.g., 154",
+      "heightExampleMetric": "e.g., 170",
+      "heightExampleImperial": "e.g., 67"
     },
     "tipCalculator": {
       "name": "Tip Calculator",
@@ -1977,7 +2017,8 @@
       "discountPercent": "Discount %",
       "discountAmount": "Discount Amount",
       "finalPrice": "Final Price",
-      "customPercent": "Custom %"
+      "customPercent": "Custom %",
+      "priceExample": "e.g., 99.99"
     },
     "currencyConverter": {
       "name": "Currency Converter",
@@ -2267,7 +2308,9 @@
       "invalidIpAddress": "Invalid IP address",
       "lookupComplete": "IP lookup complete!",
       "lookupFailed": "Failed to lookup IP address",
-      "ipCopied": "IP address copied!"
+      "ipCopied": "IP address copied!",
+      "ipAddress": "IP Address",
+      "ipExample": "e.g., 8.8.8.8"
     },
     "httpHeaderAnalyzer": {
       "name": "HTTP Header Analyzer",
@@ -2527,7 +2570,12 @@
       "noData": "No data yet",
       "dataCleared": "Data cleared",
       "dataExported": "Data exported",
-      "clearConfirm": "Clear all usage data?"
+      "clearConfirm": "Clear all usage data?",
+      "notAvailable": "N/A",
+      "milliseconds": "ms",
+      "seconds": "s",
+      "am": "AM",
+      "pm": "PM"
     },
     "imageCompressorV2": {
       "title": "Image Compressor v2",

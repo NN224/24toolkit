@@ -98,24 +98,24 @@ export default function BMICalculator() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="weight-input">
-                {t('tools.bmiCalculator.weight')} {unit === 'metric' ? '(kg)' : '(lbs)'}
+                {t('tools.bmiCalculator.weight')} {unit === 'metric' ? `(${t('tools.bmiCalculator.kg')})` : `(${t('tools.bmiCalculator.lbs')})`}
               </Label>
               <Input
                 id="weight-input"
                 type="number"
-                placeholder={unit === 'metric' ? 'e.g., 70' : 'e.g., 154'}
+                placeholder={unit === 'metric' ? t('tools.bmiCalculator.weightExampleMetric') : t('tools.bmiCalculator.weightExampleImperial')}
                 value={weight}
                 onChange={(e) => setWeight(e.target.value)}
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="height-input">
-                {t('tools.bmiCalculator.height')} {unit === 'metric' ? '(cm)' : '(inches)'}
+                {t('tools.bmiCalculator.height')} {unit === 'metric' ? `(${t('tools.bmiCalculator.cm')})` : `(${t('tools.bmiCalculator.inches')})`}
               </Label>
               <Input
                 id="height-input"
                 type="number"
-                placeholder={unit === 'metric' ? 'e.g., 170' : 'e.g., 67'}
+                placeholder={unit === 'metric' ? t('tools.bmiCalculator.heightExampleMetric') : t('tools.bmiCalculator.heightExampleImperial')}
                 value={height}
                 onChange={(e) => setHeight(e.target.value)}
               />

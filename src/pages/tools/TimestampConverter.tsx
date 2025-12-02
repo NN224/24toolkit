@@ -142,7 +142,7 @@ export default function TimestampConverter() {
                   type="text"
                   value={timestamp}
                   onChange={(e) => setTimestamp(e.target.value)}
-                  placeholder="e.g., 1672531200"
+                  placeholder={t('tools.timestampConverter.timestampExample')}
                   className="font-mono"
                 />
               </div>
@@ -169,7 +169,7 @@ export default function TimestampConverter() {
                   type="text"
                   value={readable}
                   onChange={(e) => setReadable(e.target.value)}
-                  placeholder="e.g., 2024-01-01 or 2024-01-01T00:00:00Z"
+                  placeholder={t('tools.timestampConverter.dateExample')}
                   className="font-mono"
                 />
               </div>

@@ -67,7 +67,7 @@ export default function DiscountCalculator() {
             <Input
               id="original-price"
               type="number"
-              placeholder="e.g., 99.99"
+              placeholder={t('tools.discountCalculator.priceExample')}
               value={originalPrice}
               onChange={(e) => setOriginalPrice(e.target.value)}
               step="0.01"

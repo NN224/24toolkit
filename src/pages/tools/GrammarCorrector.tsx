@@ -35,7 +35,15 @@ export default function GrammarCorrector() {
     try {
       validatePromptInput(text, 5, 10000)
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : t('tools.common.invalidInput'))
+      if (error instanceof Error && 'code' in error && error.code === 'TOO_SHORT') {
+        const validationError = error as { code: string; min?: number }
+        toast.error(t('tools.common.inputTooShort', { min: validationError.min || 5 }))
+      } else if (error instanceof Error && 'code' in error && error.code === 'TOO_LONG') {
+        const validationError = error as { code: string; max?: number }
+        toast.error(t('tools.common.inputTooLong', { max: validationError.max || 10000 }))
+      } else {
+        toast.error(error instanceof Error ? error.message : t('tools.common.invalidInput'))
+      }
       return
     }
 
@@ -51,11 +59,11 @@ export default function GrammarCorrector() {
       
       const foundCorrections: string[] = []
       if (text.length !== result.trim().length) {
-        foundCorrections.push('Text length adjusted')
+        foundCorrections.push(t('tools.grammarCorrector.textLengthAdjusted'))
       }
       if (text !== result.trim()) {
-        foundCorrections.push('Grammar and spelling corrected')
-        foundCorrections.push('Punctuation improved')
+        foundCorrections.push(t('tools.grammarCorrector.grammarSpellingCorrected'))
+        foundCorrections.push(t('tools.grammarCorrector.punctuationImproved'))
       }
       
       setCorrections(foundCorrections.length > 0 ? foundCorrections : [t('tools.grammarCorrector.noCorrections')])

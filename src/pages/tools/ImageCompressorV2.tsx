@@ -241,13 +241,13 @@ export default function ImageCompressorV2() {
             <CardContent>
               {originalPreview ? (
                 <div className="border rounded-lg p-4 bg-muted">
-                  <img src={originalPreview} alt="Original" className="w-full h-auto max-h-[400px] object-contain" />
+                  <img src={originalPreview} alt={t('tools.imageCompressorV2.original')} className="w-full h-auto max-h-[400px] object-contain" />
                 </div>
               ) : (
                 <div className="min-h-[400px] border-2 border-dashed border-border rounded-lg flex items-center justify-center text-muted-foreground">
                   <div className="text-center">
                     <Upload size={48} className="mx-auto mb-2 opacity-20" />
-                    <p>Upload an image to start</p>
+                    <p>{t('tools.imageCompressorV2.uploadToStart')}</p>
                   </div>
                 </div>
               )}
@@ -256,21 +256,21 @@ export default function ImageCompressorV2() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Compressed</CardTitle>
+              <CardTitle>{t('tools.imageCompressorV2.compressed')}</CardTitle>
               <CardDescription>
-                {compressedSize > 0 ? formatFileSize(compressedSize) : 'Compressed version'}
+                {compressedSize > 0 ? formatFileSize(compressedSize) : t('tools.imageCompressorV2.compressedVersion')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               {compressedPreview ? (
                 <div className="border rounded-lg p-4 bg-muted">
-                  <img src={compressedPreview} alt="Compressed" className="w-full h-auto max-h-[400px] object-contain" />
+                  <img src={compressedPreview} alt={t('tools.imageCompressorV2.compressed')} className="w-full h-auto max-h-[400px] object-contain" />
                 </div>
               ) : (
                 <div className="min-h-[400px] border-2 border-dashed border-border rounded-lg flex items-center justify-center text-muted-foreground">
                   <div className="text-center">
                     <Gauge size={48} className="mx-auto mb-2 opacity-20" />
-                    <p>Compressed image will appear here</p>
+                    <p>{t('tools.imageCompressorV2.compressedHere')}</p>
                   </div>
                 </div>
               )}
