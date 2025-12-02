@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -11,6 +12,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function RandomStringGenerator() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('random-string-generator')
   useSEO(metadata)
@@ -34,7 +37,7 @@ export default function RandomStringGenerator() {
         .map(b => b.toString(16).padStart(2, '0'))
         .join('')
       setResult(hexString)
-      toast.success('Hex string generated!')
+      toast.success(t('tools.randomStringGenerator.hexGenerated'))
       return
     }
 
@@ -44,7 +47,7 @@ export default function RandomStringGenerator() {
       const base64String = btoa(String.fromCharCode(...array))
         .substring(0, length)
       setResult(base64String)
-      toast.success('Base64 string generated!')
+      toast.success(t('tools.randomStringGenerator.base64Generated'))
       return
     }
 
@@ -60,7 +63,7 @@ export default function RandomStringGenerator() {
     if (options.symbols) charset += symbols
 
     if (charset === '') {
-      toast.error('Please select at least one character type')
+      toast.error(t('tools.randomStringGenerator.selectCharTypeError'))
       return
     }
 
@@ -73,7 +76,7 @@ export default function RandomStringGenerator() {
     }
 
     setResult(randomString)
-    toast.success('Random string generated!')
+    toast.success(t('tools.randomStringGenerator.stringGenerated'))
   }
 
   const handleCopy = async () => {
@@ -81,9 +84,9 @@ export default function RandomStringGenerator() {
     
     try {
       await navigator.clipboard.writeText(result)
-      toast.success('Copied to clipboard!')
+      toast.success(t('tools.common.copied'))
     } catch {
-      toast.error('Failed to copy')
+      toast.error(t('tools.randomStringGenerator.copyFailed'))
     }
   }
 
@@ -92,19 +95,19 @@ export default function RandomStringGenerator() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Random String Generator
+            {t('tools.randomStringGenerator.title')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Generate cryptographically secure random strings for tokens, keys, and identifiers.
+            {t('tools.randomStringGenerator.subtitle')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Generated String</CardTitle>
+              <CardTitle>{t('tools.randomStringGenerator.generatedString')}</CardTitle>
               <CardDescription>
-                Your cryptographically random string
+                {t('tools.randomStringGenerator.generatedStringDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -113,7 +116,7 @@ export default function RandomStringGenerator() {
                   id="string-output"
                   value={result}
                   readOnly
-                  placeholder="Click 'Generate String' to create"
+                  placeholder={t('tools.randomStringGenerator.placeholder')}
                   className="font-mono text-lg"
                 />
                 <Button
@@ -131,18 +134,18 @@ export default function RandomStringGenerator() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Configuration</CardTitle>
+              <CardTitle>{t('tools.randomStringGenerator.configuration')}</CardTitle>
               <CardDescription>
-                Customize your random string
+                {t('tools.randomStringGenerator.configurationDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-4">
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <Label htmlFor="length-slider">String Length</Label>
+                    <Label htmlFor="length-slider">{t('tools.randomStringGenerator.stringLength')}</Label>
                     <span className="text-sm font-medium text-muted-foreground">
-                      {length} characters
+                      {length} {t('tools.randomStringGenerator.characters')}
                     </span>
                   </div>
                   <Slider
@@ -158,7 +161,7 @@ export default function RandomStringGenerator() {
                 <div className="space-y-3 pt-2">
                   <div className="flex items-center justify-between">
                     <Label htmlFor="hex" className="cursor-pointer">
-                      Hexadecimal Only (0-9, a-f)
+                      {t('tools.randomStringGenerator.hexadecimal')}
                     </Label>
                     <Switch
                       id="hex"
@@ -178,7 +181,7 @@ export default function RandomStringGenerator() {
 
                   <div className="flex items-center justify-between">
                     <Label htmlFor="base64" className="cursor-pointer">
-                      Base64 Encoding
+                      {t('tools.randomStringGenerator.base64Encoding')}
                     </Label>
                     <Switch
                       id="base64"
@@ -200,7 +203,7 @@ export default function RandomStringGenerator() {
                     <>
                       <div className="flex items-center justify-between">
                         <Label htmlFor="uppercase" className="cursor-pointer">
-                          Uppercase Letters (A-Z)
+                          {t('tools.randomStringGenerator.uppercase')}
                         </Label>
                         <Switch
                           id="uppercase"
@@ -213,7 +216,7 @@ export default function RandomStringGenerator() {
 
                       <div className="flex items-center justify-between">
                         <Label htmlFor="lowercase" className="cursor-pointer">
-                          Lowercase Letters (a-z)
+                          {t('tools.randomStringGenerator.lowercase')}
                         </Label>
                         <Switch
                           id="lowercase"
@@ -226,7 +229,7 @@ export default function RandomStringGenerator() {
 
                       <div className="flex items-center justify-between">
                         <Label htmlFor="numbers" className="cursor-pointer">
-                          Numbers (0-9)
+                          {t('tools.randomStringGenerator.numbers')}
                         </Label>
                         <Switch
                           id="numbers"
@@ -239,7 +242,7 @@ export default function RandomStringGenerator() {
 
                       <div className="flex items-center justify-between">
                         <Label htmlFor="symbols" className="cursor-pointer">
-                          Symbols (!@#$%^&*)
+                          {t('tools.randomStringGenerator.symbols')}
                         </Label>
                         <Switch
                           id="symbols"
@@ -256,7 +259,7 @@ export default function RandomStringGenerator() {
 
               <Button onClick={generateString} className="w-full gap-2" size="lg">
                 <Sparkle size={20} />
-                Generate Random String
+                {t('tools.randomStringGenerator.generateButton')}
               </Button>
             </CardContent>
           </Card>

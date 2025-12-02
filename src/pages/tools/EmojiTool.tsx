@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -10,6 +11,8 @@ import { getPageMetadata } from '@/lib/seo-metadata'
 const popularEmojis = ['😀', '😊', '😍', '🎉', '✨', '❤️', '👍', '🔥', '💯', '🌟', '🚀', '💪', '🎯', '⭐', '✅']
 
 export default function EmojiTool() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('emoji-tool')
   useSEO(metadata)
@@ -23,7 +26,7 @@ export default function EmojiTool() {
   const removeEmojis = () => {
     const cleaned = text.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '')
     setText(cleaned)
-    toast.success('Emojis removed')
+    toast.success(t('tools.emojiTool.emojisRemoved'))
   }
 
   const addRandomEmojis = () => {
@@ -36,21 +39,21 @@ export default function EmojiTool() {
       return word
     }).join(' ')
     setText(withEmojis)
-    toast.success('Random emojis added')
+    toast.success(t('tools.emojiTool.randomEmojisAdded'))
   }
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(text)
-      toast.success('Text copied to clipboard!')
+      toast.success(t('tools.common.copied'))
     } catch (err) {
-      toast.error('Failed to copy text')
+      toast.error(t('tools.common.copyFailed'))
     }
   }
 
   const handleClear = () => {
     setText('')
-    toast.success('Text cleared')
+    toast.success(t('tools.common.cleared'))
   }
 
   return (
@@ -58,25 +61,25 @@ export default function EmojiTool() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Emoji Adder / Cleaner
+            {t('tools.emojiTool.name')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Add emojis to your text or remove all emojis with one click.
+            {t('tools.emojiTool.description')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Enter Your Text</CardTitle>
+              <CardTitle>{t('tools.emojiTool.enterYourText')}</CardTitle>
               <CardDescription>
-                Type or paste text and add or remove emojis
+                {t('tools.emojiTool.cardDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <Textarea
                 id="text-input"
-                placeholder="Type or paste your text here..."
+                placeholder={t('tools.common.typeOrPaste')}
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 className="min-h-[200px] resize-y font-normal"
@@ -91,7 +94,7 @@ export default function EmojiTool() {
                     className="gap-2"
                   >
                     <Trash size={16} />
-                    Remove All Emojis
+                    {t('tools.emojiTool.removeAllEmojis')}
                   </Button>
                   <Button
                     onClick={addRandomEmojis}
@@ -100,12 +103,12 @@ export default function EmojiTool() {
                     className="gap-2"
                   >
                     <Smiley size={16} />
-                    Add Random Emojis
+                    {t('tools.emojiTool.addRandomEmojis')}
                   </Button>
                 </div>
 
                 <div className="space-y-2">
-                  <p className="text-sm font-medium text-muted-foreground">Quick Add Emojis:</p>
+                  <p className="text-sm font-medium text-muted-foreground">{t('tools.emojiTool.quickAddEmojis')}</p>
                   <div className="flex flex-wrap gap-2">
                     {popularEmojis.map(emoji => (
                       <Button
@@ -130,7 +133,7 @@ export default function EmojiTool() {
                   className="gap-2"
                 >
                   <Copy size={16} />
-                  Copy Text
+                  {t('tools.common.copy')}
                 </Button>
                 <Button
                   onClick={handleClear}
@@ -138,7 +141,7 @@ export default function EmojiTool() {
                   className="gap-2"
                 >
                   <Trash size={16} />
-                  Clear
+                  {t('tools.common.clear')}
                 </Button>
               </div>
             </CardContent>

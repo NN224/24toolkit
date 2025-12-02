@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -12,6 +13,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function HashGenerator() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('hash-generator')
   useSEO(metadata)
@@ -189,7 +192,7 @@ export default function HashGenerator() {
 
   const generateHashes = async () => {
     if (!text.trim()) {
-      toast.error('Please enter text to hash')
+      toast.error(t('tools.common.enterText'))
       return
     }
 
@@ -203,7 +206,7 @@ export default function HashGenerator() {
       sha1: sha1Result
     })
 
-    toast.success('Hashes generated successfully!')
+    toast.success(t('tools.hashGenerator.generated'))
   }
 
 
@@ -213,36 +216,36 @@ export default function HashGenerator() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            SHA256 / MD5 Hash Generator
+            {t('tools.hashGenerator.name')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Generate secure cryptographic hashes (SHA-256, SHA-1, MD5) from any text input.
+            {t('tools.hashGenerator.description')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Input Text</CardTitle>
+              <CardTitle>{t('tools.hashGenerator.inputText')}</CardTitle>
               <CardDescription>
-                Enter the text you want to hash
+                {t('tools.hashGenerator.enterTextToHash')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="text-input">Text</Label>
+                <Label htmlFor="text-input">{t('tools.hashGenerator.text')}</Label>
                 <Textarea
                   id="text-input"
                   value={text}
                   onChange={(e) => setText(e.target.value)}
-                  placeholder="Enter text to generate hashes..."
+                  placeholder={t('tools.hashGenerator.placeholder')}
                   className="min-h-[120px] font-mono"
                 />
               </div>
 
               <Button onClick={generateHashes} className="w-full gap-2" size="lg">
                 <Hash size={20} />
-                Generate Hashes
+                {t('tools.hashGenerator.generate')}
               </Button>
             </CardContent>
           </Card>
@@ -250,9 +253,9 @@ export default function HashGenerator() {
           {(hashes.sha256 || hashes.md5 || hashes.sha1) && (
             <Card>
               <CardHeader>
-                <CardTitle>Generated Hashes</CardTitle>
+                <CardTitle>{t('tools.hashGenerator.generatedHashes')}</CardTitle>
                 <CardDescription>
-                  Your cryptographic hash results
+                  {t('tools.hashGenerator.hashResults')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -266,7 +269,7 @@ export default function HashGenerator() {
                       className="font-mono text-sm"
                     />
                     <Button
-                      onClick={() => copyToClipboard(hashes.sha256, 'SHA-256 hash copied to clipboard!')}
+                      onClick={() => copyToClipboard(hashes.sha256, t('tools.common.copied'))}
                       variant="outline"
                       size="icon"
                       className="shrink-0"
@@ -286,7 +289,7 @@ export default function HashGenerator() {
                       className="font-mono text-sm"
                     />
                     <Button
-                      onClick={() => copyToClipboard(hashes.sha1, 'SHA-1 hash copied to clipboard!')}
+                      onClick={() => copyToClipboard(hashes.sha1, t('tools.common.copied'))}
                       variant="outline"
                       size="icon"
                       className="shrink-0"
@@ -306,7 +309,7 @@ export default function HashGenerator() {
                       className="font-mono text-sm"
                     />
                     <Button
-                      onClick={() => copyToClipboard(hashes.md5, 'MD5 hash copied to clipboard!')}
+                      onClick={() => copyToClipboard(hashes.md5, t('tools.common.copied'))}
                       variant="outline"
                       size="icon"
                       className="shrink-0"

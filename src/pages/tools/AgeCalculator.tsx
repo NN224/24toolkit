@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -8,6 +9,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function AgeCalculator() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('age-calculator')
   useSEO(metadata)
@@ -71,21 +74,21 @@ export default function AgeCalculator() {
             <Calendar size={24} className="text-white" weight="bold" />
           </div>
           <div>
-            <h1 className="text-3xl font-semibold text-foreground">Age Calculator</h1>
-            <p className="text-muted-foreground">Calculate your exact age from birth date</p>
+            <h1 className="text-3xl font-semibold text-foreground">{t('tools.ageCalculator.name')}</h1>
+            <p className="text-muted-foreground">{t('tools.ageCalculator.description')}</p>
           </div>
         </div>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Calculate Age</CardTitle>
-          <CardDescription>Enter birth date to calculate precise age</CardDescription>
+          <CardTitle>{t('tools.common.calculate')} {t('tools.ageCalculator.age')}</CardTitle>
+          <CardDescription>{t('tools.ageCalculator.enterBirthDate')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="birth-date">Birth Date</Label>
+              <Label htmlFor="birth-date">{t('tools.ageCalculator.birthDate')}</Label>
               <Input
                 id="birth-date"
                 type="date"
@@ -94,44 +97,44 @@ export default function AgeCalculator() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="target-date">Calculate Age On (Optional)</Label>
+              <Label htmlFor="target-date">{t('tools.ageCalculator.targetDate')}</Label>
               <Input
                 id="target-date"
                 type="date"
                 value={targetDate}
                 onChange={(e) => setTargetDate(e.target.value)}
-                placeholder="Leave empty for today"
+                placeholder={t('tools.ageCalculator.leaveEmptyForToday')}
               />
             </div>
           </div>
           <Button onClick={calculateAge} className="w-full" disabled={!birthDate}>
-            Calculate Age
+            {t('tools.common.calculate')} {t('tools.ageCalculator.age')}
           </Button>
 
           {ageResult && (
             <div className="space-y-4 mt-6">
               <div className="p-6 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-lg text-center border border-blue-200">
-                <p className="text-sm text-muted-foreground mb-2">Your Age</p>
+                <p className="text-sm text-muted-foreground mb-2">{t('tools.ageCalculator.yourAge')}</p>
                 <p className="text-4xl font-bold text-foreground">
-                  {ageResult.years} Years
+                  {ageResult.years} {t('tools.ageCalculator.years')}
                 </p>
                 <p className="text-lg text-muted-foreground mt-1">
-                  {ageResult.months} Months, {ageResult.days} Days
+                  {ageResult.months} {t('tools.ageCalculator.months')}, {ageResult.days} {t('tools.ageCalculator.days')}
                 </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="p-4 bg-card rounded-lg border text-center">
                   <p className="text-2xl font-bold text-foreground">{ageResult.totalDays.toLocaleString()}</p>
-                  <p className="text-sm text-muted-foreground">Total Days</p>
+                  <p className="text-sm text-muted-foreground">{t('tools.ageCalculator.totalDays')}</p>
                 </div>
                 <div className="p-4 bg-card rounded-lg border text-center">
                   <p className="text-2xl font-bold text-foreground">{ageResult.totalHours.toLocaleString()}</p>
-                  <p className="text-sm text-muted-foreground">Total Hours</p>
+                  <p className="text-sm text-muted-foreground">{t('tools.ageCalculator.totalHours')}</p>
                 </div>
                 <div className="p-4 bg-card rounded-lg border text-center">
                   <p className="text-2xl font-bold text-foreground">{ageResult.nextBirthday}</p>
-                  <p className="text-sm text-muted-foreground">To Next Birthday</p>
+                  <p className="text-sm text-muted-foreground">{t('tools.ageCalculator.toNextBirthday')}</p>
                 </div>
               </div>
             </div>

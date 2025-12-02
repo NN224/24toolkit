@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -41,6 +42,7 @@ export default function AIToolChains() {
   const metadata = getPageMetadata('ai-tool-chains')
   useSEO(metadata)
 
+  const { t } = useTranslation()
   const [input, setInput] = useState('')
   const [selectedChain, setSelectedChain] = useState<ChainTemplate | null>(null)
   const [isRunning, setIsRunning] = useState(false)
@@ -64,7 +66,7 @@ export default function AIToolChains() {
 
   const runChain = useCallback(async () => {
     if (!selectedChain || !input.trim()) {
-      toast.error('Please enter text and select a chain')
+      toast.error(t('tools.aiToolChains.enterTextAndSelectChain'))
       return
     }
 
@@ -106,12 +108,12 @@ export default function AIToolChains() {
 
       if (result.success) {
         setFinalOutput(result.finalOutput)
-        toast.success(`Chain completed in ${(result.totalDuration / 1000).toFixed(1)}s!`)
+        toast.success(t('tools.aiToolChains.chainCompleted', { duration: (result.totalDuration / 1000).toFixed(1) }))
       } else {
-        toast.error('Chain failed at one of the steps')
+        toast.error(t('tools.aiToolChains.chainFailed'))
       }
     } catch (error) {
-      toast.error('Failed to execute chain')
+      toast.error(t('tools.aiToolChains.executeFailed'))
       console.error(error)
     } finally {
       setIsRunning(false)
@@ -138,12 +140,12 @@ export default function AIToolChains() {
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-3">
             <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-              AI Tool Chains
+              {t('tools.aiToolChains.title')}
             </h1>
             <AIBadge />
           </div>
           <p className="text-lg text-muted-foreground">
-            Connect multiple AI tools together for powerful automated workflows. Chain translate → summarize → expand and more!
+            {t('tools.aiToolChains.subtitle')}
           </p>
         </div>
 
@@ -152,8 +154,8 @@ export default function AIToolChains() {
           <div className="space-y-4">
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-lg">Select a Chain</CardTitle>
-                <CardDescription>Choose a predefined workflow</CardDescription>
+                <CardTitle className="text-lg">{t('tools.aiToolChains.selectAChain')}</CardTitle>
+                <CardDescription>{t('tools.aiToolChains.choosePredefined')}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {/* Category Filter */}
@@ -163,7 +165,7 @@ export default function AIToolChains() {
                     className="cursor-pointer"
                     onClick={() => setActiveCategory('all')}
                   >
-                    All
+                    {t('tools.aiToolChains.all')}
                   </Badge>
                   {categories.map(cat => (
                     <Badge
@@ -218,12 +220,12 @@ export default function AIToolChains() {
           <div className="space-y-4">
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-lg">Input Text</CardTitle>
-                <CardDescription>Enter the text to process through the chain</CardDescription>
+                <CardTitle className="text-lg">{t('tools.aiToolChains.inputText')}</CardTitle>
+                <CardDescription>{t('tools.aiToolChains.enterTextToProcess')}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <Textarea
-                  placeholder="Enter your text here..."
+                  placeholder={t('tools.aiToolChains.enterTextPlaceholder')}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   className="min-h-[200px]"
@@ -240,12 +242,12 @@ export default function AIToolChains() {
                   {isRunning ? (
                     <>
                       <Spinner size={18} className="animate-spin" />
-                      Running Chain...
+                      {t('tools.aiToolChains.runningChain')}
                     </>
                   ) : (
                     <>
                       <Play size={18} weight="fill" />
-                      Run Chain
+                      {t('tools.aiToolChains.runChain')}
                     </>
                   )}
                 </Button>
@@ -258,7 +260,7 @@ export default function AIToolChains() {
                 <CardHeader className="pb-3">
                   <CardTitle className="text-lg flex items-center gap-2">
                     <Lightning size={20} weight="fill" className="text-yellow-500" />
-                    Chain Progress
+                    {t('tools.aiToolChains.chainProgress')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -305,18 +307,18 @@ export default function AIToolChains() {
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle className="text-lg">Final Output</CardTitle>
-                    <CardDescription>Result after all chain steps</CardDescription>
+                    <CardTitle className="text-lg">{t('tools.aiToolChains.finalOutput')}</CardTitle>
+                    <CardDescription>{t('tools.aiToolChains.resultAfterAllSteps')}</CardDescription>
                   </div>
                   {finalOutput && (
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => copyToClipboard(finalOutput, 'Copied!')}
+                      onClick={() => copyToClipboard(finalOutput, t('tools.common.copied'))}
                       className="gap-1"
                     >
                       <Copy size={14} />
-                      Copy
+                      {t('tools.common.copy')}
                     </Button>
                   )}
                 </div>
@@ -334,7 +336,7 @@ export default function AIToolChains() {
                       <ArrowsClockwise size={28} className="text-purple-500" />
                     </div>
                     <p className="text-muted-foreground text-sm">
-                      Select a chain and run it to see results
+                      {t('tools.aiToolChains.selectAndRunChain')}
                     </p>
                   </div>
                 )}
@@ -345,7 +347,7 @@ export default function AIToolChains() {
             {stepStates.some(s => s.output) && (
               <Card>
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-lg">Step Outputs</CardTitle>
+                  <CardTitle className="text-lg">{t('tools.aiToolChains.stepOutputs')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   {selectedChain?.steps.map((step, i) => (

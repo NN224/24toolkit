@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -9,6 +10,8 @@ import { getPageMetadata } from '@/lib/seo-metadata'
 import { trackToolUsage } from '@/components/UserProgress'
 
 export default function WordCounter() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('word-counter')
   useSEO(metadata)
@@ -42,15 +45,15 @@ export default function WordCounter() {
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(text)
-      toast.success('Text copied to clipboard!')
+      toast.success(t('tools.common.copied'))
     } catch (err) {
-      toast.error('Failed to copy text')
+      toast.error(t('tools.common.error'))
     }
   }
 
   const handleClear = () => {
     setText('')
-    toast.success('Text cleared')
+    toast.success(t('tools.common.cleared'))
   }
 
   return (
@@ -58,25 +61,25 @@ export default function WordCounter() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Word & Character Counter
+            {t('tools.wordCounter.name')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Analyze your text with real-time word count, character count, and reading time estimation.
+            {t('tools.wordCounter.description')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Enter Your Text</CardTitle>
+              <CardTitle>{t('tools.wordCounter.enterText')}</CardTitle>
               <CardDescription>
-                Start typing or paste your text below to see live statistics
+                {t('tools.wordCounter.startTyping')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <Textarea
                 id="text-input"
-                placeholder="Type or paste your text here..."
+                placeholder={t('tools.common.typeOrPaste')}
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 className="min-h-[300px] resize-y font-normal"
@@ -90,7 +93,7 @@ export default function WordCounter() {
                   className="gap-2"
                 >
                   <Copy size={16} />
-                  Copy Text
+                  {t('tools.common.copyText')}
                 </Button>
                 <Button
                   onClick={handleClear}
@@ -99,7 +102,7 @@ export default function WordCounter() {
                   className="gap-2"
                 >
                   <Trash size={16} />
-                  Clear
+                  {t('tools.common.clear')}
                 </Button>
               </div>
             </CardContent>
@@ -111,7 +114,7 @@ export default function WordCounter() {
                 <div className="text-3xl font-semibold text-primary mb-1">
                   {stats.words.toLocaleString()}
                 </div>
-                <div className="text-sm text-muted-foreground">Words</div>
+                <div className="text-sm text-muted-foreground">{t('tools.wordCounter.words')}</div>
               </CardContent>
             </Card>
 
@@ -120,7 +123,7 @@ export default function WordCounter() {
                 <div className="text-3xl font-semibold text-primary mb-1">
                   {stats.characters.toLocaleString()}
                 </div>
-                <div className="text-sm text-muted-foreground">Characters</div>
+                <div className="text-sm text-muted-foreground">{t('tools.wordCounter.characters')}</div>
               </CardContent>
             </Card>
 
@@ -129,7 +132,7 @@ export default function WordCounter() {
                 <div className="text-3xl font-semibold text-primary mb-1">
                   {stats.charactersNoSpaces.toLocaleString()}
                 </div>
-                <div className="text-sm text-muted-foreground">Characters (no spaces)</div>
+                <div className="text-sm text-muted-foreground">{t('tools.wordCounter.charactersNoSpaces')}</div>
               </CardContent>
             </Card>
 
@@ -138,7 +141,7 @@ export default function WordCounter() {
                 <div className="text-3xl font-semibold text-primary mb-1">
                   {stats.paragraphs.toLocaleString()}
                 </div>
-                <div className="text-sm text-muted-foreground">Paragraphs</div>
+                <div className="text-sm text-muted-foreground">{t('tools.wordCounter.paragraphs')}</div>
               </CardContent>
             </Card>
 
@@ -147,16 +150,16 @@ export default function WordCounter() {
                 <div className="text-3xl font-semibold text-primary mb-1">
                   {stats.sentences.toLocaleString()}
                 </div>
-                <div className="text-sm text-muted-foreground">Sentences</div>
+                <div className="text-sm text-muted-foreground">{t('tools.wordCounter.sentences')}</div>
               </CardContent>
             </Card>
 
             <Card>
               <CardContent className="pt-6">
                 <div className="text-3xl font-semibold text-primary mb-1">
-                  {stats.readingTime}m
+                  {stats.readingTime}{t('tools.wordCounter.minuteShort')}
                 </div>
-                <div className="text-sm text-muted-foreground">Reading Time</div>
+                <div className="text-sm text-muted-foreground">{t('tools.wordCounter.readingTime')}</div>
               </CardContent>
             </Card>
           </div>

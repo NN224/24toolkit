@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -9,6 +10,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function URLEncoderDecoder() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('url-encoder-decoder')
   useSEO(metadata)
@@ -19,47 +22,47 @@ export default function URLEncoderDecoder() {
 
   const handleEncode = () => {
     if (!input.trim()) {
-      toast.error('Please enter text to encode')
+      toast.error(t('tools.urlEncoderDecoder.enterText'))
       return
     }
 
     try {
       const encoded = encodeURIComponent(input)
       setOutput(encoded)
-      toast.success('URL encoded!')
+      toast.success(t('tools.urlEncoderDecoder.encoded'))
     } catch (error) {
-      toast.error('Failed to encode')
+      toast.error(t('tools.common.error'))
     }
   }
 
   const handleDecode = () => {
     if (!input.trim()) {
-      toast.error('Please enter URL to decode')
+      toast.error(t('tools.urlEncoderDecoder.enterText'))
       return
     }
 
     try {
       const decoded = decodeURIComponent(input)
       setOutput(decoded)
-      toast.success('URL decoded!')
+      toast.success(t('tools.urlEncoderDecoder.decoded'))
     } catch (error) {
-      toast.error('Invalid URL encoding')
+      toast.error(t('tools.common.error'))
     }
   }
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(output)
-      toast.success('Copied to clipboard!')
+      toast.success(t('tools.common.copied'))
     } catch (err) {
-      toast.error('Failed to copy')
+      toast.error(t('tools.common.error'))
     }
   }
 
   const handleClear = () => {
     setInput('')
     setOutput('')
-    toast.success('Cleared')
+    toast.success(t('tools.common.cleared'))
   }
 
   const handleSwap = () => {
@@ -73,26 +76,26 @@ export default function URLEncoderDecoder() {
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            URL Encoder / Decoder
+            {t('tools.urlEncoderDecoder.name')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Encode or decode URLs and query parameters
+            {t('tools.urlEncoderDecoder.description')}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>Input</CardTitle>
+              <CardTitle>{t('tools.urlEncoderDecoder.input')}</CardTitle>
               <CardDescription>
-                {mode === 'encode' ? 'Enter text to URL encode' : 'Enter URL to decode'}
+                {mode === 'encode' ? t('tools.urlEncoderDecoder.enterText') : t('tools.urlEncoderDecoder.enterText')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <Tabs value={mode} onValueChange={(v) => setMode(v as any)}>
                 <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="encode">Encode</TabsTrigger>
-                  <TabsTrigger value="decode">Decode</TabsTrigger>
+                  <TabsTrigger value="encode">{t('tools.urlEncoderDecoder.encode')}</TabsTrigger>
+                  <TabsTrigger value="decode">{t('tools.urlEncoderDecoder.decode')}</TabsTrigger>
                 </TabsList>
               </Tabs>
 
@@ -112,7 +115,7 @@ export default function URLEncoderDecoder() {
                   onClick={mode === 'encode' ? handleEncode : handleDecode} 
                   className="flex-1"
                 >
-                  {mode === 'encode' ? 'Encode URL' : 'Decode URL'}
+                  {mode === 'encode' ? t('tools.urlEncoderDecoder.encode') : t('tools.urlEncoderDecoder.decode')}
                 </Button>
                 <Button onClick={handleClear} variant="outline">
                   <Trash size={18} />
@@ -123,9 +126,9 @@ export default function URLEncoderDecoder() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Output</CardTitle>
+              <CardTitle>{t('tools.urlEncoderDecoder.output')}</CardTitle>
               <CardDescription>
-                {mode === 'encode' ? 'URL encoded result' : 'Decoded result'}
+                {mode === 'encode' ? t('tools.urlEncoderDecoder.encoded') : t('tools.urlEncoderDecoder.decoded')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -140,7 +143,7 @@ export default function URLEncoderDecoder() {
                   <div className="flex gap-2">
                     <Button onClick={handleCopy} className="flex-1">
                       <Copy size={18} className="mr-2" />
-                      Copy Result
+                      {t('tools.common.copy')}
                     </Button>
                     <Button onClick={handleSwap} variant="outline">
                       <ArrowsLeftRight size={18} />
@@ -149,7 +152,7 @@ export default function URLEncoderDecoder() {
                 </>
               ) : (
                 <div className="min-h-[300px] border-2 border-dashed border-border rounded-lg flex items-center justify-center text-muted-foreground">
-                  Result will appear here
+                  {t('tools.urlEncoderDecoder.resultWillAppear')}
                 </div>
               )}
             </CardContent>

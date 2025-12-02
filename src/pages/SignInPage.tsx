@@ -3,12 +3,14 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { useEffect } from 'react'
 import { useSEO } from '@/hooks/useSEO'
+import { useTranslation } from 'react-i18next'
 import Logo from '@/components/Logo'
 import { GoogleLogo, GithubLogo, FacebookLogo, ArrowRight } from '@phosphor-icons/react'
 
 export default function SignInPage() {
   const { user, signInWithGoogle, signInWithGithub, signInWithFacebook } = useAuth()
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   // SEO
   useSEO({
@@ -68,10 +70,10 @@ export default function SignInPage() {
               <Logo className="w-16 h-16" />
             </div>
             <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-purple-400 to-sky-400 bg-clip-text text-transparent">
-              Welcome Back
+              {t('signIn.welcome')}
             </h1>
             <p className="text-muted-foreground">
-              Sign in to access all tools
+              {t('signIn.subtitle')}
             </p>
           </div>
 
@@ -88,7 +90,7 @@ export default function SignInPage() {
                   className={`w-full flex items-center justify-center gap-3 px-6 py-3.5 rounded-xl font-medium transition-all border border-white/10 hover:border-white/20 bg-gradient-to-r ${provider.color} bg-opacity-10 hover:bg-opacity-20 text-foreground group`}
                 >
                   <Icon size={24} weight="bold" className="group-hover:scale-110 transition-transform" />
-                  <span>Continue with {provider.name}</span>
+                  <span>{t('signIn.continueWith', { provider: provider.name })}</span>
                 </motion.button>
               )
             })}
@@ -100,7 +102,7 @@ export default function SignInPage() {
               <div className="w-full border-t border-white/10" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-card text-muted-foreground">أو</span>
+              <span className="px-4 bg-card text-muted-foreground">{t('signIn.or')}</span>
             </div>
           </div>
 
@@ -111,20 +113,20 @@ export default function SignInPage() {
               whileTap={{ scale: 0.98 }}
               className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium transition-all border border-white/10 hover:border-white/20 text-muted-foreground hover:text-foreground"
             >
-              <span>Continue as Guest</span>
-              <ArrowRight size={18} />
+              <span>{t('signIn.continueAsGuest')}</span>
+              <ArrowRight size={18} className="rtl:rotate-180" />
             </motion.button>
           </Link>
 
           {/* Terms */}
           <p className="mt-6 text-xs text-center text-muted-foreground">
-            By signing in, you agree to our{' '}
+            {t('signIn.bySigningIn')}{' '}
             <Link to="/terms-of-service" className="text-purple-400 hover:text-purple-300">
-              Terms of Service
+              {t('signIn.terms')}
             </Link>
-            {' '}and{' '}
+            {' '}{t('signIn.and')}{' '}
             <Link to="/privacy-policy" className="text-purple-400 hover:text-purple-300">
-              Privacy Policy
+              {t('signIn.privacy')}
             </Link>
           </p>
         </div>
@@ -137,24 +139,24 @@ export default function SignInPage() {
           className="mt-6 p-4 bg-card/50 backdrop-blur-sm border border-white/10 rounded-xl"
         >
           <p className="text-sm text-muted-foreground text-center mb-3">
-            Sign-in Benefits:
+            {t('signIn.benefits')}
           </p>
           <div className="grid grid-cols-2 gap-3 text-xs">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" />
-              <span className="text-muted-foreground">Save preferences</span>
+              <span className="text-muted-foreground">{t('signIn.savePreferences')}</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" />
-              <span className="text-muted-foreground">Quick access</span>
+              <span className="text-muted-foreground">{t('signIn.quickAccess')}</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" />
-              <span className="text-muted-foreground">Sync settings</span>
+              <span className="text-muted-foreground">{t('signIn.syncSettings')}</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" />
-              <span className="text-muted-foreground">Exclusive updates</span>
+              <span className="text-muted-foreground">{t('signIn.exclusiveUpdates')}</span>
             </div>
           </div>
         </motion.div>

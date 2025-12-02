@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
@@ -27,6 +28,8 @@ const languages = [
 ]
 
 export default function AITranslator() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('ai-translator')
   useSEO(metadata)
@@ -40,14 +43,14 @@ export default function AITranslator() {
 
   const translateText = async () => {
     if (!inputText.trim()) {
-      toast.error('Please enter text to translate')
+      toast.error(t('tools.common.enterText'))
       return
     }
 
     try {
       validatePromptInput(inputText, 1, 10000)
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Invalid input')
+      toast.error(error instanceof Error ? error.message : t('tools.common.invalidInput'))
       return
     }
 
@@ -61,10 +64,10 @@ export default function AITranslator() {
       await callAI(promptText, provider, (accumulatedText) => {
         setTranslatedText(accumulatedText)
       })
-      toast.success('Translation complete!')
+      toast.success(t('tools.aiTranslator.translationComplete'))
     } catch (error) {
       console.error('Translation error:', error)
-      toast.error(error instanceof Error ? error.message : 'Translation failed. Please try again.')
+      toast.error(error instanceof Error ? error.message : t('tools.common.error'))
     } finally {
       setLoading(false)
     }
@@ -80,8 +83,8 @@ export default function AITranslator() {
             <Globe size={24} className="text-white" weight="bold" />
           </div>
           <div>
-            <h1 className="text-3xl font-semibold text-foreground">AI Text Translator</h1>
-            <p className="text-muted-foreground">Translate text between multiple languages using AI</p>
+            <h1 className="text-3xl font-semibold text-foreground">{t('tools.aiTranslator.name')}</h1>
+            <p className="text-muted-foreground">{t('tools.aiTranslator.description')}</p>
           </div>
         </div>
       </div>
@@ -90,20 +93,20 @@ export default function AITranslator() {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle>AI-Powered Translation</CardTitle>
-              <CardDescription>Natural, context-aware translations</CardDescription>
+              <CardTitle>{t('tools.aiTranslator.aiPoweredTranslation')}</CardTitle>
+              <CardDescription>{t('tools.aiTranslator.naturalTranslations')}</CardDescription>
             </div>
             <span className="px-3 py-1 text-xs font-semibold bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full">
-              Powered by AI
+              {t('tools.common.poweredByAI')}
             </span>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="input-text">Text to Translate</Label>
+            <Label htmlFor="input-text">{t('tools.aiTranslator.textToTranslate')}</Label>
             <Textarea
               id="input-text"
-              placeholder="Enter text to translate..."
+              placeholder={t('tools.aiTranslator.enterTextToTranslate')}
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               rows={6}
@@ -111,7 +114,7 @@ export default function AITranslator() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="target-lang">Target Language</Label>
+            <Label htmlFor="target-lang">{t('tools.aiTranslator.targetLanguage')}</Label>
             <Select value={targetLang} onValueChange={setTargetLang}>
               <SelectTrigger id="target-lang">
                 <SelectValue />
@@ -133,16 +136,16 @@ export default function AITranslator() {
             className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
             disabled={loading}
           >
-            {loading ? 'Translating...' : 'Translate'}
+            {loading ? t('tools.aiTranslator.translating') : t('tools.aiTranslator.translate')}
           </Button>
 
           {translatedText && (
             <div className="space-y-2 mt-4">
               <div className="flex items-center justify-between">
-                <Label>Translation</Label>
+                <Label>{t('tools.aiTranslator.translation')}</Label>
                 <Button variant="ghost" size="sm" onClick={() => copyToClipboard(translatedText)}>
-                  <Copy size={16} className="mr-2" />
-                  Copy
+                  <Copy size={16} className="ltr:mr-2 rtl:ml-2" />
+                  {t('tools.common.copy')}
                 </Button>
               </div>
               <div className="p-4 bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg border border-purple-200">

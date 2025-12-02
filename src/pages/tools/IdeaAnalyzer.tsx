@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -13,6 +14,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function IdeaAnalyzer() {
+  const { t } = useTranslation();
+  
   // Set SEO metadata
   const metadata = getPageMetadata('idea-analyzer')
   useSEO(metadata)
@@ -24,7 +27,7 @@ export default function IdeaAnalyzer() {
   const [copied, setCopied] = useState(false);
   
   const { execute: analyzeIdea, isLoading, ConfettiEffect } = useAIWithCredits({
-    successMessage: 'Idea analysis complete!',
+    successMessage: t('tools.ideaAnalyzer.successMessage'),
     celebrateOnSuccess: true,
   });
 
@@ -36,35 +39,35 @@ export default function IdeaAnalyzer() {
   const copyToClipboard = () => {
     navigator.clipboard.writeText(analysis);
     setCopied(true);
-    toast.success('Copied!');
+    toast.success(t('common.copied'));
     setTimeout(() => setCopied(false), 2000);
   };
 
   const handleShare = () => {
-    const shareText = `My idea analysis from 24Toolkit:\n\n${analysis.slice(0, 500)}...`;
+    const shareText = `${t('tools.ideaAnalyzer.resultTitle')} - 24Toolkit:\n\n${analysis.slice(0, 500)}...`;
     
     if (navigator.share) {
       navigator.share({
-        title: '24Toolkit - Idea Analysis',
+        title: `24Toolkit - ${t('tools.ideaAnalyzer.resultTitle')}`,
         text: shareText,
         url: window.location.href,
       });
     } else {
       navigator.clipboard.writeText(shareText);
-      toast.success('Link copied!');
+      toast.success(t('tools.ideaAnalyzer.linkCopied'));
     }
   };
 
   const handleAnalyze = async () => {
     if (!idea.trim()) {
-      toast.error('Please enter an idea to analyze.');
+      toast.error(t('tools.ideaAnalyzer.emptyError'));
       return;
     }
 
     try {
       validatePromptInput(idea, 10, 1000);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Invalid input');
+      toast.error(error instanceof Error ? error.message : t('tools.common.invalidInput'));
       return;
     }
 
@@ -84,10 +87,10 @@ export default function IdeaAnalyzer() {
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-            AI Idea Analyzer
+            {t('tools.ideaAnalyzer.title')}
           </h1>
           <p className="text-lg text-muted-foreground mt-3">
-            Get instant feedback on your next big idea from an AI expert.
+            {t('tools.ideaAnalyzer.subtitle')}
           </p>
           <AIBadge className="mt-2 inline-block" />
         </div>
@@ -96,15 +99,15 @@ export default function IdeaAnalyzer() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Lightbulb size={24} />
-              Describe Your Idea
+              {t('tools.ideaAnalyzer.cardTitle')}
             </CardTitle>
             <CardDescription>
-              Be as detailed as you can. What problem does it solve? Who is it for?
+              {t('tools.ideaAnalyzer.cardDescription')}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <Textarea
-              placeholder="For example: 'A mobile app that uses AI to create personalized workout plans...'"
+              placeholder={t('tools.ideaAnalyzer.placeholder')}
               value={idea}
               onChange={(e) => setIdea(e.target.value)}
               rows={6}
@@ -121,7 +124,7 @@ export default function IdeaAnalyzer() {
               className="w-full gap-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
             >
               <Sparkle size={18} weight="fill" />
-              {isLoading ? 'Analyzing...' : 'Analyze Idea'}
+              {isLoading ? t('tools.ideaAnalyzer.analyzing') : t('tools.ideaAnalyzer.analyzeButton')}
             </Button>
           </CardContent>
         </Card>
@@ -130,7 +133,7 @@ export default function IdeaAnalyzer() {
           <div className="text-center mt-8">
             <AILoadingSpinner />
             <p className="mt-4 text-muted-foreground">
-              AI is analyzing your idea...
+              {t('tools.ideaAnalyzer.analyzingMessage')}
             </p>
           </div>
         )}
@@ -140,7 +143,7 @@ export default function IdeaAnalyzer() {
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="flex items-center gap-2">
                 <Lightbulb size={24} className="text-yellow-500" />
-                Analysis Result
+                {t('tools.ideaAnalyzer.resultTitle')}
               </CardTitle>
               <div className="flex gap-2">
                 <Button
@@ -150,7 +153,7 @@ export default function IdeaAnalyzer() {
                   className="gap-2"
                 >
                   {copied ? <Check size={16} /> : <Copy size={16} />}
-                  {copied ? 'Copied!' : 'Copy'}
+                  {copied ? t('common.copied') : t('common.copy')}
                 </Button>
                 <Button
                   variant="outline"
@@ -159,7 +162,7 @@ export default function IdeaAnalyzer() {
                   className="gap-2"
                 >
                   <ShareNetwork size={16} />
-                  Share
+                  {t('common.share')}
                 </Button>
               </div>
             </CardHeader>

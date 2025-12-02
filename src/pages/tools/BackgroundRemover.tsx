@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Upload, Download, Trash, Sparkle } from '@phosphor-icons/react'
@@ -9,6 +10,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function BackgroundRemover() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('background-remover')
   useSEO(metadata)
@@ -23,7 +26,7 @@ export default function BackgroundRemover() {
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      toast.error('Please select an image file')
+      toast.error(t('tools.backgroundRemover.selectImageFile'))
       return
     }
 
@@ -33,12 +36,12 @@ export default function BackgroundRemover() {
       setProcessedImage(null)
     }
     reader.readAsDataURL(file)
-    toast.success('Image loaded!')
+    toast.success(t('tools.backgroundRemover.imageLoaded'))
   }
 
   const processImageWithAI = async () => {
     if (!image) {
-      toast.error('Please upload an image first')
+      toast.error(t('tools.backgroundRemover.uploadFirst'))
       return
     }
 
@@ -71,14 +74,14 @@ export default function BackgroundRemover() {
           setTimeout(() => {
             setProcessedImage(result)
             setIsProcessing(false)
-            toast.success('Background removed! (Demo: removes bright backgrounds)')
+            toast.success(t('tools.backgroundRemover.backgroundRemoved'))
           }, 2000)
         }
       }
       img.src = image
     } catch (error) {
       setIsProcessing(false)
-      toast.error('Failed to process image')
+      toast.error(t('tools.backgroundRemover.processFailed'))
     }
   }
 
@@ -89,14 +92,14 @@ export default function BackgroundRemover() {
     link.download = 'no-background.png'
     link.href = processedImage
     link.click()
-    toast.success('Image downloaded!')
+    toast.success(t('tools.backgroundRemover.imageDownloaded'))
   }
 
   const handleClear = () => {
     setImage(null)
     setProcessedImage(null)
     if (fileInputRef.current) fileInputRef.current.value = ''
-    toast.success('Cleared')
+    toast.success(t('tools.common.cleared'))
   }
 
   return (
@@ -105,20 +108,19 @@ export default function BackgroundRemover() {
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-3">
             <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-              Background Remover
+              {t('tools.backgroundRemover.title')}
             </h1>
             <AIBadge />
           </div>
           <p className="text-lg text-muted-foreground">
-            Remove backgrounds from images using AI simulation
+            {t('tools.backgroundRemover.subtitle')}
           </p>
         </div>
 
         <Card className="mb-6 bg-blue-50 border-blue-200">
           <CardContent className="pt-6">
             <p className="text-sm text-blue-800">
-              <strong>Demo Mode:</strong> This tool demonstrates background removal by removing bright/white backgrounds.
-              Production tools would use advanced AI models for accurate subject detection.
+              <strong>{t('tools.backgroundRemover.demoMode')}:</strong> {t('tools.backgroundRemover.demoModeDescription')}
             </p>
           </CardContent>
         </Card>
@@ -126,8 +128,8 @@ export default function BackgroundRemover() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>Original Image</CardTitle>
-              <CardDescription>Upload image to process</CardDescription>
+              <CardTitle>{t('tools.backgroundRemover.originalImage')}</CardTitle>
+              <CardDescription>{t('tools.backgroundRemover.uploadToProcess')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <input
@@ -145,7 +147,7 @@ export default function BackgroundRemover() {
                 className="w-full"
               >
                 <Upload size={18} className="mr-2" />
-                Upload Image
+                {t('tools.backgroundRemover.uploadImage')}
               </Button>
 
               {image && (
@@ -163,12 +165,12 @@ export default function BackgroundRemover() {
                       {isProcessing ? (
                         <>
                           <div className="w-4 h-4 mr-2 rounded-full border-2 border-white/20 border-t-white animate-spin" />
-                          Processing...
+                          {t('tools.common.processing')}
                         </>
                       ) : (
                         <>
                           <Sparkle size={18} className="mr-2" weight="fill" />
-                          Remove Background
+                          {t('tools.backgroundRemover.removeBackground')}
                         </>
                       )}
                     </Button>
@@ -183,8 +185,8 @@ export default function BackgroundRemover() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Result</CardTitle>
-              <CardDescription>Image with background removed</CardDescription>
+              <CardTitle>{t('tools.backgroundRemover.result')}</CardTitle>
+              <CardDescription>{t('tools.backgroundRemover.imageWithBackgroundRemoved')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {processedImage ? (
@@ -195,14 +197,14 @@ export default function BackgroundRemover() {
 
                   <Button onClick={handleDownload} className="w-full">
                     <Download size={18} className="mr-2" />
-                    Download PNG
+                    {t('tools.backgroundRemover.downloadPng')}
                   </Button>
                 </>
               ) : (
                 <div className="min-h-[400px] border-2 border-dashed border-border rounded-lg flex items-center justify-center text-muted-foreground">
                   <div className="text-center">
                     <Sparkle size={48} className="mx-auto mb-2 opacity-20" />
-                    <p>Processed image will appear here</p>
+                    <p>{t('tools.backgroundRemover.processedImagePlaceholder')}</p>
                   </div>
                 </div>
               )}

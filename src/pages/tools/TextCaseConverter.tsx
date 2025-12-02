@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -9,6 +10,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function TextCaseConverter() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('text-case-converter')
   useSEO(metadata)
@@ -20,25 +23,25 @@ export default function TextCaseConverter() {
   const convertToUpper = () => {
     const converted = text.toUpperCase()
     setResult(converted)
-    toast.success('Converted to UPPERCASE')
+    toast.success(t('tools.textCaseConverter.convertedToUppercase'))
   }
 
   const convertToLower = () => {
     const converted = text.toLowerCase()
     setResult(converted)
-    toast.success('Converted to lowercase')
+    toast.success(t('tools.textCaseConverter.convertedToLowercase'))
   }
 
   const convertToTitle = () => {
     const converted = text.toLowerCase().replace(/\b\w/g, char => char.toUpperCase())
     setResult(converted)
-    toast.success('Converted to Title Case')
+    toast.success(t('tools.textCaseConverter.convertedToTitleCase'))
   }
 
   const convertToSentence = () => {
     const converted = text.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g, char => char.toUpperCase())
     setResult(converted)
-    toast.success('Converted to Sentence case')
+    toast.success(t('tools.textCaseConverter.convertedToSentenceCase'))
   }
 
   const convertToCamel = () => {
@@ -46,7 +49,7 @@ export default function TextCaseConverter() {
       .toLowerCase()
       .replace(/[^a-zA-Z0-9]+(.)/g, (_, char) => char.toUpperCase())
     setResult(converted)
-    toast.success('Converted to camelCase')
+    toast.success(t('tools.textCaseConverter.convertedToCamelCase'))
   }
 
   const convertToSnake = () => {
@@ -56,7 +59,7 @@ export default function TextCaseConverter() {
       .replace(/[A-Z]/g, char => '_' + char.toLowerCase())
       .replace(/^_/, '')
     setResult(converted)
-    toast.success('Converted to snake_case')
+    toast.success(t('tools.textCaseConverter.convertedToSnakeCase'))
   }
 
 
@@ -64,7 +67,7 @@ export default function TextCaseConverter() {
   const handleClear = () => {
     setText('')
     setResult('')
-    toast.success('Text cleared')
+    toast.success(t('tools.common.cleared'))
   }
 
   return (
@@ -72,25 +75,25 @@ export default function TextCaseConverter() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Text Case Converter
+            {t('tools.textCaseConverter.name')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Convert text between different cases: UPPERCASE, lowercase, Title Case, and more.
+            {t('tools.textCaseConverter.description')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Enter Your Text</CardTitle>
+              <CardTitle>{t('tools.textCaseConverter.enterText')}</CardTitle>
               <CardDescription>
-                Type or paste your text and choose a conversion option
+                {t('tools.textCaseConverter.typeOrPaste')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <Textarea
                 id="text-input"
-                placeholder="Type or paste your text here..."
+                placeholder={t('tools.common.typeOrPaste')}
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 className="min-h-[150px] resize-y font-normal"
@@ -146,9 +149,9 @@ export default function TextCaseConverter() {
           {result && (
             <Card>
               <CardHeader>
-                <CardTitle>Converted Result</CardTitle>
+                <CardTitle>{t('tools.textCaseConverter.convertedResult')}</CardTitle>
                 <CardDescription>
-                  Your converted text is ready
+                  {t('tools.textCaseConverter.textReady')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -161,12 +164,12 @@ export default function TextCaseConverter() {
                 
                 <div className="flex gap-2">
                   <Button
-                    onClick={() => copyToClipboard(result, 'Result copied to clipboard!')}
+                    onClick={() => copyToClipboard(result, t('tools.common.copied'))}
                     variant="default"
                     className="gap-2"
                   >
                     <Copy size={16} />
-                    Copy Result
+                    {t('tools.common.copyResult')}
                   </Button>
                   <Button
                     onClick={handleClear}
@@ -174,7 +177,7 @@ export default function TextCaseConverter() {
                     className="gap-2"
                   >
                     <Trash size={16} />
-                    Clear All
+                    {t('tools.common.clearAll')}
                   </Button>
                 </div>
               </CardContent>

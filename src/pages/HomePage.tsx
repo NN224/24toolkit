@@ -18,14 +18,6 @@ import {
 } from '@phosphor-icons/react'
 import { getToolsByCategory, categories, allTools } from '@/lib/tools-data'
 
-const inspirationalQuotes = [
-  "Innovation is a shortcut — 24Toolkit",
-  "Work smarter, not harder — 24Toolkit",
-  "Empowering creativity, one tool at a time",
-  "Your productivity companion",
-  "Simplifying complexity, amplifying possibilities"
-]
-
 function ToolCard({ tool }: { tool: any }) {
   const Icon = tool.icon
 
@@ -138,7 +130,7 @@ function ToolSection({
 export default function HomePage() {
   const { t } = useTranslation()
   const [selectedFilter, setSelectedFilter] = useState('all')
-  const [randomQuote] = useState(() => inspirationalQuotes[Math.floor(Math.random() * inspirationalQuotes.length)])
+  const [randomQuoteIndex] = useState(() => Math.floor(Math.random() * 5))
   const navigate = useNavigate()
   useEasterEgg()
   
@@ -174,7 +166,7 @@ export default function HomePage() {
           </p>
 
           <p className="text-sm text-accent/80 mb-10 italic">
-            ✨ {randomQuote} ✨
+            ✨ {t(`home.quotes.${randomQuoteIndex}`)} ✨
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 mb-10">

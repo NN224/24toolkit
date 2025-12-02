@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -10,6 +11,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function TimestampConverter() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('timestamp-converter')
   useSEO(metadata)
@@ -20,43 +23,43 @@ export default function TimestampConverter() {
 
   const handleToReadable = () => {
     if (!timestamp.trim()) {
-      toast.error('Please enter a Unix timestamp')
+      toast.error(t('tools.timestampConverter.enterTimestamp'))
       return
     }
 
     try {
       const ts = parseInt(timestamp)
       if (isNaN(ts)) {
-        toast.error('Invalid timestamp')
+        toast.error(t('tools.timestampConverter.invalidTimestamp'))
         return
       }
 
       const date = new Date(ts * 1000)
       setReadable(date.toISOString())
-      toast.success('Converted to readable date!')
+      toast.success(t('tools.timestampConverter.converted'))
     } catch (error) {
-      toast.error('Failed to convert timestamp')
+      toast.error(t('tools.common.error'))
     }
   }
 
   const handleToTimestamp = () => {
     if (!readable.trim()) {
-      toast.error('Please enter a date')
+      toast.error(t('tools.timestampConverter.enterDate'))
       return
     }
 
     try {
       const date = new Date(readable)
       if (isNaN(date.getTime())) {
-        toast.error('Invalid date format')
+        toast.error(t('tools.timestampConverter.invalidDate'))
         return
       }
 
       const ts = Math.floor(date.getTime() / 1000)
       setTimestamp(ts.toString())
-      toast.success('Converted to Unix timestamp!')
+      toast.success(t('tools.timestampConverter.converted'))
     } catch (error) {
-      toast.error('Failed to convert date')
+      toast.error(t('tools.common.error'))
     }
   }
 
@@ -64,13 +67,13 @@ export default function TimestampConverter() {
     const now = Math.floor(Date.now() / 1000)
     setTimestamp(now.toString())
     setReadable(new Date().toISOString())
-    toast.success('Current time loaded!')
+    toast.success(t('tools.timestampConverter.currentTimeLoaded'))
   }
 
   const handleClear = () => {
     setTimestamp('')
     setReadable('')
-    toast.success('Cleared')
+    toast.success(t('tools.common.clear'))
   }
 
   const formatDate = (dateString: string) => {
@@ -98,22 +101,22 @@ export default function TimestampConverter() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Timestamp Converter
+            {t('tools.timestampConverter.name')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Convert between Unix timestamps and human-readable dates
+            {t('tools.timestampConverter.description')}
           </p>
         </div>
 
         <Card className="mb-6">
           <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
+            <CardTitle>{t('tools.timestampConverter.quickActions')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex gap-2">
               <Button onClick={handleCurrentTime} variant="outline" className="flex-1">
                 <Clock size={18} className="mr-2" />
-                Current Time
+                {t('tools.timestampConverter.currentTime')}
               </Button>
               <Button onClick={handleClear} variant="outline">
                 <Trash size={18} />
@@ -127,13 +130,13 @@ export default function TimestampConverter() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Clock size={20} />
-                Unix Timestamp
+                {t('tools.timestampConverter.unix')}
               </CardTitle>
-              <CardDescription>Seconds since January 1, 1970 UTC</CardDescription>
+              <CardDescription>{t('tools.timestampConverter.unixDescription')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="timestamp">Timestamp (seconds)</Label>
+                <Label htmlFor="timestamp">{t('tools.timestampConverter.timestampSeconds')}</Label>
                 <Input
                   id="timestamp"
                   type="text"
@@ -145,7 +148,7 @@ export default function TimestampConverter() {
               </div>
 
               <Button onClick={handleToReadable} className="w-full">
-                Convert to Date →
+                {t('tools.timestampConverter.convertToDate')} →
               </Button>
             </CardContent>
           </Card>
@@ -154,13 +157,13 @@ export default function TimestampConverter() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Calendar size={20} />
-                Human-Readable Date
+                {t('tools.timestampConverter.humanReadable')}
               </CardTitle>
-              <CardDescription>ISO 8601 format or any valid date</CardDescription>
+              <CardDescription>{t('tools.timestampConverter.humanReadableDescription')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="readable">Date</Label>
+                <Label htmlFor="readable">{t('tools.timestampConverter.date')}</Label>
                 <Input
                   id="readable"
                   type="text"
@@ -172,7 +175,7 @@ export default function TimestampConverter() {
               </div>
 
               <Button onClick={handleToTimestamp} className="w-full">
-                ← Convert to Timestamp
+                ← {t('tools.timestampConverter.convertToTimestamp')}
               </Button>
             </CardContent>
           </Card>
@@ -181,18 +184,18 @@ export default function TimestampConverter() {
         {formatted && (
           <Card>
             <CardHeader>
-              <CardTitle>All Formats</CardTitle>
-              <CardDescription>Various date/time representations</CardDescription>
+              <CardTitle>{t('tools.timestampConverter.allFormats')}</CardTitle>
+              <CardDescription>{t('tools.timestampConverter.allFormatsDescription')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 {[
-                  { label: 'Unix Timestamp', value: formatted.unix.toString(), key: 'unix' },
-                  { label: 'ISO 8601', value: formatted.iso, key: 'iso' },
-                  { label: 'UTC String', value: formatted.utc, key: 'utc' },
-                  { label: 'Local String', value: formatted.local, key: 'local' },
-                  { label: 'Date Only', value: formatted.date, key: 'date' },
-                  { label: 'Time Only', value: formatted.time, key: 'time' }
+                  { label: t('tools.timestampConverter.unix'), value: formatted.unix.toString(), key: 'unix' },
+                  { label: t('tools.timestampConverter.iso'), value: formatted.iso, key: 'iso' },
+                  { label: t('tools.timestampConverter.utcString'), value: formatted.utc, key: 'utc' },
+                  { label: t('tools.timestampConverter.local'), value: formatted.local, key: 'local' },
+                  { label: t('tools.timestampConverter.dateOnly'), value: formatted.date, key: 'date' },
+                  { label: t('tools.timestampConverter.timeOnly'), value: formatted.time, key: 'time' }
                 ].map((format) => (
                   <div key={format.key} className="flex items-center gap-2 p-3 bg-muted rounded-lg group">
                     <div className="flex-1">
@@ -204,7 +207,7 @@ export default function TimestampConverter() {
                       variant="ghost"
                       onClick={async () => {
                         await navigator.clipboard.writeText(format.value)
-                        toast.success('Copied!')
+                        toast.success(t('tools.common.copied'))
                       }}
                       className="opacity-0 group-hover:opacity-100 transition-opacity"
                     >

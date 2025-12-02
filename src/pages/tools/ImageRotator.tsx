@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Upload, Trash, ArrowsClockwise, ArrowsCounterClockwise, ArrowsHorizontal, ArrowsVertical } from '@phosphor-icons/react'
@@ -7,6 +8,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function ImageRotator() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('image-rotator')
   useSEO(metadata)
@@ -23,7 +26,7 @@ export default function ImageRotator() {
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      toast.error('Please select an image file')
+      toast.error(t('tools.imageRotator.selectImageFile'))
       return
     }
 
@@ -36,7 +39,7 @@ export default function ImageRotator() {
       drawImage(event.target?.result as string, 0, false, false)
     }
     reader.readAsDataURL(file)
-    toast.success('Image loaded!')
+    toast.success(t('tools.imageRotator.imageLoaded'))
   }
 
   const drawImage = (imgSrc: string, rot: number, fH: boolean, fV: boolean) => {
@@ -78,7 +81,7 @@ export default function ImageRotator() {
     const newRotation = (rotation + degrees) % 360
     setRotation(newRotation)
     drawImage(image, newRotation, flipH, flipV)
-    toast.success(`Rotated ${degrees > 0 ? 'right' : 'left'}`)
+    toast.success(t(degrees > 0 ? 'tools.imageRotator.rotatedRight' : 'tools.imageRotator.rotatedLeft'))
   }
 
   const handleFlip = (horizontal: boolean) => {
@@ -87,12 +90,12 @@ export default function ImageRotator() {
       const newFlipH = !flipH
       setFlipH(newFlipH)
       drawImage(image, rotation, newFlipH, flipV)
-      toast.success('Flipped horizontally')
+      toast.success(t('tools.imageRotator.flippedHorizontally'))
     } else {
       const newFlipV = !flipV
       setFlipV(newFlipV)
       drawImage(image, rotation, flipH, newFlipV)
-      toast.success('Flipped vertically')
+      toast.success(t('tools.imageRotator.flippedVertically'))
     }
   }
 
@@ -108,7 +111,7 @@ export default function ImageRotator() {
         link.href = url
         link.click()
         URL.revokeObjectURL(url)
-        toast.success('Image downloaded!')
+        toast.success(t('tools.imageRotator.imageDownloaded'))
       }
     })
   }
@@ -124,7 +127,7 @@ export default function ImageRotator() {
       const ctx = canvas.getContext('2d')
       if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height)
     }
-    toast.success('Cleared')
+    toast.success(t('tools.imageRotator.cleared'))
   }
 
   return (
@@ -132,21 +135,21 @@ export default function ImageRotator() {
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Image Rotator
+            {t('tools.imageRotator.name')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Rotate and flip images in any direction
+            {t('tools.imageRotator.description')}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <Card className="lg:col-span-2">
             <CardHeader>
-              <CardTitle>Preview</CardTitle>
+              <CardTitle>{t('tools.common.preview')}</CardTitle>
               <CardDescription>
                 {rotation !== 0 || flipH || flipV 
-                  ? `Rotation: ${rotation}° ${flipH ? '| Flipped H' : ''} ${flipV ? '| Flipped V' : ''}`
-                  : 'Original orientation'
+                  ? `${t('tools.imageRotator.rotation')}: ${rotation}° ${flipH ? `| ${t('tools.imageRotator.flippedH')}` : ''} ${flipV ? `| ${t('tools.imageRotator.flippedV')}` : ''}`
+                  : t('tools.imageRotator.originalOrientation')
                 }
               </CardDescription>
             </CardHeader>
@@ -167,7 +170,7 @@ export default function ImageRotator() {
                   className="w-full"
                 >
                   <Upload size={18} className="mr-2" />
-                  Upload Image
+                  {t('tools.imageRotator.uploadImage')}
                 </Button>
               ) : (
                 <>
@@ -177,7 +180,7 @@ export default function ImageRotator() {
 
                   <div className="flex gap-2">
                     <Button onClick={handleDownload} className="flex-1">
-                      Download
+                      {t('tools.common.download')}
                     </Button>
                     <Button onClick={handleClear} variant="outline">
                       <Trash size={18} />
@@ -190,12 +193,12 @@ export default function ImageRotator() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Transform</CardTitle>
-              <CardDescription>Rotate and flip controls</CardDescription>
+              <CardTitle>{t('tools.imageRotator.transform')}</CardTitle>
+              <CardDescription>{t('tools.imageRotator.rotateAndFlipControls')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Rotate</label>
+                <label className="text-sm font-medium">{t('tools.imageRotator.rotate')}</label>
                 <div className="grid grid-cols-2 gap-2">
                   <Button 
                     onClick={() => handleRotate(-90)} 
@@ -203,7 +206,7 @@ export default function ImageRotator() {
                     disabled={!image}
                   >
                     <ArrowsCounterClockwise size={18} className="mr-2" />
-                    Left 90°
+                    {t('tools.imageRotator.left90')}
                   </Button>
                   <Button 
                     onClick={() => handleRotate(90)} 
@@ -211,13 +214,13 @@ export default function ImageRotator() {
                     disabled={!image}
                   >
                     <ArrowsClockwise size={18} className="mr-2" />
-                    Right 90°
+                    {t('tools.imageRotator.right90')}
                   </Button>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">Flip</label>
+                <label className="text-sm font-medium">{t('tools.imageRotator.flip')}</label>
                 <div className="grid grid-cols-2 gap-2">
                   <Button 
                     onClick={() => handleFlip(true)} 
@@ -225,7 +228,7 @@ export default function ImageRotator() {
                     disabled={!image}
                   >
                     <ArrowsHorizontal size={18} className="mr-2" />
-                    Horizontal
+                    {t('tools.imageRotator.horizontal')}
                   </Button>
                   <Button 
                     onClick={() => handleFlip(false)} 
@@ -233,14 +236,14 @@ export default function ImageRotator() {
                     disabled={!image}
                   >
                     <ArrowsVertical size={18} className="mr-2" />
-                    Vertical
+                    {t('tools.imageRotator.vertical')}
                   </Button>
                 </div>
               </div>
 
               <div className="pt-4 border-t">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Quick Angles</label>
+                  <label className="text-sm font-medium">{t('tools.imageRotator.quickAngles')}</label>
                   <div className="grid grid-cols-4 gap-2">
                     {[0, 90, 180, 270].map((angle) => (
                       <Button

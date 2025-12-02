@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Play, Pause, ArrowClockwise, CheckCircle } from '@phosphor-icons/react'
@@ -8,6 +9,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function PomodoroTimer() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('pomodoro-timer')
   useSEO(metadata)
@@ -50,16 +53,16 @@ export default function PomodoroTimer() {
       if (newCount % 4 === 0) {
         setMode('longBreak')
         setTimeLeft(durations.longBreak)
-        toast.success('Great work! Time for a long break.')
+        toast.success(t('tools.pomodoroTimer.longBreakMessage'))
       } else {
         setMode('break')
         setTimeLeft(durations.break)
-        toast.success('Pomodoro complete! Take a short break.')
+        toast.success(t('tools.pomodoroTimer.shortBreakMessage'))
       }
     } else {
       setMode('work')
       setTimeLeft(durations.work)
-      toast.success('Break over! Ready for another focus session?')
+      toast.success(t('tools.pomodoroTimer.breakOverMessage'))
     }
   }
 
@@ -89,9 +92,9 @@ export default function PomodoroTimer() {
 
   const getModeLabel = () => {
     switch(mode) {
-      case 'work': return '🎯 Focus Session'
-      case 'break': return '☕ Short Break'
-      case 'longBreak': return '🌟 Long Break'
+      case 'work': return `🎯 ${t('tools.pomodoroTimer.focusSession')}`
+      case 'break': return `☕ ${t('tools.pomodoroTimer.shortBreak')}`
+      case 'longBreak': return `🌟 ${t('tools.pomodoroTimer.longBreak')}`
     }
   }
 
@@ -100,10 +103,10 @@ export default function PomodoroTimer() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Pomodoro Timer
+            {t('tools.pomodoroTimer.title')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Boost productivity with the Pomodoro Technique - 25 min focus, 5 min break.
+            {t('tools.pomodoroTimer.subtitle')}
           </p>
         </div>
 
@@ -128,17 +131,17 @@ export default function PomodoroTimer() {
                   {!isRunning ? (
                     <Button onClick={start} size="lg" className="gap-2 bg-white text-foreground hover:bg-white/90">
                       <Play size={24} />
-                      Start
+                      {t('tools.pomodoroTimer.start')}
                     </Button>
                   ) : (
                     <Button onClick={pause} size="lg" className="gap-2 bg-white text-foreground hover:bg-white/90">
                       <Pause size={24} />
-                      Pause
+                      {t('tools.pomodoroTimer.pause')}
                     </Button>
                   )}
                   <Button onClick={reset} size="lg" variant="outline" className="gap-2 bg-white/20 text-white border-white hover:bg-white/30">
                     <ArrowClockwise size={24} />
-                    Reset
+                    {t('tools.common.reset')}
                   </Button>
                 </div>
               </div>
@@ -147,9 +150,9 @@ export default function PomodoroTimer() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Mode Selection</CardTitle>
+              <CardTitle>{t('tools.pomodoroTimer.modeSelection')}</CardTitle>
               <CardDescription>
-                Switch between focus and break modes
+                {t('tools.pomodoroTimer.modeSelectionDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -161,7 +164,7 @@ export default function PomodoroTimer() {
                 >
                   <div className="text-center">
                     <div className="text-lg">🎯</div>
-                    <div className="text-xs">Work (25m)</div>
+                    <div className="text-xs">{t('tools.pomodoroTimer.work25m')}</div>
                   </div>
                 </Button>
 
@@ -172,7 +175,7 @@ export default function PomodoroTimer() {
                 >
                   <div className="text-center">
                     <div className="text-lg">☕</div>
-                    <div className="text-xs">Break (5m)</div>
+                    <div className="text-xs">{t('tools.pomodoroTimer.break5m')}</div>
                   </div>
                 </Button>
 
@@ -183,7 +186,7 @@ export default function PomodoroTimer() {
                 >
                   <div className="text-center">
                     <div className="text-lg">🌟</div>
-                    <div className="text-xs">Long (15m)</div>
+                    <div className="text-xs">{t('tools.pomodoroTimer.long15m')}</div>
                   </div>
                 </Button>
               </div>
@@ -191,7 +194,7 @@ export default function PomodoroTimer() {
               <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
                 <div className="flex items-center gap-2">
                   <CheckCircle size={24} className="text-green-600" />
-                  <span className="font-semibold">Completed Pomodoros Today:</span>
+                  <span className="font-semibold">{t('tools.pomodoroTimer.completedToday')}</span>
                 </div>
                 <span className="text-2xl font-bold text-primary">{completedPomodoros}</span>
               </div>

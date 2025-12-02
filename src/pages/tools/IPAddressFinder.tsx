@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -9,6 +10,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function IPAddressFinder() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('ip-address-finder')
   useSEO(metadata)
@@ -37,9 +40,9 @@ export default function IPAddressFinder() {
         timezone: data.timezone,
         isp: data.org
       })
-      toast.success('IP information retrieved!')
+      toast.success(t('tools.ipAddressFinder.ipRetrieved'))
     } catch (error) {
-      toast.error('Failed to retrieve IP information')
+      toast.error(t('tools.ipAddressFinder.ipRetrieveFailed'))
     } finally {
       setLoading(false)
     }
@@ -47,7 +50,7 @@ export default function IPAddressFinder() {
 
   const lookupIP = async () => {
     if (!customIp) {
-      toast.error('Please enter an IP address')
+      toast.error(t('tools.ipAddressFinder.enterIpAddress'))
       return
     }
 
@@ -57,7 +60,7 @@ export default function IPAddressFinder() {
       const data = await response.json()
       
       if (data.error) {
-        toast.error('Invalid IP address')
+        toast.error(t('tools.ipAddressFinder.invalidIpAddress'))
         return
       }
 
@@ -69,9 +72,9 @@ export default function IPAddressFinder() {
         timezone: data.timezone,
         isp: data.org
       })
-      toast.success('IP lookup complete!')
+      toast.success(t('tools.ipAddressFinder.lookupComplete'))
     } catch (error) {
-      toast.error('Failed to lookup IP address')
+      toast.error(t('tools.ipAddressFinder.lookupFailed'))
     } finally {
       setLoading(false)
     }
@@ -80,7 +83,7 @@ export default function IPAddressFinder() {
   const copyIP = () => {
     if (ipInfo?.ip) {
       navigator.clipboard.writeText(ipInfo.ip)
-      toast.success('IP address copied!')
+      toast.success(t('tools.ipAddressFinder.ipCopied'))
     }
   }
 
@@ -92,8 +95,8 @@ export default function IPAddressFinder() {
             <NetworkSlash size={24} className="text-white" weight="bold" />
           </div>
           <div>
-            <h1 className="text-3xl font-semibold text-foreground">IP Address Finder</h1>
-            <p className="text-muted-foreground">Find your IP or lookup any IP address</p>
+            <h1 className="text-3xl font-semibold text-foreground">{t('tools.ipAddressFinder.name')}</h1>
+            <p className="text-muted-foreground">{t('tools.ipAddressFinder.description')}</p>
           </div>
         </div>
       </div>
@@ -101,20 +104,20 @@ export default function IPAddressFinder() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card>
           <CardHeader>
-            <CardTitle>My IP Address</CardTitle>
-            <CardDescription>Get your current public IP</CardDescription>
+            <CardTitle>{t('tools.ipAddressFinder.yourIp')}</CardTitle>
+            <CardDescription>{t('tools.ipAddressFinder.description')}</CardDescription>
           </CardHeader>
           <CardContent>
             <Button onClick={getMyIP} className="w-full" disabled={loading}>
-              {loading ? 'Loading...' : 'Get My IP'}
+              {loading ? t('tools.common.processing') : t('tools.ipAddressFinder.yourIp')}
             </Button>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>IP Lookup</CardTitle>
-            <CardDescription>Check information for any IP</CardDescription>
+            <CardTitle>{t('tools.common.check')}</CardTitle>
+            <CardDescription>{t('tools.ipAddressFinder.description')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="space-y-2">
@@ -127,7 +130,7 @@ export default function IPAddressFinder() {
               />
             </div>
             <Button onClick={lookupIP} className="w-full" disabled={loading}>
-              {loading ? 'Looking up...' : 'Lookup IP'}
+              {loading ? t('tools.common.processing') : t('tools.common.check')}
             </Button>
           </CardContent>
         </Card>
@@ -137,17 +140,17 @@ export default function IPAddressFinder() {
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle>IP Information</CardTitle>
+              <CardTitle>{t('tools.ipAddressFinder.yourIp')}</CardTitle>
               <Button variant="ghost" size="sm" onClick={copyIP}>
                 <Copy size={16} className="mr-2" />
-                Copy IP
+                {t('tools.common.copy')}
               </Button>
             </div>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div className="p-6 bg-gradient-to-br from-violet-500/10 to-purple-500/10 rounded-lg text-center border border-violet-200">
-                <p className="text-sm text-muted-foreground mb-1">IP Address</p>
+                <p className="text-sm text-muted-foreground mb-1">{t('tools.ipAddressFinder.yourIp')}</p>
                 <p className="text-3xl font-bold text-foreground font-mono">
                   {ipInfo.ip}
                 </p>
@@ -156,25 +159,25 @@ export default function IPAddressFinder() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {ipInfo.city && (
                   <div className="p-4 bg-card rounded-lg border">
-                    <p className="text-sm text-muted-foreground">City</p>
+                    <p className="text-sm text-muted-foreground">{t('tools.ipAddressFinder.location')}</p>
                     <p className="text-lg font-semibold text-foreground">{ipInfo.city}</p>
                   </div>
                 )}
                 {ipInfo.region && (
                   <div className="p-4 bg-card rounded-lg border">
-                    <p className="text-sm text-muted-foreground">Region</p>
+                    <p className="text-sm text-muted-foreground">{t('tools.ipAddressFinder.location')}</p>
                     <p className="text-lg font-semibold text-foreground">{ipInfo.region}</p>
                   </div>
                 )}
                 {ipInfo.country && (
                   <div className="p-4 bg-card rounded-lg border">
-                    <p className="text-sm text-muted-foreground">Country</p>
+                    <p className="text-sm text-muted-foreground">{t('tools.ipAddressFinder.location')}</p>
                     <p className="text-lg font-semibold text-foreground">{ipInfo.country}</p>
                   </div>
                 )}
                 {ipInfo.timezone && (
                   <div className="p-4 bg-card rounded-lg border">
-                    <p className="text-sm text-muted-foreground">Timezone</p>
+                    <p className="text-sm text-muted-foreground">{t('tools.ipAddressFinder.timezone')}</p>
                     <p className="text-lg font-semibold text-foreground">{ipInfo.timezone}</p>
                   </div>
                 )}
@@ -182,7 +185,7 @@ export default function IPAddressFinder() {
 
               {ipInfo.isp && (
                 <div className="p-4 bg-muted/50 rounded-lg">
-                  <p className="text-sm text-muted-foreground">ISP / Organization</p>
+                  <p className="text-sm text-muted-foreground">{t('tools.ipAddressFinder.isp')}</p>
                   <p className="text-base font-medium text-foreground mt-1">{ipInfo.isp}</p>
                 </div>
               )}

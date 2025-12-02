@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -10,6 +11,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function WatermarkAdder() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('watermark-adder')
   useSEO(metadata)
@@ -27,7 +30,7 @@ export default function WatermarkAdder() {
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      toast.error('Please select an image file')
+      toast.error(t('tools.watermarkAdder.selectImageFile'))
       return
     }
 
@@ -37,7 +40,7 @@ export default function WatermarkAdder() {
       drawWatermark(event.target?.result as string)
     }
     reader.readAsDataURL(file)
-    toast.success('Image loaded!')
+    toast.success(t('tools.watermarkAdder.imageLoaded'))
   }
 
   const drawWatermark = (imgSrc: string) => {
@@ -94,11 +97,11 @@ export default function WatermarkAdder() {
 
   const handleApplyWatermark = () => {
     if (!image) {
-      toast.error('Please upload an image first')
+      toast.error(t('tools.watermarkAdder.uploadFirst'))
       return
     }
     drawWatermark(image)
-    toast.success('Watermark applied!')
+    toast.success(t('tools.watermarkAdder.watermarkApplied'))
   }
 
   const handleDownload = () => {
@@ -113,7 +116,7 @@ export default function WatermarkAdder() {
         link.href = url
         link.click()
         URL.revokeObjectURL(url)
-        toast.success('Image downloaded!')
+        toast.success(t('tools.watermarkAdder.imageDownloaded'))
       }
     })
   }
@@ -127,7 +130,7 @@ export default function WatermarkAdder() {
       const ctx = canvas.getContext('2d')
       if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height)
     }
-    toast.success('Cleared')
+    toast.success(t('tools.common.cleared'))
   }
 
   return (
@@ -135,18 +138,18 @@ export default function WatermarkAdder() {
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Watermark Adder
+            {t('tools.watermarkAdder.title')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Add text watermarks to protect your images
+            {t('tools.watermarkAdder.subtitle')}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <Card className="lg:col-span-2">
             <CardHeader>
-              <CardTitle>Preview</CardTitle>
-              <CardDescription>Image with watermark</CardDescription>
+              <CardTitle>{t('tools.common.preview')}</CardTitle>
+              <CardDescription>{t('tools.watermarkAdder.imageWithWatermark')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <input
@@ -165,7 +168,7 @@ export default function WatermarkAdder() {
                   className="w-full"
                 >
                   <Upload size={18} className="mr-2" />
-                  Upload Image
+                  {t('tools.watermarkAdder.uploadImage')}
                 </Button>
               ) : (
                 <>
@@ -176,7 +179,7 @@ export default function WatermarkAdder() {
                   <div className="flex gap-2">
                     <Button onClick={handleDownload} className="flex-1">
                       <Download size={18} className="mr-2" />
-                      Download
+                      {t('tools.common.download')}
                     </Button>
                     <Button onClick={handleClear} variant="outline">
                       <Trash size={18} />
@@ -189,40 +192,40 @@ export default function WatermarkAdder() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Watermark Settings</CardTitle>
-              <CardDescription>Customize your watermark</CardDescription>
+              <CardTitle>{t('tools.watermarkAdder.watermarkSettings')}</CardTitle>
+              <CardDescription>{t('tools.watermarkAdder.customizeWatermark')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="watermark-text">Text</Label>
+                <Label htmlFor="watermark-text">{t('tools.watermarkAdder.text')}</Label>
                 <Textarea
                   id="watermark-text"
                   value={watermarkText}
                   onChange={(e) => setWatermarkText(e.target.value)}
-                  placeholder="Enter watermark text..."
+                  placeholder={t('tools.watermarkAdder.enterWatermarkText')}
                   rows={2}
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="position">Position</Label>
+                <Label htmlFor="position">{t('tools.watermarkAdder.position')}</Label>
                 <select
                   id="position"
                   value={position}
                   onChange={(e) => setPosition(e.target.value as any)}
                   className="w-full p-2 border rounded-md"
                 >
-                  <option value="center">Center</option>
-                  <option value="topLeft">Top Left</option>
-                  <option value="topRight">Top Right</option>
-                  <option value="bottomLeft">Bottom Left</option>
-                  <option value="bottomRight">Bottom Right</option>
+                  <option value="center">{t('tools.watermarkAdder.center')}</option>
+                  <option value="topLeft">{t('tools.watermarkAdder.topLeft')}</option>
+                  <option value="topRight">{t('tools.watermarkAdder.topRight')}</option>
+                  <option value="bottomLeft">{t('tools.watermarkAdder.bottomLeft')}</option>
+                  <option value="bottomRight">{t('tools.watermarkAdder.bottomRight')}</option>
                 </select>
               </div>
 
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <Label>Font Size</Label>
+                  <Label>{t('tools.watermarkAdder.fontSize')}</Label>
                   <span className="text-sm text-muted-foreground">{fontSize}px</span>
                 </div>
                 <input
@@ -237,7 +240,7 @@ export default function WatermarkAdder() {
 
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <Label>Opacity</Label>
+                  <Label>{t('tools.watermarkAdder.opacity')}</Label>
                   <span className="text-sm text-muted-foreground">{Math.round(opacity * 100)}%</span>
                 </div>
                 <input
@@ -253,7 +256,7 @@ export default function WatermarkAdder() {
 
               <Button onClick={handleApplyWatermark} className="w-full" disabled={!image}>
                 <ImageIcon size={18} className="mr-2" />
-                Apply Watermark
+                {t('tools.watermarkAdder.applyWatermark')}
               </Button>
             </CardContent>
           </Card>

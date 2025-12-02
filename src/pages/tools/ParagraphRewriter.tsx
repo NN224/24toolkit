@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -18,6 +19,8 @@ import { getPageMetadata } from '@/lib/seo-metadata'
 type Tone = 'formal' | 'neutral' | 'casual'
 
 export default function ParagraphRewriter() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('paragraph-rewriter')
   useSEO(metadata)
@@ -31,14 +34,14 @@ export default function ParagraphRewriter() {
 
   const handleRewrite = async () => {
     if (!inputText.trim()) {
-      toast.error('Please enter some text to rewrite')
+      toast.error(t('tools.paragraphRewriter.enterTextError'))
       return
     }
 
     try {
       validatePromptInput(inputText, 10, 5000)
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Invalid input')
+      toast.error(error instanceof Error ? error.message : t('tools.common.invalidInput'))
       return
     }
 
@@ -57,10 +60,10 @@ export default function ParagraphRewriter() {
       await callAI(promptText, provider, (accumulatedText) => {
         setOutputText(accumulatedText.trim())
       })
-      toast.success('Text rewritten successfully!')
+      toast.success(t('tools.paragraphRewriter.rewriteSuccess'))
     } catch (error) {
       console.error('Rewrite error:', error)
-      toast.error(error instanceof Error ? error.message : 'Failed to rewrite text')
+      toast.error(error instanceof Error ? error.message : t('tools.paragraphRewriter.rewriteFailed'))
     } finally {
       setIsLoading(false)
     }
@@ -71,7 +74,7 @@ export default function ParagraphRewriter() {
   const handleClear = () => {
     setInputText('')
     setOutputText('')
-    toast.success('Cleared')
+    toast.success(t('tools.paragraphRewriter.cleared'))
   }
 
   return (
@@ -80,39 +83,39 @@ export default function ParagraphRewriter() {
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-3">
             <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-              AI Paragraph Rewriter
+              {t('tools.paragraphRewriter.title')}
             </h1>
             <AIBadge />
           </div>
           <p className="text-lg text-muted-foreground">
-            Rephrase your text while preserving the original meaning. Perfect for paraphrasing and improving clarity.
+            {t('tools.paragraphRewriter.subtitle')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Rewrite Settings</CardTitle>
+              <CardTitle>{t('tools.paragraphRewriter.rewriteSettings')}</CardTitle>
               <CardDescription>
-                Choose the tone for your rewritten text
+                {t('tools.paragraphRewriter.chooseTone')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground">Tone</label>
+                <label className="text-sm font-medium text-foreground">{t('tools.paragraphRewriter.tone')}</label>
                 <Select value={tone} onValueChange={(value) => setTone(value as Tone)}>
                   <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Select tone" />
+                    <SelectValue placeholder={t('tools.paragraphRewriter.selectTone')} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="formal">
-                      <span className="font-medium">Formal</span>
+                      <span className="font-medium">{t('tools.paragraphRewriter.formal')}</span>
                     </SelectItem>
                     <SelectItem value="neutral">
-                      <span className="font-medium">Neutral</span>
+                      <span className="font-medium">{t('tools.paragraphRewriter.neutral')}</span>
                     </SelectItem>
                     <SelectItem value="casual">
-                      <span className="font-medium">Casual</span>
+                      <span className="font-medium">{t('tools.paragraphRewriter.casual')}</span>
                     </SelectItem>
                   </SelectContent>
                 </Select>
@@ -127,14 +130,14 @@ export default function ParagraphRewriter() {
                   className="gap-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
                 >
                   <Sparkle size={16} weight="fill" />
-                  Rewrite Text
+                  {t('tools.paragraphRewriter.rewriteText')}
                 </Button>
                 
                 <Button
                   onClick={handleClear}
                   variant="outline"
                 >
-                  Clear All
+                  {t('tools.paragraphRewriter.clearAll')}
                 </Button>
               </div>
             </CardContent>
@@ -143,15 +146,15 @@ export default function ParagraphRewriter() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>Original Text</CardTitle>
+                <CardTitle>{t('tools.paragraphRewriter.originalText')}</CardTitle>
                 <CardDescription>
-                  Enter the text you want to rewrite
+                  {t('tools.paragraphRewriter.enterTextToRewrite')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <Textarea
                   id="input-text"
-                  placeholder="Paste or type your text here..."
+                  placeholder={t('tools.paragraphRewriter.textPlaceholder')}
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                   className="min-h-[400px] resize-y font-normal"
@@ -164,16 +167,16 @@ export default function ParagraphRewriter() {
                   className="w-full gap-2"
                 >
                   <Copy size={16} />
-                  Copy Original
+                  {t('tools.paragraphRewriter.copyOriginal')}
                 </Button>
               </CardContent>
             </Card>
 
             <Card className="border-2 border-accent/20">
               <CardHeader>
-                <CardTitle>Rewritten Text</CardTitle>
+                <CardTitle>{t('tools.paragraphRewriter.rewrittenText')}</CardTitle>
                 <CardDescription>
-                  Your text will appear here
+                  {t('tools.paragraphRewriter.textWillAppear')}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -183,8 +186,8 @@ export default function ParagraphRewriter() {
                   <div className="space-y-4">
                     <Tabs defaultValue="output" className="w-full">
                       <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="output">Rewritten</TabsTrigger>
-                        <TabsTrigger value="compare">Compare</TabsTrigger>
+                        <TabsTrigger value="output">{t('tools.paragraphRewriter.rewritten')}</TabsTrigger>
+                        <TabsTrigger value="compare">{t('tools.paragraphRewriter.compare')}</TabsTrigger>
                       </TabsList>
                       
                       <TabsContent value="output" className="space-y-4">
@@ -202,14 +205,14 @@ export default function ParagraphRewriter() {
                           className="w-full gap-2"
                         >
                           <Copy size={16} />
-                          Copy Rewritten Text
+                          {t('tools.paragraphRewriter.copyRewritten')}
                         </Button>
                       </TabsContent>
                       
                       <TabsContent value="compare" className="space-y-4">
                         <div className="space-y-3">
                           <div className="bg-muted/50 border border-border rounded-lg p-4">
-                            <p className="text-xs font-medium text-muted-foreground mb-2">ORIGINAL</p>
+                            <p className="text-xs font-medium text-muted-foreground mb-2">{t('tools.paragraphRewriter.originalLabel')}</p>
                             <p className="text-sm text-foreground whitespace-pre-wrap leading-relaxed">
                               {inputText}
                             </p>
@@ -220,7 +223,7 @@ export default function ParagraphRewriter() {
                           </div>
                           
                           <div className="bg-accent/5 border border-accent/20 rounded-lg p-4">
-                            <p className="text-xs font-medium text-accent mb-2">REWRITTEN</p>
+                            <p className="text-xs font-medium text-accent mb-2">{t('tools.paragraphRewriter.rewrittenLabel')}</p>
                             <p className="text-sm text-foreground whitespace-pre-wrap leading-relaxed">
                               {outputText}
                             </p>
@@ -235,7 +238,7 @@ export default function ParagraphRewriter() {
                       <Sparkle size={28} weight="fill" className="text-purple-500" />
                     </div>
                     <p className="text-muted-foreground">
-                      Your rewritten text will appear here
+                      {t('tools.paragraphRewriter.emptyState')}
                     </p>
                   </div>
                 )}

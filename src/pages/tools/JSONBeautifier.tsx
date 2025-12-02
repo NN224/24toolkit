@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -11,6 +12,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function JSONBeautifier() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('json-beautifier')
   useSEO(metadata)
@@ -23,7 +26,7 @@ export default function JSONBeautifier() {
 
   const handleBeautify = () => {
     if (!input.trim()) {
-      toast.error('Please enter JSON to beautify')
+      toast.error(t('tools.jsonBeautifier.enterJson'))
       return
     }
 
@@ -33,18 +36,18 @@ export default function JSONBeautifier() {
       setFormatted(beautified)
       setIsValid(true)
       setError('')
-      toast.success('JSON is valid and beautified!')
+      toast.success(t('tools.jsonBeautifier.beautified'))
     } catch (err) {
       setIsValid(false)
       setError((err as Error).message)
       setFormatted('')
-      toast.error('Invalid JSON')
+      toast.error(t('tools.jsonBeautifier.invalidJson'))
     }
   }
 
   const handleMinify = () => {
     if (!input.trim()) {
-      toast.error('Please enter JSON to minify')
+      toast.error(t('tools.jsonBeautifier.enterJsonToMinify'))
       return
     }
 
@@ -54,12 +57,12 @@ export default function JSONBeautifier() {
       setFormatted(minified)
       setIsValid(true)
       setError('')
-      toast.success('JSON minified!')
+      toast.success(t('tools.jsonBeautifier.minified'))
     } catch (err) {
       setIsValid(false)
       setError((err as Error).message)
       setFormatted('')
-      toast.error('Invalid JSON')
+      toast.error(t('tools.jsonBeautifier.invalidJson'))
     }
   }
 
@@ -70,7 +73,7 @@ export default function JSONBeautifier() {
     setFormatted('')
     setIsValid(null)
     setError('')
-    toast.success('Cleared')
+    toast.success(t('tools.common.cleared'))
   }
 
   return (
@@ -78,10 +81,10 @@ export default function JSONBeautifier() {
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            JSON Beautifier / Validator
+            {t('tools.jsonBeautifier.name')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Format, validate, and minify JSON data instantly
+            {t('tools.jsonBeautifier.description')}
           </p>
         </div>
 
@@ -89,7 +92,7 @@ export default function JSONBeautifier() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                Input JSON
+                {t('tools.jsonBeautifier.inputJson')}
                 {isValid !== null && (
                   isValid ? (
                     <CheckCircle size={20} className="text-green-500" weight="fill" />
@@ -98,7 +101,7 @@ export default function JSONBeautifier() {
                   )
                 )}
               </CardTitle>
-              <CardDescription>Paste your JSON here</CardDescription>
+              <CardDescription>{t('tools.jsonBeautifier.pasteJson')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <Textarea
@@ -121,10 +124,10 @@ export default function JSONBeautifier() {
 
               <div className="flex gap-2">
                 <Button onClick={handleBeautify} className="flex-1">
-                  Beautify
+                  {t('tools.jsonBeautifier.beautify')}
                 </Button>
                 <Button onClick={handleMinify} variant="outline" className="flex-1">
-                  Minify
+                  {t('tools.jsonBeautifier.minify')}
                 </Button>
                 <Button onClick={handleClear} variant="outline">
                   <Trash size={18} />
@@ -135,8 +138,8 @@ export default function JSONBeautifier() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Output</CardTitle>
-              <CardDescription>Formatted or minified JSON</CardDescription>
+              <CardTitle>{t('tools.jsonBeautifier.output')}</CardTitle>
+              <CardDescription>{t('tools.jsonBeautifier.formattedJson')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {formatted ? (
@@ -156,14 +159,14 @@ export default function JSONBeautifier() {
                 </div>
               ) : (
                 <div className="min-h-[400px] border-2 border-dashed border-border rounded-lg flex items-center justify-center text-muted-foreground">
-                  Formatted JSON will appear here
+                  {t('tools.jsonBeautifier.formattedWillAppear')}
                 </div>
               )}
 
               {formatted && (
-                <Button onClick={() => copyToClipboard(formatted, 'JSON copied!')} className="w-full">
-                  <Copy size={18} className="mr-2" />
-                  Copy JSON
+                <Button onClick={() => copyToClipboard(formatted, t('tools.common.copied'))} className="w-full">
+                  <Copy size={18} className="ltr:mr-2 rtl:ml-2" />
+                  {t('tools.jsonBeautifier.copyJson')}
                 </Button>
               )}
             </CardContent>

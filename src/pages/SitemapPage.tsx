@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import { ArrowLeft } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { allTools } from '@/lib/tools-data'
@@ -7,26 +8,27 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function SitemapPage() {
+  const { t } = useTranslation()
   // Set SEO metadata for sitemap page
   const sitemapMetadata = getPageMetadata('sitemap')
   useSEO(sitemapMetadata)
 
   const staticPages = [
-    { title: 'Home', path: '/' },
-    { title: 'About', path: '/about' },
-    { title: 'Contact', path: '/contact' },
-    { title: 'Privacy Policy', path: '/privacy-policy' },
-    { title: 'Terms of Service', path: '/terms-of-service' },
+    { title: t('nav.home'), path: '/' },
+    { title: t('nav.about'), path: '/about' },
+    { title: t('nav.contact'), path: '/contact' },
+    { title: t('nav.privacy'), path: '/privacy-policy' },
+    { title: t('nav.terms'), path: '/terms-of-service' },
   ]
 
   const categories = [
-    { id: 'ai', name: 'AI-Powered Tools' },
-    { id: 'text', name: 'Text Tools' },
-    { id: 'dev', name: 'Developer Tools' },
-    { id: 'image', name: 'Image Tools' },
-    { id: 'security', name: 'Security Tools' },
-    { id: 'calc', name: 'Calculators' },
-    { id: 'fun', name: 'Fun & Productivity Tools' },
+    { id: 'ai', name: t('categories.ai') },
+    { id: 'text', name: t('categories.text') },
+    { id: 'dev', name: t('categories.developer') },
+    { id: 'image', name: t('categories.image') },
+    { id: 'security', name: t('categories.security') },
+    { id: 'calc', name: t('categories.calculators') },
+    { id: 'fun', name: t('categories.fun') },
   ]
 
   return (
@@ -39,23 +41,23 @@ export default function SitemapPage() {
         >
           <Link to="/">
             <Button variant="ghost" className="mb-8 group">
-              <ArrowLeft size={16} className="mr-2 group-hover:-translate-x-1 transition-transform" />
-              Back to Home
+              <ArrowLeft size={16} className="ltr:mr-2 rtl:ml-2 group-hover:ltr:-translate-x-1 group-hover:rtl:translate-x-1 transition-transform" />
+              {t('common.backToHome')}
             </Button>
           </Link>
 
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold gradient-text mb-4">
-              Sitemap
+              {t('sitemap.title')}
             </h1>
             <p className="text-muted-foreground text-lg">
-              All pages and tools available on 24Toolkit
+              {t('sitemap.subtitle')}
             </p>
           </div>
 
           <div className="space-y-8">
             <div className="glass-card rounded-2xl p-6 border border-border/50">
-              <h2 className="text-2xl font-semibold text-accent mb-4">Main Pages</h2>
+              <h2 className="text-2xl font-semibold text-accent mb-4">{t('sitemap.mainPages')}</h2>
               <div className="grid md:grid-cols-2 gap-3">
                 {staticPages.map((page) => (
                   <Link
@@ -116,7 +118,7 @@ export default function SitemapPage() {
 
           <div className="mt-8 text-center">
             <p className="text-sm text-muted-foreground">
-              Total: {allTools.length} tools + {staticPages.length} pages
+              {t('sitemap.total', { tools: allTools.length, pages: staticPages.length })}
             </p>
           </div>
         </motion.div>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -10,6 +11,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function TextToSpeech() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('text-to-speech')
   useSEO(metadata)
@@ -38,7 +41,7 @@ export default function TextToSpeech() {
 
   const handleSpeak = () => {
     if (!text.trim()) {
-      toast.error('Please enter some text to convert')
+      toast.error(t('tools.textToSpeech.enterTextError'))
       return
     }
 
@@ -55,21 +58,21 @@ export default function TextToSpeech() {
     utterance.onend = () => setIsSpeaking(false)
     utterance.onerror = () => {
       setIsSpeaking(false)
-      toast.error('Failed to convert text to speech')
+      toast.error(t('tools.textToSpeech.conversionFailed'))
     }
 
     window.speechSynthesis.speak(utterance)
-    toast.success('Playing audio...')
+    toast.success(t('tools.textToSpeech.playingAudio'))
   }
 
   const handleStop = () => {
     window.speechSynthesis.cancel()
     setIsSpeaking(false)
-    toast.success('Stopped')
+    toast.success(t('tools.textToSpeech.stopped'))
   }
 
   const handleDownload = () => {
-    toast.info('MP3 download requires server-side processing. Playing audio in browser only.')
+    toast.info(t('tools.textToSpeech.downloadNotice'))
   }
 
   return (
@@ -77,27 +80,27 @@ export default function TextToSpeech() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Text to Speech Converter
+            {t('tools.textToSpeech.title')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Convert any text to natural-sounding speech with multiple voice options using Web Speech API.
+            {t('tools.textToSpeech.subtitle')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Enter Your Text</CardTitle>
+              <CardTitle>{t('tools.textToSpeech.enterYourText')}</CardTitle>
               <CardDescription>
-                Type or paste the text you want to convert to speech
+                {t('tools.textToSpeech.enterDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="text-input">Text Content</Label>
+                <Label htmlFor="text-input">{t('tools.textToSpeech.textContent')}</Label>
                 <Textarea
                   id="text-input"
-                  placeholder="Type or paste your text here..."
+                  placeholder={t('tools.textToSpeech.placeholder')}
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                   className="min-h-[200px] resize-y font-normal"
@@ -105,10 +108,10 @@ export default function TextToSpeech() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="voice-select">Select Voice</Label>
+                <Label htmlFor="voice-select">{t('tools.textToSpeech.selectVoice')}</Label>
                 <Select value={selectedVoice} onValueChange={setSelectedVoice}>
                   <SelectTrigger id="voice-select">
-                    <SelectValue placeholder="Choose a voice" />
+                    <SelectValue placeholder={t('tools.textToSpeech.chooseVoice')} />
                   </SelectTrigger>
                   <SelectContent>
                     {voices.map((voice) => (
@@ -127,7 +130,7 @@ export default function TextToSpeech() {
                   className="gap-2"
                 >
                   <SpeakerHigh size={16} weight="fill" />
-                  {isSpeaking ? 'Speaking...' : 'Convert to Speech'}
+                  {isSpeaking ? t('tools.textToSpeech.speaking') : t('tools.textToSpeech.convertToSpeech')}
                 </Button>
                 
                 <Button
@@ -137,7 +140,7 @@ export default function TextToSpeech() {
                   className="gap-2"
                 >
                   <Stop size={16} weight="fill" />
-                  Stop
+                  {t('tools.textToSpeech.stop')}
                 </Button>
 
                 <Button
@@ -147,15 +150,13 @@ export default function TextToSpeech() {
                   disabled={!text.trim()}
                 >
                   <Download size={16} />
-                  Download MP3
+                  {t('tools.textToSpeech.downloadMp3')}
                 </Button>
               </div>
 
               <div className="bg-muted/50 p-4 rounded-lg border border-border">
                 <p className="text-sm text-muted-foreground">
-                  <strong>Note:</strong> This tool uses your browser's built-in speech synthesis. 
-                  MP3 download requires server-side processing and is not available in the browser version.
-                  Voice quality and availability may vary by browser and operating system.
+                  <strong>{t('tools.textToSpeech.note')}</strong> {t('tools.textToSpeech.noteText')}
                 </p>
               </div>
             </CardContent>

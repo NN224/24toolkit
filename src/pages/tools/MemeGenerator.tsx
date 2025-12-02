@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -9,6 +10,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function MemeGenerator() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('meme-generator')
   useSEO(metadata)
@@ -24,7 +27,7 @@ export default function MemeGenerator() {
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      toast.error('Please select an image file')
+      toast.error(t('tools.memeGenerator.selectImageFile'))
       return
     }
 
@@ -34,7 +37,7 @@ export default function MemeGenerator() {
       drawMeme(event.target?.result as string, topText, bottomText)
     }
     reader.readAsDataURL(file)
-    toast.success('Image loaded!')
+    toast.success(t('tools.memeGenerator.imageLoaded'))
   }
 
   const drawMeme = (imgSrc: string, top: string, bottom: string) => {
@@ -75,11 +78,11 @@ export default function MemeGenerator() {
 
   const handleGenerateMeme = () => {
     if (!image) {
-      toast.error('Please upload an image first')
+      toast.error(t('tools.memeGenerator.uploadFirst'))
       return
     }
     drawMeme(image, topText, bottomText)
-    toast.success('Meme generated!')
+    toast.success(t('tools.memeGenerator.memeGenerated'))
   }
 
   const handleDownload = () => {
@@ -94,7 +97,7 @@ export default function MemeGenerator() {
         link.href = url
         link.click()
         URL.revokeObjectURL(url)
-        toast.success('Meme downloaded!')
+        toast.success(t('tools.memeGenerator.memeDownloaded'))
       }
     })
   }
@@ -109,7 +112,7 @@ export default function MemeGenerator() {
       const ctx = canvas.getContext('2d')
       if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height)
     }
-    toast.success('Cleared')
+    toast.success(t('tools.common.cleared'))
   }
 
   return (
@@ -117,18 +120,18 @@ export default function MemeGenerator() {
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Meme Generator
+            {t('tools.memeGenerator.title')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Create memes with top and bottom text
+            {t('tools.memeGenerator.subtitle')}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <Card className="lg:col-span-2">
             <CardHeader>
-              <CardTitle>Your Meme</CardTitle>
-              <CardDescription>Preview and download</CardDescription>
+              <CardTitle>{t('tools.memeGenerator.yourMeme')}</CardTitle>
+              <CardDescription>{t('tools.memeGenerator.previewAndDownload')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <input
@@ -147,7 +150,7 @@ export default function MemeGenerator() {
                   className="w-full"
                 >
                   <Upload size={18} className="mr-2" />
-                  Upload Image
+                  {t('tools.memeGenerator.uploadImage')}
                 </Button>
               ) : (
                 <>
@@ -158,7 +161,7 @@ export default function MemeGenerator() {
                   <div className="flex gap-2">
                     <Button onClick={handleDownload} className="flex-1">
                       <Download size={18} className="mr-2" />
-                      Download Meme
+                      {t('tools.memeGenerator.downloadMeme')}
                     </Button>
                     <Button onClick={handleClear} variant="outline">
                       <Trash size={18} />
@@ -173,39 +176,39 @@ export default function MemeGenerator() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Smiley size={20} />
-                Text Settings
+                {t('tools.memeGenerator.textSettings')}
               </CardTitle>
-              <CardDescription>Add your meme text</CardDescription>
+              <CardDescription>{t('tools.memeGenerator.addYourMemeText')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="top-text">Top Text</Label>
+                <Label htmlFor="top-text">{t('tools.memeGenerator.topText')}</Label>
                 <Input
                   id="top-text"
                   value={topText}
                   onChange={(e) => setTopText(e.target.value)}
-                  placeholder="TOP TEXT"
+                  placeholder={t('tools.memeGenerator.topTextPlaceholder')}
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="bottom-text">Bottom Text</Label>
+                <Label htmlFor="bottom-text">{t('tools.memeGenerator.bottomText')}</Label>
                 <Input
                   id="bottom-text"
                   value={bottomText}
                   onChange={(e) => setBottomText(e.target.value)}
-                  placeholder="BOTTOM TEXT"
+                  placeholder={t('tools.memeGenerator.bottomTextPlaceholder')}
                 />
               </div>
 
               <Button onClick={handleGenerateMeme} className="w-full" disabled={!image}>
                 <Smiley size={18} className="mr-2" weight="fill" />
-                Generate Meme
+                {t('tools.memeGenerator.generateMeme')}
               </Button>
 
               <div className="pt-4 border-t">
                 <p className="text-xs text-muted-foreground">
-                  Tip: Leave text fields empty if you only want top or bottom text
+                  {t('tools.memeGenerator.tip')}
                 </p>
               </div>
             </CardContent>

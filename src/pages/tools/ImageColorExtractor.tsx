@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Upload, Trash, Palette } from '@phosphor-icons/react'
@@ -17,6 +18,7 @@ export default function ImageColorExtractor() {
   const metadata = getPageMetadata('image-color-extractor')
   useSEO(metadata)
 
+  const { t } = useTranslation()
   const [image, setImage] = useState<string | null>(null)
   const [colors, setColors] = useState<ColorInfo[]>([])
   const [isProcessing, setIsProcessing] = useState(false)
@@ -27,7 +29,7 @@ export default function ImageColorExtractor() {
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      toast.error('Please select an image file')
+      toast.error(t('tools.imageColorExtractor.selectImageError'))
       return
     }
 
@@ -37,7 +39,7 @@ export default function ImageColorExtractor() {
       setColors([])
     }
     reader.readAsDataURL(file)
-    toast.success('Image loaded!')
+    toast.success(t('tools.imageColorExtractor.imageLoaded'))
   }
 
   const rgbToHex = (r: number, g: number, b: number): string => {
@@ -49,7 +51,7 @@ export default function ImageColorExtractor() {
 
   const extractColors = () => {
     if (!image) {
-      toast.error('Please upload an image first')
+      toast.error(t('tools.imageColorExtractor.uploadFirst'))
       return
     }
 
@@ -99,7 +101,7 @@ export default function ImageColorExtractor() {
 
       setColors(extractedColors)
       setIsProcessing(false)
-      toast.success('Colors extracted!')
+      toast.success(t('tools.imageColorExtractor.colorsSuccess'))
     }
 
     img.src = image
@@ -108,9 +110,9 @@ export default function ImageColorExtractor() {
   const handleCopyColor = async (color: string) => {
     try {
       await navigator.clipboard.writeText(color)
-      toast.success('Color copied!')
+      toast.success(t('tools.imageColorExtractor.colorCopied'))
     } catch (err) {
-      toast.error('Failed to copy')
+      toast.error(t('tools.imageColorExtractor.copyFailed'))
     }
   }
 
@@ -118,7 +120,7 @@ export default function ImageColorExtractor() {
     setImage(null)
     setColors([])
     if (fileInputRef.current) fileInputRef.current.value = ''
-    toast.success('Cleared')
+    toast.success(t('tools.imageColorExtractor.cleared'))
   }
 
   return (

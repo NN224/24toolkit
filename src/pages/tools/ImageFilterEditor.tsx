@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
@@ -8,6 +9,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function ImageFilterEditor() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('image-filter-editor')
   useSEO(metadata)
@@ -28,7 +31,7 @@ export default function ImageFilterEditor() {
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      toast.error('Please select an image file')
+      toast.error(t('tools.imageFilterEditor.selectImageFile'))
       return
     }
 
@@ -37,7 +40,7 @@ export default function ImageFilterEditor() {
       setImage(event.target?.result as string)
     }
     reader.readAsDataURL(file)
-    toast.success('Image loaded!')
+    toast.success(t('tools.imageFilterEditor.imageLoaded'))
   }
 
   const getFilterStyle = () => {
@@ -69,14 +72,14 @@ export default function ImageFilterEditor() {
               link.href = url
               link.click()
               URL.revokeObjectURL(url)
-              toast.success('Image downloaded!')
+              toast.success(t('tools.imageFilterEditor.imageDownloaded'))
             }
           })
         }
       }
       img.src = image
     } catch (error) {
-      toast.error('Failed to download image')
+      toast.error(t('tools.imageFilterEditor.downloadFailed'))
     }
   }
 
@@ -89,7 +92,7 @@ export default function ImageFilterEditor() {
       saturate: 100,
       blur: 0
     })
-    toast.success('Filters reset')
+    toast.success(t('tools.imageFilterEditor.filtersReset'))
   }
 
   const handleClear = () => {
@@ -103,7 +106,7 @@ export default function ImageFilterEditor() {
       blur: 0
     })
     if (fileInputRef.current) fileInputRef.current.value = ''
-    toast.success('Cleared')
+    toast.success(t('tools.common.cleared'))
   }
 
   return (
@@ -111,18 +114,18 @@ export default function ImageFilterEditor() {
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Image Filter Editor
+            {t('tools.imageFilterEditor.title')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Apply filters and adjust image properties
+            {t('tools.imageFilterEditor.subtitle')}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <Card className="lg:col-span-2">
             <CardHeader>
-              <CardTitle>Preview</CardTitle>
-              <CardDescription>Live preview with filters applied</CardDescription>
+              <CardTitle>{t('tools.common.preview')}</CardTitle>
+              <CardDescription>{t('tools.imageFilterEditor.livePreviewDesc')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <input
@@ -141,7 +144,7 @@ export default function ImageFilterEditor() {
                   className="w-full"
                 >
                   <Upload size={18} className="mr-2" />
-                  Upload Image
+                  {t('tools.common.upload')} {t('tools.imageFilterEditor.image')}
                 </Button>
               ) : (
                 <>
@@ -157,7 +160,7 @@ export default function ImageFilterEditor() {
                   <div className="flex gap-2">
                     <Button onClick={handleDownload} className="flex-1">
                       <Download size={18} className="mr-2" />
-                      Download
+                      {t('tools.common.download')}
                     </Button>
                     <Button onClick={handleClear} variant="outline">
                       <Trash size={18} />
@@ -172,14 +175,14 @@ export default function ImageFilterEditor() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <SlidersHorizontal size={20} />
-                Filters
+                {t('tools.imageFilterEditor.filters')}
               </CardTitle>
-              <CardDescription>Adjust image properties</CardDescription>
+              <CardDescription>{t('tools.imageFilterEditor.adjustProperties')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <Label>Brightness</Label>
+                  <Label>{t('tools.imageFilterEditor.brightness')}</Label>
                   <span className="text-sm text-muted-foreground">{filters.brightness}%</span>
                 </div>
                 <input
@@ -194,7 +197,7 @@ export default function ImageFilterEditor() {
 
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <Label>Contrast</Label>
+                  <Label>{t('tools.imageFilterEditor.contrast')}</Label>
                   <span className="text-sm text-muted-foreground">{filters.contrast}%</span>
                 </div>
                 <input
@@ -209,7 +212,7 @@ export default function ImageFilterEditor() {
 
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <Label>Saturation</Label>
+                  <Label>{t('tools.imageFilterEditor.saturation')}</Label>
                   <span className="text-sm text-muted-foreground">{filters.saturate}%</span>
                 </div>
                 <input
@@ -224,7 +227,7 @@ export default function ImageFilterEditor() {
 
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <Label>Grayscale</Label>
+                  <Label>{t('tools.imageFilterEditor.grayscale')}</Label>
                   <span className="text-sm text-muted-foreground">{filters.grayscale}%</span>
                 </div>
                 <input
@@ -239,7 +242,7 @@ export default function ImageFilterEditor() {
 
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <Label>Sepia</Label>
+                  <Label>{t('tools.imageFilterEditor.sepia')}</Label>
                   <span className="text-sm text-muted-foreground">{filters.sepia}%</span>
                 </div>
                 <input
@@ -254,7 +257,7 @@ export default function ImageFilterEditor() {
 
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <Label>Blur</Label>
+                  <Label>{t('tools.imageFilterEditor.blur')}</Label>
                   <span className="text-sm text-muted-foreground">{filters.blur}px</span>
                 </div>
                 <input
@@ -268,7 +271,7 @@ export default function ImageFilterEditor() {
               </div>
 
               <Button onClick={handleReset} variant="outline" className="w-full">
-                Reset Filters
+                {t('tools.imageFilterEditor.resetFilters')}
               </Button>
             </CardContent>
           </Card>

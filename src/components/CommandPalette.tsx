@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { MagnifyingGlass, X } from '@phosphor-icons/react'
 import { allTools } from '@/lib/tools-data'
 
 export default function CommandPalette() {
+  const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const [search, setSearch] = useState('')
   const navigate = useNavigate()
@@ -85,7 +87,7 @@ export default function CommandPalette() {
                       type="text"
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
-                      placeholder="Search 80+ tools or ask: convert pdf to word"
+                      placeholder={t('components.commandPalette.searchPlaceholder')}
                       className="flex-1 bg-transparent text-lg text-foreground placeholder:text-muted-foreground outline-none"
                       autoFocus
                     />

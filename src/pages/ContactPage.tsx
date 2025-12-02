@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { ArrowLeft, PaperPlaneTilt, GithubLogo, TwitterLogo, YoutubeLogo, CheckCircle } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -18,6 +19,7 @@ export default function ContactPage() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
+  const { t } = useTranslation()
   
   // Set SEO metadata for contact page
   const contactMetadata = getPageMetadata('contact')
@@ -27,12 +29,12 @@ export default function ContactPage() {
     e.preventDefault()
     
     if (!formData.name || !formData.email || !formData.message) {
-      toast.error('Please fill in all fields')
+      toast.error(t('contact.fillAllFields'))
       return
     }
 
     if (!formData.email.includes('@')) {
-      toast.error('Please enter a valid email address')
+      toast.error(t('contact.validEmail'))
       return
     }
 
@@ -42,7 +44,7 @@ export default function ContactPage() {
 
     setIsSubmitting(false)
     setShowSuccess(true)
-    toast.success('Message sent successfully!')
+    toast.success(t('contact.messageSentSuccess'))
 
     setTimeout(() => {
       setShowSuccess(false)
@@ -60,8 +62,8 @@ export default function ContactPage() {
         >
           <Link to="/">
             <Button variant="ghost" className="mb-8 group">
-              <ArrowLeft size={16} className="mr-2 group-hover:-translate-x-1 transition-transform" />
-              Back to Home
+              <ArrowLeft size={16} className="ltr:mr-2 rtl:ml-2 group-hover:ltr:-translate-x-1 group-hover:rtl:translate-x-1 transition-transform" />
+              {t('common.backToHome')}
             </Button>
           </Link>
 
@@ -72,7 +74,7 @@ export default function ContactPage() {
               transition={{ delay: 0.2 }}
               className="text-4xl md:text-5xl font-bold gradient-text mb-4"
             >
-              Get in Touch
+              {t('contact.title')}
             </motion.h1>
             <motion.p 
               initial={{ opacity: 0 }}
@@ -80,7 +82,7 @@ export default function ContactPage() {
               transition={{ delay: 0.3 }}
               className="text-muted-foreground text-lg"
             >
-              Have questions, feedback, or suggestions? We'd love to hear from you.
+              {t('contact.subtitle')}
             </motion.p>
           </div>
 
@@ -96,15 +98,15 @@ export default function ContactPage() {
               transition={{ delay: 0.4 }}
               className="glass-card rounded-2xl p-8 border border-border/50"
             >
-              <h2 className="text-2xl font-semibold text-accent mb-6">Send Us a Message</h2>
+              <h2 className="text-2xl font-semibold text-accent mb-6">{t('contact.sendMessage')}</h2>
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <Label htmlFor="name" className="text-foreground mb-2">Name</Label>
+                  <Label htmlFor="name" className="text-foreground mb-2">{t('contact.name')}</Label>
                   <Input
                     id="name"
                     type="text"
-                    placeholder="Your name"
+                    placeholder={t('contact.namePlaceholder')}
                     value={formData.name}
                     onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                     className="bg-muted/20 border-border/50 focus:border-accent transition-colors"
@@ -113,11 +115,11 @@ export default function ContactPage() {
                 </div>
 
                 <div>
-                  <Label htmlFor="email" className="text-foreground mb-2">Email</Label>
+                  <Label htmlFor="email" className="text-foreground mb-2">{t('contact.email')}</Label>
                   <Input
                     id="email"
                     type="email"
-                    placeholder="your.email@example.com"
+                    placeholder={t('contact.emailPlaceholder')}
                     value={formData.email}
                     onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                     className="bg-muted/20 border-border/50 focus:border-accent transition-colors"
@@ -126,10 +128,10 @@ export default function ContactPage() {
                 </div>
 
                 <div>
-                  <Label htmlFor="message" className="text-foreground mb-2">Message</Label>
+                  <Label htmlFor="message" className="text-foreground mb-2">{t('contact.message')}</Label>
                   <Textarea
                     id="message"
-                    placeholder="Tell us what's on your mind..."
+                    placeholder={t('contact.messagePlaceholder')}
                     rows={6}
                     value={formData.message}
                     onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
@@ -158,7 +160,7 @@ export default function ContactPage() {
                           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                           className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
                         />
-                        Sending...
+                        {t('contact.sending')}
                       </motion.span>
                     ) : showSuccess ? (
                       <motion.span
@@ -169,7 +171,7 @@ export default function ContactPage() {
                         className="flex items-center gap-2"
                       >
                         <CheckCircle size={20} weight="fill" />
-                        Message Sent!
+                        {t('contact.messageSent')}
                       </motion.span>
                     ) : (
                       <motion.span
@@ -180,7 +182,7 @@ export default function ContactPage() {
                         className="flex items-center gap-2"
                       >
                         <PaperPlaneTilt size={20} weight="fill" />
-                        Send Message
+                        {t('contact.sendMessageBtn')}
                       </motion.span>
                     )}
                   </AnimatePresence>
@@ -195,11 +197,11 @@ export default function ContactPage() {
               className="space-y-6"
             >
               <div className="glass-card rounded-2xl p-8 border border-border/50">
-                <h2 className="text-2xl font-semibold text-accent mb-6">Connect With Us</h2>
+                <h2 className="text-2xl font-semibold text-accent mb-6">{t('contact.connectWithUs')}</h2>
                 
                 <div className="space-y-4">
                   <p className="text-foreground/80 leading-relaxed">
-                    Follow us on social media for updates, tips, and announcements about new tools and features.
+                    {t('contact.followUs')}
                   </p>
 
                   <div className="flex flex-col gap-3 pt-4">
@@ -215,8 +217,8 @@ export default function ContactPage() {
                         <GithubLogo size={24} weight="fill" className="text-foreground" />
                       </div>
                       <div className="flex-1">
-                        <p className="font-medium text-foreground">GitHub</p>
-                        <p className="text-sm text-muted-foreground">View our open source projects</p>
+                        <p className="font-medium text-foreground">{t('contact.github')}</p>
+                        <p className="text-sm text-muted-foreground">{t('contact.githubDesc')}</p>
                       </div>
                     </motion.a>
 
@@ -232,8 +234,8 @@ export default function ContactPage() {
                         <TwitterLogo size={24} weight="fill" className="text-foreground" />
                       </div>
                       <div className="flex-1">
-                        <p className="font-medium text-foreground">X (Twitter)</p>
-                        <p className="text-sm text-muted-foreground">Follow for quick updates</p>
+                        <p className="font-medium text-foreground">{t('contact.twitter')}</p>
+                        <p className="text-sm text-muted-foreground">{t('contact.twitterDesc')}</p>
                       </div>
                     </motion.a>
 
@@ -249,8 +251,8 @@ export default function ContactPage() {
                         <YoutubeLogo size={24} weight="fill" className="text-foreground" />
                       </div>
                       <div className="flex-1">
-                        <p className="font-medium text-foreground">YouTube</p>
-                        <p className="text-sm text-muted-foreground">Watch tutorials & demos</p>
+                        <p className="font-medium text-foreground">{t('contact.youtube')}</p>
+                        <p className="text-sm text-muted-foreground">{t('contact.youtubeDesc')}</p>
                       </div>
                     </motion.a>
                   </div>
@@ -258,22 +260,22 @@ export default function ContactPage() {
               </div>
 
               <div className="glass-card rounded-2xl p-8 border border-border/50">
-                <h3 className="text-xl font-semibold text-accent mb-4">Email Us Directly</h3>
+                <h3 className="text-xl font-semibold text-accent mb-4">{t('contact.emailUs')}</h3>
                 <div className="space-y-3 text-foreground/80">
                   <p>
-                    <strong className="text-foreground">General Inquiries:</strong><br />
+                    <strong className="text-foreground">{t('contact.generalInquiries')}</strong><br />
                     <a href="mailto:hello@24toolkit.com" className="text-accent hover:underline">
                       hello@24toolkit.com
                     </a>
                   </p>
                   <p>
-                    <strong className="text-foreground">Support:</strong><br />
+                    <strong className="text-foreground">{t('contact.support')}</strong><br />
                     <a href="mailto:support@24toolkit.com" className="text-accent hover:underline">
                       support@24toolkit.com
                     </a>
                   </p>
                   <p>
-                    <strong className="text-foreground">Business & Partnerships:</strong><br />
+                    <strong className="text-foreground">{t('contact.business')}</strong><br />
                     <a href="mailto:business@24toolkit.com" className="text-accent hover:underline">
                       business@24toolkit.com
                     </a>
@@ -289,9 +291,9 @@ export default function ContactPage() {
             transition={{ delay: 0.6 }}
             className="glass-card rounded-2xl p-8 border border-border/50 text-center"
           >
-            <h3 className="text-xl font-semibold text-foreground mb-3">Quick Response Time</h3>
+            <h3 className="text-xl font-semibold text-foreground mb-3">{t('contact.quickResponse')}</h3>
             <p className="text-muted-foreground">
-              We typically respond to all inquiries within 24-48 hours. For urgent matters, please mention "URGENT" in your subject line.
+              {t('contact.quickResponseDesc')}
             </p>
           </motion.div>
         </motion.div>

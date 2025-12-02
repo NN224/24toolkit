@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -11,6 +12,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function HTMLFormatter() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('html-formatter')
   useSEO(metadata)
@@ -95,7 +98,7 @@ export default function HTMLFormatter() {
 
   const handleFormat = () => {
     if (!input.trim()) {
-      toast.error('Please enter some code to format')
+      toast.error(t('tools.htmlFormatter.enterCodeError'))
       return
     }
 
@@ -109,25 +112,25 @@ export default function HTMLFormatter() {
         result = formatJavaScript(input)
       }
       setFormatted(result)
-      toast.success('Code formatted successfully!')
+      toast.success(t('tools.htmlFormatter.formatSuccess'))
     } catch (error) {
-      toast.error('Failed to format code')
+      toast.error(t('tools.htmlFormatter.formatFailed'))
     }
   }
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(formatted)
-      toast.success('Formatted code copied!')
+      toast.success(t('tools.htmlFormatter.codeCopied'))
     } catch (err) {
-      toast.error('Failed to copy code')
+      toast.error(t('tools.htmlFormatter.copyFailed'))
     }
   }
 
   const handleClear = () => {
     setInput('')
     setFormatted('')
-    toast.success('Cleared')
+    toast.success(t('tools.common.cleared'))
   }
 
   return (
@@ -135,18 +138,18 @@ export default function HTMLFormatter() {
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            HTML/CSS/JS Formatter
+            {t('tools.htmlFormatter.title')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Auto-beautify your HTML, CSS, or JavaScript code with proper indentation
+            {t('tools.htmlFormatter.subtitle')}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>Input Code</CardTitle>
-              <CardDescription>Paste your code here</CardDescription>
+              <CardTitle>{t('tools.htmlFormatter.inputCode')}</CardTitle>
+              <CardDescription>{t('tools.htmlFormatter.pasteCodeHere')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <Tabs value={language} onValueChange={(v) => setLanguage(v as any)}>
@@ -161,14 +164,14 @@ export default function HTMLFormatter() {
                 id="code-input"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder={`Enter your ${language.toUpperCase()} code...`}
+                placeholder={t('tools.htmlFormatter.enterCodePlaceholder', { language: language.toUpperCase() })}
                 className="font-mono text-sm min-h-[400px]"
               />
 
               <div className="flex gap-2">
                 <Button onClick={handleFormat} className="flex-1">
                   <Code size={18} className="mr-2" />
-                  Format Code
+                  {t('tools.htmlFormatter.formatCode')}
                 </Button>
                 <Button onClick={handleClear} variant="outline">
                   <Trash size={18} />
@@ -179,8 +182,8 @@ export default function HTMLFormatter() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Formatted Output</CardTitle>
-              <CardDescription>Beautified code with proper indentation</CardDescription>
+              <CardTitle>{t('tools.htmlFormatter.formattedOutput')}</CardTitle>
+              <CardDescription>{t('tools.htmlFormatter.beautifiedCode')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {formatted ? (
@@ -200,14 +203,14 @@ export default function HTMLFormatter() {
                 </div>
               ) : (
                 <div className="min-h-[400px] border-2 border-dashed border-border rounded-lg flex items-center justify-center text-muted-foreground">
-                  Formatted code will appear here
+                  {t('tools.htmlFormatter.formattedCodePlaceholder')}
                 </div>
               )}
 
               {formatted && (
                 <Button onClick={handleCopy} className="w-full">
                   <Copy size={18} className="mr-2" />
-                  Copy Formatted Code
+                  {t('tools.htmlFormatter.copyFormattedCode')}
                 </Button>
               )}
             </CardContent>

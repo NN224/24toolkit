@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -10,6 +11,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function HTTPHeaderAnalyzer() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('http-header-analyzer')
   useSEO(metadata)
@@ -21,7 +24,7 @@ export default function HTTPHeaderAnalyzer() {
 
   const analyzeHeaders = async () => {
     if (!url) {
-      toast.error('Please enter a URL')
+      toast.error(t('tools.httpHeaderAnalyzer.enterUrlError'))
       return
     }
 
@@ -46,24 +49,24 @@ export default function HTTPHeaderAnalyzer() {
       })
 
       if (Object.keys(headerObj).length === 0) {
-        setError('Unable to retrieve headers due to CORS restrictions. This is a browser security limitation.')
+        setError(t('tools.httpHeaderAnalyzer.corsError'))
         setHeaders({
-          'Note': 'CORS restrictions prevent direct header analysis',
-          'Server': 'Headers are blocked by the server\'s CORS policy',
+          'Note': t('tools.httpHeaderAnalyzer.corsNote'),
+          'Server': t('tools.httpHeaderAnalyzer.corsServer'),
           'Status': response.status.toString(),
-          'Tip': 'For full header analysis, use server-side tools or browser DevTools'
+          'Tip': t('tools.httpHeaderAnalyzer.corsTip')
         })
       } else {
         setHeaders(headerObj)
       }
       
-      toast.success('Headers retrieved!')
+      toast.success(t('tools.httpHeaderAnalyzer.headersRetrieved'))
     } catch (err) {
-      setError('Failed to fetch headers. The server may block cross-origin requests.')
+      setError(t('tools.httpHeaderAnalyzer.fetchError'))
       setHeaders({
-        'Error': 'CORS policy blocked the request',
-        'Solution': 'Use browser DevTools (Network tab) to view headers',
-        'Alternative': 'Use a server-side proxy or browser extension'
+        'Error': t('tools.httpHeaderAnalyzer.errorCorsBlocked'),
+        'Solution': t('tools.httpHeaderAnalyzer.errorSolution'),
+        'Alternative': t('tools.httpHeaderAnalyzer.errorAlternative')
       })
     } finally {
       setLoading(false)
@@ -75,7 +78,7 @@ export default function HTTPHeaderAnalyzer() {
       .map(([key, value]) => `${key}: ${value}`)
       .join('\n')
     navigator.clipboard.writeText(text)
-    toast.success('Headers copied to clipboard!')
+    toast.success(t('tools.httpHeaderAnalyzer.headersCopied'))
   }
 
   return (
@@ -86,31 +89,31 @@ export default function HTTPHeaderAnalyzer() {
             <MagnifyingGlass size={24} className="text-white" weight="bold" />
           </div>
           <div>
-            <h1 className="text-3xl font-semibold text-foreground">HTTP Header Analyzer</h1>
-            <p className="text-muted-foreground">Analyze HTTP response headers from any URL</p>
+            <h1 className="text-3xl font-semibold text-foreground">{t('tools.httpHeaderAnalyzer.title')}</h1>
+            <p className="text-muted-foreground">{t('tools.httpHeaderAnalyzer.subtitle')}</p>
           </div>
         </div>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Analyze HTTP Headers</CardTitle>
-          <CardDescription>Enter a URL to view its HTTP response headers</CardDescription>
+          <CardTitle>{t('tools.httpHeaderAnalyzer.cardTitle')}</CardTitle>
+          <CardDescription>{t('tools.httpHeaderAnalyzer.cardDescription')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="url-input">Website URL</Label>
+            <Label htmlFor="url-input">{t('tools.httpHeaderAnalyzer.websiteUrl')}</Label>
             <Input
               id="url-input"
               type="url"
-              placeholder="e.g., https://example.com"
+              placeholder={t('tools.httpHeaderAnalyzer.urlPlaceholder')}
               value={url}
               onChange={(e) => setUrl(e.target.value)}
             />
           </div>
 
           <Button onClick={analyzeHeaders} className="w-full" disabled={loading}>
-            {loading ? 'Analyzing...' : 'Analyze Headers'}
+            {loading ? t('tools.httpHeaderAnalyzer.analyzing') : t('tools.httpHeaderAnalyzer.analyzeButton')}
           </Button>
 
           {error && (
@@ -122,10 +125,10 @@ export default function HTTPHeaderAnalyzer() {
           {Object.keys(headers).length > 0 && (
             <div className="space-y-2 mt-4">
               <div className="flex items-center justify-between">
-                <Label>HTTP Headers</Label>
+                <Label>{t('tools.httpHeaderAnalyzer.httpHeaders')}</Label>
                 <Button variant="ghost" size="sm" onClick={copyHeaders}>
                   <Copy size={16} className="mr-2" />
-                  Copy
+                  {t('tools.common.copy')}
                 </Button>
               </div>
               <div className="p-4 bg-muted rounded-lg border max-h-96 overflow-y-auto">
@@ -140,7 +143,7 @@ export default function HTTPHeaderAnalyzer() {
               </div>
               <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
                 <p className="text-xs text-blue-900">
-                  💡 Tip: Use browser DevTools (Network tab) for complete header analysis without CORS limitations.
+                  💡 {t('tools.httpHeaderAnalyzer.tip')}
                 </p>
               </div>
             </div>

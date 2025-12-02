@@ -11,11 +11,16 @@ import { LoginModal } from '@/components/auth/LoginModal'
 import { CreditsBadge } from '@/components/ai/CreditsBadge'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 
+// SpeechRecognition types for cross-browser support
+type SpeechRecognitionType = typeof window.SpeechRecognition extends undefined 
+  ? typeof window.webkitSpeechRecognition 
+  : typeof window.SpeechRecognition
+
 /**
  * Get the SpeechRecognition constructor from the window object.
  * Supports both standard and webkit-prefixed versions.
  */
-function getSpeechRecognition(): SpeechRecognitionConstructor | undefined {
+function getSpeechRecognition(): SpeechRecognitionType | undefined {
   return window.SpeechRecognition || window.webkitSpeechRecognition
 }
 
@@ -44,7 +49,8 @@ export default function FuturisticHeader() {
   const { user } = useAuth()
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const recognitionRef = useRef<SpeechRecognition | null>(null)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const recognitionRef = useRef<any>(null)
   
   // Dynamic tool count and OS-aware keyboard shortcut
   const toolCount = useMemo(() => allTools.length, [])
@@ -112,14 +118,16 @@ export default function FuturisticHeader() {
         toast.info('Listening... Speak now!')
       }
 
-      recognition.onresult = (event: SpeechRecognitionEvent) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      recognition.onresult = (event: any) => {
         const transcript = event.results[0][0].transcript
         setSearchQuery(transcript)
         setSearchOpen(true)
         toast.success(`Searching for: "${transcript}"`)
       }
 
-      recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      recognition.onerror = (event: any) => {
         setIsListening(false)
         // Provide more helpful error messages based on error type
         const errorMessages: Record<string, string> = {
@@ -154,8 +162,8 @@ export default function FuturisticHeader() {
               style={{ boxShadow: '0 0 8px rgba(109,40,217,0.3)' }}
             >
               <MagnifyingGlass size={20} className="text-muted-foreground" />
-              <span className="text-sm text-muted-foreground flex-1 text-left">
-                Search {toolCount}+ tools... 
+              <span className="text-sm text-muted-foreground flex-1 ltr:text-left rtl:text-right">
+                {t('header.searchPlaceholder', { count: toolCount })}
               </span>
               <kbd className="hidden sm:inline-flex px-2 py-1 text-xs font-semibold text-muted-foreground bg-white/5 border border-white/10 rounded">
                 {shortcutHint}
@@ -229,7 +237,7 @@ export default function FuturisticHeader() {
                   style={{ boxShadow: '0 0 8px rgba(109,40,217,0.3)' }}
                 >
                   <SignIn size={18} weight="bold" />
-                  <span className="hidden sm:inline">Sign In</span>
+                  <span className="hidden sm:inline">{t('header.signIn')}</span>
                 </button>
               )}
             </div>
@@ -262,7 +270,7 @@ export default function FuturisticHeader() {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search for tools..."
+                    placeholder={t('header.searchForTools')}
                     className="flex-1 bg-transparent border-none outline-none text-foreground text-lg placeholder:text-muted-foreground"
                     aria-label="Search tools"
                   />
@@ -281,21 +289,21 @@ export default function FuturisticHeader() {
                 {searchQuery.trim() === '' ? (
                   <>
                     <div className="text-xs text-muted-foreground px-3 py-2">
-                      Quick search tips
+                      {t('header.quickSearchTips')}
                     </div>
                     <div className="px-3 py-8 text-center">
                       <p className="text-sm text-muted-foreground mb-4">
-                        Type to search from {toolCount}+ tools
+                        {t('header.typeToSearch', { count: toolCount })}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        Try: "compress image", "convert json", "password generator"
+                        {t('header.searchExamples')}
                       </p>
                     </div>
                   </>
                 ) : searchResults.length > 0 ? (
                   <>
                     <div className="text-xs text-muted-foreground px-3 py-2">
-                      Found {searchResults.length} result{searchResults.length !== 1 ? 's' : ''}
+                      {t('header.foundResults', { count: searchResults.length })}
                     </div>
                     {searchResults.map((tool) => {
                       const Icon = tool.icon
@@ -313,7 +321,7 @@ export default function FuturisticHeader() {
                   </>
                 ) : (
                   <div className="px-3 py-8 text-center text-sm text-muted-foreground">
-                    No tools found for "{searchQuery}"
+                    {t('header.noToolsFound', { query: searchQuery })}
                   </div>
                 )}
               </div>

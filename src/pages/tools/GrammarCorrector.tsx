@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -12,6 +13,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function GrammarCorrector() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('grammar-corrector')
   useSEO(metadata)
@@ -25,14 +28,14 @@ export default function GrammarCorrector() {
 
   const correctGrammar = async () => {
     if (!text.trim()) {
-      toast.error('Please enter some text')
+      toast.error(t('tools.common.pleaseEnterText'))
       return
     }
 
     try {
       validatePromptInput(text, 5, 10000)
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Invalid input')
+      toast.error(error instanceof Error ? error.message : t('tools.common.invalidInput'))
       return
     }
 
@@ -55,11 +58,11 @@ export default function GrammarCorrector() {
         foundCorrections.push('Punctuation improved')
       }
       
-      setCorrections(foundCorrections.length > 0 ? foundCorrections : ['No corrections needed'])
-      toast.success('Grammar checked successfully!')
+      setCorrections(foundCorrections.length > 0 ? foundCorrections : [t('tools.grammarCorrector.noCorrections')])
+      toast.success(t('tools.grammarCorrector.corrected'))
     } catch (error) {
       console.error('Grammar check error:', error)
-      toast.error(error instanceof Error ? error.message : 'Failed to check grammar')
+      toast.error(error instanceof Error ? error.message : t('tools.grammarCorrector.checkFailed'))
     } finally {
       setIsLoading(false)
     }
@@ -71,7 +74,7 @@ export default function GrammarCorrector() {
     setText('')
     setCorrectedText('')
     setCorrections([])
-    toast.success('Text cleared')
+    toast.success(t('tools.common.cleared'))
   }
 
   return (
@@ -80,29 +83,29 @@ export default function GrammarCorrector() {
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-3">
             <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-              AI Grammar Corrector
+              {t('tools.grammarCorrector.name')}
             </h1>
             <div className="px-3 py-1 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-medium">
-              AI-Powered
+              {t('tools.common.aiPowered')}
             </div>
           </div>
           <p className="text-lg text-muted-foreground">
-            Use AI to check and correct grammar, spelling, punctuation, and style in your text.
+            {t('tools.grammarCorrector.description')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Enter Your Text</CardTitle>
+              <CardTitle>{t('tools.grammarCorrector.enterText')}</CardTitle>
               <CardDescription>
-                Type or paste text to check for grammar and spelling errors
+                {t('tools.grammarCorrector.enterTextDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <Textarea
                 id="text-input"
-                placeholder="Type or paste your text here..."
+                placeholder={t('tools.common.typeOrPaste')}
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 className="min-h-[200px] resize-y font-normal"
@@ -119,7 +122,7 @@ export default function GrammarCorrector() {
                     className="gap-2"
                   >
                     <Sparkle size={16} weight="fill" />
-                    {isLoading ? 'Checking...' : 'Check Grammar'}
+                    {isLoading ? t('tools.grammarCorrector.correcting') : t('tools.grammarCorrector.correct')}
                   </Button>
                   <Button
                     onClick={handleClear}
@@ -127,7 +130,7 @@ export default function GrammarCorrector() {
                     className="gap-2"
                   >
                     <Trash size={16} />
-                    Clear
+                    {t('tools.common.clear')}
                   </Button>
                 </div>
               </div>
@@ -138,9 +141,9 @@ export default function GrammarCorrector() {
             <>
               <Card>
                 <CardHeader>
-                  <CardTitle>Corrected Text</CardTitle>
+                  <CardTitle>{t('tools.grammarCorrector.correctedText')}</CardTitle>
                   <CardDescription>
-                    AI-corrected version of your text
+                    {t('tools.grammarCorrector.correctedTextDescription')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -152,12 +155,12 @@ export default function GrammarCorrector() {
                   />
                   
                   <Button
-                    onClick={() => copyToClipboard(correctedText, 'Corrected text copied to clipboard!')}
+                    onClick={() => copyToClipboard(correctedText, t('tools.common.copiedToClipboard'))}
                     variant="default"
                     className="gap-2"
                   >
                     <Copy size={16} />
-                    Copy Corrected Text
+                    {t('tools.common.copy')}
                   </Button>
                 </CardContent>
               </Card>
@@ -165,7 +168,7 @@ export default function GrammarCorrector() {
               {corrections.length > 0 && (
                 <Card className="border-primary/20 bg-primary/5">
                   <CardHeader>
-                    <CardTitle className="text-lg">Corrections Made</CardTitle>
+                    <CardTitle className="text-lg">{t('tools.grammarCorrector.correctionsMade')}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-2">

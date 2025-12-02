@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -10,6 +11,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function CurrencyConverter() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('currency-converter')
   useSEO(metadata)
@@ -28,7 +31,7 @@ export default function CurrencyConverter() {
 
   const convertCurrency = async () => {
     if (!amount || isNaN(parseFloat(amount))) {
-      toast.error('Please enter a valid amount')
+      toast.error(t('errors.invalidInput'))
       return
     }
 
@@ -42,10 +45,10 @@ export default function CurrencyConverter() {
         const rate = data.rates[toCurrency]
         const convertedAmount = parseFloat(amount) * rate
         setResult(convertedAmount)
-        toast.success('Conversion complete!')
+        toast.success(t('common.success'))
       }
     } catch (error) {
-      toast.error('Failed to fetch exchange rates. Using fallback rates.')
+      toast.error(t('errors.network'))
       const fallbackRates: Record<string, number> = {
         USD: 1, EUR: 0.92, GBP: 0.79, JPY: 149.50, AUD: 1.52,
         CAD: 1.36, CHF: 0.88, CNY: 7.24, INR: 83.12, MXN: 17.05
@@ -72,24 +75,24 @@ export default function CurrencyConverter() {
             <CurrencyDollar size={24} className="text-white" weight="bold" />
           </div>
           <div>
-            <h1 className="text-3xl font-semibold text-foreground">Currency Converter</h1>
-            <p className="text-muted-foreground">Convert between world currencies with live rates</p>
+            <h1 className="text-3xl font-semibold text-foreground">{t('tools.currencyConverter.name')}</h1>
+            <p className="text-muted-foreground">{t('tools.currencyConverter.description')}</p>
           </div>
         </div>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Live Currency Exchange</CardTitle>
-          <CardDescription>Real-time currency conversion using current exchange rates</CardDescription>
+          <CardTitle>{t('tools.currencyConverter.name')}</CardTitle>
+          <CardDescription>{t('tools.currencyConverter.description')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="amount-input">Amount</Label>
+            <Label htmlFor="amount-input">{t('tools.currencyConverter.amount')}</Label>
             <Input
               id="amount-input"
               type="number"
-              placeholder="e.g., 100"
+              placeholder="100"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               step="0.01"
@@ -98,7 +101,7 @@ export default function CurrencyConverter() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="from-currency">From</Label>
+              <Label htmlFor="from-currency">{t('tools.currencyConverter.from')}</Label>
               <select
                 id="from-currency"
                 value={fromCurrency}
@@ -112,7 +115,7 @@ export default function CurrencyConverter() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="to-currency">To</Label>
+              <Label htmlFor="to-currency">{t('tools.currencyConverter.to')}</Label>
               <select
                 id="to-currency"
                 value={toCurrency}
@@ -128,17 +131,17 @@ export default function CurrencyConverter() {
 
           <div className="flex gap-2">
             <Button onClick={convertCurrency} className="flex-1" disabled={loading}>
-              {loading ? 'Converting...' : 'Convert'}
+              {loading ? t('common.loading') : t('tools.common.convert')}
             </Button>
             <Button onClick={swapCurrencies} variant="outline">
-              Swap
+              {t('tools.currencyConverter.swap')}
             </Button>
           </div>
 
           {result !== null && (
             <div className="space-y-4 mt-6">
               <div className="p-6 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 rounded-lg text-center border border-emerald-200">
-                <p className="text-sm text-muted-foreground mb-2">Converted Amount</p>
+                <p className="text-sm text-muted-foreground mb-2">{t('tools.common.result')}</p>
                 <p className="text-4xl font-bold text-foreground">
                   {result.toFixed(2)} {toCurrency}
                 </p>
@@ -150,7 +153,7 @@ export default function CurrencyConverter() {
               {rates[toCurrency] && (
                 <div className="p-4 bg-muted/50 rounded-lg text-sm">
                   <p className="text-muted-foreground">
-                    Exchange Rate: 1 {fromCurrency} = {rates[toCurrency].toFixed(4)} {toCurrency}
+                    {t('tools.currencyConverter.exchangeRate')}: 1 {fromCurrency} = {rates[toCurrency].toFixed(4)} {toCurrency}
                   </p>
                 </div>
               )}

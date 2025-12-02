@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -10,6 +11,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function ImageToText() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('image-to-text')
   useSEO(metadata)
@@ -25,7 +28,7 @@ export default function ImageToText() {
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      toast.error('Please select a valid image file (JPG, PNG)')
+      toast.error(t('tools.imageToText.invalidFileType'))
       return
     }
 
@@ -40,7 +43,7 @@ export default function ImageToText() {
 
   const handleExtractText = async () => {
     if (!image) {
-      toast.error('Please upload an image first')
+      toast.error(t('tools.imageToText.uploadFirst'))
       return
     }
 
@@ -63,14 +66,14 @@ export default function ImageToText() {
 
       if (text.trim()) {
         setExtractedText(text)
-        toast.success('Text extracted successfully!')
+        toast.success(t('tools.imageToText.extractSuccess'))
       } else {
         setExtractedText('')
-        toast.error('No text found in the image')
+        toast.error(t('tools.imageToText.noTextFound'))
       }
     } catch (error) {
       console.error('OCR Error:', error)
-      toast.error('Failed to extract text from image')
+      toast.error(t('tools.imageToText.extractFailed'))
     } finally {
       setIsProcessing(false)
       setProgress(0)
@@ -81,9 +84,9 @@ export default function ImageToText() {
     if (!extractedText) return
     try {
       await navigator.clipboard.writeText(extractedText)
-      toast.success('Text copied to clipboard!')
+      toast.success(t('tools.common.copied'))
     } catch (err) {
-      toast.error('Failed to copy text')
+      toast.error(t('tools.imageToText.copyFailed'))
     }
   }
 
@@ -94,7 +97,7 @@ export default function ImageToText() {
     if (fileInputRef.current) {
       fileInputRef.current.value = ''
     }
-    toast.success('Cleared')
+    toast.success(t('tools.imageToText.cleared'))
   }
 
   const handleUploadClick = () => {
@@ -106,19 +109,19 @@ export default function ImageToText() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Image to Text (OCR Extractor)
+            {t('tools.imageToText.title')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Extract text from images using advanced OCR technology powered by Tesseract.js.
+            {t('tools.imageToText.subtitle')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Upload Image</CardTitle>
+              <CardTitle>{t('tools.imageToText.uploadImage')}</CardTitle>
               <CardDescription>
-                Select a JPG or PNG image containing text to extract
+                {t('tools.imageToText.uploadDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -138,10 +141,10 @@ export default function ImageToText() {
                 >
                   <ImageIcon size={48} className="mx-auto mb-4 text-muted-foreground" />
                   <p className="text-sm text-muted-foreground mb-2">
-                    Click to upload or drag and drop
+                    {t('tools.imageToText.clickToUpload')}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    JPG, PNG (Max 10MB)
+                    {t('tools.imageToText.fileFormats')}
                   </p>
                 </div>
               ) : (
@@ -161,7 +164,7 @@ export default function ImageToText() {
                       className="gap-2"
                     >
                       <Upload size={16} />
-                      {isProcessing ? 'Extracting...' : 'Extract Text'}
+                      {isProcessing ? t('tools.imageToText.extracting') : t('tools.imageToText.extractText')}
                     </Button>
 
                     <Button
@@ -171,7 +174,7 @@ export default function ImageToText() {
                       className="gap-2"
                     >
                       <ImageIcon size={16} />
-                      Change Image
+                      {t('tools.imageToText.changeImage')}
                     </Button>
 
                     <Button
@@ -181,14 +184,14 @@ export default function ImageToText() {
                       className="gap-2"
                     >
                       <Trash size={16} />
-                      Clear
+                      {t('tools.common.clear')}
                     </Button>
                   </div>
 
                   {isProcessing && (
                     <div className="space-y-2">
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">Processing image...</span>
+                        <span className="text-muted-foreground">{t('tools.imageToText.processingImage')}</span>
                         <span className="font-medium">{progress}%</span>
                       </div>
                       <Progress value={progress} className="h-2" />
@@ -202,9 +205,9 @@ export default function ImageToText() {
           {extractedText && (
             <Card>
               <CardHeader>
-                <CardTitle>Extracted Text</CardTitle>
+                <CardTitle>{t('tools.imageToText.extractedText')}</CardTitle>
                 <CardDescription>
-                  Text found in the image
+                  {t('tools.imageToText.textFoundInImage')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -218,18 +221,18 @@ export default function ImageToText() {
                 <div className="flex gap-2">
                   <Button onClick={handleCopy} variant="outline" className="gap-2">
                     <Copy size={16} />
-                    Copy Text
+                    {t('tools.imageToText.copyText')}
                   </Button>
                   <Button
                     onClick={() => {
                       setExtractedText('')
-                      toast.success('Text cleared')
+                      toast.success(t('tools.imageToText.textCleared'))
                     }}
                     variant="outline"
                     className="gap-2"
                   >
                     <Trash size={16} />
-                    Clear Text
+                    {t('tools.imageToText.clearText')}
                   </Button>
                 </div>
               </CardContent>
@@ -238,8 +241,7 @@ export default function ImageToText() {
 
           <div className="bg-muted/50 p-4 rounded-lg border border-border">
             <p className="text-sm text-muted-foreground">
-              <strong>Tips:</strong> For best results, use clear images with good contrast and readable text.
-              The OCR works best with printed text and may struggle with handwriting or stylized fonts.
+              <strong>{t('tools.imageToText.tips')}:</strong> {t('tools.imageToText.tipsDescription')}
             </p>
           </div>
         </div>

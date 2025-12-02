@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -11,6 +12,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function QRGenerator() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('qr-generator')
   useSEO(metadata)
@@ -21,13 +24,13 @@ export default function QRGenerator() {
 
   const handleDownload = () => {
     if (!text) {
-      toast.error('Please enter text or URL first')
+      toast.error(t('tools.qrGenerator.enterTextFirst'))
       return
     }
 
     const canvas = qrRef.current?.querySelector('canvas')
     if (!canvas) {
-      toast.error('Failed to generate QR code')
+      toast.error(t('tools.common.error'))
       return
     }
 
@@ -41,7 +44,7 @@ export default function QRGenerator() {
         link.click()
         document.body.removeChild(link)
         URL.revokeObjectURL(url)
-        toast.success('QR code downloaded!')
+        toast.success(t('tools.qrGenerator.downloaded'))
       }
     })
   }
@@ -51,28 +54,28 @@ export default function QRGenerator() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            QR Code Generator
+            {t('tools.qrGenerator.name')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Create scannable QR codes from any text or URL. Download as PNG image.
+            {t('tools.qrGenerator.description')}
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>QR Code Settings</CardTitle>
+              <CardTitle>{t('tools.qrGenerator.settings')}</CardTitle>
               <CardDescription>
-                Enter your text or URL to generate a QR code
+                {t('tools.qrGenerator.enterTextOrUrl')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="qr-text">Text or URL</Label>
+                <Label htmlFor="qr-text">{t('tools.qrGenerator.textOrUrl')}</Label>
                 <Input
                   id="qr-text"
                   type="text"
-                  placeholder="https://example.com or any text"
+                  placeholder={t('tools.qrGenerator.placeholder')}
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                 />
@@ -80,7 +83,7 @@ export default function QRGenerator() {
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="qr-size">QR Code Size</Label>
+                  <Label htmlFor="qr-size">{t('tools.qrGenerator.size')}</Label>
                   <span className="text-sm font-medium text-muted-foreground">
                     {size}px
                   </span>
@@ -103,16 +106,16 @@ export default function QRGenerator() {
                 size="lg"
               >
                 <Download size={20} />
-                Download PNG
+                {t('tools.qrGenerator.downloadPng')}
               </Button>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <CardTitle>QR Code Preview</CardTitle>
+              <CardTitle>{t('tools.qrGenerator.preview')}</CardTitle>
               <CardDescription>
-                Your QR code will appear here
+                {t('tools.qrGenerator.previewDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -130,7 +133,7 @@ export default function QRGenerator() {
                   />
                 ) : (
                   <div className="text-center text-muted-foreground">
-                    <p className="text-sm">Enter text or URL to generate QR code</p>
+                    <p className="text-sm">{t('tools.qrGenerator.enterToGenerate')}</p>
                   </div>
                 )}
               </div>

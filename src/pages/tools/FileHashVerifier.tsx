@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -10,6 +11,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function FileHashVerifier() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('file-hash-verifier')
   useSEO(metadata)
@@ -47,9 +50,9 @@ export default function FileHashVerifier() {
     try {
       const hash = await calculateFileHash(selectedFile, algorithm)
       setCalculatedHash(hash)
-      toast.success('File hash calculated successfully!')
+      toast.success(t('tools.fileHashVerifier.hashCalculated'))
     } catch (error) {
-      toast.error('Failed to calculate file hash')
+      toast.error(t('tools.fileHashVerifier.hashFailed'))
     } finally {
       setIsProcessing(false)
     }
@@ -64,24 +67,24 @@ export default function FileHashVerifier() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            File Hash Verifier
+            {t('tools.fileHashVerifier.title')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Verify file integrity by calculating and comparing cryptographic hashes.
+            {t('tools.fileHashVerifier.subtitle')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Upload File</CardTitle>
+              <CardTitle>{t('tools.fileHashVerifier.uploadFile')}</CardTitle>
               <CardDescription>
-                Select a file to calculate its hash
+                {t('tools.fileHashVerifier.uploadDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="file-input">Select File</Label>
+                <Label htmlFor="file-input">{t('tools.common.selectFile')}</Label>
                 <div className="flex items-center gap-2">
                   <Input
                     id="file-input"
@@ -98,7 +101,7 @@ export default function FileHashVerifier() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="algorithm">Hash Algorithm</Label>
+                <Label htmlFor="algorithm">{t('tools.fileHashVerifier.hashAlgorithm')}</Label>
                 <select
                   id="algorithm"
                   value={algorithm}
@@ -113,13 +116,13 @@ export default function FileHashVerifier() {
 
               {isProcessing && (
                 <div className="text-center py-4">
-                  <p className="text-sm text-muted-foreground">Calculating hash...</p>
+                  <p className="text-sm text-muted-foreground">{t('tools.fileHashVerifier.calculating')}</p>
                 </div>
               )}
 
               {calculatedHash && (
                 <div className="space-y-2">
-                  <Label htmlFor="calculated-hash">Calculated {algorithm} Hash</Label>
+                  <Label htmlFor="calculated-hash">{t('tools.fileHashVerifier.calculatedHash', { algorithm })}</Label>
                   <Input
                     id="calculated-hash"
                     value={calculatedHash}
@@ -134,19 +137,19 @@ export default function FileHashVerifier() {
           {calculatedHash && (
             <Card>
               <CardHeader>
-                <CardTitle>Verify Hash</CardTitle>
+                <CardTitle>{t('tools.fileHashVerifier.verifyHash')}</CardTitle>
                 <CardDescription>
-                  Enter the expected hash to compare
+                  {t('tools.fileHashVerifier.verifyDescription')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="expected-hash">Expected Hash</Label>
+                  <Label htmlFor="expected-hash">{t('tools.fileHashVerifier.expectedHash')}</Label>
                   <Input
                     id="expected-hash"
                     value={expectedHash}
                     onChange={(e) => setExpectedHash(e.target.value)}
-                    placeholder="Paste expected hash here..."
+                    placeholder={t('tools.fileHashVerifier.expectedHashPlaceholder')}
                     className="font-mono text-sm"
                   />
                 </div>
@@ -161,13 +164,13 @@ export default function FileHashVerifier() {
                     <AlertDescription>
                       {hashesMatch ? (
                         <div>
-                          <p className="font-semibold text-green-600">✓ Hash Match Verified</p>
-                          <p className="text-sm mt-1">The file hash matches the expected hash. File integrity confirmed.</p>
+                          <p className="font-semibold text-green-600">{t('tools.fileHashVerifier.hashMatch')}</p>
+                          <p className="text-sm mt-1">{t('tools.fileHashVerifier.hashMatchDescription')}</p>
                         </div>
                       ) : (
                         <div>
-                          <p className="font-semibold">✗ Hash Mismatch</p>
-                          <p className="text-sm mt-1">The hashes do not match. The file may be corrupted or tampered with.</p>
+                          <p className="font-semibold">{t('tools.fileHashVerifier.hashMismatch')}</p>
+                          <p className="text-sm mt-1">{t('tools.fileHashVerifier.hashMismatchDescription')}</p>
                         </div>
                       )}
                     </AlertDescription>

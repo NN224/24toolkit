@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Upload, Download, Trash, ArrowsLeftRight } from '@phosphor-icons/react'
@@ -10,6 +11,8 @@ import { getPageMetadata } from '@/lib/seo-metadata'
 type ImageFormat = 'png' | 'jpeg' | 'webp'
 
 export default function ImageFormatConverter() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('image-format-converter')
   useSEO(metadata)
@@ -25,7 +28,7 @@ export default function ImageFormatConverter() {
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      toast.error('Please select an image file')
+      toast.error(t('tools.imageCropper.selectImageFile'))
       return
     }
 
@@ -38,12 +41,12 @@ export default function ImageFormatConverter() {
       setConvertedImage(null)
     }
     reader.readAsDataURL(file)
-    toast.success('Image loaded!')
+    toast.success(t('tools.imageCropper.imageLoaded'))
   }
 
   const handleConvert = () => {
     if (!image) {
-      toast.error('Please upload an image first')
+      toast.error(t('tools.imageFormatConverter.uploadImageFirst'))
       return
     }
 
@@ -63,7 +66,7 @@ export default function ImageFormatConverter() {
 
         const converted = canvas.toDataURL(mimeType, 0.95)
         setConvertedImage(converted)
-        toast.success(`Converted to ${targetFormat.toUpperCase()}!`)
+        toast.success(t('tools.imageFormatConverter.convertedTo', { format: targetFormat.toUpperCase() }))
       }
     }
     img.src = image
@@ -76,7 +79,7 @@ export default function ImageFormatConverter() {
     link.download = `converted-image.${targetFormat}`
     link.href = convertedImage
     link.click()
-    toast.success('Image downloaded!')
+    toast.success(t('tools.imageRotator.imageDownloaded'))
   }
 
   const handleClear = () => {
@@ -84,7 +87,7 @@ export default function ImageFormatConverter() {
     setConvertedImage(null)
     setOriginalFormat('')
     if (fileInputRef.current) fileInputRef.current.value = ''
-    toast.success('Cleared')
+    toast.success(t('tools.imageCropper.cleared'))
   }
 
   return (
@@ -92,19 +95,19 @@ export default function ImageFormatConverter() {
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Image Format Converter
+            {t('tools.imageFormatConverter.name')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Convert images between JPG, PNG, and WebP formats
+            {t('tools.imageFormatConverter.description')}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>Original Image</CardTitle>
+              <CardTitle>{t('tools.imageFormatConverter.originalImage')}</CardTitle>
               <CardDescription>
-                {originalFormat ? `Current format: ${originalFormat.toUpperCase()}` : 'Upload image to convert'}
+                {originalFormat ? t('tools.imageFormatConverter.currentFormat', { format: originalFormat.toUpperCase() }) : t('tools.imageFormatConverter.uploadToConvert')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -123,7 +126,7 @@ export default function ImageFormatConverter() {
                 className="w-full"
               >
                 <Upload size={18} className="mr-2" />
-                Upload Image
+                {t('tools.imageCropper.uploadImage')}
               </Button>
 
               {image && (
@@ -133,7 +136,7 @@ export default function ImageFormatConverter() {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">Convert to:</label>
+                    <label className="text-sm font-medium">{t('tools.imageFormatConverter.convertTo')}</label>
                     <Tabs value={targetFormat} onValueChange={(v) => setTargetFormat(v as ImageFormat)}>
                       <TabsList className="grid w-full grid-cols-3">
                         <TabsTrigger value="png">PNG</TabsTrigger>
@@ -146,7 +149,7 @@ export default function ImageFormatConverter() {
                   <div className="flex gap-2">
                     <Button onClick={handleConvert} className="flex-1">
                       <ArrowsLeftRight size={18} className="mr-2" />
-                      Convert to {targetFormat.toUpperCase()}
+                      {t('tools.imageFormatConverter.convertToFormat', { format: targetFormat.toUpperCase() })}
                     </Button>
                     <Button onClick={handleClear} variant="outline">
                       <Trash size={18} />
@@ -159,8 +162,8 @@ export default function ImageFormatConverter() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Converted Image</CardTitle>
-              <CardDescription>Preview and download</CardDescription>
+              <CardTitle>{t('tools.imageFormatConverter.convertedImage')}</CardTitle>
+              <CardDescription>{t('tools.imageFormatConverter.previewAndDownload')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {convertedImage ? (
@@ -171,20 +174,20 @@ export default function ImageFormatConverter() {
 
                   <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
                     <p className="text-sm text-green-800">
-                      ✓ Successfully converted to <strong>{targetFormat.toUpperCase()}</strong>
+                      ✓ {t('tools.imageFormatConverter.successfullyConverted', { format: targetFormat.toUpperCase() })}
                     </p>
                   </div>
 
                   <Button onClick={handleDownload} className="w-full">
                     <Download size={18} className="mr-2" />
-                    Download {targetFormat.toUpperCase()}
+                    {t('tools.imageFormatConverter.downloadFormat', { format: targetFormat.toUpperCase() })}
                   </Button>
                 </>
               ) : (
                 <div className="min-h-[400px] border-2 border-dashed border-border rounded-lg flex items-center justify-center text-muted-foreground">
                   <div className="text-center">
                     <ArrowsLeftRight size={48} className="mx-auto mb-2 opacity-20" />
-                    <p>Converted image will appear here</p>
+                    <p>{t('tools.imageFormatConverter.convertedImagePlaceholder')}</p>
                   </div>
                 </div>
               )}
@@ -194,35 +197,35 @@ export default function ImageFormatConverter() {
 
         <Card className="mt-6">
           <CardHeader>
-            <CardTitle>Format Comparison</CardTitle>
+            <CardTitle>{t('tools.imageFormatConverter.formatComparison')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
               <div className="p-4 border rounded-lg">
                 <h3 className="font-semibold mb-2">PNG</h3>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• Lossless compression</li>
-                  <li>• Supports transparency</li>
-                  <li>• Larger file size</li>
-                  <li>• Best for graphics</li>
+                  <li>• {t('tools.imageFormatConverter.png.lossless')}</li>
+                  <li>• {t('tools.imageFormatConverter.png.transparency')}</li>
+                  <li>• {t('tools.imageFormatConverter.png.largerSize')}</li>
+                  <li>• {t('tools.imageFormatConverter.png.bestFor')}</li>
                 </ul>
               </div>
               <div className="p-4 border rounded-lg">
                 <h3 className="font-semibold mb-2">JPEG</h3>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• Lossy compression</li>
-                  <li>• No transparency</li>
-                  <li>• Smaller file size</li>
-                  <li>• Best for photos</li>
+                  <li>• {t('tools.imageFormatConverter.jpeg.lossy')}</li>
+                  <li>• {t('tools.imageFormatConverter.jpeg.noTransparency')}</li>
+                  <li>• {t('tools.imageFormatConverter.jpeg.smallerSize')}</li>
+                  <li>• {t('tools.imageFormatConverter.jpeg.bestFor')}</li>
                 </ul>
               </div>
               <div className="p-4 border rounded-lg">
                 <h3 className="font-semibold mb-2">WebP</h3>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• Modern format</li>
-                  <li>• Supports transparency</li>
-                  <li>• Smallest file size</li>
-                  <li>• Best for web</li>
+                  <li>• {t('tools.imageFormatConverter.webp.modern')}</li>
+                  <li>• {t('tools.imageFormatConverter.webp.transparency')}</li>
+                  <li>• {t('tools.imageFormatConverter.webp.smallestSize')}</li>
+                  <li>• {t('tools.imageFormatConverter.webp.bestFor')}</li>
                 </ul>
               </div>
             </div>

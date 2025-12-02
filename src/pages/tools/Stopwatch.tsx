@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Play, Pause, ArrowClockwise } from '@phosphor-icons/react'
@@ -6,6 +7,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function Stopwatch() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('stopwatch')
   useSEO(metadata)
@@ -50,18 +53,18 @@ export default function Stopwatch() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Stopwatch
+            {t('tools.stopwatch.title')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Precise stopwatch for timing activities, workouts, or tasks.
+            {t('tools.stopwatch.subtitle')}
           </p>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Time Elapsed</CardTitle>
+            <CardTitle>{t('tools.stopwatch.timeElapsed')}</CardTitle>
             <CardDescription>
-              Minutes : Seconds : Milliseconds
+              {t('tools.stopwatch.timeFormat')}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -76,17 +79,17 @@ export default function Stopwatch() {
               {!isRunning ? (
                 <Button onClick={start} size="lg" className="gap-2 px-8">
                   <Play size={24} />
-                  Start
+                  {t('tools.stopwatch.start')}
                 </Button>
               ) : (
                 <Button onClick={pause} size="lg" className="gap-2 px-8" variant="secondary">
                   <Pause size={24} />
-                  Pause
+                  {t('tools.stopwatch.pause')}
                 </Button>
               )}
               <Button onClick={reset} size="lg" variant="outline" className="gap-2 px-8">
                 <ArrowClockwise size={24} />
-                Reset
+                {t('tools.common.reset')}
               </Button>
             </div>
           </CardContent>

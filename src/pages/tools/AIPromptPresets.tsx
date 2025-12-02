@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -34,6 +35,7 @@ export default function AIPromptPresets() {
   const metadata = getPageMetadata('ai-prompt-presets')
   useSEO(metadata)
 
+  const { t } = useTranslation()
   const [presets, setPresets] = useState<PromptPreset[]>([])
   const [selectedPreset, setSelectedPreset] = useState<PromptPreset | null>(null)
   const [variableValues, setVariableValues] = useState<Record<string, string>>({})
@@ -78,23 +80,23 @@ export default function AIPromptPresets() {
     // Check if all variables are filled
     const missingVars = selectedPreset.variables.filter(v => !variableValues[v.name]?.trim())
     if (missingVars.length > 0) {
-      toast.error(`Please fill: ${missingVars.map(v => v.name).join(', ')}`)
+      toast.error(t('tools.aiPromptPresets.fillMissingFields', { fields: missingVars.map(v => v.name).join(', ') }))
       return
     }
     
     const prompt = fillTemplate(selectedPreset.template, variableValues)
     setGeneratedPrompt(prompt)
-    toast.success('Prompt generated!')
+    toast.success(t('tools.aiPromptPresets.promptGenerated'))
   }
 
   const handleDeletePreset = (presetId: string) => {
-    if (confirm('Delete this preset?')) {
+    if (confirm(t('tools.aiPromptPresets.deleteConfirm'))) {
       if (deleteUserPreset(presetId)) {
         setPresets(getAllPresets())
         if (selectedPreset?.id === presetId) {
           setSelectedPreset(null)
         }
-        toast.success('Deleted')
+        toast.success(t('tools.aiPromptPresets.deleted'))
       }
     }
   }
@@ -129,7 +131,7 @@ export default function AIPromptPresets() {
                 <div className="relative">
                   <MagnifyingGlass size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                   <Input
-                    placeholder="Search presets..."
+                    placeholder={t('tools.aiPromptPresets.searchPresets')}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="pl-10"
@@ -142,7 +144,7 @@ export default function AIPromptPresets() {
                     className="cursor-pointer"
                     onClick={() => setActiveCategory('all')}
                   >
-                    All
+                    {t('tools.aiPromptPresets.all')}
                   </Badge>
                   {categories.map(cat => (
                     <Badge

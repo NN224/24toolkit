@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -11,6 +12,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function FindReplace() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('find-replace')
   useSEO(metadata)
@@ -23,7 +26,7 @@ export default function FindReplace() {
 
   const handleReplace = () => {
     if (!findText) {
-      toast.error('Please enter text to find')
+      toast.error(t('tools.findReplace.noMatches'))
       return
     }
 
@@ -41,9 +44,9 @@ export default function FindReplace() {
       }
       
       setText(result)
-      toast.success('Text replaced successfully')
+      toast.success(t('tools.findReplace.replaced'))
     } catch (error) {
-      toast.error('Invalid regex pattern')
+      toast.error(t('tools.common.error'))
     }
   }
 
@@ -70,9 +73,9 @@ export default function FindReplace() {
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(text)
-      toast.success('Text copied to clipboard!')
+      toast.success(t('tools.common.copied'))
     } catch (err) {
-      toast.error('Failed to copy text')
+      toast.error(t('tools.common.error'))
     }
   }
 
@@ -80,7 +83,7 @@ export default function FindReplace() {
     setText('')
     setFindText('')
     setReplaceText('')
-    toast.success('Text cleared')
+    toast.success(t('tools.common.success'))
   }
 
   const occurrences = countOccurrences()
@@ -90,25 +93,25 @@ export default function FindReplace() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Find & Replace Text
+            {t('tools.findReplace.name')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Search and replace text with support for regex patterns and case sensitivity.
+            {t('tools.findReplace.description')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Enter Your Text</CardTitle>
+              <CardTitle>{t('tools.findReplace.enterText')}</CardTitle>
               <CardDescription>
-                Paste text and use find & replace options below
+                {t('tools.findReplace.description')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <Textarea
                 id="text-input"
-                placeholder="Type or paste your text here..."
+                placeholder={t('tools.common.enterText')}
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 className="min-h-[200px] resize-y font-normal"
@@ -118,28 +121,28 @@ export default function FindReplace() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Find & Replace Options</CardTitle>
+              <CardTitle>{t('tools.common.options')}</CardTitle>
               <CardDescription>
-                Configure search and replace parameters
+                {t('tools.findReplace.description')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="find-text">Find Text</Label>
+                  <Label htmlFor="find-text">{t('tools.findReplace.find')}</Label>
                   <Input
                     id="find-text"
-                    placeholder="Enter text to find..."
+                    placeholder={t('tools.common.enterText')}
                     value={findText}
                     onChange={(e) => setFindText(e.target.value)}
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="replace-text">Replace With</Label>
+                  <Label htmlFor="replace-text">{t('tools.findReplace.replace')}</Label>
                   <Input
                     id="replace-text"
-                    placeholder="Enter replacement text..."
+                    placeholder={t('tools.common.enterText')}
                     value={replaceText}
                     onChange={(e) => setReplaceText(e.target.value)}
                   />
@@ -154,7 +157,7 @@ export default function FindReplace() {
                     onCheckedChange={setCaseSensitive}
                   />
                   <Label htmlFor="case-sensitive" className="cursor-pointer">
-                    Case Sensitive
+                    {t('tools.findReplace.caseSensitive')}
                   </Label>
                 </div>
 
@@ -165,7 +168,7 @@ export default function FindReplace() {
                     onCheckedChange={setUseRegex}
                   />
                   <Label htmlFor="use-regex" className="cursor-pointer">
-                    Use Regex
+                    {t('tools.findReplace.useRegex')}
                   </Label>
                 </div>
               </div>
@@ -174,7 +177,7 @@ export default function FindReplace() {
                 <div className="flex items-center gap-2 text-sm text-muted-foreground p-3 bg-muted/30 rounded-lg">
                   <MagnifyingGlass size={16} />
                   <span>
-                    Found {occurrences} {occurrences === 1 ? 'occurrence' : 'occurrences'}
+                    {occurrences} {t('tools.findReplace.matchesFound')}
                   </span>
                 </div>
               )}
@@ -185,7 +188,7 @@ export default function FindReplace() {
                   disabled={!text || !findText}
                   variant="default"
                 >
-                  Replace All
+                  {t('tools.findReplace.replaceAll')}
                 </Button>
                 <Button
                   onClick={handleCopy}
@@ -194,7 +197,7 @@ export default function FindReplace() {
                   className="gap-2"
                 >
                   <Copy size={16} />
-                  Copy Text
+                  {t('tools.common.copy')}
                 </Button>
                 <Button
                   onClick={handleClear}
@@ -202,7 +205,7 @@ export default function FindReplace() {
                   className="gap-2"
                 >
                   <Trash size={16} />
-                  Clear
+                  {t('tools.common.clear')}
                 </Button>
               </div>
             </CardContent>

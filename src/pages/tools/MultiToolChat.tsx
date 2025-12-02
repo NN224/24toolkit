@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -44,6 +45,7 @@ export default function MultiToolChat() {
   const metadata = getPageMetadata('multi-tool-chat')
   useSEO(metadata)
 
+  const { t } = useTranslation()
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -161,7 +163,7 @@ Respond naturally and helpfully:`
 
       setMessages(prev => [...prev, assistantMessage])
     } catch (error) {
-      toast.error('An error occurred')
+      toast.error(t('tools.multiToolChat.anErrorOccurred'))
       console.error(error)
     } finally {
       setIsLoading(false)
@@ -187,7 +189,7 @@ Respond naturally and helpfully:`
 
   const clearChat = () => {
     setMessages([])
-    toast.success('Chat cleared')
+    toast.success(t('tools.multiToolChat.chatCleared'))
   }
 
   return (
@@ -338,7 +340,7 @@ Respond naturally and helpfully:`
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Type your message..."
+                placeholder={t('tools.multiToolChat.typeYourMessage')}
                 className="min-h-[50px] max-h-[150px] resize-none"
                 disabled={isLoading}
               />

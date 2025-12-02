@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
@@ -7,6 +8,7 @@ import { toast } from 'sonner'
 import imageCompression from 'browser-image-compression'
 
 export default function ImageCompressorV2() {
+  const { t } = useTranslation()
   const [originalImage, setOriginalImage] = useState<File | null>(null)
   const [originalPreview, setOriginalPreview] = useState<string | null>(null)
   const [compressedImage, setCompressedImage] = useState<Blob | null>(null)
@@ -31,7 +33,7 @@ export default function ImageCompressorV2() {
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      toast.error('Please select an image file')
+      toast.error(t('tools.imageCompressorV2.selectImageError'))
       return
     }
 
@@ -45,12 +47,12 @@ export default function ImageCompressorV2() {
       setOriginalPreview(event.target?.result as string)
     }
     reader.readAsDataURL(file)
-    toast.success('Image loaded!')
+    toast.success(t('tools.imageCompressorV2.imageLoaded'))
   }
 
   const handleCompress = async () => {
     if (!originalImage) {
-      toast.error('Please upload an image first')
+      toast.error(t('tools.imageCompressorV2.uploadFirst'))
       return
     }
 
@@ -74,9 +76,9 @@ export default function ImageCompressorV2() {
       }
       reader.readAsDataURL(compressed)
 
-      toast.success('Image compressed!')
+      toast.success(t('tools.imageCompressorV2.imageCompressed'))
     } catch (error) {
-      toast.error('Failed to compress image')
+      toast.error(t('tools.imageCompressorV2.compressFailed'))
     } finally {
       setIsCompressing(false)
     }
@@ -91,7 +93,7 @@ export default function ImageCompressorV2() {
     link.href = url
     link.click()
     URL.revokeObjectURL(url)
-    toast.success('Image downloaded!')
+    toast.success(t('tools.imageCompressorV2.imageDownloaded'))
   }
 
   const handleClear = () => {
@@ -102,7 +104,7 @@ export default function ImageCompressorV2() {
     setOriginalSize(0)
     setCompressedSize(0)
     if (fileInputRef.current) fileInputRef.current.value = ''
-    toast.success('Cleared')
+    toast.success(t('tools.imageCompressorV2.cleared'))
   }
 
   const compressionRatio = originalSize > 0 && compressedSize > 0

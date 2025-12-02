@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -16,6 +17,8 @@ interface ColorPalette {
 }
 
 export default function ColorPicker() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('color-picker')
   useSEO(metadata)
@@ -76,7 +79,7 @@ export default function ColorPicker() {
       })
     }
     setPalette(newPalette)
-    toast.success('New palette generated!')
+    toast.success(t('tools.colorPicker.paletteGenerated'))
   }
 
 
@@ -86,25 +89,25 @@ export default function ColorPicker() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Color Picker & Palette Generator
+            {t('tools.colorPicker.name')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Pick colors, view different format codes, and generate beautiful color palettes.
+            {t('tools.colorPicker.description')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Color Picker</CardTitle>
+              <CardTitle>{t('tools.colorPicker.colorPickerCard')}</CardTitle>
               <CardDescription>
-                Select a color and view its HEX, RGB, and HSL values
+                {t('tools.colorPicker.selectColor')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex flex-col md:flex-row gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="color-input">Pick a Color</Label>
+                  <Label htmlFor="color-input">{t('tools.colorPicker.pickColor')}</Label>
                   <div className="flex gap-4 items-center">
                     <input
                       id="color-input"
@@ -138,7 +141,7 @@ export default function ColorPicker() {
                         <Button
                           size="sm"
                           variant="ghost"
-                          onClick={() => copyColor(selectedColor.toUpperCase(), 'HEX copied to clipboard!')}
+                          onClick={() => copyColor(selectedColor.toUpperCase(), t('tools.colorPicker.copied', { format: 'HEX' }))}
                         >
                           <Copy size={14} />
                         </Button>
@@ -156,7 +159,7 @@ export default function ColorPicker() {
                         <Button
                           size="sm"
                           variant="ghost"
-                          onClick={() => copyColor(hexToRgb(selectedColor), 'RGB copied to clipboard!')}
+                          onClick={() => copyColor(hexToRgb(selectedColor), t('tools.colorPicker.copied', { format: 'RGB' }))}
                         >
                           <Copy size={14} />
                         </Button>
@@ -174,7 +177,7 @@ export default function ColorPicker() {
                         <Button
                           size="sm"
                           variant="ghost"
-                          onClick={() => copyColor(hexToHsl(selectedColor), 'HSL copied to clipboard!')}
+                          onClick={() => copyColor(hexToHsl(selectedColor), t('tools.colorPicker.copied', { format: 'HSL' }))}
                         >
                           <Copy size={14} />
                         </Button>
@@ -188,15 +191,15 @@ export default function ColorPicker() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Random Palette Generator</CardTitle>
+              <CardTitle>{t('tools.colorPicker.paletteGenerator')}</CardTitle>
               <CardDescription>
-                Generate a random 5-color palette for your next project
+                {t('tools.colorPicker.paletteDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <Button onClick={generatePalette} className="gap-2">
                 <Shuffle size={16} weight="bold" />
-                Generate Random Palette
+                {t('tools.colorPicker.generatePalette')}
               </Button>
 
               {palette.length > 0 && (
@@ -215,7 +218,7 @@ export default function ColorPicker() {
                               size="sm"
                               variant="ghost"
                               className="h-6 w-6 p-0"
-                              onClick={() => copyColor(color.hex, 'HEX copied to clipboard!')}
+                              onClick={() => copyColor(color.hex, t('tools.colorPicker.copied', { format: 'HEX' }))}
                             >
                               <Copy size={12} />
                             </Button>
@@ -226,7 +229,7 @@ export default function ColorPicker() {
                               size="sm"
                               variant="ghost"
                               className="h-6 w-6 p-0"
-                              onClick={() => copyColor(color.rgb, 'RGB copied to clipboard!')}
+                              onClick={() => copyColor(color.rgb, t('tools.colorPicker.copied', { format: 'RGB' }))}
                             >
                               <Copy size={12} />
                             </Button>
@@ -237,7 +240,7 @@ export default function ColorPicker() {
                               size="sm"
                               variant="ghost"
                               className="h-6 w-6 p-0"
-                              onClick={() => copyColor(color.hsl, 'HSL copied to clipboard!')}
+                              onClick={() => copyColor(color.hsl, t('tools.colorPicker.copied', { format: 'HSL' }))}
                             >
                               <Copy size={12} />
                             </Button>

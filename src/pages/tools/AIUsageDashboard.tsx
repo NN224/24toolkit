@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -33,6 +34,7 @@ export default function AIUsageDashboard() {
   const metadata = getPageMetadata('ai-usage-dashboard')
   useSEO(metadata)
 
+  const { t } = useTranslation()
   const [insights, setInsights] = useState<UserInsights | null>(null)
   const [todaySummary, setTodaySummary] = useState<DailySummary | null>(null)
   const [isArabic, setIsArabic] = useState(false)
@@ -50,10 +52,10 @@ export default function AIUsageDashboard() {
   }
 
   const handleClearData = () => {
-    if (confirm('Clear all usage data?')) {
+    if (confirm(t('tools.aiUsageDashboard.clearConfirm'))) {
       clearUsageData()
       loadData()
-      toast.success('Data cleared')
+      toast.success(t('tools.aiUsageDashboard.dataCleared'))
     }
   }
 
@@ -66,7 +68,7 @@ export default function AIUsageDashboard() {
     a.download = '24toolkit-ai-usage.json'
     a.click()
     URL.revokeObjectURL(url)
-    toast.success('Data exported')
+    toast.success(t('tools.aiUsageDashboard.dataExported'))
   }
 
   const formatDuration = (ms: number) => {

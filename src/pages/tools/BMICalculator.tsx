@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -8,6 +9,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function BMICalculator() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('bmi-calculator')
   useSEO(metadata)
@@ -39,16 +42,16 @@ export default function BMICalculator() {
     let color = ''
 
     if (bmi < 18.5) {
-      category = 'Underweight'
+      category = t('tools.bmiCalculator.underweight')
       color = 'text-blue-600'
     } else if (bmi < 25) {
-      category = 'Normal weight'
+      category = t('tools.bmiCalculator.normal')
       color = 'text-green-600'
     } else if (bmi < 30) {
-      category = 'Overweight'
+      category = t('tools.bmiCalculator.overweight')
       color = 'text-yellow-600'
     } else {
-      category = 'Obese'
+      category = t('tools.bmiCalculator.obese')
       color = 'text-red-600'
     }
 
@@ -63,16 +66,16 @@ export default function BMICalculator() {
             <Activity size={24} className="text-white" weight="bold" />
           </div>
           <div>
-            <h1 className="text-3xl font-semibold text-foreground">BMI Calculator</h1>
-            <p className="text-muted-foreground">Calculate your Body Mass Index</p>
+            <h1 className="text-3xl font-semibold text-foreground">{t('tools.bmiCalculator.name')}</h1>
+            <p className="text-muted-foreground">{t('tools.bmiCalculator.description')}</p>
           </div>
         </div>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Body Mass Index Calculator</CardTitle>
-          <CardDescription>Enter your weight and height to calculate BMI</CardDescription>
+          <CardTitle>{t('tools.bmiCalculator.name')}</CardTitle>
+          <CardDescription>{t('tools.bmiCalculator.description')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex gap-2 mb-4">
@@ -81,21 +84,21 @@ export default function BMICalculator() {
               onClick={() => setUnit('metric')}
               className="flex-1"
             >
-              Metric (kg, cm)
+              {t('tools.bmiCalculator.metric')}
             </Button>
             <Button
               variant={unit === 'imperial' ? 'default' : 'outline'}
               onClick={() => setUnit('imperial')}
               className="flex-1"
             >
-              Imperial (lbs, in)
+              {t('tools.bmiCalculator.imperial')}
             </Button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="weight-input">
-                Weight {unit === 'metric' ? '(kg)' : '(lbs)'}
+                {t('tools.bmiCalculator.weight')} {unit === 'metric' ? '(kg)' : '(lbs)'}
               </Label>
               <Input
                 id="weight-input"
@@ -107,7 +110,7 @@ export default function BMICalculator() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="height-input">
-                Height {unit === 'metric' ? '(cm)' : '(inches)'}
+                {t('tools.bmiCalculator.height')} {unit === 'metric' ? '(cm)' : '(inches)'}
               </Label>
               <Input
                 id="height-input"
@@ -120,13 +123,13 @@ export default function BMICalculator() {
           </div>
 
           <Button onClick={calculateBMI} className="w-full">
-            Calculate BMI
+            {t('tools.bmiCalculator.calculateBmi')}
           </Button>
 
           {bmiResult && (
             <div className="space-y-4 mt-6">
               <div className="p-6 bg-gradient-to-br from-pink-500/10 to-rose-500/10 rounded-lg text-center border border-pink-200">
-                <p className="text-sm text-muted-foreground mb-2">Your BMI</p>
+                <p className="text-sm text-muted-foreground mb-2">{t('tools.bmiCalculator.yourBmi')}</p>
                 <p className="text-5xl font-bold text-foreground">
                   {bmiResult.bmi.toFixed(1)}
                 </p>
@@ -137,23 +140,23 @@ export default function BMICalculator() {
 
               <Card className="bg-muted/50">
                 <CardHeader>
-                  <CardTitle className="text-base">BMI Categories</CardTitle>
+                  <CardTitle className="text-base">{t('tools.bmiCalculator.categories')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span>Underweight</span>
+                    <span>{t('tools.bmiCalculator.underweight')}</span>
                     <span className="text-blue-600 font-medium">&lt; 18.5</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Normal weight</span>
+                    <span>{t('tools.bmiCalculator.normal')}</span>
                     <span className="text-green-600 font-medium">18.5 - 24.9</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Overweight</span>
+                    <span>{t('tools.bmiCalculator.overweight')}</span>
                     <span className="text-yellow-600 font-medium">25 - 29.9</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Obese</span>
+                    <span>{t('tools.bmiCalculator.obese')}</span>
                     <span className="text-red-600 font-medium">&ge; 30</span>
                   </div>
                 </CardContent>

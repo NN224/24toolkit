@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -36,6 +37,7 @@ export default function SmartHistory() {
   const metadata = getPageMetadata('smart-history')
   useSEO(metadata)
 
+  const { t } = useTranslation()
   const [history, setHistory] = useState<HistoryEntry[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [activeFilter, setActiveFilter] = useState<'all' | 'favorites'>('all')
@@ -67,25 +69,25 @@ export default function SmartHistory() {
   }
 
   const handleDelete = (entryId: string) => {
-    if (confirm('Delete this entry?')) {
+    if (confirm(t('tools.smartHistory.deleteConfirm'))) {
       deleteHistoryEntry(entryId)
       loadHistory()
-      toast.success('Deleted')
+      toast.success(t('tools.smartHistory.deleted'))
     }
   }
 
   const handleClearAll = () => {
-    if (confirm('Clear all history?')) {
+    if (confirm(t('tools.smartHistory.clearConfirm'))) {
       clearHistory()
       loadHistory()
-      toast.success('History cleared')
+      toast.success(t('tools.smartHistory.historyCleared'))
     }
   }
 
   const handleToggleFavorite = (entryId: string) => {
     toggleFavorite(entryId)
     loadHistory()
-    toast.success('Updated')
+    toast.success(t('tools.smartHistory.updated'))
   }
 
   const handleExport = () => {
@@ -97,7 +99,7 @@ export default function SmartHistory() {
     a.download = '24toolkit-history.json'
     a.click()
     URL.revokeObjectURL(url)
-    toast.success('Exported')
+    toast.success(t('tools.smartHistory.exported'))
   }
 
   const formatDate = (timestamp: number) => {
@@ -130,25 +132,25 @@ export default function SmartHistory() {
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-3">
               <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-                Smart History
+                {t('tools.smartHistory.title')}
               </h1>
               <Badge variant="secondary">
-                {stats.totalEntries} entries
+                {stats.totalEntries} {t('tools.smartHistory.entries')}
               </Badge>
             </div>
             <div className="flex gap-2">
               <Button variant="outline" size="sm" onClick={handleExport}>
                 <Download size={16} className="mr-1" />
-                Export
+                {t('tools.smartHistory.export')}
               </Button>
               <Button variant="outline" size="sm" onClick={handleClearAll}>
                 <Trash size={16} className="mr-1" />
-                Clear
+                {t('tools.smartHistory.clearAll')}
               </Button>
             </div>
           </div>
           <p className="text-lg text-muted-foreground">
-            Complete history of your tool usage - reuse any previous result
+            {t('tools.smartHistory.subtitle')}
           </p>
         </div>
 
@@ -158,19 +160,19 @@ export default function SmartHistory() {
             <Card>
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm">
-                  Statistics
+                  {t('tools.smartHistory.statistics')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">
-                    Total entries
+                    {t('tools.smartHistory.totalEntries')}
                   </span>
                   <span className="font-medium">{stats.totalEntries}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">
-                    Favorites
+                    {t('tools.smartHistory.favorites')}
                   </span>
                   <span className="font-medium">{getFavorites().length}</span>
                 </div>
@@ -181,7 +183,7 @@ export default function SmartHistory() {
               <Card>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm">
-                    Most Used Tools
+                    {t('tools.smartHistory.mostUsedTools')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -214,7 +216,7 @@ export default function SmartHistory() {
                   <div className="relative flex-1">
                     <MagnifyingGlass size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                     <Input
-                      placeholder="Search history..."
+                      placeholder={t('tools.smartHistory.searchHistory')}
                       value={searchQuery}
                       onChange={(e) => handleSearch(e.target.value)}
                       className="pl-10"
@@ -226,7 +228,7 @@ export default function SmartHistory() {
                       size="sm"
                       onClick={() => setActiveFilter('all')}
                     >
-                      All
+                      {t('tools.smartHistory.all')}
                     </Button>
                     <Button
                       variant={activeFilter === 'favorites' ? 'default' : 'outline'}
@@ -235,7 +237,7 @@ export default function SmartHistory() {
                       className="gap-1"
                     >
                       <Star size={14} weight="fill" />
-                      Favorites
+                      {t('tools.smartHistory.favorites')}
                     </Button>
                   </div>
                 </div>
@@ -268,7 +270,7 @@ export default function SmartHistory() {
                           <div className="space-y-2">
                             <div>
                               <p className="text-xs text-muted-foreground mb-1">
-                                Input:
+                                {t('tools.smartHistory.input')}
                               </p>
                               <p className="text-sm text-foreground bg-muted/50 rounded p-2 line-clamp-2">
                                 {entry.input}
@@ -276,7 +278,7 @@ export default function SmartHistory() {
                             </div>
                             <div>
                               <p className="text-xs text-muted-foreground mb-1">
-                                Output:
+                                {t('tools.smartHistory.output')}
                               </p>
                               <p className="text-sm text-foreground bg-muted/50 rounded p-2 line-clamp-3">
                                 {entry.output}
@@ -289,8 +291,8 @@ export default function SmartHistory() {
                           <Button
                             size="sm"
                             variant="ghost"
-                            onClick={() => copyToClipboard(entry.output, 'Copied!')}
-                            title="Copy output"
+                            onClick={() => copyToClipboard(entry.output, t('tools.common.copied'))}
+                            title={t('tools.common.copy')}
                           >
                             <Copy size={16} />
                           </Button>
@@ -298,7 +300,7 @@ export default function SmartHistory() {
                             size="sm"
                             variant="ghost"
                             onClick={() => handleToggleFavorite(entry.id)}
-                            title="Favorite"
+                            title={t('tools.smartHistory.favorites')}
                           >
                             <Star 
                               size={16} 
@@ -310,7 +312,7 @@ export default function SmartHistory() {
                             size="sm"
                             variant="ghost"
                             onClick={() => handleDelete(entry.id)}
-                            title="Delete"
+                            title={t('tools.common.delete')}
                           >
                             <Trash size={16} />
                           </Button>
@@ -327,15 +329,15 @@ export default function SmartHistory() {
                     <ClockCounterClockwise size={32} className="text-purple-500" />
                   </div>
                   <h3 className="text-lg font-medium mb-2">
-                    {searchQuery ? 'No results found' : 'No history yet'}
+                    {searchQuery ? t('tools.smartHistory.noResults') : t('tools.smartHistory.noHistory')}
                   </h3>
                   <p className="text-muted-foreground text-sm mb-4">
-                    Start using tools and your history will appear here
+                    {t('tools.smartHistory.noHistoryDesc')}
                   </p>
                   <Link to="/tools/text-summarizer">
                     <Button className="gap-2">
                       <Sparkle size={16} weight="fill" />
-                      Try Text Summarizer
+                      {t('tools.smartHistory.tryTextSummarizer')}
                       <ArrowRight size={16} />
                     </Button>
                   </Link>

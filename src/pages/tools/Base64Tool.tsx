@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -10,6 +11,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function Base64Tool() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('base64-tool')
   useSEO(metadata)
@@ -21,31 +24,31 @@ export default function Base64Tool() {
 
   const handleEncode = () => {
     if (!input.trim()) {
-      toast.error('Please enter text to encode')
+      toast.error(t('tools.base64Tool.enterTextToEncode'))
       return
     }
 
     try {
       const encoded = btoa(input)
       setOutput(encoded)
-      toast.success('Encoded to Base64!')
+      toast.success(t('tools.base64Tool.encoded'))
     } catch (error) {
-      toast.error('Failed to encode text')
+      toast.error(t('tools.common.error'))
     }
   }
 
   const handleDecode = () => {
     if (!input.trim()) {
-      toast.error('Please enter Base64 to decode')
+      toast.error(t('tools.base64Tool.enterBase64ToDecode'))
       return
     }
 
     try {
       const decoded = atob(input)
       setOutput(decoded)
-      toast.success('Decoded from Base64!')
+      toast.success(t('tools.base64Tool.decoded'))
     } catch (error) {
-      toast.error('Invalid Base64 string')
+      toast.error(t('tools.base64Tool.invalidBase64'))
     }
   }
 
@@ -54,7 +57,7 @@ export default function Base64Tool() {
   const handleClear = () => {
     setInput('')
     setOutput('')
-    toast.success('Cleared')
+    toast.success(t('tools.common.cleared'))
   }
 
   const handleSwap = () => {
@@ -68,26 +71,26 @@ export default function Base64Tool() {
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Base64 Encoder / Decoder
+            {t('tools.base64Tool.name')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Encode text to Base64 or decode Base64 back to text
+            {t('tools.base64Tool.description')}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>Input</CardTitle>
+              <CardTitle>{t('tools.base64Tool.input')}</CardTitle>
               <CardDescription>
-                {mode === 'encode' ? 'Enter text to encode' : 'Enter Base64 to decode'}
+                {mode === 'encode' ? t('tools.base64Tool.enterTextToEncode') : t('tools.base64Tool.enterBase64ToDecode')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <Tabs value={mode} onValueChange={(v) => setMode(v as any)}>
                 <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="encode">Encode</TabsTrigger>
-                  <TabsTrigger value="decode">Decode</TabsTrigger>
+                  <TabsTrigger value="encode">{t('tools.base64Tool.encode')}</TabsTrigger>
+                  <TabsTrigger value="decode">{t('tools.base64Tool.decode')}</TabsTrigger>
                 </TabsList>
               </Tabs>
 
@@ -95,7 +98,7 @@ export default function Base64Tool() {
                 id="input-text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder={mode === 'encode' ? 'Enter plain text...' : 'Enter Base64 string...'}
+                placeholder={mode === 'encode' ? t('tools.base64Tool.enterPlainText') : t('tools.base64Tool.enterBase64String')}
                 className="font-mono text-sm min-h-[300px]"
               />
 
@@ -104,7 +107,7 @@ export default function Base64Tool() {
                   onClick={mode === 'encode' ? handleEncode : handleDecode} 
                   className="flex-1"
                 >
-                  {mode === 'encode' ? 'Encode' : 'Decode'}
+                  {mode === 'encode' ? t('tools.base64Tool.encode') : t('tools.base64Tool.decode')}
                 </Button>
                 <Button onClick={handleClear} variant="outline">
                   <Trash size={18} />
@@ -115,9 +118,9 @@ export default function Base64Tool() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Output</CardTitle>
+              <CardTitle>{t('tools.base64Tool.output')}</CardTitle>
               <CardDescription>
-                {mode === 'encode' ? 'Base64 encoded result' : 'Decoded text result'}
+                {mode === 'encode' ? t('tools.base64Tool.encodedResult') : t('tools.base64Tool.decodedResult')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -131,8 +134,8 @@ export default function Base64Tool() {
 
                   <div className="flex gap-2">
                     <Button onClick={() => copyToClipboard(output)} className="flex-1">
-                      <Copy size={18} className="mr-2" />
-                      Copy Result
+                      <Copy size={18} className="ltr:mr-2 rtl:ml-2" />
+                      {t('tools.common.copyResult')}
                     </Button>
                     <Button onClick={handleSwap} variant="outline">
                       <ArrowsLeftRight size={18} />
@@ -141,7 +144,7 @@ export default function Base64Tool() {
                 </>
               ) : (
                 <div className="min-h-[300px] border-2 border-dashed border-border rounded-lg flex items-center justify-center text-muted-foreground">
-                  Result will appear here
+                  {t('tools.base64Tool.resultWillAppear')}
                 </div>
               )}
             </CardContent>
@@ -150,12 +153,11 @@ export default function Base64Tool() {
 
         <Card className="mt-6">
           <CardHeader>
-            <CardTitle>About Base64</CardTitle>
+            <CardTitle>{t('tools.base64Tool.aboutBase64')}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground">
-              Base64 is a binary-to-text encoding scheme that represents binary data in ASCII string format.
-              It's commonly used for encoding data in emails, URLs, and data URIs for images.
+              {t('tools.base64Tool.aboutDescription')}
             </p>
           </CardContent>
         </Card>

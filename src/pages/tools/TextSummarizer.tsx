@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -18,6 +19,8 @@ import { ToolRecommendations, useToolRecommendations } from '@/components/ToolRe
 type SummaryLength = 'short' | 'medium' | 'detailed'
 
 export default function TextSummarizer() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('text-summarizer')
   useSEO(metadata)
@@ -41,14 +44,14 @@ export default function TextSummarizer() {
 
   const handleSummarize = async () => {
     if (!text.trim()) {
-      toast.error('Please enter some text to summarize')
+      toast.error(t('tools.common.enterText'))
       return
     }
 
     try {
       validatePromptInput(text, 50, MAX_CHARS)
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Invalid input')
+      toast.error(error instanceof Error ? error.message : t('tools.common.invalidInput'))
       return
     }
 
@@ -67,11 +70,11 @@ export default function TextSummarizer() {
       await callAI(promptText, provider, (accumulatedText) => {
         setSummary(accumulatedText)
       })
-      toast.success('Text summarized successfully!')
-      triggerRecommendations('Text summarized successfully!')
+      toast.success(t('tools.textSummarizer.summarized'))
+      triggerRecommendations(t('tools.textSummarizer.summarized'))
     } catch (error) {
       console.error('Summarization error:', error)
-      toast.error(error instanceof Error ? error.message : 'Failed to summarize text')
+      toast.error(error instanceof Error ? error.message : t('tools.common.error'))
     } finally {
       setIsLoading(false)
     }
@@ -80,7 +83,7 @@ export default function TextSummarizer() {
   const handleClear = () => {
     setText('')
     setSummary('')
-    toast.success('Cleared')
+    toast.success(t('tools.common.cleared'))
   }
 
   return (
@@ -89,28 +92,28 @@ export default function TextSummarizer() {
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-3">
             <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-              AI Text Summarizer
+              {t('tools.textSummarizer.name')}
             </h1>
             <AIBadge />
           </div>
           <p className="text-lg text-muted-foreground">
-            Transform long articles and documents into concise, digestible bullet points with AI-powered summarization.
+            {t('tools.textSummarizer.description')}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>Input Text</CardTitle>
+              <CardTitle>{t('tools.textSummarizer.inputText')}</CardTitle>
               <CardDescription>
-                Paste the text you want to summarize
+                {t('tools.textSummarizer.pasteText')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <Textarea
                   id="text-input"
-                  placeholder="Paste your article, document, or any long text here..."
+                  placeholder={t('tools.textSummarizer.placeholder')}
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                   className="min-h-[400px] resize-y font-normal"
@@ -118,9 +121,9 @@ export default function TextSummarizer() {
                   dir={isArabic ? 'rtl' : 'ltr'}
                 />
                 <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>{text.length.toLocaleString()} / {MAX_CHARS.toLocaleString()} characters</span>
+                  <span>{text.length.toLocaleString()} / {MAX_CHARS.toLocaleString()} {t('tools.common.characters')}</span>
                   <span className={text.length > MAX_CHARS * 0.9 ? 'text-orange-500 font-medium' : ''}>
-                    {text.length > MAX_CHARS * 0.9 && 'Approaching limit'}
+                    {text.length > MAX_CHARS * 0.9 && t('tools.common.approachingLimit')}
                   </span>
                 </div>
               </div>
@@ -131,12 +134,12 @@ export default function TextSummarizer() {
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Select value={summaryLength} onValueChange={(value) => setSummaryLength(value as SummaryLength)}>
                     <SelectTrigger className="w-full sm:w-[180px]">
-                      <SelectValue placeholder="Summary length" />
+                      <SelectValue placeholder={t('tools.textSummarizer.summaryLength')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="short">Short (3 points)</SelectItem>
-                      <SelectItem value="medium">Medium (5 points)</SelectItem>
-                      <SelectItem value="detailed">Detailed (8 points)</SelectItem>
+                      <SelectItem value="short">{t('tools.textSummarizer.short')}</SelectItem>
+                      <SelectItem value="medium">{t('tools.textSummarizer.medium')}</SelectItem>
+                      <SelectItem value="detailed">{t('tools.textSummarizer.detailed')}</SelectItem>
                     </SelectContent>
                   </Select>
                   
@@ -146,7 +149,7 @@ export default function TextSummarizer() {
                     className="gap-2 flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
                   >
                     <Sparkle size={16} weight="fill" />
-                    Summarize
+                    {t('tools.textSummarizer.summarize')}
                     <ArrowRight size={16} />
                   </Button>
                 </div>
@@ -156,17 +159,17 @@ export default function TextSummarizer() {
                   variant="outline"
                   className="w-full"
                 >
-                  Clear All
+                  {t('tools.common.clearAll')}
                 </Button>
               </div>
             </CardContent>
           </Card>
 
           <AIResponseCard
-            title="Summary Result"
+            title={t('tools.textSummarizer.summaryResult')}
             content={summary}
             isLoading={isLoading}
-            emptyMessage="Your summary will appear here"
+            emptyMessage={t('tools.textSummarizer.summaryAppear')}
             variant="purple"
             showShare={true}
             shareText={summary.slice(0, 200) + '... - Created with 24Toolkit'}

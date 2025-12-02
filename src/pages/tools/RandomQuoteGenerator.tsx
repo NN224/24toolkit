@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Sparkle, Copy } from '@phosphor-icons/react'
@@ -26,6 +27,8 @@ const quotes = [
 ]
 
 export default function RandomQuoteGenerator() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('random-quote-generator')
   useSEO(metadata)
@@ -37,15 +40,15 @@ export default function RandomQuoteGenerator() {
     const randomIndex = Math.floor(Math.random() * quotes.length)
     setQuote(quotes[randomIndex])
     setKey(prev => prev + 1)
-    toast.success('New quote generated!')
+    toast.success(t('tools.common.success'))
   }
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(`"${quote.text}" - ${quote.author}`)
-      toast.success('Quote copied to clipboard!')
+      toast.success(t('tools.common.copied'))
     } catch {
-      toast.error('Failed to copy quote')
+      toast.error(t('tools.common.error'))
     }
   }
 
@@ -54,10 +57,10 @@ export default function RandomQuoteGenerator() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Random Quote Generator
+            {t('tools.randomQuoteGenerator.name')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Get inspired with random motivational and thought-provoking quotes.
+            {t('tools.randomQuoteGenerator.description')}
           </p>
         </div>
 
@@ -83,11 +86,11 @@ export default function RandomQuoteGenerator() {
                 <div className="flex gap-2 justify-center pt-4">
                   <Button onClick={generateQuote} size="lg" className="gap-2">
                     <Sparkle size={20} />
-                    New Quote
+                    {t('tools.randomQuoteGenerator.newQuote')}
                   </Button>
                   <Button onClick={handleCopy} variant="outline" size="lg" className="gap-2">
                     <Copy size={20} />
-                    Copy
+                    {t('tools.common.copy')}
                   </Button>
                 </div>
               </motion.div>

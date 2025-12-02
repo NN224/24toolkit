@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Copy, Image as ImageIcon, Sparkle, Upload } from '@phosphor-icons/react'
@@ -12,6 +13,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function ImageCaptionGenerator() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('image-caption-generator')
   useSEO(metadata)
@@ -27,12 +30,12 @@ export default function ImageCaptionGenerator() {
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      toast.error('Please select a valid image file')
+      toast.error(t('tools.imageCaptionGenerator.invalidImageFile'))
       return
     }
 
     if (file.size > 10 * 1024 * 1024) {
-      toast.error('Image size must be less than 10MB')
+      toast.error(t('tools.imageCaptionGenerator.imageTooLarge'))
       return
     }
 
@@ -43,12 +46,12 @@ export default function ImageCaptionGenerator() {
       setCaption('')
     }
     reader.readAsDataURL(file)
-    toast.success('Image uploaded successfully')
+    toast.success(t('tools.imageCaptionGenerator.imageUploaded'))
   }
 
   const handleGenerateCaption = async () => {
     if (!imageUrl) {
-      toast.error('Please upload an image first')
+      toast.error(t('tools.imageCaptionGenerator.uploadFirst'))
       return
     }
 
@@ -74,10 +77,10 @@ Make them versatile enough to inspire the user to adapt for their specific image
         setCaption(text)
       })
       
-      toast.success('Caption suggestions generated!')
+      toast.success(t('tools.imageCaptionGenerator.captionGenerated'))
     } catch (error) {
       console.error('Caption generation error:', error)
-      toast.error(error instanceof Error ? error.message : 'Failed to generate caption')
+      toast.error(error instanceof Error ? error.message : t('tools.imageCaptionGenerator.generationFailed'))
     } finally {
       setIsLoading(false)
     }
@@ -88,7 +91,7 @@ Make them versatile enough to inspire the user to adapt for their specific image
   const handleClear = () => {
     setImageUrl('')
     setCaption('')
-    toast.success('Cleared')
+    toast.success(t('tools.common.cleared'))
   }
 
   return (
@@ -97,21 +100,21 @@ Make them versatile enough to inspire the user to adapt for their specific image
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-3">
             <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-              AI Image Caption Generator
+              {t('tools.imageCaptionGenerator.title')}
             </h1>
             <AIBadge />
           </div>
           <p className="text-lg text-muted-foreground">
-            Upload an image and get AI-generated caption suggestions to inspire your descriptions.
+            {t('tools.imageCaptionGenerator.subtitle')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Upload Image</CardTitle>
+              <CardTitle>{t('tools.imageCaptionGenerator.uploadImage')}</CardTitle>
               <CardDescription>
-                Select an image file (JPG, PNG, WebP - Max 10MB)
+                {t('tools.imageCaptionGenerator.uploadDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -127,10 +130,10 @@ Make them versatile enough to inspire the user to adapt for their specific image
                       </div>
                       <div>
                         <p className="text-sm font-medium text-foreground mb-1">
-                          Click to upload or drag and drop
+                          {t('tools.imageCaptionGenerator.clickToUpload')}
                         </p>
                         <p className="text-xs text-muted-foreground">
-                          PNG, JPG, WebP up to 10MB
+                          {t('tools.imageCaptionGenerator.fileFormats')}
                         </p>
                       </div>
                     </div>
@@ -150,7 +153,7 @@ Make them versatile enough to inspire the user to adapt for their specific image
                   <div className="rounded-lg overflow-hidden border-2 border-accent/20 bg-muted/50">
                     <img
                       src={imageUrl}
-                      alt="Uploaded preview"
+                      alt={t('tools.imageCaptionGenerator.uploadedPreview')}
                       className="w-full h-auto max-h-[500px] object-contain"
                     />
                   </div>
@@ -165,14 +168,14 @@ Make them versatile enough to inspire the user to adapt for their specific image
                         className="gap-2 flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
                       >
                         <Sparkle size={16} weight="fill" />
-                        Generate Caption
+                        {t('tools.imageCaptionGenerator.generateCaption')}
                       </Button>
                       
                       <Button
                         onClick={handleClear}
                         variant="outline"
                       >
-                        Clear
+                        {t('tools.common.clear')}
                       </Button>
                     </div>
                   </div>
@@ -184,9 +187,9 @@ Make them versatile enough to inspire the user to adapt for their specific image
           {(isLoading || caption) && (
             <Card className="border-2 border-accent/20">
               <CardHeader>
-                <CardTitle>Generated Caption</CardTitle>
+                <CardTitle>{t('tools.imageCaptionGenerator.generatedCaption')}</CardTitle>
                 <CardDescription>
-                  AI-generated description of your image
+                  {t('tools.imageCaptionGenerator.generatedCaptionDescription')}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -208,12 +211,12 @@ Make them versatile enough to inspire the user to adapt for their specific image
                     </div>
                     
                     <Button
-                      onClick={() => copyToClipboard(caption, 'Caption copied to clipboard!')}
+                      onClick={() => copyToClipboard(caption, t('tools.imageCaptionGenerator.captionCopied'))}
                       variant="outline"
                       className="w-full gap-2"
                     >
                       <Copy size={16} />
-                      Copy Caption
+                      {t('tools.imageCaptionGenerator.copyCaption')}
                     </Button>
                   </div>
                 ) : null}
@@ -230,10 +233,10 @@ Make them versatile enough to inspire the user to adapt for their specific image
                   </div>
                   <div>
                     <p className="text-lg font-medium text-foreground mb-2">
-                      No image uploaded yet
+                      {t('tools.imageCaptionGenerator.noImageYet')}
                     </p>
                     <p className="text-sm text-muted-foreground max-w-md">
-                      Upload an image above to generate an AI-powered caption that describes its content, composition, and mood.
+                      {t('tools.imageCaptionGenerator.noImageDescription')}
                     </p>
                   </div>
                 </div>

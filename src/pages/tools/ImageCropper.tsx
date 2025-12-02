@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Upload, Download, Trash, Scissors } from '@phosphor-icons/react'
@@ -8,6 +9,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function ImageCropper() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('image-cropper')
   useSEO(metadata)
@@ -24,7 +27,7 @@ export default function ImageCropper() {
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      toast.error('Please select an image file')
+      toast.error(t('tools.imageCropper.selectImageFile'))
       return
     }
 
@@ -36,7 +39,7 @@ export default function ImageCropper() {
       setZoom(1)
     }
     reader.readAsDataURL(file)
-    toast.success('Image loaded!')
+    toast.success(t('tools.imageCropper.imageLoaded'))
   }
 
   const onCropComplete = useCallback((croppedArea: Area, croppedAreaPixels: Area) => {
@@ -78,9 +81,9 @@ export default function ImageCropper() {
 
       const croppedImageUrl = canvas.toDataURL('image/png')
       setCroppedImage(croppedImageUrl)
-      toast.success('Image cropped!')
+      toast.success(t('tools.imageCropper.imageCropped'))
     } catch (error) {
-      toast.error('Failed to crop image')
+      toast.error(t('tools.imageCropper.cropFailed'))
     }
   }
 
@@ -91,7 +94,7 @@ export default function ImageCropper() {
     link.download = 'cropped-image.png'
     link.href = croppedImage
     link.click()
-    toast.success('Image downloaded!')
+    toast.success(t('tools.common.downloaded'))
   }
 
   const handleClear = () => {
@@ -101,7 +104,7 @@ export default function ImageCropper() {
     setZoom(1)
     setCroppedAreaPixels(null)
     if (fileInputRef.current) fileInputRef.current.value = ''
-    toast.success('Cleared')
+    toast.success(t('tools.imageCropper.cleared'))
   }
 
   return (
@@ -109,18 +112,18 @@ export default function ImageCropper() {
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Image Cropper
+            {t('tools.imageCropper.name')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Crop images by selecting the desired area
+            {t('tools.imageCropper.description')}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>Crop Area</CardTitle>
-              <CardDescription>Adjust the crop area and zoom</CardDescription>
+              <CardTitle>{t('tools.imageCropper.cropArea')}</CardTitle>
+              <CardDescription>{t('tools.imageCropper.adjustCropArea')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <input
@@ -139,7 +142,7 @@ export default function ImageCropper() {
                   className="w-full"
                 >
                   <Upload size={18} className="mr-2" />
-                  Upload Image
+                  {t('tools.imageCropper.uploadImage')}
                 </Button>
               ) : (
                 <>
@@ -156,7 +159,7 @@ export default function ImageCropper() {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">Zoom: {zoom.toFixed(1)}x</label>
+                    <label className="text-sm font-medium">{t('tools.imageCropper.zoom')}: {zoom.toFixed(1)}x</label>
                     <input
                       type="range"
                       min={1}
@@ -171,7 +174,7 @@ export default function ImageCropper() {
                   <div className="flex gap-2">
                     <Button onClick={getCroppedImg} className="flex-1">
                       <Scissors size={18} className="mr-2" />
-                      Crop Image
+                      {t('tools.imageCropper.cropImage')}
                     </Button>
                     <Button onClick={handleClear} variant="outline">
                       <Trash size={18} />
@@ -184,8 +187,8 @@ export default function ImageCropper() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Cropped Result</CardTitle>
-              <CardDescription>Preview and download</CardDescription>
+              <CardTitle>{t('tools.imageCropper.croppedResult')}</CardTitle>
+              <CardDescription>{t('tools.imageCropper.previewAndDownload')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {croppedImage ? (
@@ -196,14 +199,14 @@ export default function ImageCropper() {
 
                   <Button onClick={handleDownload} className="w-full">
                     <Download size={18} className="mr-2" />
-                    Download Cropped Image
+                    {t('tools.imageCropper.downloadCroppedImage')}
                   </Button>
                 </>
               ) : (
                 <div className="min-h-[400px] border-2 border-dashed border-border rounded-lg flex items-center justify-center text-muted-foreground">
                   <div className="text-center">
                     <Scissors size={48} className="mx-auto mb-2 opacity-20" />
-                    <p>Cropped image will appear here</p>
+                    <p>{t('tools.imageCropper.croppedImagePlaceholder')}</p>
                   </div>
                 </div>
               )}

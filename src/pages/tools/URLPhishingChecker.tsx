@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -10,6 +11,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function URLPhishingChecker() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('url-phishing-checker')
   useSEO(metadata)
@@ -19,7 +22,7 @@ export default function URLPhishingChecker() {
 
   const checkURL = () => {
     if (!url.trim()) {
-      toast.error('Please enter a URL')
+      toast.error(t('tools.urlPhishingChecker.enterUrlError'))
       return
     }
 
@@ -30,17 +33,17 @@ export default function URLPhishingChecker() {
       const urlObj = new URL(url.startsWith('http') ? url : `https://${url}`)
       
       if (urlObj.protocol !== 'https:') {
-        reasons.push('Not using secure HTTPS protocol')
+        reasons.push(t('tools.urlPhishingChecker.reasons.noHttps'))
         suspiciousCount += 2
       }
 
       if (/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/.test(urlObj.hostname)) {
-        reasons.push('Using IP address instead of domain name')
+        reasons.push(t('tools.urlPhishingChecker.reasons.ipAddress'))
         suspiciousCount += 2
       }
 
       if (urlObj.hostname.length > 50) {
-        reasons.push('Unusually long domain name')
+        reasons.push(t('tools.urlPhishingChecker.reasons.longDomain'))
         suspiciousCount += 1
       }
 
@@ -49,25 +52,25 @@ export default function URLPhishingChecker() {
         urlObj.hostname.toLowerCase().includes(keyword)
       )
       if (hasSuspiciousKeyword && !urlObj.hostname.endsWith('.com')) {
-        reasons.push('Contains suspicious keywords in domain')
+        reasons.push(t('tools.urlPhishingChecker.reasons.suspiciousKeywords'))
         suspiciousCount += 2
       }
 
       const dotCount = (urlObj.hostname.match(/\./g) || []).length
       if (dotCount > 3) {
-        reasons.push('Too many subdomains')
+        reasons.push(t('tools.urlPhishingChecker.reasons.manySubdomains'))
         suspiciousCount += 1
       }
 
       if (/@/.test(urlObj.href)) {
-        reasons.push('Contains @ symbol (potential redirect)')
+        reasons.push(t('tools.urlPhishingChecker.reasons.atSymbol'))
         suspiciousCount += 2
       }
 
       if (/-/.test(urlObj.hostname)) {
         const dashCount = (urlObj.hostname.match(/-/g) || []).length
         if (dashCount > 2) {
-          reasons.push('Excessive use of hyphens in domain')
+          reasons.push(t('tools.urlPhishingChecker.reasons.excessiveHyphens'))
           suspiciousCount += 1
         }
       }
@@ -75,12 +78,12 @@ export default function URLPhishingChecker() {
       const tld = urlObj.hostname.split('.').pop()?.toLowerCase()
       const suspiciousTLDs = ['tk', 'ml', 'ga', 'cf', 'gq', 'xyz', 'top', 'work']
       if (tld && suspiciousTLDs.includes(tld)) {
-        reasons.push('Using suspicious top-level domain')
+        reasons.push(t('tools.urlPhishingChecker.reasons.suspiciousTld'))
         suspiciousCount += 2
       }
 
       if (urlObj.port && !['80', '443', '8080'].includes(urlObj.port)) {
-        reasons.push('Using non-standard port')
+        reasons.push(t('tools.urlPhishingChecker.reasons.nonStandardPort'))
         suspiciousCount += 1
       }
 
@@ -92,15 +95,15 @@ export default function URLPhishingChecker() {
       }
 
       if (status === 'safe') {
-        reasons.push('URL appears to be legitimate')
-        reasons.push('Using HTTPS encryption')
+        reasons.push(t('tools.urlPhishingChecker.reasons.legitimate'))
+        reasons.push(t('tools.urlPhishingChecker.reasons.httpsEncryption'))
       }
 
       setResult({ status, reasons })
-      toast.success('URL analyzed successfully')
+      toast.success(t('tools.urlPhishingChecker.analyzeSuccess'))
 
     } catch (error) {
-      toast.error('Invalid URL format')
+      toast.error(t('tools.urlPhishingChecker.invalidUrlFormat'))
     }
   }
 
@@ -109,24 +112,24 @@ export default function URLPhishingChecker() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            URL Phishing Checker
+            {t('tools.urlPhishingChecker.title')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Analyze URLs for potential phishing threats and security risks.
+            {t('tools.urlPhishingChecker.subtitle')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Enter URL</CardTitle>
+              <CardTitle>{t('tools.urlPhishingChecker.enterUrl')}</CardTitle>
               <CardDescription>
-                Paste the URL you want to check for safety
+                {t('tools.urlPhishingChecker.enterUrlDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="url-input">URL</Label>
+                <Label htmlFor="url-input">{t('tools.urlPhishingChecker.urlLabel')}</Label>
                 <Input
                   id="url-input"
                   value={url}
@@ -138,7 +141,7 @@ export default function URLPhishingChecker() {
 
               <Button onClick={checkURL} className="w-full gap-2" size="lg">
                 <MagnifyingGlass size={20} />
-                Check URL Safety
+                {t('tools.urlPhishingChecker.checkButton')}
               </Button>
             </CardContent>
           </Card>
@@ -166,9 +169,9 @@ export default function URLPhishingChecker() {
                     result.status === 'suspicious' ? 'text-yellow-700' :
                     'text-red-700'
                   }`}>
-                    {result.status === 'safe' ? '✓ URL Appears Safe' :
-                     result.status === 'suspicious' ? '⚠ Suspicious URL' :
-                     '✗ Potentially Dangerous URL'}
+                    {result.status === 'safe' ? t('tools.urlPhishingChecker.resultSafe') :
+                     result.status === 'suspicious' ? t('tools.urlPhishingChecker.resultSuspicious') :
+                     t('tools.urlPhishingChecker.resultDangerous')}
                   </p>
                   <ul className="list-disc list-inside space-y-1 text-sm">
                     {result.reasons.map((reason, i) => (
@@ -177,7 +180,7 @@ export default function URLPhishingChecker() {
                   </ul>
                   {result.status !== 'safe' && (
                     <p className="text-sm font-semibold mt-3">
-                      ⚠ Proceed with caution. Verify the sender and avoid entering personal information.
+                      {t('tools.urlPhishingChecker.cautionWarning')}
                     </p>
                   )}
                 </div>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -242,6 +243,8 @@ const conversionData: Record<UnitCategory, { name: string; units: Record<string,
 }
 
 export default function UnitConverter() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('unit-converter')
   useSEO(metadata)
@@ -281,19 +284,19 @@ export default function UnitConverter() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Unit Converter
+            {t('tools.unitConverter.name')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Convert between different units of measurement instantly with auto-calculation.
+            {t('tools.unitConverter.description')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Select Unit Category</CardTitle>
+              <CardTitle>{t('tools.unitConverter.selectCategory')}</CardTitle>
               <CardDescription>
-                Choose the type of measurement you want to convert
+                {t('tools.unitConverter.description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -325,11 +328,11 @@ export default function UnitConverter() {
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="from-value">From</Label>
+                  <Label htmlFor="from-value">{t('tools.unitConverter.from')}</Label>
                   <Input
                     id="from-value"
                     type="number"
-                    placeholder="Enter value"
+                    placeholder={t('tools.unitConverter.value')}
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     className="text-lg"
@@ -353,7 +356,7 @@ export default function UnitConverter() {
                 </div>
 
                 <div className="space-y-2 md:col-start-2">
-                  <Label htmlFor="to-value">To</Label>
+                  <Label htmlFor="to-value">{t('tools.unitConverter.to')}</Label>
                   <div className="text-lg font-semibold text-primary h-10 flex items-center px-3 bg-muted rounded-md border border-border">
                     {result || '0'}
                   </div>

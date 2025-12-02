@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -8,6 +9,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function TextDiffChecker() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('text-diff-checker')
   useSEO(metadata)
@@ -18,7 +21,7 @@ export default function TextDiffChecker() {
 
   const getDiff = () => {
     if (!text1 || !text2) {
-      toast.error('Please enter both texts to compare')
+      toast.error(t('tools.textDiffChecker.enterBothTexts'))
       return { additions: [], deletions: [], common: [] }
     }
 
@@ -37,18 +40,18 @@ export default function TextDiffChecker() {
 
   const handleCompare = () => {
     if (!text1 || !text2) {
-      toast.error('Please enter both texts to compare')
+      toast.error(t('tools.textDiffChecker.enterBothTexts'))
       return
     }
     setShowDiff(true)
-    toast.success('Texts compared')
+    toast.success(t('tools.textDiffChecker.textsCompared'))
   }
 
   const handleClear = () => {
     setText1('')
     setText2('')
     setShowDiff(false)
-    toast.success('Text cleared')
+    toast.success(t('tools.common.cleared'))
   }
 
   const diff = showDiff ? getDiff() : null
@@ -58,10 +61,10 @@ export default function TextDiffChecker() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Text Diff Checker
+            {t('tools.textDiffChecker.title')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Compare two text inputs and highlight the differences between them.
+            {t('tools.textDiffChecker.subtitle')}
           </p>
         </div>
 
@@ -69,15 +72,15 @@ export default function TextDiffChecker() {
           <div className="grid md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>Original Text</CardTitle>
+                <CardTitle>{t('tools.textDiffChecker.original')}</CardTitle>
                 <CardDescription>
-                  Enter the first text for comparison
+                  {t('tools.textDiffChecker.enterFirstText')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <Textarea
                   id="text1-input"
-                  placeholder="Type or paste your first text here..."
+                  placeholder={t('tools.textDiffChecker.firstTextPlaceholder')}
                   value={text1}
                   onChange={(e) => setText1(e.target.value)}
                   className="min-h-[200px] resize-y font-normal"
@@ -87,15 +90,15 @@ export default function TextDiffChecker() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Modified Text</CardTitle>
+                <CardTitle>{t('tools.textDiffChecker.modified')}</CardTitle>
                 <CardDescription>
-                  Enter the second text for comparison
+                  {t('tools.textDiffChecker.enterSecondText')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <Textarea
                   id="text2-input"
-                  placeholder="Type or paste your second text here..."
+                  placeholder={t('tools.textDiffChecker.secondTextPlaceholder')}
                   value={text2}
                   onChange={(e) => setText2(e.target.value)}
                   className="min-h-[200px] resize-y font-normal"
@@ -112,7 +115,7 @@ export default function TextDiffChecker() {
               className="gap-2"
             >
               <GitDiff size={16} />
-              Compare Texts
+              {t('tools.textDiffChecker.compareTexts')}
             </Button>
             <Button
               onClick={handleClear}
@@ -120,16 +123,16 @@ export default function TextDiffChecker() {
               className="gap-2"
             >
               <Trash size={16} />
-              Clear All
+              {t('tools.textDiffChecker.clearAll')}
             </Button>
           </div>
 
           {showDiff && diff && (
             <Card>
               <CardHeader>
-                <CardTitle>Comparison Results</CardTitle>
+                <CardTitle>{t('tools.textDiffChecker.comparisonResults')}</CardTitle>
                 <CardDescription>
-                  Differences between the two texts
+                  {t('tools.textDiffChecker.differencesBetweenTexts')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -137,11 +140,11 @@ export default function TextDiffChecker() {
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-sm font-medium">
                       <div className="w-4 h-4 rounded bg-green-500" />
-                      <span>Additions ({diff.additions.length} words)</span>
+                      <span>{t('tools.textDiffChecker.additions')} ({diff.additions.length} {t('tools.textDiffChecker.words')})</span>
                     </div>
                     <div className="p-3 rounded-lg bg-green-500/10 border border-green-500/20 min-h-[60px]">
                       <p className="text-sm text-foreground">
-                        {diff.additions.length > 0 ? diff.additions.join(', ') : 'No additions'}
+                        {diff.additions.length > 0 ? diff.additions.join(', ') : t('tools.textDiffChecker.noAdditions')}
                       </p>
                     </div>
                   </div>
@@ -149,11 +152,11 @@ export default function TextDiffChecker() {
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-sm font-medium">
                       <div className="w-4 h-4 rounded bg-red-500" />
-                      <span>Deletions ({diff.deletions.length} words)</span>
+                      <span>{t('tools.textDiffChecker.deletions')} ({diff.deletions.length} {t('tools.textDiffChecker.words')})</span>
                     </div>
                     <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 min-h-[60px]">
                       <p className="text-sm text-foreground">
-                        {diff.deletions.length > 0 ? diff.deletions.join(', ') : 'No deletions'}
+                        {diff.deletions.length > 0 ? diff.deletions.join(', ') : t('tools.textDiffChecker.noDeletions')}
                       </p>
                     </div>
                   </div>
@@ -161,11 +164,11 @@ export default function TextDiffChecker() {
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-sm font-medium">
                       <div className="w-4 h-4 rounded bg-blue-500" />
-                      <span>Common words ({diff.common.length} words)</span>
+                      <span>{t('tools.textDiffChecker.commonWords')} ({diff.common.length} {t('tools.textDiffChecker.words')})</span>
                     </div>
                     <div className="p-3 rounded-lg bg-blue-500/10 border border-blue-500/20 min-h-[60px]">
                       <p className="text-sm text-foreground">
-                        {diff.common.length > 0 ? diff.common.slice(0, 20).join(', ') + (diff.common.length > 20 ? '...' : '') : 'No common words'}
+                        {diff.common.length > 0 ? diff.common.slice(0, 20).join(', ') + (diff.common.length > 20 ? '...' : '') : t('tools.textDiffChecker.noCommonWords')}
                       </p>
                     </div>
                   </div>
@@ -174,17 +177,17 @@ export default function TextDiffChecker() {
                 <div className="grid grid-cols-3 gap-4 pt-4 border-t border-border">
                   <div className="text-center">
                     <p className="text-2xl font-semibold text-foreground">{text1.split(/\s+/).filter(w => w).length}</p>
-                    <p className="text-sm text-muted-foreground">Words in Text 1</p>
+                    <p className="text-sm text-muted-foreground">{t('tools.textDiffChecker.wordsInText1')}</p>
                   </div>
                   <div className="text-center">
                     <p className="text-2xl font-semibold text-foreground">{text2.split(/\s+/).filter(w => w).length}</p>
-                    <p className="text-sm text-muted-foreground">Words in Text 2</p>
+                    <p className="text-sm text-muted-foreground">{t('tools.textDiffChecker.wordsInText2')}</p>
                   </div>
                   <div className="text-center">
                     <p className="text-2xl font-semibold text-foreground">
                       {Math.round((diff.common.length / Math.max(text1.split(/\s+/).filter(w => w).length, text2.split(/\s+/).filter(w => w).length)) * 100)}%
                     </p>
-                    <p className="text-sm text-muted-foreground">Similarity</p>
+                    <p className="text-sm text-muted-foreground">{t('tools.textDiffChecker.similarity')}</p>
                   </div>
                 </div>
               </CardContent>

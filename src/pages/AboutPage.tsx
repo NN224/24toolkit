@@ -1,11 +1,13 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Sparkle, Code, Lightning, Globe } from '@phosphor-icons/react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function AboutPage() {
+  const { t } = useTranslation()
   // Set SEO metadata for about page
   const aboutMetadata = getPageMetadata('about')
   useSEO(aboutMetadata)
@@ -15,10 +17,10 @@ export default function AboutPage() {
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-semibold text-foreground mb-4 tracking-tight">
-            About 24Toolkit
+            {t('about.title')}
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Your all-in-one free online toolkit powered by AI and open web technology
+            {t('about.subtitle')}
           </p>
         </div>
 
@@ -29,14 +31,12 @@ export default function AboutPage() {
                 <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
                   <Sparkle size={24} weight="fill" className="text-white" />
                 </div>
-                <CardTitle className="text-2xl">Our Mission</CardTitle>
+                <CardTitle className="text-2xl">{t('about.mission')}</CardTitle>
               </div>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground leading-relaxed">
-                24Toolkit was created to provide everyone with free, powerful, and easy-to-use online tools. 
-                Whether you're a student, professional, developer, or creative, we believe essential utilities 
-                should be accessible to all without barriers, subscriptions, or complicated interfaces.
+                {t('about.missionDesc')}
               </p>
             </CardContent>
           </Card>
@@ -47,11 +47,11 @@ export default function AboutPage() {
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mb-3">
                   <Lightning size={20} weight="fill" className="text-white" />
                 </div>
-                <CardTitle className="text-lg">Fast & Efficient</CardTitle>
+                <CardTitle className="text-lg">{t('about.features.fast')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-base">
-                  All tools run directly in your browser with instant results. No waiting, no uploads to servers.
+                  {t('about.features.fastDesc')}
                 </CardDescription>
               </CardContent>
             </Card>
@@ -61,11 +61,11 @@ export default function AboutPage() {
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mb-3">
                   <Globe size={20} weight="fill" className="text-white" />
                 </div>
-                <CardTitle className="text-lg">Privacy First</CardTitle>
+                <CardTitle className="text-lg">{t('about.features.privacy')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-base">
-                  Your data never leaves your device. Everything processes locally for maximum privacy and security.
+                  {t('about.features.privacyDesc')}
                 </CardDescription>
               </CardContent>
             </Card>
@@ -75,11 +75,11 @@ export default function AboutPage() {
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-3">
                   <Code size={20} weight="fill" className="text-white" />
                 </div>
-                <CardTitle className="text-lg">Open Technology</CardTitle>
+                <CardTitle className="text-lg">{t('about.features.open')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-base">
-                  Built with modern web standards and open-source technologies that work across all devices.
+                  {t('about.features.openDesc')}
                 </CardDescription>
               </CardContent>
             </Card>
@@ -87,43 +87,43 @@ export default function AboutPage() {
 
           <Card className="border-2 border-accent/20 bg-gradient-to-br from-accent/5 to-primary/5">
             <CardHeader>
-              <CardTitle className="text-xl">What Makes Us Different</CardTitle>
+              <CardTitle className="text-xl">{t('about.whatMakesUsDifferent')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid gap-4">
                 <div className="flex gap-3">
                   <div className="w-2 h-2 rounded-full bg-accent mt-2 flex-shrink-0" />
                   <div>
-                    <p className="font-medium text-foreground mb-1">No Sign-Up Required</p>
+                    <p className="font-medium text-foreground mb-1">{t('about.differences.noSignup')}</p>
                     <p className="text-sm text-muted-foreground">
-                      Jump straight into any tool without creating an account or providing personal information.
+                      {t('about.differences.noSignupDesc')}
                     </p>
                   </div>
                 </div>
                 <div className="flex gap-3">
                   <div className="w-2 h-2 rounded-full bg-accent mt-2 flex-shrink-0" />
                   <div>
-                    <p className="font-medium text-foreground mb-1">AI-Powered Innovation</p>
+                    <p className="font-medium text-foreground mb-1">{t('about.differences.aiPowered')}</p>
                     <p className="text-sm text-muted-foreground">
-                      Leverage cutting-edge AI technology for text summarization, code explanation, image captions, and more.
+                      {t('about.differences.aiPoweredDesc')}
                     </p>
                   </div>
                 </div>
                 <div className="flex gap-3">
                   <div className="w-2 h-2 rounded-full bg-accent mt-2 flex-shrink-0" />
                   <div>
-                    <p className="font-medium text-foreground mb-1">Always Free</p>
+                    <p className="font-medium text-foreground mb-1">{t('about.differences.alwaysFree')}</p>
                     <p className="text-sm text-muted-foreground">
-                      All tools are completely free with no hidden costs, premium tiers, or feature limitations.
+                      {t('about.differences.alwaysFreeDesc')}
                     </p>
                   </div>
                 </div>
                 <div className="flex gap-3">
                   <div className="w-2 h-2 rounded-full bg-accent mt-2 flex-shrink-0" />
                   <div>
-                    <p className="font-medium text-foreground mb-1">Cross-Platform</p>
+                    <p className="font-medium text-foreground mb-1">{t('about.differences.crossPlatform')}</p>
                     <p className="text-sm text-muted-foreground">
-                      Works seamlessly on desktop, tablet, and mobile devices with responsive design.
+                      {t('about.differences.crossPlatformDesc')}
                     </p>
                   </div>
                 </div>
@@ -133,21 +133,20 @@ export default function AboutPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-xl">Our Tools</CardTitle>
+              <CardTitle className="text-xl">{t('about.ourTools')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 <div>
-                  <p className="font-medium text-foreground mb-2">✨ AI-Powered Tools</p>
+                  <p className="font-medium text-foreground mb-2">✨ {t('categories.ai')}</p>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    Text Summarizer, Paragraph Rewriter, Code Formatter & Explainer, Image Caption Generator, and AI Chat Assistant.
+                    {t('about.aiToolsList')}
                   </p>
                 </div>
                 <div>
-                  <p className="font-medium text-foreground mb-2">🛠️ Essential Utilities</p>
+                  <p className="font-medium text-foreground mb-2">🛠️ {t('categories.all')}</p>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    Word Counter, Password Generator, QR Code Generator, JSON/CSV Converter, Image Compressor, 
-                    Text to Speech, PDF to Word, Color Picker, OCR, and Unit Converter.
+                    {t('about.essentialToolsList')}
                   </p>
                 </div>
               </div>
@@ -159,7 +158,7 @@ export default function AboutPage() {
           <Link to="/">
             <Button size="lg" className="gap-2">
               <Sparkle size={20} weight="fill" />
-              Explore All Tools
+              {t('common.exploreTools')}
             </Button>
           </Link>
         </div>

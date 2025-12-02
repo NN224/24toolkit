@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -10,6 +11,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function MarkdownPreviewer() {
+  const { t } = useTranslation()
+
   // Set SEO metadata
   const metadata = getPageMetadata('markdown-previewer')
   useSEO(metadata)
@@ -54,7 +57,7 @@ function hello() {
 
   const handlePreview = () => {
     if (!markdown.trim()) {
-      toast.error('Please enter markdown text')
+      toast.error(t('tools.markdownPreviewer.enterMarkdown'))
       return
     }
 
@@ -70,34 +73,34 @@ function hello() {
       })
       
       setHtml(sanitizedHtml)
-      toast.success('Markdown rendered!')
+      toast.success(t('tools.markdownPreviewer.rendered'))
     } catch (error) {
-      toast.error('Failed to render markdown')
+      toast.error(t('tools.markdownPreviewer.renderFailed'))
     }
   }
 
   const handleCopyMarkdown = async () => {
     try {
       await navigator.clipboard.writeText(markdown)
-      toast.success('Markdown copied!')
+      toast.success(t('tools.markdownPreviewer.markdownCopied'))
     } catch (err) {
-      toast.error('Failed to copy')
+      toast.error(t('tools.markdownPreviewer.copyFailed'))
     }
   }
 
   const handleCopyHTML = async () => {
     try {
       await navigator.clipboard.writeText(html)
-      toast.success('HTML copied!')
+      toast.success(t('tools.markdownPreviewer.htmlCopied'))
     } catch (err) {
-      toast.error('Failed to copy')
+      toast.error(t('tools.markdownPreviewer.copyFailed'))
     }
   }
 
   const handleClear = () => {
     setMarkdown('')
     setHtml('')
-    toast.success('Cleared')
+    toast.success(t('tools.markdownPreviewer.cleared'))
   }
 
   return (
@@ -105,18 +108,18 @@ function hello() {
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Markdown Previewer
+            {t('tools.markdownPreviewer.name')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Write Markdown and see the live HTML preview
+            {t('tools.markdownPreviewer.description')}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>Markdown Editor</CardTitle>
-              <CardDescription>Write your markdown here</CardDescription>
+              <CardTitle>{t('tools.markdownPreviewer.editor')}</CardTitle>
+              <CardDescription>{t('tools.markdownPreviewer.enterMarkdown')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <Textarea
@@ -130,11 +133,11 @@ function hello() {
               <div className="flex gap-2">
                 <Button onClick={handlePreview} className="flex-1">
                   <Eye size={18} className="mr-2" />
-                  Preview
+                  {t('tools.markdownPreviewer.preview')}
                 </Button>
                 <Button onClick={handleCopyMarkdown} variant="outline">
                   <Copy size={18} className="mr-2" />
-                  Copy MD
+                  {t('tools.common.copy')} MD
                 </Button>
                 <Button onClick={handleClear} variant="outline">
                   <Trash size={18} />
@@ -145,8 +148,8 @@ function hello() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Preview</CardTitle>
-              <CardDescription>Rendered HTML output</CardDescription>
+              <CardTitle>{t('tools.markdownPreviewer.preview')}</CardTitle>
+              <CardDescription>{t('tools.markdownPreviewer.renderedOutput')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {html ? (
@@ -162,12 +165,12 @@ function hello() {
 
                   <Button onClick={handleCopyHTML} variant="outline" className="w-full">
                     <Copy size={18} className="mr-2" />
-                    Copy HTML
+                    {t('tools.common.copy')} HTML
                   </Button>
                 </>
               ) : (
                 <div className="min-h-[500px] border-2 border-dashed border-border rounded-lg flex items-center justify-center text-muted-foreground">
-                  Preview will appear here
+                  {t('tools.markdownPreviewer.previewPlaceholder')}
                 </div>
               )}
             </CardContent>
@@ -176,7 +179,7 @@ function hello() {
 
         <Card className="mt-6">
           <CardHeader>
-            <CardTitle>Markdown Quick Reference</CardTitle>
+            <CardTitle>{t('tools.markdownPreviewer.quickReference')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">

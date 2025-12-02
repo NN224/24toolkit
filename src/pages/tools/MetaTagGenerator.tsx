@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -10,6 +11,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function MetaTagGenerator() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('meta-tag-generator')
   useSEO(metadata)
@@ -23,7 +26,7 @@ export default function MetaTagGenerator() {
 
   const generateTags = () => {
     if (!pageTitle) {
-      toast.error('Please enter at least a page title')
+      toast.error(t('tools.metaTagGenerator.enterTitleError'))
       return
     }
 
@@ -51,12 +54,12 @@ ${description ? `<meta property="twitter:description" content="${description}">`
 <meta charset="UTF-8">`
 
     setGeneratedTags(tags)
-    toast.success('Meta tags generated!')
+    toast.success(t('tools.metaTagGenerator.tagsGenerated'))
   }
 
   const copyTags = () => {
     navigator.clipboard.writeText(generatedTags)
-    toast.success('Meta tags copied to clipboard!')
+    toast.success(t('tools.metaTagGenerator.tagsCopied'))
   }
 
   return (
@@ -67,84 +70,84 @@ ${description ? `<meta property="twitter:description" content="${description}">`
             <Tag size={24} className="text-white" weight="bold" />
           </div>
           <div>
-            <h1 className="text-3xl font-semibold text-foreground">Meta Tag Generator</h1>
-            <p className="text-muted-foreground">Generate SEO-optimized meta tags for your website</p>
+            <h1 className="text-3xl font-semibold text-foreground">{t('tools.metaTagGenerator.pageTitle')}</h1>
+            <p className="text-muted-foreground">{t('tools.metaTagGenerator.subtitle')}</p>
           </div>
         </div>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Website Meta Information</CardTitle>
-          <CardDescription>Enter your website details to generate meta tags</CardDescription>
+          <CardTitle>{t('tools.metaTagGenerator.cardTitle')}</CardTitle>
+          <CardDescription>{t('tools.metaTagGenerator.cardDescription')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="page-title">Page Title *</Label>
+            <Label htmlFor="page-title">{t('tools.metaTagGenerator.pageTitleLabel')} *</Label>
             <Input
               id="page-title"
-              placeholder="e.g., My Awesome Website"
+              placeholder={t('tools.metaTagGenerator.pageTitlePlaceholder')}
               value={pageTitle}
               onChange={(e) => setPageTitle(e.target.value)}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">Meta Description</Label>
+            <Label htmlFor="description">{t('tools.metaTagGenerator.metaDescription')}</Label>
             <Textarea
               id="description"
-              placeholder="Brief description of your page (150-160 characters recommended)"
+              placeholder={t('tools.metaTagGenerator.descriptionPlaceholder')}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
             />
             <p className="text-xs text-muted-foreground">
-              {description.length} characters
+              {description.length} {t('tools.metaTagGenerator.characters')}
             </p>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="keywords">Keywords</Label>
+            <Label htmlFor="keywords">{t('tools.metaTagGenerator.keywords')}</Label>
             <Input
               id="keywords"
-              placeholder="e.g., web development, SEO, tools"
+              placeholder={t('tools.metaTagGenerator.keywordsPlaceholder')}
               value={keywords}
               onChange={(e) => setKeywords(e.target.value)}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="url">Website URL</Label>
+            <Label htmlFor="url">{t('tools.metaTagGenerator.websiteUrl')}</Label>
             <Input
               id="url"
               type="url"
-              placeholder="https://example.com"
+              placeholder={t('tools.metaTagGenerator.urlPlaceholder')}
               value={url}
               onChange={(e) => setUrl(e.target.value)}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="author">Author</Label>
+            <Label htmlFor="author">{t('tools.metaTagGenerator.author')}</Label>
             <Input
               id="author"
-              placeholder="Your name or company"
+              placeholder={t('tools.metaTagGenerator.authorPlaceholder')}
               value={author}
               onChange={(e) => setAuthor(e.target.value)}
             />
           </div>
 
           <Button onClick={generateTags} className="w-full">
-            Generate Meta Tags
+            {t('tools.metaTagGenerator.generateButton')}
           </Button>
 
           {generatedTags && (
             <div className="space-y-2 mt-4">
               <div className="flex items-center justify-between">
-                <Label>Generated Meta Tags</Label>
+                <Label>{t('tools.metaTagGenerator.generatedTags')}</Label>
                 <Button variant="ghost" size="sm" onClick={copyTags}>
                   <Copy size={16} className="mr-2" />
-                  Copy
+                  {t('tools.common.copy')}
                 </Button>
               </div>
               <div className="p-4 bg-muted rounded-lg border">
@@ -154,7 +157,7 @@ ${description ? `<meta property="twitter:description" content="${description}">`
               </div>
               <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
                 <p className="text-xs text-blue-900">
-                  💡 Copy and paste these tags inside the {'<head>'} section of your HTML document.
+                  💡 {t('tools.metaTagGenerator.copyInstructions')}
                 </p>
               </div>
             </div>

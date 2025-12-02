@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -8,6 +9,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function CountdownTimer() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('countdown-timer')
   useSEO(metadata)
@@ -58,19 +61,19 @@ export default function CountdownTimer() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Countdown Timer
+            {t('tools.countdownTimer.name')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Set a countdown timer for tasks, cooking, or time management.
+            {t('tools.countdownTimer.description')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Timer Display</CardTitle>
+              <CardTitle>{t('tools.countdownTimer.timerDisplay')}</CardTitle>
               <CardDescription>
-                Current countdown time remaining
+                {t('tools.countdownTimer.timeRemaining')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -84,17 +87,17 @@ export default function CountdownTimer() {
                 {!isRunning ? (
                   <Button onClick={startTimer} size="lg" className="gap-2">
                     <Play size={24} />
-                    Start
+                    {t('tools.countdownTimer.start')}
                   </Button>
                 ) : (
                   <Button onClick={pauseTimer} size="lg" className="gap-2" variant="secondary">
                     <Pause size={24} />
-                    Pause
+                    {t('tools.countdownTimer.pause')}
                   </Button>
                 )}
                 <Button onClick={resetTimer} size="lg" variant="outline" className="gap-2">
                   <ArrowClockwise size={24} />
-                  Reset
+                  {t('tools.common.reset')}
                 </Button>
               </div>
             </CardContent>
@@ -103,15 +106,15 @@ export default function CountdownTimer() {
           {!isRunning && timeLeft === 0 && (
             <Card>
               <CardHeader>
-                <CardTitle>Set Timer</CardTitle>
+                <CardTitle>{t('tools.countdownTimer.setTimer')}</CardTitle>
                 <CardDescription>
-                  Configure your countdown duration
+                  {t('tools.countdownTimer.configureDuration')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="minutes">Minutes</Label>
+                    <Label htmlFor="minutes">{t('tools.countdownTimer.minutes')}</Label>
                     <Input
                       id="minutes"
                       type="number"
@@ -122,7 +125,7 @@ export default function CountdownTimer() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="seconds">Seconds</Label>
+                    <Label htmlFor="seconds">{t('tools.countdownTimer.seconds')}</Label>
                     <Input
                       id="seconds"
                       type="number"
@@ -136,16 +139,16 @@ export default function CountdownTimer() {
 
                 <div className="flex gap-2">
                   <Button onClick={() => { setMinutes(1); setSeconds(0) }} variant="outline" className="flex-1">
-                    1 min
+                    {t('tools.countdownTimer.oneMin')}
                   </Button>
                   <Button onClick={() => { setMinutes(5); setSeconds(0) }} variant="outline" className="flex-1">
-                    5 min
+                    {t('tools.countdownTimer.fiveMin')}
                   </Button>
                   <Button onClick={() => { setMinutes(10); setSeconds(0) }} variant="outline" className="flex-1">
-                    10 min
+                    {t('tools.countdownTimer.tenMin')}
                   </Button>
                   <Button onClick={() => { setMinutes(25); setSeconds(0) }} variant="outline" className="flex-1">
-                    25 min
+                    {t('tools.countdownTimer.twentyFiveMin')}
                   </Button>
                 </div>
               </CardContent>

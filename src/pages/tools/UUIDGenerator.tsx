@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Copy, Sparkle } from '@phosphor-icons/react'
@@ -9,6 +10,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function UUIDGenerator() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('uuid-generator')
   useSEO(metadata)
@@ -23,7 +26,7 @@ export default function UUIDGenerator() {
       newUuids.push(uuidv4())
     }
     setUuids(newUuids)
-    toast.success(`Generated ${num} UUID${num > 1 ? 's' : ''}`)
+    toast.success(num > 1 ? t('tools.uuidGenerator.generatedPlural', { count: num }) : t('tools.uuidGenerator.generated', { count: num }))
   }
 
 
@@ -33,17 +36,17 @@ export default function UUIDGenerator() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            UUID Generator
+            {t('tools.uuidGenerator.name')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Generate unique UUIDs (v4) for your applications
+            {t('tools.uuidGenerator.description')}
           </p>
         </div>
 
         <Card className="mb-6">
           <CardHeader>
-            <CardTitle>Generate UUIDs</CardTitle>
-            <CardDescription>Create one or multiple unique identifiers</CardDescription>
+            <CardTitle>{t('tools.common.generate')} UUIDs</CardTitle>
+            <CardDescription>{t('tools.uuidGenerator.description')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex gap-2 flex-wrap">
@@ -57,7 +60,7 @@ export default function UUIDGenerator() {
                   variant={count === num ? 'default' : 'outline'}
                 >
                   <Sparkle size={16} className="mr-2" weight="fill" />
-                  Generate {num}
+                  {t('tools.common.generate')} {num}
                 </Button>
               ))}
             </div>
@@ -69,12 +72,12 @@ export default function UUIDGenerator() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle>Generated UUIDs</CardTitle>
-                  <CardDescription>{uuids.length} unique identifier{uuids.length > 1 ? 's' : ''}</CardDescription>
+                  <CardTitle>{t('tools.uuidGenerator.generated')}</CardTitle>
+                  <CardDescription>{uuids.length} UUID{uuids.length > 1 ? 's' : ''}</CardDescription>
                 </div>
-                <Button onClick={() => copyToClipboard(uuids.join('\n'), 'All UUIDs copied!')} variant="outline">
+                <Button onClick={() => copyToClipboard(uuids.join('\n'), t('tools.common.copied'))} variant="outline">
                   <Copy size={18} className="mr-2" />
-                  Copy All
+                  {t('tools.common.copy')} {t('common.viewAll').replace('View ', '')}
                 </Button>
               </div>
             </CardHeader>
@@ -89,7 +92,7 @@ export default function UUIDGenerator() {
                     <Button
                       size="sm"
                       variant="ghost"
-                      onClick={() => copyToClipboard(uuid, 'UUID copied!')}
+                      onClick={() => copyToClipboard(uuid, t('tools.common.copied'))}
                       className="opacity-0 group-hover:opacity-100 transition-opacity"
                     >
                       <Copy size={16} />
@@ -103,7 +106,7 @@ export default function UUIDGenerator() {
 
         <Card className="mt-6">
           <CardHeader>
-            <CardTitle>About UUID v4</CardTitle>
+            <CardTitle>{t('tools.uuidGenerator.version')} 4</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-2 text-sm text-muted-foreground">

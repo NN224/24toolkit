@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -10,6 +11,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function RegexTester() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('regex-tester')
   useSEO(metadata)
@@ -23,12 +26,12 @@ export default function RegexTester() {
 
   const testRegex = () => {
     if (!pattern) {
-      toast.error('Please enter a regex pattern')
+      toast.error(t('tools.regexTester.enterPatternError'))
       return
     }
 
     if (!testString) {
-      toast.error('Please enter a test string')
+      toast.error(t('tools.regexTester.enterTestStringError'))
       return
     }
 
@@ -41,15 +44,15 @@ export default function RegexTester() {
       setError('')
       
       if (found && found.length > 0) {
-        toast.success(`Found ${found.length} match${found.length > 1 ? 'es' : ''}`)
+        toast.success(`${t('tools.regexTester.matches')}: ${found.length}`)
       } else {
-        toast.info('No matches found')
+        toast.info(t('tools.regexTester.noMatches'))
       }
     } catch (err) {
       setIsValid(false)
       setError((err as Error).message)
       setMatches([])
-      toast.error('Invalid regex pattern')
+      toast.error(t('tools.regexTester.invalidPattern'))
     }
   }
 
@@ -59,7 +62,7 @@ export default function RegexTester() {
     setMatches([])
     setIsValid(true)
     setError('')
-    toast.success('Cleared')
+    toast.success(t('tools.regexTester.cleared'))
   }
 
   const highlightMatches = () => {
@@ -96,22 +99,22 @@ export default function RegexTester() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Regex Tester
+            {t('tools.regexTester.name')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Test and debug regular expressions with live pattern matching
+            {t('tools.regexTester.description')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Regex Pattern</CardTitle>
-              <CardDescription>Enter your regular expression</CardDescription>
+              <CardTitle>{t('tools.regexTester.pattern')}</CardTitle>
+              <CardDescription>{t('tools.regexTester.enterPattern')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="regex-pattern">Pattern</Label>
+                <Label htmlFor="regex-pattern">{t('tools.regexTester.pattern')}</Label>
                 <div className="flex gap-2">
                   <div className="flex-1 relative">
                     <Input
@@ -134,7 +137,7 @@ export default function RegexTester() {
                   <Input
                     value={flags}
                     onChange={(e) => setFlags(e.target.value)}
-                    placeholder="Flags"
+                    placeholder={t('tools.regexTester.flags')}
                     className="w-24 font-mono"
                   />
                 </div>
@@ -142,7 +145,7 @@ export default function RegexTester() {
                   <p className="text-sm text-red-500">{error}</p>
                 )}
                 <p className="text-xs text-muted-foreground">
-                  Common flags: g (global), i (case-insensitive), m (multiline)
+                  {t('tools.regexTester.flagsHint')}
                 </p>
               </div>
             </CardContent>
@@ -150,21 +153,21 @@ export default function RegexTester() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Test String</CardTitle>
-              <CardDescription>Enter text to test against your regex</CardDescription>
+              <CardTitle>{t('tools.regexTester.testString')}</CardTitle>
+              <CardDescription>{t('tools.regexTester.description')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <Textarea
                 id="test-string"
                 value={testString}
                 onChange={(e) => setTestString(e.target.value)}
-                placeholder="Enter text to test..."
+                placeholder={t('tools.regexTester.enterTestText')}
                 className="min-h-[150px] font-mono"
               />
 
               <div className="flex gap-2">
                 <Button onClick={testRegex} className="flex-1">
-                  Test Regex
+                  {t('tools.regexTester.testRegex')}
                 </Button>
                 <Button onClick={handleClear} variant="outline">
                   <Trash size={18} />
@@ -176,11 +179,11 @@ export default function RegexTester() {
           {(matches.length > 0 || testString) && (
             <Card>
               <CardHeader>
-                <CardTitle>Results</CardTitle>
+                <CardTitle>{t('tools.common.result')}</CardTitle>
                 <CardDescription>
                   {matches.length > 0 
-                    ? `Found ${matches.length} match${matches.length > 1 ? 'es' : ''}`
-                    : 'No matches found'
+                    ? `${t('tools.regexTester.matches')}: ${matches.length}`
+                    : t('tools.regexTester.noMatches')
                   }
                 </CardDescription>
               </CardHeader>
@@ -191,7 +194,7 @@ export default function RegexTester() {
 
                 {matches.length > 0 && (
                   <div className="space-y-2">
-                    <Label>Matches:</Label>
+                    <Label>{t('tools.regexTester.matches')}:</Label>
                     <div className="space-y-1">
                       {matches.map((match, index) => (
                         <div key={index} className="flex items-center gap-2 p-2 bg-accent rounded">
@@ -201,7 +204,7 @@ export default function RegexTester() {
                             variant="ghost"
                             onClick={async () => {
                               await navigator.clipboard.writeText(match)
-                              toast.success('Match copied!')
+                              toast.success(t('tools.regexTester.matchCopied'))
                             }}
                           >
                             <Copy size={16} />

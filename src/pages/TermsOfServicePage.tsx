@@ -1,11 +1,13 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { ArrowLeft } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function TermsOfServicePage() {
+  const { t } = useTranslation()
   // Set SEO metadata for terms of service page
   const termsMetadata = getPageMetadata('termsOfService')
   useSEO(termsMetadata)
@@ -20,8 +22,8 @@ export default function TermsOfServicePage() {
         >
           <Link to="/">
             <Button variant="ghost" className="mb-8 group">
-              <ArrowLeft size={16} className="mr-2 group-hover:-translate-x-1 transition-transform" />
-              Back to Home
+              <ArrowLeft size={16} className="ltr:mr-2 rtl:ml-2 group-hover:ltr:-translate-x-1 group-hover:rtl:translate-x-1 transition-transform" />
+              {t('common.backToHome')}
             </Button>
           </Link>
 
@@ -252,7 +254,7 @@ export default function TermsOfServicePage() {
                 size="lg" 
                 className="bg-gradient-to-r from-purple-600 to-sky-500 hover:from-purple-700 hover:to-sky-600 text-white shadow-lg hover:shadow-xl transition-all"
               >
-                Return to 24Toolkit
+                {t('legal.returnTo24Toolkit')}
               </Button>
             </Link>
           </div>

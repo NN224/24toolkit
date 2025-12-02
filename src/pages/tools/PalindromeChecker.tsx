@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -9,6 +10,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function PalindromeChecker() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('palindrome-checker')
   useSEO(metadata)
@@ -19,7 +22,7 @@ export default function PalindromeChecker() {
 
   const checkPalindrome = () => {
     if (!text.trim()) {
-      toast.error('Please enter some text')
+      toast.error(t('tools.palindromeChecker.enterTextError'))
       return
     }
 
@@ -31,9 +34,9 @@ export default function PalindromeChecker() {
     setChecked(true)
     
     if (result) {
-      toast.success('It\'s a palindrome!')
+      toast.success(t('tools.palindromeChecker.isPalindrome'))
     } else {
-      toast.error('Not a palindrome')
+      toast.error(t('tools.palindromeChecker.notPalindrome'))
     }
   }
 
@@ -41,7 +44,7 @@ export default function PalindromeChecker() {
     setText('')
     setChecked(false)
     setIsPalindrome(false)
-    toast.success('Text cleared')
+    toast.success(t('tools.common.cleared'))
   }
 
   const examples = [
@@ -58,27 +61,27 @@ export default function PalindromeChecker() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Palindrome Checker
+            {t('tools.palindromeChecker.title')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Check if a string is a palindrome (reads the same forwards and backwards).
+            {t('tools.palindromeChecker.subtitle')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Enter Your Text</CardTitle>
+              <CardTitle>{t('tools.palindromeChecker.enterYourText')}</CardTitle>
               <CardDescription>
-                Type or paste text to check if it's a palindrome
+                {t('tools.palindromeChecker.enterDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="text-input">Text to Check</Label>
+                <Label htmlFor="text-input">{t('tools.palindromeChecker.textToCheck')}</Label>
                 <Input
                   id="text-input"
-                  placeholder="Enter text to check..."
+                  placeholder={t('tools.palindromeChecker.placeholder')}
                   value={text}
                   onChange={(e) => {
                     setText(e.target.value)
@@ -99,7 +102,7 @@ export default function PalindromeChecker() {
                   disabled={!text}
                   variant="default"
                 >
-                  Check Palindrome
+                  {t('tools.palindromeChecker.checkButton')}
                 </Button>
                 <Button
                   onClick={handleClear}
@@ -107,7 +110,7 @@ export default function PalindromeChecker() {
                   className="gap-2"
                 >
                   <Trash size={16} />
-                  Clear
+                  {t('tools.common.clear')}
                 </Button>
               </div>
 
@@ -118,9 +121,9 @@ export default function PalindromeChecker() {
                       <>
                         <CheckCircle size={32} weight="fill" className="text-green-600" />
                         <div>
-                          <h3 className="text-xl font-semibold text-foreground">Yes, it's a palindrome! ✓</h3>
+                          <h3 className="text-xl font-semibold text-foreground">{t('tools.palindromeChecker.yesResult')}</h3>
                           <p className="text-sm text-muted-foreground mt-1">
-                            This text reads the same forwards and backwards
+                            {t('tools.palindromeChecker.yesDescription')}
                           </p>
                         </div>
                       </>
@@ -128,9 +131,9 @@ export default function PalindromeChecker() {
                       <>
                         <XCircle size={32} weight="fill" className="text-red-600" />
                         <div>
-                          <h3 className="text-xl font-semibold text-foreground">Not a palindrome ✗</h3>
+                          <h3 className="text-xl font-semibold text-foreground">{t('tools.palindromeChecker.noResult')}</h3>
                           <p className="text-sm text-muted-foreground mt-1">
-                            This text does not read the same forwards and backwards
+                            {t('tools.palindromeChecker.noDescription')}
                           </p>
                         </div>
                       </>
@@ -143,9 +146,9 @@ export default function PalindromeChecker() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Try These Examples</CardTitle>
+              <CardTitle>{t('tools.palindromeChecker.tryExamples')}</CardTitle>
               <CardDescription>
-                Click any example to test it
+                {t('tools.palindromeChecker.clickExample')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -169,14 +172,14 @@ export default function PalindromeChecker() {
 
           <Card className="bg-muted/30">
             <CardHeader>
-              <CardTitle>What is a Palindrome?</CardTitle>
+              <CardTitle>{t('tools.palindromeChecker.whatIsPalindrome')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 text-sm text-muted-foreground">
               <p>
-                A palindrome is a word, phrase, number, or other sequence of characters that reads the same forward and backward (ignoring spaces, punctuation, and capitalization).
+                {t('tools.palindromeChecker.palindromeExplanation')}
               </p>
               <p className="font-medium text-foreground">
-                Examples: "radar", "level", "A Santa at NASA", "12321"
+                {t('tools.palindromeChecker.examplesText')}
               </p>
             </CardContent>
           </Card>

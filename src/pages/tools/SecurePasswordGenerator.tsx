@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -16,6 +17,7 @@ export default function SecurePasswordGenerator() {
   const metadata = getPageMetadata('secure-password-generator')
   useSEO(metadata)
 
+  const { t } = useTranslation()
   const [password, setPassword] = useState('')
   const [length, setLength] = useState(20)
   const [options, setOptions] = useState({
@@ -44,7 +46,7 @@ export default function SecurePasswordGenerator() {
     }
 
     if (charset === '') {
-      toast.error('Please select at least one character type')
+      toast.error(t('tools.securePasswordGenerator.selectCharTypeError'))
       return
     }
 
@@ -81,7 +83,7 @@ export default function SecurePasswordGenerator() {
     }
 
     setPassword(newPassword)
-    toast.success('Secure password generated!')
+    toast.success(t('tools.securePasswordGenerator.passwordGenerated'))
   }
 
   const calculateEntropy = () => {
@@ -101,9 +103,9 @@ export default function SecurePasswordGenerator() {
     
     try {
       await navigator.clipboard.writeText(password)
-      toast.success('Password copied to clipboard!')
+      toast.success(t('tools.securePasswordGenerator.passwordCopied'))
     } catch {
-      toast.error('Failed to copy password')
+      toast.error(t('tools.securePasswordGenerator.copyFailed'))
     }
   }
 
@@ -114,19 +116,19 @@ export default function SecurePasswordGenerator() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Secure Password Generator Pro
+            {t('tools.securePasswordGenerator.title')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Generate cryptographically secure passwords with advanced customization options.
+            {t('tools.securePasswordGenerator.subtitle')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Generated Password</CardTitle>
+              <CardTitle>{t('tools.securePasswordGenerator.generatedPassword')}</CardTitle>
               <CardDescription>
-                Your cryptographically secure password
+                {t('tools.securePasswordGenerator.yourSecurePassword')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -135,7 +137,7 @@ export default function SecurePasswordGenerator() {
                   id="password-output"
                   value={password}
                   readOnly
-                  placeholder="Click 'Generate Password' to create"
+                  placeholder={t('tools.securePasswordGenerator.clickGenerate')}
                   className="font-mono text-lg"
                 />
                 <Button
@@ -152,13 +154,13 @@ export default function SecurePasswordGenerator() {
               {password && (
                 <div className="flex items-center gap-4">
                   <div>
-                    <span className="text-sm text-muted-foreground">Entropy: </span>
+                    <span className="text-sm text-muted-foreground">{t('tools.securePasswordGenerator.entropy')} </span>
                     <Badge variant="default" className="bg-purple-500">
-                      {entropy} bits
+                      {entropy} {t('tools.securePasswordGenerator.bits')}
                     </Badge>
                   </div>
                   <div>
-                    <span className="text-sm text-muted-foreground">Strength: </span>
+                    <span className="text-sm text-muted-foreground">{t('tools.securePasswordGenerator.strength')} </span>
                     <Badge 
                       className={
                         entropy >= 80 ? 'bg-green-500' :
@@ -167,9 +169,9 @@ export default function SecurePasswordGenerator() {
                         'bg-red-500'
                       }
                     >
-                      {entropy >= 80 ? 'Very Strong' :
-                       entropy >= 60 ? 'Strong' :
-                       entropy >= 40 ? 'Good' : 'Fair'}
+                      {entropy >= 80 ? t('tools.securePasswordGenerator.veryStrong') :
+                       entropy >= 60 ? t('tools.securePasswordGenerator.strong') :
+                       entropy >= 40 ? t('tools.securePasswordGenerator.good') : t('tools.securePasswordGenerator.fair')}
                     </Badge>
                   </div>
                 </div>
@@ -179,18 +181,18 @@ export default function SecurePasswordGenerator() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Advanced Options</CardTitle>
+              <CardTitle>{t('tools.securePasswordGenerator.advancedOptions')}</CardTitle>
               <CardDescription>
-                Customize your password requirements
+                {t('tools.securePasswordGenerator.customizeRequirements')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-4">
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <Label htmlFor="length-slider">Password Length</Label>
+                    <Label htmlFor="length-slider">{t('tools.securePasswordGenerator.passwordLength')}</Label>
                     <span className="text-sm font-medium text-muted-foreground">
-                      {length} characters
+                      {length} {t('tools.securePasswordGenerator.characters')}
                     </span>
                   </div>
                   <Slider
@@ -206,7 +208,7 @@ export default function SecurePasswordGenerator() {
                 <div className="space-y-3 pt-2">
                   <div className="flex items-center justify-between">
                     <Label htmlFor="uppercase" className="cursor-pointer">
-                      Uppercase Letters (A-Z)
+                      {t('tools.securePasswordGenerator.uppercase')}
                     </Label>
                     <Switch
                       id="uppercase"
@@ -219,7 +221,7 @@ export default function SecurePasswordGenerator() {
 
                   <div className="flex items-center justify-between">
                     <Label htmlFor="lowercase" className="cursor-pointer">
-                      Lowercase Letters (a-z)
+                      {t('tools.securePasswordGenerator.lowercase')}
                     </Label>
                     <Switch
                       id="lowercase"
@@ -232,7 +234,7 @@ export default function SecurePasswordGenerator() {
 
                   <div className="flex items-center justify-between">
                     <Label htmlFor="numbers" className="cursor-pointer">
-                      Numbers (0-9)
+                      {t('tools.securePasswordGenerator.numbers')}
                     </Label>
                     <Switch
                       id="numbers"
@@ -245,7 +247,7 @@ export default function SecurePasswordGenerator() {
 
                   <div className="flex items-center justify-between">
                     <Label htmlFor="symbols" className="cursor-pointer">
-                      Symbols (!@#$%^&*)
+                      {t('tools.securePasswordGenerator.symbols')}
                     </Label>
                     <Switch
                       id="symbols"
@@ -258,7 +260,7 @@ export default function SecurePasswordGenerator() {
 
                   <div className="flex items-center justify-between">
                     <Label htmlFor="ambiguous" className="cursor-pointer">
-                      Include Ambiguous Characters (0,O,l,I)
+                      {t('tools.securePasswordGenerator.ambiguous')}
                     </Label>
                     <Switch
                       id="ambiguous"
@@ -271,7 +273,7 @@ export default function SecurePasswordGenerator() {
 
                   <div className="flex items-center justify-between">
                     <Label htmlFor="pronounceable" className="cursor-pointer">
-                      Make Pronounceable
+                      {t('tools.securePasswordGenerator.pronounceable')}
                     </Label>
                     <Switch
                       id="pronounceable"
@@ -286,7 +288,7 @@ export default function SecurePasswordGenerator() {
 
               <Button onClick={generatePassword} className="w-full gap-2" size="lg">
                 <Sparkle size={20} />
-                Generate Secure Password
+                {t('tools.securePasswordGenerator.generateSecure')}
               </Button>
             </CardContent>
           </Card>

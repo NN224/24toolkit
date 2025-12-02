@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -10,6 +11,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function JSONCSVConverter() {
+  const { t } = useTranslation()
+
   // Set SEO metadata
   const metadata = getPageMetadata('json-csv-converter')
   useSEO(metadata)
@@ -19,7 +22,7 @@ export default function JSONCSVConverter() {
 
   const convertJSONToCSV = () => {
     if (!input.trim()) {
-      toast.error('Please enter JSON data')
+      toast.error(t('tools.jsonCsvConverter.enterJsonData'))
       return
     }
 
@@ -29,15 +32,15 @@ export default function JSONCSVConverter() {
       
       const csv = Papa.unparse(dataArray)
       setOutput(csv)
-      toast.success('Converted JSON to CSV!')
+      toast.success(t('tools.jsonCsvConverter.convertedJsonToCsv'))
     } catch (err) {
-      toast.error('Invalid JSON format')
+      toast.error(t('tools.jsonCsvConverter.invalidJsonFormat'))
     }
   }
 
   const convertCSVToJSON = () => {
     if (!input.trim()) {
-      toast.error('Please enter CSV data')
+      toast.error(t('tools.jsonCsvConverter.enterCsvData'))
       return
     }
 
@@ -48,15 +51,15 @@ export default function JSONCSVConverter() {
       })
 
       if (result.errors.length > 0) {
-        toast.error('Invalid CSV format')
+        toast.error(t('tools.jsonCsvConverter.invalidCsvFormat'))
         return
       }
 
       const json = JSON.stringify(result.data, null, 2)
       setOutput(json)
-      toast.success('Converted CSV to JSON!')
+      toast.success(t('tools.jsonCsvConverter.convertedCsvToJson'))
     } catch (err) {
-      toast.error('Failed to parse CSV')
+      toast.error(t('tools.jsonCsvConverter.failedToParseCsv'))
     }
   }
 
@@ -65,16 +68,16 @@ export default function JSONCSVConverter() {
     
     try {
       await navigator.clipboard.writeText(output)
-      toast.success('Copied to clipboard!')
+      toast.success(t('tools.common.copied'))
     } catch (err) {
-      toast.error('Failed to copy')
+      toast.error(t('tools.jsonCsvConverter.failedToCopy'))
     }
   }
 
   const handleClear = () => {
     setInput('')
     setOutput('')
-    toast.success('Cleared all fields')
+    toast.success(t('tools.jsonCsvConverter.clearedAllFields'))
   }
 
   return (
@@ -82,25 +85,25 @@ export default function JSONCSVConverter() {
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            JSON ⇄ CSV Converter
+            {t('tools.jsonCsvConverter.title')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Convert between JSON and CSV formats seamlessly with validation and error handling.
+            {t('tools.jsonCsvConverter.subtitle')}
           </p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-6 mb-6">
           <Card>
             <CardHeader>
-              <CardTitle>Input</CardTitle>
+              <CardTitle>{t('tools.common.input')}</CardTitle>
               <CardDescription>
-                Paste your JSON or CSV data here
+                {t('tools.jsonCsvConverter.inputDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Textarea
                 id="input-data"
-                placeholder="Paste your JSON or CSV data here..."
+                placeholder={t('tools.jsonCsvConverter.inputPlaceholder')}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 className="min-h-[400px] font-mono text-sm resize-y"
@@ -110,15 +113,15 @@ export default function JSONCSVConverter() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Output</CardTitle>
+              <CardTitle>{t('tools.common.output')}</CardTitle>
               <CardDescription>
-                Converted data will appear here
+                {t('tools.jsonCsvConverter.outputDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <Textarea
                 id="output-data"
-                placeholder="Converted data will appear here..."
+                placeholder={t('tools.jsonCsvConverter.outputPlaceholder')}
                 value={output}
                 readOnly
                 className="min-h-[400px] font-mono text-sm resize-y"
@@ -132,7 +135,7 @@ export default function JSONCSVConverter() {
                   className="gap-2"
                 >
                   <Copy size={16} />
-                  Copy Result
+                  {t('tools.jsonCsvConverter.copyResult')}
                 </Button>
               </div>
             </CardContent>
@@ -146,7 +149,7 @@ export default function JSONCSVConverter() {
             className="gap-2 w-full sm:w-auto"
             size="lg"
           >
-            <span className="hidden sm:inline">Convert JSON</span>
+            <span className="hidden sm:inline">{t('tools.jsonCsvConverter.convertJson')}</span>
             <span className="sm:hidden">JSON</span>
             <ArrowRight size={20} weight="bold" />
             <span className="hidden sm:inline">CSV</span>
@@ -160,7 +163,7 @@ export default function JSONCSVConverter() {
             className="gap-2 w-full sm:w-auto"
             size="lg"
           >
-            <span className="hidden sm:inline">Convert CSV</span>
+            <span className="hidden sm:inline">{t('tools.jsonCsvConverter.convertCsv')}</span>
             <span className="sm:hidden">CSV</span>
             <ArrowLeft size={20} weight="bold" />
             <span className="hidden sm:inline">JSON</span>
@@ -175,18 +178,18 @@ export default function JSONCSVConverter() {
             size="lg"
           >
             <Trash size={20} />
-            Clear All
+            {t('tools.jsonCsvConverter.clearAll')}
           </Button>
         </div>
 
         <Card className="mt-6 border-accent/20 bg-accent/5">
           <CardContent className="pt-6">
             <div className="text-sm space-y-2">
-              <p className="font-medium text-foreground">Tips:</p>
+              <p className="font-medium text-foreground">{t('tools.jsonCsvConverter.tips')}:</p>
               <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-                <li>JSON arrays of objects work best for conversion to CSV</li>
-                <li>CSV must have headers in the first row for proper JSON conversion</li>
-                <li>Complex nested JSON structures may not convert cleanly to CSV</li>
+                <li>{t('tools.jsonCsvConverter.tip1')}</li>
+                <li>{t('tools.jsonCsvConverter.tip2')}</li>
+                <li>{t('tools.jsonCsvConverter.tip3')}</li>
               </ul>
             </div>
           </CardContent>

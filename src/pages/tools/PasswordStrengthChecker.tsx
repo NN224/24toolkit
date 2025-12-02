@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -10,6 +11,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function PasswordStrengthChecker() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('password-strength-checker')
   useSEO(metadata)
@@ -33,53 +36,53 @@ export default function PasswordStrengthChecker() {
     }
 
     if (checks.length) score += 25
-    else feedback.push('Use at least 12 characters')
+    else feedback.push(t('tools.passwordStrengthChecker.feedback.useLength'))
 
     if (checks.uppercase) score += 10
-    else feedback.push('Add uppercase letters (A-Z)')
+    else feedback.push(t('tools.passwordStrengthChecker.feedback.addUppercase'))
 
     if (checks.lowercase) score += 10
-    else feedback.push('Add lowercase letters (a-z)')
+    else feedback.push(t('tools.passwordStrengthChecker.feedback.addLowercase'))
 
     if (checks.numbers) score += 10
-    else feedback.push('Include numbers (0-9)')
+    else feedback.push(t('tools.passwordStrengthChecker.feedback.includeNumbers'))
 
     if (checks.symbols) score += 15
-    else feedback.push('Include special characters (!@#$%)')
+    else feedback.push(t('tools.passwordStrengthChecker.feedback.includeSymbols'))
 
     if (checks.noCommon) score += 15
-    else feedback.push('Avoid common passwords')
+    else feedback.push(t('tools.passwordStrengthChecker.feedback.avoidCommon'))
 
     if (checks.noSequential) score += 10
-    else feedback.push('Avoid sequential patterns (123, abc)')
+    else feedback.push(t('tools.passwordStrengthChecker.feedback.avoidSequential'))
 
     if (checks.noRepeated) score += 5
-    else feedback.push('Avoid repeated characters (aaa, 111)')
+    else feedback.push(t('tools.passwordStrengthChecker.feedback.avoidRepeated'))
 
     let strength: 'weak' | 'fair' | 'good' | 'strong' = 'weak'
     let icon = ShieldSlash
     let color = 'text-red-500'
     let bgColor = 'bg-red-500'
-    let label = 'Weak'
+    let label = t('tools.passwordStrengthChecker.weak')
 
     if (score >= 80) {
       strength = 'strong'
       icon = ShieldCheck
       color = 'text-green-500'
       bgColor = 'bg-green-500'
-      label = 'Strong'
+      label = t('tools.passwordStrengthChecker.strong')
     } else if (score >= 60) {
       strength = 'good'
       icon = ShieldCheck
       color = 'text-blue-500'
       bgColor = 'bg-blue-500'
-      label = 'Good'
+      label = t('tools.passwordStrengthChecker.good')
     } else if (score >= 40) {
       strength = 'fair'
       icon = ShieldWarning
       color = 'text-yellow-500'
       bgColor = 'bg-yellow-500'
-      label = 'Fair'
+      label = t('tools.passwordStrengthChecker.fair')
     }
 
     return { score, strength, feedback, checks, icon, color, bgColor, label }
@@ -92,30 +95,30 @@ export default function PasswordStrengthChecker() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Password Strength Checker
+            {t('tools.passwordStrengthChecker.title')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Test password strength and get recommendations for creating secure passwords.
+            {t('tools.passwordStrengthChecker.subtitle')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Enter Password</CardTitle>
+              <CardTitle>{t('tools.passwordStrengthChecker.enterPassword')}</CardTitle>
               <CardDescription>
-                Type or paste a password to analyze its strength
+                {t('tools.passwordStrengthChecker.enterPasswordDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="password-input">Password</Label>
+                <Label htmlFor="password-input">{t('tools.passwordStrengthChecker.password')}</Label>
                 <Input
                   id="password-input"
                   type="text"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter password to check..."
+                  placeholder={t('tools.passwordStrengthChecker.placeholder')}
                   className="font-mono text-lg"
                 />
               </div>
@@ -126,9 +129,9 @@ export default function PasswordStrengthChecker() {
                     <div className="flex items-center gap-3">
                       <analysis.icon size={32} className={analysis.color} />
                       <div>
-                        <p className="font-semibold text-lg">{analysis.label} Password</p>
+                        <p className="font-semibold text-lg">{analysis.label} {t('tools.passwordStrengthChecker.password')}</p>
                         <p className="text-sm text-muted-foreground">
-                          Strength Score: {analysis.score}/100
+                          {t('tools.passwordStrengthChecker.strengthScore')}: {analysis.score}/100
                         </p>
                       </div>
                     </div>
@@ -150,9 +153,9 @@ export default function PasswordStrengthChecker() {
             <>
               <Card>
                 <CardHeader>
-                  <CardTitle>Security Checks</CardTitle>
+                  <CardTitle>{t('tools.passwordStrengthChecker.securityChecks')}</CardTitle>
                   <CardDescription>
-                    Password requirements and validation
+                    {t('tools.passwordStrengthChecker.securityChecksDescription')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
@@ -163,7 +166,7 @@ export default function PasswordStrengthChecker() {
                       <XCircle size={20} className="text-red-500" />
                     )}
                     <span className={analysis.checks.length ? 'text-foreground' : 'text-muted-foreground'}>
-                      At least 12 characters
+                      {t('tools.passwordStrengthChecker.checks.length')}
                     </span>
                   </div>
 
@@ -174,7 +177,7 @@ export default function PasswordStrengthChecker() {
                       <XCircle size={20} className="text-red-500" />
                     )}
                     <span className={analysis.checks.uppercase ? 'text-foreground' : 'text-muted-foreground'}>
-                      Contains uppercase letters (A-Z)
+                      {t('tools.passwordStrengthChecker.checks.uppercase')}
                     </span>
                   </div>
 
@@ -185,7 +188,7 @@ export default function PasswordStrengthChecker() {
                       <XCircle size={20} className="text-red-500" />
                     )}
                     <span className={analysis.checks.lowercase ? 'text-foreground' : 'text-muted-foreground'}>
-                      Contains lowercase letters (a-z)
+                      {t('tools.passwordStrengthChecker.checks.lowercase')}
                     </span>
                   </div>
 
@@ -196,7 +199,7 @@ export default function PasswordStrengthChecker() {
                       <XCircle size={20} className="text-red-500" />
                     )}
                     <span className={analysis.checks.numbers ? 'text-foreground' : 'text-muted-foreground'}>
-                      Contains numbers (0-9)
+                      {t('tools.passwordStrengthChecker.checks.numbers')}
                     </span>
                   </div>
 
@@ -207,7 +210,7 @@ export default function PasswordStrengthChecker() {
                       <XCircle size={20} className="text-red-500" />
                     )}
                     <span className={analysis.checks.symbols ? 'text-foreground' : 'text-muted-foreground'}>
-                      Contains special characters (!@#$%)
+                      {t('tools.passwordStrengthChecker.checks.symbols')}
                     </span>
                   </div>
 
@@ -218,7 +221,7 @@ export default function PasswordStrengthChecker() {
                       <XCircle size={20} className="text-red-500" />
                     )}
                     <span className={analysis.checks.noCommon ? 'text-foreground' : 'text-muted-foreground'}>
-                      Not a common password
+                      {t('tools.passwordStrengthChecker.checks.noCommon')}
                     </span>
                   </div>
 
@@ -229,7 +232,7 @@ export default function PasswordStrengthChecker() {
                       <XCircle size={20} className="text-red-500" />
                     )}
                     <span className={analysis.checks.noSequential ? 'text-foreground' : 'text-muted-foreground'}>
-                      No sequential patterns
+                      {t('tools.passwordStrengthChecker.checks.noSequential')}
                     </span>
                   </div>
 
@@ -240,7 +243,7 @@ export default function PasswordStrengthChecker() {
                       <XCircle size={20} className="text-red-500" />
                     )}
                     <span className={analysis.checks.noRepeated ? 'text-foreground' : 'text-muted-foreground'}>
-                      No repeated characters
+                      {t('tools.passwordStrengthChecker.checks.noRepeated')}
                     </span>
                   </div>
                 </CardContent>
@@ -250,7 +253,7 @@ export default function PasswordStrengthChecker() {
                 <Alert variant={analysis.strength === 'weak' ? 'destructive' : 'default'}>
                   <ShieldWarning size={20} />
                   <AlertDescription>
-                    <p className="font-semibold mb-2">Suggestions to improve:</p>
+                    <p className="font-semibold mb-2">{t('tools.passwordStrengthChecker.suggestionsToImprove')}</p>
                     <ul className="list-disc list-inside space-y-1">
                       {analysis.feedback.map((tip, i) => (
                         <li key={i}>{tip}</li>

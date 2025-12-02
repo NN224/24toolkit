@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -12,6 +13,7 @@ export default function DailyPlannerTemplate() {
   const metadata = getPageMetadata('daily-planner-template')
   useSEO(metadata)
 
+  const { t } = useTranslation()
   const [date, setDate] = useState(new Date().toISOString().split('T')[0])
 
   const generateTemplate = () => {
@@ -70,9 +72,9 @@ _____________________________________`
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(template)
-      toast.success('Daily planner copied to clipboard!')
+      toast.success(t('tools.dailyPlannerTemplate.templateCopied'))
     } catch {
-      toast.error('Failed to copy template')
+      toast.error(t('tools.dailyPlannerTemplate.copyFailed'))
     }
   }
 
@@ -81,19 +83,19 @@ _____________________________________`
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Daily Planner Template Generator
+            {t('tools.dailyPlannerTemplate.title')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Generate structured daily planner templates for productivity.
+            {t('tools.dailyPlannerTemplate.subtitle')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Select Date</CardTitle>
+              <CardTitle>{t('tools.dailyPlannerTemplate.selectDate')}</CardTitle>
               <CardDescription>
-                Choose the date for your daily planner
+                {t('tools.dailyPlannerTemplate.selectDateDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -108,9 +110,9 @@ _____________________________________`
 
           <Card>
             <CardHeader>
-              <CardTitle>Daily Planner Template</CardTitle>
+              <CardTitle>{t('tools.dailyPlannerTemplate.dailyPlannerTemplate')}</CardTitle>
               <CardDescription>
-                Copy and paste this template to start your day
+                {t('tools.dailyPlannerTemplate.copyAndPaste')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -122,7 +124,7 @@ _____________________________________`
 
               <Button onClick={handleCopy} className="w-full gap-2" size="lg">
                 <Copy size={20} />
-                Copy Template
+                {t('tools.dailyPlannerTemplate.copyTemplate')}
               </Button>
             </CardContent>
           </Card>

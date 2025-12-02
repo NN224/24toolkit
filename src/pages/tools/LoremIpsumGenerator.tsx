@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
@@ -18,6 +19,8 @@ const loremParagraphs = [
 ]
 
 export default function LoremIpsumGenerator() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('lorem-ipsum-generator')
   useSEO(metadata)
@@ -32,7 +35,7 @@ export default function LoremIpsumGenerator() {
       generated.push(loremParagraphs[i % loremParagraphs.length])
     }
     setOutput(generated.join('\n\n'))
-    toast.success(`Generated ${paragraphs} ${paragraphs === 1 ? 'paragraph' : 'paragraphs'}!`)
+    toast.success(t('tools.loremIpsumGenerator.generated', { count: paragraphs }))
   }
 
 
@@ -42,24 +45,24 @@ export default function LoremIpsumGenerator() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Lorem Ipsum Generator
+            {t('tools.loremIpsumGenerator.name')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Generate placeholder Lorem Ipsum text for your designs and mockups.
+            {t('tools.loremIpsumGenerator.description')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Generator Settings</CardTitle>
+              <CardTitle>{t('tools.loremIpsumGenerator.options')}</CardTitle>
               <CardDescription>
-                Choose how many paragraphs to generate
+                {t('tools.loremIpsumGenerator.paragraphs')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="paragraphs">Number of Paragraphs</Label>
+                <Label htmlFor="paragraphs">{t('tools.loremIpsumGenerator.paragraphs')}</Label>
                 <select
                   id="paragraphs"
                   value={paragraphs}
@@ -67,14 +70,14 @@ export default function LoremIpsumGenerator() {
                   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 >
                   {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
-                    <option key={num} value={num}>{num} {num === 1 ? 'paragraph' : 'paragraphs'}</option>
+                    <option key={num} value={num}>{num}</option>
                   ))}
                 </select>
               </div>
 
               <Button onClick={generateLorem} className="w-full gap-2" size="lg">
                 <FileText size={20} />
-                Generate Lorem Ipsum
+                {t('tools.loremIpsumGenerator.generate')}
               </Button>
             </CardContent>
           </Card>
@@ -82,9 +85,9 @@ export default function LoremIpsumGenerator() {
           {output && (
             <Card>
               <CardHeader>
-                <CardTitle>Generated Text</CardTitle>
+                <CardTitle>{t('tools.loremIpsumGenerator.generatedText')}</CardTitle>
                 <CardDescription>
-                  Your Lorem Ipsum placeholder text
+                  {t('tools.loremIpsumGenerator.description')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -94,9 +97,9 @@ export default function LoremIpsumGenerator() {
                   className="min-h-[300px] font-serif"
                 />
 
-                <Button onClick={() => copyToClipboard(output, 'Lorem Ipsum copied to clipboard!')} variant="outline" className="w-full gap-2">
+                <Button onClick={() => copyToClipboard(output, t('tools.common.copied'))} variant="outline" className="w-full gap-2">
                   <Copy size={20} />
-                  Copy to Clipboard
+                  {t('tools.common.copy')}
                 </Button>
               </CardContent>
             </Card>

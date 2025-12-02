@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
@@ -24,6 +25,8 @@ const lastNames = [
 ]
 
 export default function RandomNameGenerator() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('random-name-generator')
   useSEO(metadata)
@@ -39,15 +42,15 @@ export default function RandomNameGenerator() {
       generated.push(`${firstName} ${lastName}`)
     }
     setNames(generated)
-    toast.success(`Generated ${count} random names!`)
+    toast.success(t('tools.common.success'))
   }
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(names.join('\n'))
-      toast.success('Names copied to clipboard!')
+      toast.success(t('tools.common.copied'))
     } catch {
-      toast.error('Failed to copy names')
+      toast.error(t('tools.common.error'))
     }
   }
 
@@ -56,24 +59,24 @@ export default function RandomNameGenerator() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Random Name Generator
+            {t('tools.randomNameGenerator.name')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Generate random names for testing, characters, or placeholder content.
+            {t('tools.randomNameGenerator.description')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Generator Settings</CardTitle>
+              <CardTitle>{t('tools.common.settings')}</CardTitle>
               <CardDescription>
-                Configure how many names to generate
+                {t('tools.randomNameGenerator.description')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="count">Number of Names</Label>
+                <Label htmlFor="count">{t('tools.randomNumberPicker.count')}</Label>
                 <select
                   id="count"
                   value={count}
@@ -90,7 +93,7 @@ export default function RandomNameGenerator() {
 
               <Button onClick={generateNames} className="w-full gap-2" size="lg">
                 <Sparkle size={20} />
-                Generate Names
+                {t('tools.common.generate')}
               </Button>
             </CardContent>
           </Card>
@@ -98,9 +101,9 @@ export default function RandomNameGenerator() {
           {names.length > 0 && (
             <Card>
               <CardHeader>
-                <CardTitle>Generated Names</CardTitle>
+                <CardTitle>{t('tools.common.result')}</CardTitle>
                 <CardDescription>
-                  {names.length} random {names.length === 1 ? 'name' : 'names'}
+                  {names.length} {t('tools.randomNameGenerator.name').toLowerCase()}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -116,7 +119,7 @@ export default function RandomNameGenerator() {
 
                 <Button onClick={handleCopy} variant="outline" className="w-full gap-2">
                   <Copy size={20} />
-                  Copy All Names
+                  {t('tools.common.copy')}
                 </Button>
               </CardContent>
             </Card>

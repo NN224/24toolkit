@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -10,6 +11,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function RandomNumberPicker() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('random-number-picker')
   useSEO(metadata)
@@ -22,7 +25,7 @@ export default function RandomNumberPicker() {
 
   const generateNumber = () => {
     if (min >= max) {
-      toast.error('Minimum must be less than maximum')
+      toast.error(t('tools.randomNumberPicker.minLessThanMax'))
       return
     }
 
@@ -30,7 +33,7 @@ export default function RandomNumberPicker() {
       const random = Math.floor(Math.random() * (max - min + 1)) + min
       setResult(random)
       setResults([])
-      toast.success('Random number generated!')
+      toast.success(t('tools.randomNumberPicker.numberGenerated'))
     } else {
       const generated: number[] = []
       for (let i = 0; i < count; i++) {
@@ -39,7 +42,7 @@ export default function RandomNumberPicker() {
       }
       setResults(generated)
       setResult(null)
-      toast.success(`Generated ${count} random numbers!`)
+      toast.success(t('tools.randomNumberPicker.numbersGenerated', { count }))
     }
   }
 
@@ -48,25 +51,25 @@ export default function RandomNumberPicker() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Random Number Picker
+            {t('tools.randomNumberPicker.name')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Generate random numbers within a custom range for games, draws, or testing.
+            {t('tools.randomNumberPicker.subtitle')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Number Range</CardTitle>
+              <CardTitle>{t('tools.randomNumberPicker.numberRange')}</CardTitle>
               <CardDescription>
-                Set the minimum and maximum values
+                {t('tools.randomNumberPicker.rangeDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="min">Minimum</Label>
+                  <Label htmlFor="min">{t('tools.randomNumberPicker.min')}</Label>
                   <Input
                     id="min"
                     type="number"
@@ -76,7 +79,7 @@ export default function RandomNumberPicker() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="max">Maximum</Label>
+                  <Label htmlFor="max">{t('tools.randomNumberPicker.max')}</Label>
                   <Input
                     id="max"
                     type="number"
@@ -87,23 +90,23 @@ export default function RandomNumberPicker() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="count">How many numbers?</Label>
+                <Label htmlFor="count">{t('tools.randomNumberPicker.howManyNumbers')}</Label>
                 <select
                   id="count"
                   value={count}
                   onChange={(e) => setCount(Number(e.target.value))}
                   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 >
-                  <option value={1}>1 number</option>
-                  <option value={5}>5 numbers</option>
-                  <option value={10}>10 numbers</option>
-                  <option value={20}>20 numbers</option>
+                  <option value={1}>{t('tools.randomNumberPicker.oneNumber')}</option>
+                  <option value={5}>{t('tools.randomNumberPicker.fiveNumbers')}</option>
+                  <option value={10}>{t('tools.randomNumberPicker.tenNumbers')}</option>
+                  <option value={20}>{t('tools.randomNumberPicker.twentyNumbers')}</option>
                 </select>
               </div>
 
               <Button onClick={generateNumber} className="w-full gap-2" size="lg">
                 <Sparkle size={20} />
-                Pick Random {count === 1 ? 'Number' : 'Numbers'}
+                {count === 1 ? t('tools.randomNumberPicker.pickRandomNumber') : t('tools.randomNumberPicker.pickRandomNumbers')}
               </Button>
             </CardContent>
           </Card>
@@ -132,9 +135,9 @@ export default function RandomNumberPicker() {
           {results.length > 0 && (
             <Card>
               <CardHeader>
-                <CardTitle>Generated Numbers</CardTitle>
+                <CardTitle>{t('tools.randomNumberPicker.generatedNumbers')}</CardTitle>
                 <CardDescription>
-                  Your {results.length} random numbers
+                  {t('tools.randomNumberPicker.yourRandomNumbers', { count: results.length })}
                 </CardDescription>
               </CardHeader>
               <CardContent>

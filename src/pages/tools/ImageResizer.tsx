@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -9,6 +10,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function ImageResizer() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('image-resizer')
   useSEO(metadata)
@@ -26,7 +29,7 @@ export default function ImageResizer() {
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      toast.error('Please select an image file')
+      toast.error(t('tools.common.pleaseSelectImage'))
       return
     }
 
@@ -43,7 +46,7 @@ export default function ImageResizer() {
       setResizedImage(null)
     }
     reader.readAsDataURL(file)
-    toast.success('Image loaded!')
+    toast.success(t('tools.common.imageLoaded'))
   }
 
   const handleWidthChange = (value: string) => {
@@ -66,12 +69,12 @@ export default function ImageResizer() {
 
   const handleResize = () => {
     if (!image) {
-      toast.error('Please upload an image first')
+      toast.error(t('tools.common.pleaseUploadImage'))
       return
     }
 
     if (!width || !height) {
-      toast.error('Please enter width and height')
+      toast.error(t('tools.imageResizer.enterDimensions'))
       return
     }
 
@@ -86,7 +89,7 @@ export default function ImageResizer() {
         ctx.drawImage(img, 0, 0, parseInt(width), parseInt(height))
         const resized = canvas.toDataURL('image/png')
         setResizedImage(resized)
-        toast.success('Image resized!')
+        toast.success(t('tools.imageResizer.resized'))
       }
     }
     img.src = image
@@ -99,7 +102,7 @@ export default function ImageResizer() {
     link.download = `resized-${width}x${height}.png`
     link.href = resizedImage
     link.click()
-    toast.success('Image downloaded!')
+    toast.success(t('tools.common.downloaded'))
   }
 
   const handleClear = () => {
@@ -109,7 +112,7 @@ export default function ImageResizer() {
     setHeight('')
     setOriginalDimensions({ width: 0, height: 0 })
     if (fileInputRef.current) fileInputRef.current.value = ''
-    toast.success('Cleared')
+    toast.success(t('tools.common.cleared'))
   }
 
   return (
@@ -117,18 +120,18 @@ export default function ImageResizer() {
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Image Resizer
+            {t('tools.imageResizer.name')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Resize images to custom dimensions
+            {t('tools.imageResizer.description')}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>Upload & Configure</CardTitle>
-              <CardDescription>Select image and set dimensions</CardDescription>
+              <CardTitle>{t('tools.imageResizer.uploadConfigure')}</CardTitle>
+              <CardDescription>{t('tools.imageResizer.selectImageDimensions')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <input
@@ -146,7 +149,7 @@ export default function ImageResizer() {
                 className="w-full"
               >
                 <Upload size={18} className="mr-2" />
-                Upload Image
+                {t('tools.imageResizer.uploadImage')}
               </Button>
 
               {image && (
@@ -168,29 +171,29 @@ export default function ImageResizer() {
                         className="w-4 h-4"
                       />
                       <Label htmlFor="aspect-ratio" className="cursor-pointer">
-                        Maintain aspect ratio
+                        {t('tools.imageResizer.maintainRatio')}
                       </Label>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="width">Width (px)</Label>
+                        <Label htmlFor="width">{t('tools.imageResizer.width')} (px)</Label>
                         <Input
                           id="width"
                           type="number"
                           value={width}
                           onChange={(e) => handleWidthChange(e.target.value)}
-                          placeholder="Width"
+                          placeholder={t('tools.imageResizer.width')}
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="height">Height (px)</Label>
+                        <Label htmlFor="height">{t('tools.imageResizer.height')} (px)</Label>
                         <Input
                           id="height"
                           type="number"
                           value={height}
                           onChange={(e) => handleHeightChange(e.target.value)}
-                          placeholder="Height"
+                          placeholder={t('tools.imageResizer.height')}
                         />
                       </div>
                     </div>
@@ -198,7 +201,7 @@ export default function ImageResizer() {
                     <div className="flex gap-2">
                       <Button onClick={handleResize} className="flex-1">
                         <ImageIcon size={18} className="mr-2" />
-                        Resize Image
+                        {t('tools.imageResizer.resize')}
                       </Button>
                       <Button onClick={handleClear} variant="outline">
                         <Trash size={18} />
@@ -212,8 +215,8 @@ export default function ImageResizer() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Result</CardTitle>
-              <CardDescription>Resized image preview</CardDescription>
+              <CardTitle>{t('tools.common.result')}</CardTitle>
+              <CardDescription>{t('tools.imageResizer.resizedPreview')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {resizedImage ? (
@@ -227,14 +230,14 @@ export default function ImageResizer() {
 
                   <Button onClick={handleDownload} className="w-full">
                     <Download size={18} className="mr-2" />
-                    Download Resized Image
+                    {t('tools.imageResizer.download')}
                   </Button>
                 </>
               ) : (
                 <div className="min-h-[400px] border-2 border-dashed border-border rounded-lg flex items-center justify-center text-muted-foreground">
                   <div className="text-center">
                     <ImageIcon size={48} className="mx-auto mb-2 opacity-20" />
-                    <p>Resized image will appear here</p>
+                    <p>{t('tools.imageResizer.resizedWillAppear')}</p>
                   </div>
                 </div>
               )}

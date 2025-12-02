@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
@@ -13,6 +14,7 @@ export default function PDFToWord() {
   const metadata = getPageMetadata('pdf-to-word')
   useSEO(metadata)
 
+  const { t } = useTranslation()
   const [file, setFile] = useState<File | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -24,12 +26,12 @@ export default function PDFToWord() {
     if (!selectedFile) return
 
     if (selectedFile.type !== 'application/pdf') {
-      toast.error('Please select a valid PDF file')
+      toast.error(t('tools.pdfToWord.selectPdfError'))
       return
     }
 
     if (selectedFile.size > 10 * 1024 * 1024) {
-      toast.error('File size must be less than 10MB')
+      toast.error(t('tools.pdfToWord.fileSizeError'))
       return
     }
 
@@ -40,7 +42,7 @@ export default function PDFToWord() {
 
   const handleConvert = async () => {
     if (!file) {
-      toast.error('Please upload a PDF file first')
+      toast.error(t('tools.pdfToWord.uploadFirst'))
       return
     }
 
@@ -63,12 +65,12 @@ export default function PDFToWord() {
       setProgress(100)
       setIsProcessing(false)
       setConversionComplete(true)
-      toast.info('Note: This is a demo. Full PDF to Word conversion requires server-side processing.')
+      toast.info(t('tools.pdfToWord.demoNotice'))
     }, 5000)
   }
 
   const handleDownload = () => {
-    toast.info('This is a demo feature. In production, this would download the converted .docx file.')
+    toast.info(t('tools.pdfToWord.demoDownloadNotice'))
   }
 
   const handleClear = () => {
@@ -78,7 +80,7 @@ export default function PDFToWord() {
     if (fileInputRef.current) {
       fileInputRef.current.value = ''
     }
-    toast.success('Cleared')
+    toast.success(t('tools.pdfToWord.cleared'))
   }
 
   const handleUploadClick = () => {
@@ -90,10 +92,10 @@ export default function PDFToWord() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            PDF to Word Converter
+            {t('tools.pdfToWord.title')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Convert PDF documents to editable Word (.docx) format with preserved formatting.
+            {t('tools.pdfToWord.subtitle')}
           </p>
         </div>
 
@@ -101,17 +103,15 @@ export default function PDFToWord() {
           <Alert>
             <Info size={16} className="mt-0.5" />
             <AlertDescription>
-              <strong>Demo Mode:</strong> Full PDF to Word conversion requires server-side processing 
-              and third-party APIs (like CloudConvert, Adobe PDF Services, or pdf-lib). This demo 
-              shows the UI flow. For production use, integrate with a PDF conversion API.
+              <strong>{t('tools.pdfToWord.demoMode')}</strong> {t('tools.pdfToWord.demoModeDesc')}
             </AlertDescription>
           </Alert>
 
           <Card>
             <CardHeader>
-              <CardTitle>Upload PDF File</CardTitle>
+              <CardTitle>{t('tools.pdfToWord.uploadPdf')}</CardTitle>
               <CardDescription>
-                Select a PDF file to convert to Word format (Max 10MB)
+                {t('tools.pdfToWord.uploadDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -131,10 +131,10 @@ export default function PDFToWord() {
                 >
                   <FilePdf size={48} className="mx-auto mb-4 text-muted-foreground" />
                   <p className="text-sm text-muted-foreground mb-2">
-                    Click to upload or drag and drop
+                    {t('tools.pdfToWord.clickToUpload')}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    PDF files only (Max 10MB)
+                    {t('tools.pdfToWord.pdfFilesOnly')}
                   </p>
                 </div>
               ) : (
@@ -156,7 +156,7 @@ export default function PDFToWord() {
                       className="gap-2"
                     >
                       <FileDoc size={16} />
-                      {isProcessing ? 'Converting...' : conversionComplete ? 'Converted!' : 'Convert to Word'}
+                      {isProcessing ? t('tools.pdfToWord.converting') : conversionComplete ? t('tools.pdfToWord.converted') : t('tools.pdfToWord.convertToWord')}
                     </Button>
 
                     <Button
@@ -166,7 +166,7 @@ export default function PDFToWord() {
                       className="gap-2"
                     >
                       <Upload size={16} />
-                      Change File
+                      {t('tools.pdfToWord.changeFile')}
                     </Button>
 
                     <Button
@@ -176,14 +176,14 @@ export default function PDFToWord() {
                       className="gap-2"
                     >
                       <Trash size={16} />
-                      Clear
+                      {t('tools.common.clear')}
                     </Button>
                   </div>
 
                   {isProcessing && (
                     <div className="space-y-2">
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">Converting to Word...</span>
+                        <span className="text-muted-foreground">{t('tools.pdfToWord.convertingToWord')}</span>
                         <span className="font-medium">{progress}%</span>
                       </div>
                       <Progress value={progress} className="h-2" />
@@ -196,14 +196,14 @@ export default function PDFToWord() {
                         <div className="flex items-center gap-4">
                           <FileDoc size={40} className="text-primary" weight="fill" />
                           <div className="flex-1">
-                            <p className="font-medium">Conversion Complete!</p>
+                            <p className="font-medium">{t('tools.pdfToWord.conversionComplete')}</p>
                             <p className="text-sm text-muted-foreground">
                               {file.name.replace('.pdf', '.docx')}
                             </p>
                           </div>
                           <Button onClick={handleDownload} className="gap-2">
                             <Download size={16} />
-                            Download
+                            {t('tools.common.download')}
                           </Button>
                         </div>
                       </CardContent>
@@ -216,7 +216,7 @@ export default function PDFToWord() {
 
           <Card>
             <CardHeader>
-              <CardTitle>How It Works</CardTitle>
+              <CardTitle>{t('tools.pdfToWord.howItWorks')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -224,9 +224,9 @@ export default function PDFToWord() {
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
                     <Upload size={24} className="text-primary" />
                   </div>
-                  <h3 className="font-semibold mb-2">1. Upload PDF</h3>
+                  <h3 className="font-semibold mb-2">{t('tools.pdfToWord.step1Title')}</h3>
                   <p className="text-sm text-muted-foreground">
-                    Select your PDF file from your device
+                    {t('tools.pdfToWord.step1Desc')}
                   </p>
                 </div>
 
@@ -234,9 +234,9 @@ export default function PDFToWord() {
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
                     <FileDoc size={24} className="text-primary" />
                   </div>
-                  <h3 className="font-semibold mb-2">2. Convert</h3>
+                  <h3 className="font-semibold mb-2">{t('tools.pdfToWord.step2Title')}</h3>
                   <p className="text-sm text-muted-foreground">
-                    Click convert and wait for processing
+                    {t('tools.pdfToWord.step2Desc')}
                   </p>
                 </div>
 
@@ -244,9 +244,9 @@ export default function PDFToWord() {
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
                     <Download size={24} className="text-primary" />
                   </div>
-                  <h3 className="font-semibold mb-2">3. Download</h3>
+                  <h3 className="font-semibold mb-2">{t('tools.pdfToWord.step3Title')}</h3>
                   <p className="text-sm text-muted-foreground">
-                    Download your editable Word document
+                    {t('tools.pdfToWord.step3Desc')}
                   </p>
                 </div>
               </div>
@@ -255,9 +255,7 @@ export default function PDFToWord() {
 
           <div className="bg-muted/50 p-4 rounded-lg border border-border">
             <p className="text-sm text-muted-foreground">
-              <strong>Note:</strong> For production implementation, consider using APIs like:
-              CloudConvert, Adobe PDF Services API, Zamzar, or pdf-lib with docx generation.
-              These require API keys and server-side processing for secure conversion.
+              <strong>{t('tools.common.note')}:</strong> {t('tools.pdfToWord.productionNote')}
             </p>
           </div>
         </div>

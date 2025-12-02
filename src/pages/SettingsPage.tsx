@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { 
   User, 
   Bell, 
@@ -53,6 +54,7 @@ export default function SettingsPage() {
   const metadata = getPageMetadata('settings')
   useSEO(metadata)
 
+  const { t } = useTranslation()
   const { user, signOut } = useAuth()
   const { currentPlan, isPaid, getCreditsDisplay, subscription } = useSubscription()
   const { theme, setTheme } = useTheme()
@@ -152,11 +154,11 @@ export default function SettingsPage() {
   }
 
   const tabs = [
-    { id: 'profile', label: 'Profile', icon: User },
-    { id: 'subscription', label: 'Subscription', icon: CreditCard },
-    { id: 'preferences', label: 'Preferences', icon: Palette },
-    { id: 'privacy', label: 'Privacy', icon: Shield },
-    { id: 'account', label: 'Account', icon: Lock },
+    { id: 'profile', label: t('settings.profile'), icon: User },
+    { id: 'subscription', label: t('settings.subscription'), icon: CreditCard },
+    { id: 'preferences', label: t('settings.preferences'), icon: Palette },
+    { id: 'privacy', label: t('settings.privacy'), icon: Shield },
+    { id: 'account', label: t('settings.account'), icon: Lock },
   ] as const
 
   return (
@@ -169,10 +171,10 @@ export default function SettingsPage() {
           className="mb-8"
         >
           <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-sky-500 bg-clip-text text-transparent mb-2">
-            Settings
+            {t('settings.title')}
           </h1>
           <p className="text-muted-foreground">
-            Manage your account and preferences
+            {t('settings.subtitle')}
           </p>
         </motion.div>
 
@@ -216,7 +218,7 @@ export default function SettingsPage() {
               {activeTab === 'profile' && (
                 <>
                   <div>
-                    <h2 className="text-2xl font-bold mb-4">Profile</h2>
+                    <h2 className="text-2xl font-bold mb-4">{t('settings.profile')}</h2>
                     
                     {/* User Avatar */}
                     <div className="flex items-center gap-4 mb-6">
@@ -240,7 +242,7 @@ export default function SettingsPage() {
                     {/* Profile Form */}
                     <div className="space-y-4">
                       <div>
-                        <label className="block text-sm font-medium mb-2">Full Name</label>
+                        <label className="block text-sm font-medium mb-2">{t('settings.fullName')}</label>
                         <input
                           type="text"
                           value={displayName}
@@ -252,7 +254,7 @@ export default function SettingsPage() {
 
                       <div>
                         <label className="block text-sm font-medium mb-2 flex items-center justify-between">
-                          <span>Email Address</span>
+                          <span>{t('settings.emailAddress')}</span>
                           <button
                             onClick={() => setShowEmail(!showEmail)}
                             className="text-muted-foreground hover:text-foreground"
@@ -267,7 +269,7 @@ export default function SettingsPage() {
                           className="w-full px-4 py-2 bg-background/50 border border-white/10 rounded-lg opacity-70 cursor-not-allowed"
                         />
                         <p className="text-xs text-muted-foreground mt-1">
-                          Linked to Google account - Cannot be changed
+                          {t('settings.linkedToGoogle')}
                         </p>
                       </div>
 
@@ -276,7 +278,7 @@ export default function SettingsPage() {
                         disabled={isSaving || !displayName.trim()}
                         className="px-6 py-2 bg-gradient-to-r from-purple-600 to-sky-500 text-white rounded-lg font-medium hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        {isSaving ? 'Saving...' : 'Save Changes'}
+                        {isSaving ? t('common.saving') : t('common.saveChanges')}
                       </button>
                     </div>
                   </div>
@@ -287,7 +289,7 @@ export default function SettingsPage() {
               {activeTab === 'subscription' && (
                 <>
                   <div>
-                    <h2 className="text-2xl font-bold mb-4">Subscription</h2>
+                    <h2 className="text-2xl font-bold mb-4">{t('settings.subscription')}</h2>
                     
                     {/* Current Plan */}
                     <div className={`p-6 rounded-xl border-2 mb-6 ${
@@ -433,14 +435,14 @@ export default function SettingsPage() {
               {activeTab === 'preferences' && (
                 <>
                   <div>
-                    <h2 className="text-2xl font-bold mb-4">Preferences</h2>
+                    <h2 className="text-2xl font-bold mb-4">{t('settings.preferences')}</h2>
                     
                     {/* Theme Settings */}
                     <div className="space-y-4">
                       <div>
                         <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
                           <Palette size={20} />
-                          Theme
+                          {t('settings.theme')}
                         </h3>
                         <div className="grid grid-cols-3 gap-3">
                           <button
@@ -452,7 +454,7 @@ export default function SettingsPage() {
                             }`}
                           >
                             <Moon size={24} className="mx-auto mb-2" weight={theme === 'dark' ? 'fill' : 'regular'} />
-                            <p className="text-sm font-medium">Dark</p>
+                            <p className="text-sm font-medium">{t('settings.darkMode')}</p>
                           </button>
                           <button
                             onClick={() => setTheme('cyber')}
@@ -463,7 +465,7 @@ export default function SettingsPage() {
                             }`}
                           >
                             <Lightning size={24} className="mx-auto mb-2" weight={theme === 'cyber' ? 'fill' : 'regular'} />
-                            <p className="text-sm font-medium">Cyber</p>
+                            <p className="text-sm font-medium">{t('settings.cyberMode')}</p>
                           </button>
                           <button
                             onClick={() => setTheme('minimal')}
@@ -474,7 +476,7 @@ export default function SettingsPage() {
                             }`}
                           >
                             <Sun size={24} className="mx-auto mb-2" weight={theme === 'minimal' ? 'fill' : 'regular'} />
-                            <p className="text-sm font-medium">Minimal</p>
+                            <p className="text-sm font-medium">{t('settings.minimalMode')}</p>
                           </button>
                         </div>
                       </div>
@@ -483,7 +485,7 @@ export default function SettingsPage() {
                       <div className="pt-4">
                         <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
                           <Globe size={20} />
-                          Language
+                          {t('settings.language')}
                         </h3>
                         <select
                           value={language}
@@ -503,15 +505,15 @@ export default function SettingsPage() {
                       <div className="pt-4">
                         <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
                           <Bell size={20} />
-                          Notifications
+                          {t('settings.notifications')}
                         </h3>
                         <div className="space-y-3">
                           <label className="flex items-center justify-between p-3 bg-background rounded-lg cursor-pointer hover:bg-white/5 transition-colors">
                             <div className="flex items-center gap-3">
                               <EnvelopeSimple size={20} className="text-muted-foreground" />
                               <div>
-                                <p className="font-medium">Email Notifications</p>
-                                <p className="text-sm text-muted-foreground">Receive updates via email</p>
+                                <p className="font-medium">{t('settings.emailNotifications')}</p>
+                                <p className="text-sm text-muted-foreground">{t('settings.emailNotificationsDesc')}</p>
                               </div>
                             </div>
                             <div className="relative">
@@ -529,8 +531,8 @@ export default function SettingsPage() {
                             <div className="flex items-center gap-3">
                               <Bell size={20} className="text-muted-foreground" />
                               <div>
-                                <p className="font-medium">Push Notifications</p>
-                                <p className="text-sm text-muted-foreground">Desktop notifications</p>
+                                <p className="font-medium">{t('settings.pushNotifications')}</p>
+                                <p className="text-sm text-muted-foreground">{t('settings.pushNotificationsDesc')}</p>
                               </div>
                             </div>
                             <div className="relative">
@@ -554,7 +556,7 @@ export default function SettingsPage() {
               {activeTab === 'privacy' && (
                 <>
                   <div>
-                    <h2 className="text-2xl font-bold mb-4">Privacy & Security</h2>
+                    <h2 className="text-2xl font-bold mb-4">{t('settings.privacySecurity')}</h2>
                     
                     <div className="space-y-4">
                       {/* Privacy Info */}
@@ -562,22 +564,22 @@ export default function SettingsPage() {
                         <div className="flex items-start gap-3">
                           <Shield size={24} className="text-purple-500 mt-1" />
                           <div>
-                            <h3 className="font-semibold mb-2">Privacy Information</h3>
+                            <h3 className="font-semibold mb-2">{t('settings.privacyInfo')}</h3>
                             <p className="text-sm text-muted-foreground mb-3">
-                              We respect your privacy and protect your personal data. All information is encrypted and secure.
+                              {t('settings.privacyDesc')}
                             </p>
                             <ul className="space-y-2 text-sm">
                               <li className="flex items-center gap-2">
                                 <CheckCircle size={16} className="text-green-500" weight="fill" />
-                                <span>Your data is protected with SSL encryption</span>
+                                <span>{t('settings.privacyPoints.ssl')}</span>
                               </li>
                               <li className="flex items-center gap-2">
                                 <CheckCircle size={16} className="text-green-500" weight="fill" />
-                                <span>We don't share your info with third parties</span>
+                                <span>{t('settings.privacyPoints.noShare')}</span>
                               </li>
                               <li className="flex items-center gap-2">
                                 <CheckCircle size={16} className="text-green-500" weight="fill" />
-                                <span>You can delete your account anytime</span>
+                                <span>{t('settings.privacyPoints.deleteAnytime')}</span>
                               </li>
                             </ul>
                           </div>
@@ -586,12 +588,12 @@ export default function SettingsPage() {
 
                       {/* Data Download */}
                       <div className="p-4 bg-background rounded-lg border border-white/10">
-                        <h3 className="font-semibold mb-2">Download Your Data</h3>
+                        <h3 className="font-semibold mb-2">{t('settings.downloadData')}</h3>
                         <p className="text-sm text-muted-foreground mb-3">
-                          Get a copy of all your stored data
+                          {t('settings.downloadDataDesc')}
                         </p>
                         <button className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-sm font-medium transition-colors">
-                          Request Data
+                          {t('common.requestData')}
                         </button>
                       </div>
                     </div>
@@ -603,30 +605,30 @@ export default function SettingsPage() {
               {activeTab === 'account' && (
                 <>
                   <div>
-                    <h2 className="text-2xl font-bold mb-4">Account Management</h2>
+                    <h2 className="text-2xl font-bold mb-4">{t('settings.accountManagement')}</h2>
                     
                     <div className="space-y-4">
                       {/* Account Info */}
                       <div className="bg-background rounded-lg p-4 border border-white/10">
-                        <h3 className="font-semibold mb-3">Account Information</h3>
+                        <h3 className="font-semibold mb-3">{t('settings.accountInfo')}</h3>
                         <div className="space-y-2 text-sm">
                           <div className="flex justify-between">
-                            <span className="text-muted-foreground">Account Type:</span>
-                            <span className="font-medium">Google Account</span>
+                            <span className="text-muted-foreground">{t('settings.accountType')}:</span>
+                            <span className="font-medium">{t('settings.googleAccount')}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-muted-foreground">Status:</span>
+                            <span className="text-muted-foreground">{t('settings.status')}:</span>
                             <span className="flex items-center gap-1 text-green-500">
                               <CheckCircle size={16} weight="fill" />
-                              Active
+                              {t('common.active')}
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-muted-foreground">Created:</span>
+                            <span className="text-muted-foreground">{t('settings.created')}:</span>
                             <span className="font-medium">
                               {user?.metadata?.creationTime ? 
                                 new Date(user.metadata.creationTime).toLocaleDateString('en-US') : 
-                                'Not available'}
+                                t('settings.notAvailable')}
                             </span>
                           </div>
                         </div>
@@ -636,16 +638,16 @@ export default function SettingsPage() {
                       <div className="p-4 bg-background rounded-lg border border-white/10">
                         <h3 className="font-semibold mb-2 flex items-center gap-2">
                           <SignOut size={20} />
-                          Sign Out
+                          {t('common.signOut')}
                         </h3>
                         <p className="text-sm text-muted-foreground mb-3">
-                          You will be signed out from all devices
+                          {t('settings.signOutDesc')}
                         </p>
                         <button
                           onClick={handleSignOut}
                           className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
                         >
-                          Sign Out
+                          {t('common.signOut')}
                         </button>
                       </div>
 
@@ -653,16 +655,16 @@ export default function SettingsPage() {
                       <div className="p-4 bg-red-500/10 rounded-lg border border-red-500/20">
                         <h3 className="font-semibold mb-2 flex items-center gap-2 text-red-500">
                           <Trash size={20} />
-                          Delete Account
+                          {t('settings.deleteAccount')}
                         </h3>
                         <p className="text-sm text-muted-foreground mb-3">
-                          All your data will be deleted permanently
+                          {t('settings.deleteAccountDesc')}
                         </p>
                         <button
                           onClick={() => setIsDeleteDialogOpen(true)}
                           className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium transition-colors"
                         >
-                          Delete Account Permanently
+                          {t('settings.deleteAccountPermanently')}
                         </button>
                       </div>
                     </div>
@@ -679,24 +681,24 @@ export default function SettingsPage() {
             <AlertDialogHeader>
               <AlertDialogTitle className="flex items-center gap-2 text-red-500">
                 <Trash size={24} />
-                Are you sure you want to delete your account?
+                {t('settings.deleteConfirmTitle')}
               </AlertDialogTitle>
               <AlertDialogDescription className="text-right">
-                This action cannot be undone. All your data will be permanently deleted:
+                {t('settings.deleteConfirmDesc')}
                 <ul className="list-disc list-inside mt-2 space-y-1">
-                  <li>Personal account information</li>
-                  <li>Preferences and settings</li>
-                  <li>Usage history</li>
+                  <li>{t('settings.deleteConfirmItems.personalInfo')}</li>
+                  <li>{t('settings.deleteConfirmItems.preferences')}</li>
+                  <li>{t('settings.deleteConfirmItems.history')}</li>
                 </ul>
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
               <AlertDialogAction
                 onClick={handleDeleteAccount}
                 className="bg-red-600 hover:bg-red-700"
               >
-                Yes, Delete My Account
+                {t('settings.yesDeleteAccount')}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

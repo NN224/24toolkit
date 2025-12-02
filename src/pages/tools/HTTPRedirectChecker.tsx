@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -10,6 +11,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function HTTPRedirectChecker() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('http-redirect-checker')
   useSEO(metadata)
@@ -20,7 +23,7 @@ export default function HTTPRedirectChecker() {
 
   const checkRedirects = async () => {
     if (!url.trim()) {
-      toast.error('Please enter a URL')
+      toast.error(t('tools.httpRedirectChecker.enterUrlError'))
       return
     }
 
@@ -66,23 +69,23 @@ export default function HTTPRedirectChecker() {
         chain.push({
           url: url,
           status: 0,
-          statusText: 'Unable to connect',
-          protocol: 'Unknown',
+          statusText: t('tools.httpRedirectChecker.unableToConnect'),
+          protocol: t('tools.httpRedirectChecker.unknown'),
           error: true
         })
       }
 
       setRedirectChain(chain)
-      toast.success('Redirect check completed')
+      toast.success(t('tools.httpRedirectChecker.checkCompleted'))
     } catch (error) {
       setRedirectChain([{
         url: url,
         status: 0,
-        statusText: 'Connection failed',
-        protocol: 'Unknown',
+        statusText: t('tools.httpRedirectChecker.connectionFailed'),
+        protocol: t('tools.httpRedirectChecker.unknown'),
         error: true
       }])
-      toast.error('Failed to check redirects')
+      toast.error(t('tools.httpRedirectChecker.checkFailed'))
     } finally {
       setIsLoading(false)
     }
@@ -105,29 +108,29 @@ export default function HTTPRedirectChecker() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            HTTP/HTTPS Redirect Checker
+            {t('tools.httpRedirectChecker.title')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Analyze HTTP to HTTPS redirects and check redirect chains.
+            {t('tools.httpRedirectChecker.subtitle')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Enter URL</CardTitle>
+              <CardTitle>{t('tools.httpRedirectChecker.enterUrl')}</CardTitle>
               <CardDescription>
-                Enter a URL to analyze its redirect behavior
+                {t('tools.httpRedirectChecker.enterUrlDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="url-input">URL</Label>
+                <Label htmlFor="url-input">{t('tools.httpRedirectChecker.urlLabel')}</Label>
                 <Input
                   id="url-input"
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
-                  placeholder="example.com or https://example.com"
+                  placeholder={t('tools.httpRedirectChecker.urlPlaceholder')}
                   type="text"
                 />
               </div>
@@ -139,7 +142,7 @@ export default function HTTPRedirectChecker() {
                 size="lg"
               >
                 <MagnifyingGlass size={20} />
-                {isLoading ? 'Checking...' : 'Check Redirects'}
+                {isLoading ? t('tools.httpRedirectChecker.checking') : t('tools.httpRedirectChecker.checkButton')}
               </Button>
             </CardContent>
           </Card>
@@ -150,25 +153,25 @@ export default function HTTPRedirectChecker() {
                 <Alert variant="default" className="border-green-500 bg-green-50">
                   <CheckCircle size={24} className="text-green-600" />
                   <AlertDescription>
-                    <p className="font-bold text-green-700">✓ HTTPS Redirect Configured</p>
-                    <p className="text-sm mt-1">This site properly redirects HTTP traffic to HTTPS.</p>
+                    <p className="font-bold text-green-700">✓ {t('tools.httpRedirectChecker.httpsConfigured')}</p>
+                    <p className="text-sm mt-1">{t('tools.httpRedirectChecker.httpsConfiguredDesc')}</p>
                   </AlertDescription>
                 </Alert>
               ) : (
                 <Alert variant="default" className="border-yellow-500 bg-yellow-50">
                   <Warning size={24} className="text-yellow-600" />
                   <AlertDescription>
-                    <p className="font-bold text-yellow-700">⚠ No HTTPS Redirect Detected</p>
-                    <p className="text-sm mt-1">Consider implementing HTTP to HTTPS redirects for better security.</p>
+                    <p className="font-bold text-yellow-700">⚠ {t('tools.httpRedirectChecker.noHttpsRedirect')}</p>
+                    <p className="text-sm mt-1">{t('tools.httpRedirectChecker.noHttpsRedirectDesc')}</p>
                   </AlertDescription>
                 </Alert>
               )}
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Redirect Chain</CardTitle>
+                  <CardTitle>{t('tools.httpRedirectChecker.redirectChain')}</CardTitle>
                   <CardDescription>
-                    Complete redirect path analysis
+                    {t('tools.httpRedirectChecker.redirectChainDesc')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -188,7 +191,7 @@ export default function HTTPRedirectChecker() {
 
                         <div className="flex items-center gap-4 text-sm">
                           <div>
-                            <span className="text-muted-foreground">Status: </span>
+                            <span className="text-muted-foreground">{t('tools.httpRedirectChecker.status')}: </span>
                             <span className={`font-semibold ${getStatusColor(item.status)}`}>
                               {item.status} {item.statusText}
                             </span>
@@ -199,7 +202,7 @@ export default function HTTPRedirectChecker() {
                           <div className="flex items-start gap-2 text-sm">
                             <ArrowRight size={16} className="mt-1 text-blue-600" />
                             <div>
-                              <span className="text-muted-foreground">Redirects to: </span>
+                              <span className="text-muted-foreground">{t('tools.httpRedirectChecker.redirectsTo')}: </span>
                               <span className="font-mono text-blue-600 break-all">
                                 {item.redirectTo}
                               </span>
@@ -209,7 +212,7 @@ export default function HTTPRedirectChecker() {
 
                         {item.error && (
                           <p className="text-sm text-red-600">
-                            Unable to connect to this URL
+                            {t('tools.httpRedirectChecker.unableToConnectUrl')}
                           </p>
                         )}
                       </div>

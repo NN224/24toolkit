@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -8,6 +9,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function SentenceCounter() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('sentence-counter')
   useSEO(metadata)
@@ -56,7 +59,7 @@ export default function SentenceCounter() {
 
   const handleClear = () => {
     setText('')
-    toast.success('Text cleared')
+    toast.success(t('tools.common.cleared'))
   }
 
   return (
@@ -64,25 +67,25 @@ export default function SentenceCounter() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Sentence Counter
+            {t('tools.sentenceCounter.title')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Count sentences and analyze sentence statistics in your text.
+            {t('tools.sentenceCounter.subtitle')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Enter Your Text</CardTitle>
+              <CardTitle>{t('tools.sentenceCounter.enterYourText')}</CardTitle>
               <CardDescription>
-                Type or paste your text to count sentences
+                {t('tools.sentenceCounter.enterDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <Textarea
                 id="text-input"
-                placeholder="Type or paste your text here..."
+                placeholder={t('tools.common.enterText')}
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 className="min-h-[250px] resize-y font-normal"
@@ -94,7 +97,7 @@ export default function SentenceCounter() {
                 className="gap-2"
               >
                 <Trash size={16} />
-                Clear
+                {t('tools.common.clear')}
               </Button>
             </CardContent>
           </Card>
@@ -104,41 +107,41 @@ export default function SentenceCounter() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <ListNumbers size={24} />
-                  Sentence Statistics
+                  {t('tools.sentenceCounter.sentenceStatistics')}
                 </CardTitle>
                 <CardDescription>
-                  Detailed analysis of your text
+                  {t('tools.sentenceCounter.detailedAnalysis')}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
                   <div className="p-4 rounded-lg bg-primary/10 border border-primary/20">
                     <p className="text-3xl font-semibold text-foreground">{stats.sentences}</p>
-                    <p className="text-sm text-muted-foreground mt-1">Total Sentences</p>
+                    <p className="text-sm text-muted-foreground mt-1">{t('tools.sentenceCounter.totalSentences')}</p>
                   </div>
 
                   <div className="p-4 rounded-lg bg-muted/50 border border-border">
                     <p className="text-3xl font-semibold text-foreground">{stats.avgWordsPerSentence}</p>
-                    <p className="text-sm text-muted-foreground mt-1">Avg Words/Sentence</p>
+                    <p className="text-sm text-muted-foreground mt-1">{t('tools.sentenceCounter.avgWordsPerSentence')}</p>
                   </div>
 
                   <div className="p-4 rounded-lg bg-muted/50 border border-border">
                     <p className="text-3xl font-semibold text-foreground">{stats.avgCharsPerSentence}</p>
-                    <p className="text-sm text-muted-foreground mt-1">Avg Chars/Sentence</p>
+                    <p className="text-sm text-muted-foreground mt-1">{t('tools.sentenceCounter.avgCharsPerSentence')}</p>
                   </div>
                 </div>
 
                 {stats.longestSentence && (
                   <div className="space-y-4">
                     <div className="space-y-2">
-                      <h4 className="font-medium text-sm text-muted-foreground">Longest Sentence ({stats.longestSentence.split(/\s+/).length} words)</h4>
+                      <h4 className="font-medium text-sm text-muted-foreground">{t('tools.sentenceCounter.longestSentence', { count: stats.longestSentence.split(/\s+/).length })}</h4>
                       <p className="p-3 rounded-lg bg-muted/30 border border-border text-sm text-foreground">
                         {stats.longestSentence}
                       </p>
                     </div>
 
                     <div className="space-y-2">
-                      <h4 className="font-medium text-sm text-muted-foreground">Shortest Sentence ({stats.shortestSentence.split(/\s+/).length} words)</h4>
+                      <h4 className="font-medium text-sm text-muted-foreground">{t('tools.sentenceCounter.shortestSentence', { count: stats.shortestSentence.split(/\s+/).length })}</h4>
                       <p className="p-3 rounded-lg bg-muted/30 border border-border text-sm text-foreground">
                         {stats.shortestSentence}
                       </p>

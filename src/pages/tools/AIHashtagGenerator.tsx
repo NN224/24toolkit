@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
@@ -20,6 +21,8 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 export default function AIHashtagGenerator() {
+  const { t } = useTranslation()
+
   // Set SEO metadata
   const metadata = getPageMetadata('ai-hashtag-generator')
   useSEO(metadata)
@@ -38,7 +41,7 @@ export default function AIHashtagGenerator() {
   }, [content])
 
   const handleCopyAll = () => {
-    copyToClipboard(hashtags.join(' '), 'All hashtags copied!')
+    copyToClipboard(hashtags.join(' '), t('tools.aiHashtagGenerator.allHashtagsCopied'))
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
@@ -54,19 +57,19 @@ export default function AIHashtagGenerator() {
     }
 
     window.open(urls[platform], '_blank', 'width=600,height=400')
-    toast.success('Sharing...')
+    toast.success(t('tools.aiHashtagGenerator.sharing'))
   }
 
   const generateHashtags = async () => {
     if (!content.trim()) {
-      toast.error('Please enter some content or topic')
+      toast.error(t('tools.aiHashtagGenerator.enterContentError'))
       return
     }
 
     try {
       validatePromptInput(content, 5, 5000)
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Invalid input')
+      toast.error(error instanceof Error ? error.message : t('tools.common.invalidInput'))
       return
     }
 
@@ -87,10 +90,10 @@ export default function AIHashtagGenerator() {
         finalTags = tags
       })
       
-      toast.success(`Generated ${finalTags.length} hashtags!`)
+      toast.success(t('tools.aiHashtagGenerator.generatedSuccess', { count: finalTags.length }))
     } catch (error) {
       console.error('Hashtag generation error:', error)
-      toast.error(error instanceof Error ? error.message : 'Failed to generate hashtags. Please try again.')
+      toast.error(error instanceof Error ? error.message : t('tools.aiHashtagGenerator.generationFailed'))
     } finally {
       setLoading(false)
     }
@@ -106,8 +109,8 @@ export default function AIHashtagGenerator() {
             <Hash size={24} className="text-white" weight="bold" />
           </div>
           <div>
-            <h1 className="text-3xl font-semibold text-foreground">AI Hashtag Generator</h1>
-            <p className="text-muted-foreground">Generate trending hashtags for social media posts</p>
+            <h1 className="text-3xl font-semibold text-foreground">{t('tools.aiHashtagGenerator.title')}</h1>
+            <p className="text-muted-foreground">{t('tools.aiHashtagGenerator.subtitle')}</p>
           </div>
         </div>
       </div>
@@ -116,20 +119,20 @@ export default function AIHashtagGenerator() {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle>Generate Hashtags with AI</CardTitle>
-              <CardDescription>Get relevant hashtags for your social media content</CardDescription>
+              <CardTitle>{t('tools.aiHashtagGenerator.cardTitle')}</CardTitle>
+              <CardDescription>{t('tools.aiHashtagGenerator.cardDescription')}</CardDescription>
             </div>
             <span className="px-3 py-1 text-xs font-semibold bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-full">
-              Powered by AI
+              {t('tools.aiHashtagGenerator.poweredByAI')}
             </span>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="content-input">Post Content or Topic</Label>
+            <Label htmlFor="content-input">{t('tools.aiHashtagGenerator.contentLabel')}</Label>
             <Textarea
               id="content-input"
-              placeholder="Enter your post content or describe your topic..."
+              placeholder={t('tools.aiHashtagGenerator.contentPlaceholder')}
               value={content}
               onChange={(e) => setContent(e.target.value)}
               rows={5}
@@ -143,13 +146,13 @@ export default function AIHashtagGenerator() {
             className="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600"
             disabled={loading}
           >
-            {loading ? 'Generating...' : 'Generate Hashtags'}
+            {loading ? t('tools.aiHashtagGenerator.generating') : t('tools.aiHashtagGenerator.generateButton')}
           </Button>
 
           {hashtags.length > 0 && (
             <div className="space-y-4 mt-4">
               <div className="flex items-center justify-between">
-                <Label>Generated Hashtags ({hashtags.length})</Label>
+                <Label>{t('tools.aiHashtagGenerator.generatedHashtags', { count: hashtags.length })}</Label>
               </div>
               <div className="p-4 bg-gradient-to-br from-pink-50/50 to-rose-50/50 dark:from-pink-950/20 dark:to-rose-950/20 rounded-xl border-2 border-pink-200 dark:border-pink-800">
                 <div className="flex flex-wrap gap-2" dir={isArabic ? 'rtl' : 'ltr'}>
@@ -158,7 +161,7 @@ export default function AIHashtagGenerator() {
                       key={index}
                       variant="secondary"
                       className="cursor-pointer hover:bg-pink-500 hover:text-white transition-colors text-sm py-1 px-3"
-                      onClick={() => copyToClipboard(tag, 'Hashtag copied!')}
+                      onClick={() => copyToClipboard(tag, t('tools.aiHashtagGenerator.hashtagCopied'))}
                     >
                       {tag}
                     </Badge>
@@ -176,12 +179,12 @@ export default function AIHashtagGenerator() {
                   {copied ? (
                     <>
                       <Check size={16} className="text-green-500" />
-                      Copied!
+                      {t('tools.common.copied')}
                     </>
                   ) : (
                     <>
                       <Copy size={16} />
-                      Copy All
+                      {t('tools.aiHashtagGenerator.copyAll')}
                     </>
                   )}
                 </Button>
@@ -190,7 +193,7 @@ export default function AIHashtagGenerator() {
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" className="gap-2 flex-1 min-w-[120px]">
                       <ShareNetwork size={16} />
-                      Share
+                      {t('common.share')}
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-48">
@@ -212,7 +215,7 @@ export default function AIHashtagGenerator() {
 
               <div className="p-3 bg-muted/50 rounded-lg">
                 <p className="text-xs text-muted-foreground">
-                  💡 Tip: Click any hashtag to copy it individually
+                  💡 {t('tools.aiHashtagGenerator.tip')}
                 </p>
               </div>
             </div>

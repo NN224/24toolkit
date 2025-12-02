@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -17,6 +18,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function CodeFormatter() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('code-formatter')
   useSEO(metadata)
@@ -40,14 +43,14 @@ export default function CodeFormatter() {
 
   const handleFormat = async () => {
     if (!code.trim()) {
-      toast.error('Please enter some code to format')
+      toast.error(t('tools.codeFormatter.enterCode'))
       return
     }
 
     try {
       validatePromptInput(code, 10, 20000)
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Invalid input')
+      toast.error(error instanceof Error ? error.message : t('tools.common.invalidInput'))
       return
     }
 
@@ -62,10 +65,10 @@ export default function CodeFormatter() {
     try {
       const result = await callAI(promptText, provider)
       setFormattedCode(result.trim())
-      toast.success('Code formatted successfully!')
+      toast.success(t('tools.codeFormatter.formatted'))
     } catch (error) {
       console.error('Format error:', error)
-      toast.error(error instanceof Error ? error.message : 'Failed to format code')
+      toast.error(error instanceof Error ? error.message : t('tools.codeFormatter.formatFailed'))
       // Don't set fallback - keep empty to indicate failure
     } finally {
       setIsLoading(false)
@@ -74,7 +77,7 @@ export default function CodeFormatter() {
 
   const handleExplain = async () => {
     if (!code.trim()) {
-      toast.error('Please enter some code to explain')
+      toast.error(t('tools.codeFormatter.enterCode'))
       return
     }
 
@@ -93,10 +96,10 @@ ${code}`
       await callAI(promptText, provider, (accumulatedText) => {
         setExplanation(accumulatedText.trim())
       })
-      toast.success('Code explained successfully!')
+      toast.success(t('tools.codeFormatter.explained'))
     } catch (error) {
       console.error('Explanation error:', error)
-      toast.error(error instanceof Error ? error.message : 'Failed to explain code')
+      toast.error(error instanceof Error ? error.message : t('tools.codeFormatter.explainFailed'))
     } finally {
       setIsLoading(false)
     }
@@ -108,7 +111,7 @@ ${code}`
     setCode('')
     setFormattedCode('')
     setExplanation('')
-    toast.success('Cleared')
+    toast.success(t('tools.common.cleared'))
   }
 
   const detectedLang = code ? detectLanguage(code) : 'javascript'
@@ -119,21 +122,21 @@ ${code}`
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-3">
             <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-              AI Code Formatter & Explainer
+              {t('tools.codeFormatter.name')}
             </h1>
             <AIBadge />
           </div>
           <p className="text-lg text-muted-foreground">
-            Beautify your code and get clear explanations of what it does. Supports multiple programming languages.
+            {t('tools.codeFormatter.description')}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>Input Code</CardTitle>
+              <CardTitle>{t('tools.codeFormatter.inputCode')}</CardTitle>
               <CardDescription>
-                Paste your code here (language auto-detected)
+                {t('tools.codeFormatter.selectLanguage')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -163,7 +166,7 @@ ${code}`
                   className="gap-2 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
                 >
                   <Code size={16} />
-                  Format Code
+                  {t('tools.codeFormatter.format')}
                 </Button>
                 
                 <Button
@@ -181,7 +184,7 @@ ${code}`
                   onClick={handleClear}
                   variant="outline"
                 >
-                  Clear All
+                  {t('tools.common.clear')}
                 </Button>
               </div>
             </CardContent>
@@ -197,7 +200,7 @@ ${code}`
             <CardContent>
               <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'format' | 'explain')} className="w-full">
                 <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="format">Formatted Code</TabsTrigger>
+                  <TabsTrigger value="format">{t('tools.codeFormatter.formattedCode')}</TabsTrigger>
                   <TabsTrigger value="explain">Explanation</TabsTrigger>
                 </TabsList>
                 
@@ -228,7 +231,7 @@ ${code}`
                         className="w-full gap-2"
                       >
                         <Copy size={16} />
-                        Copy Formatted Code
+                        {t('tools.common.copy')}
                       </Button>
                     </div>
                   ) : (
@@ -262,7 +265,7 @@ ${code}`
                         className="w-full gap-2"
                       >
                         <Copy size={16} />
-                        Copy Explanation
+                        {t('tools.common.copy')}
                       </Button>
                     </div>
                   ) : (

@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -8,6 +9,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function WordFrequencyAnalyzer() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('word-frequency-analyzer')
   useSEO(metadata)
@@ -35,7 +38,7 @@ export default function WordFrequencyAnalyzer() {
 
   const handleClear = () => {
     setText('')
-    toast.success('Text cleared')
+    toast.success(t('tools.common.cleared'))
   }
 
   return (
@@ -43,25 +46,25 @@ export default function WordFrequencyAnalyzer() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Word Frequency Analyzer
+            {t('tools.wordFrequencyAnalyzer.title')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Discover the most frequently used words in your text. Shows top 10 words.
+            {t('tools.wordFrequencyAnalyzer.subtitle')}
           </p>
         </div>
 
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Enter Your Text</CardTitle>
+              <CardTitle>{t('tools.wordFrequencyAnalyzer.enterYourText')}</CardTitle>
               <CardDescription>
-                Paste or type text to analyze word frequency
+                {t('tools.wordFrequencyAnalyzer.enterDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <Textarea
                 id="text-input"
-                placeholder="Type or paste your text here..."
+                placeholder={t('tools.wordFrequencyAnalyzer.placeholder')}
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 className="min-h-[200px] resize-y font-normal"
@@ -74,7 +77,7 @@ export default function WordFrequencyAnalyzer() {
                   className="gap-2"
                 >
                   <Trash size={16} />
-                  Clear
+                  {t('tools.common.clear')}
                 </Button>
               </div>
             </CardContent>
@@ -83,9 +86,9 @@ export default function WordFrequencyAnalyzer() {
           {wordFrequency.length > 0 && (
             <Card>
               <CardHeader>
-                <CardTitle>Top 10 Most Frequent Words</CardTitle>
+                <CardTitle>{t('tools.wordFrequencyAnalyzer.topWords')}</CardTitle>
                 <CardDescription>
-                  Words ranked by frequency of occurrence
+                  {t('tools.wordFrequencyAnalyzer.rankedByFrequency')}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -106,7 +109,7 @@ export default function WordFrequencyAnalyzer() {
                           />
                         </div>
                         <span className="text-muted-foreground font-medium min-w-[3rem] text-right">
-                          {count} {count === 1 ? 'time' : 'times'}
+                          {count} {count === 1 ? t('tools.wordFrequencyAnalyzer.time') : t('tools.wordFrequencyAnalyzer.times')}
                         </span>
                       </div>
                     </div>

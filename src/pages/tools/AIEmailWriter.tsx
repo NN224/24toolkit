@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
@@ -16,6 +17,8 @@ import { getPageMetadata } from '@/lib/seo-metadata'
 type EmailMode = 'formal' | 'casual' | 'business'
 
 export default function AIEmailWriter() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('ai-email-writer')
   useSEO(metadata)
@@ -34,14 +37,14 @@ export default function AIEmailWriter() {
 
   const generateEmail = async () => {
     if (!topic.trim()) {
-      toast.error('Please enter an email topic')
+      toast.error(t('tools.aiEmailWriter.enterTopicError'))
       return
     }
 
     try {
       validatePromptInput(topic, 3, 500)
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Invalid input')
+      toast.error(error instanceof Error ? error.message : t('tools.common.invalidInput'))
       return
     }
 
@@ -60,10 +63,10 @@ export default function AIEmailWriter() {
       await callAI(promptText, provider, (accumulatedText) => {
         setGeneratedEmail(accumulatedText)
       })
-      toast.success('Email generated successfully!')
+      toast.success(t('tools.aiEmailWriter.generatedSuccess'))
     } catch (error) {
       console.error('Email generation error:', error)
-      toast.error(error instanceof Error ? error.message : 'Failed to generate email. Please try again.')
+      toast.error(error instanceof Error ? error.message : t('tools.aiEmailWriter.generationFailed'))
     } finally {
       setLoading(false)
     }
@@ -79,8 +82,8 @@ export default function AIEmailWriter() {
             <Envelope size={24} className="text-white" weight="bold" />
           </div>
           <div>
-            <h1 className="text-3xl font-semibold text-foreground">AI Email Writer</h1>
-            <p className="text-muted-foreground">Generate professional emails with AI assistance</p>
+            <h1 className="text-3xl font-semibold text-foreground">{t('tools.aiEmailWriter.name')}</h1>
+            <p className="text-muted-foreground">{t('tools.aiEmailWriter.subtitle')}</p>
           </div>
         </div>
       </div>
@@ -89,20 +92,20 @@ export default function AIEmailWriter() {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle>AI Email Generator</CardTitle>
-              <CardDescription>Create emails in formal, casual, or business tones</CardDescription>
+              <CardTitle>{t('tools.aiEmailWriter.cardTitle')}</CardTitle>
+              <CardDescription>{t('tools.aiEmailWriter.cardDescription')}</CardDescription>
             </div>
             <span className="px-3 py-1 text-xs font-semibold bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-full">
-              Powered by AI
+              {t('tools.aiEmailWriter.poweredByAI')}
             </span>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email-topic">Email Topic or Purpose</Label>
+            <Label htmlFor="email-topic">{t('tools.aiEmailWriter.topicLabel')}</Label>
             <Textarea
               id="email-topic"
-              placeholder="e.g., Request for meeting, Thank you for interview, Product inquiry..."
+              placeholder={t('tools.aiEmailWriter.topicPlaceholder')}
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
               rows={3}
@@ -111,9 +114,9 @@ export default function AIEmailWriter() {
 
           <Tabs value={mode} onValueChange={(v) => setMode(v as EmailMode)}>
             <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="formal">Formal</TabsTrigger>
-              <TabsTrigger value="business">Business</TabsTrigger>
-              <TabsTrigger value="casual">Casual</TabsTrigger>
+              <TabsTrigger value="formal">{t('tools.aiEmailWriter.formal')}</TabsTrigger>
+              <TabsTrigger value="business">{t('tools.aiEmailWriter.business')}</TabsTrigger>
+              <TabsTrigger value="casual">{t('tools.aiEmailWriter.casual')}</TabsTrigger>
             </TabsList>
           </Tabs>
 
@@ -124,17 +127,17 @@ export default function AIEmailWriter() {
             className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600"
             disabled={loading}
           >
-            {loading ? 'Generating...' : 'Generate Email'}
+            {loading ? t('tools.aiEmailWriter.generating') : t('tools.aiEmailWriter.generateButton')}
           </Button>
 
           {generatedEmail && (
             <div className="mt-4">
               <AIResponseCard
-                title="Generated Email"
+                title={t('tools.aiEmailWriter.generatedEmailTitle')}
                 content={generatedEmail}
                 variant="blue"
                 showShare={true}
-                shareText={`Check out this email I created with AI! - 24Toolkit`}
+                shareText={t('tools.aiEmailWriter.shareText')}
               />
             </div>
           )}

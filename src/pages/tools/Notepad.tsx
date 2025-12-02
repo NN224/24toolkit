@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -8,6 +9,8 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 
 export default function Notepad() {
+  const { t } = useTranslation()
+  
   // Set SEO metadata
   const metadata = getPageMetadata('notepad')
   useSEO(metadata)
@@ -23,14 +26,14 @@ export default function Notepad() {
 
   const saveNote = () => {
     localStorage.setItem('24toolkit-notepad', note)
-    toast.success('Note saved!')
+    toast.success(t('tools.notepad.noteSaved'))
   }
 
   const clearNote = () => {
-    if (confirm('Are you sure you want to clear your note?')) {
+    if (confirm(t('tools.notepad.confirmClear'))) {
       setNote('')
       localStorage.removeItem('24toolkit-notepad')
-      toast.success('Note cleared!')
+      toast.success(t('tools.notepad.noteCleared'))
     }
   }
 
@@ -42,10 +45,10 @@ export default function Notepad() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            Notepad
+            {t('tools.notepad.name')}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Quick notes saved locally in your browser.
+            {t('tools.notepad.subtitle')}
           </p>
         </div>
 
@@ -55,10 +58,10 @@ export default function Notepad() {
               <div>
                 <CardTitle className="flex items-center gap-2">
                   <NotePencil size={24} />
-                  Your Notes
+                  {t('tools.notepad.yourNotes')}
                 </CardTitle>
                 <CardDescription>
-                  {wordCount} words, {charCount} characters
+                  {wordCount} {t('tools.notepad.words')}, {charCount} {t('tools.notepad.characters')}
                 </CardDescription>
               </div>
             </div>
@@ -68,27 +71,27 @@ export default function Notepad() {
               id="notepad-text"
               value={note}
               onChange={(e) => setNote(e.target.value)}
-              placeholder="Start typing your notes here..."
+              placeholder={t('tools.notepad.placeholder')}
               className="min-h-[400px] font-mono"
             />
 
             <div className="flex gap-2">
               <Button onClick={saveNote} className="gap-2 flex-1">
                 <FloppyDisk size={20} />
-                Save Note
+                {t('tools.notepad.saveNote')}
               </Button>
               <Button onClick={clearNote} variant="outline" className="gap-2">
                 <Trash size={20} />
-                Clear
+                {t('tools.common.clear')}
               </Button>
             </div>
 
             <div className="text-sm text-muted-foreground bg-muted p-3 rounded-lg">
-              <p className="font-semibold mb-1">💡 Tips:</p>
+              <p className="font-semibold mb-1">💡 {t('tools.notepad.tips')}</p>
               <ul className="list-disc list-inside space-y-1">
-                <li>Your notes are saved locally in your browser</li>
-                <li>Click "Save Note" to store your text</li>
-                <li>Notes persist between sessions</li>
+                <li>{t('tools.notepad.tip1')}</li>
+                <li>{t('tools.notepad.tip2')}</li>
+                <li>{t('tools.notepad.tip3')}</li>
               </ul>
             </div>
           </CardContent>
