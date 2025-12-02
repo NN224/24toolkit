@@ -24,15 +24,13 @@ export default async function handler(req, res) {
   console.log('Stripe key prefix:', process.env.STRIPE_SECRET_KEY.substring(0, 10));
 
   try {
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-      apiVersion: '2024-11-20.acacia',
-      timeout: 30000,
-      maxNetworkRetries: 3,
-    });
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
     // Parse body if needed
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
     const { priceId, userId, userEmail, successUrl, cancelUrl } = body;
+
+    console.log('Creating checkout for:', { priceId, userId, userEmail });
 
     if (!priceId || !userId) {
       return res.status(400).json({ error: 'Missing required fields' });
@@ -48,7 +46,6 @@ export default async function handler(req, res) {
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
-      payment_method_types: ['card'],
       line_items: [
         {
           price: priceId,
@@ -57,24 +54,13 @@ export default async function handler(req, res) {
       ],
       success_url: successUrl || 'https://24toolkit.com/settings?success=true',
       cancel_url: cancelUrl || 'https://24toolkit.com/pricing?canceled=true',
-      customer_email: userEmail,
+      customer_email: userEmail || undefined,
       client_reference_id: userId,
       metadata: {
         userId: userId,
         plan: isPro ? 'pro' : 'unlimited',
       },
-      subscription_data: {
-        metadata: {
-          userId: userId,
-          plan: isPro ? 'pro' : 'unlimited',
-        },
-      },
       allow_promotion_codes: true,
-      custom_text: {
-        submit: {
-          message: `🚀 Unlock ${planName} - ${planDescription}`,
-        },
-      },
     });
 
     return res.status(200).json({ url: session.url });
