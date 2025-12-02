@@ -9,8 +9,8 @@ import { useTranslation } from 'react-i18next'
 export default function PricingPage() {
   const { t } = useTranslation()
   useSEO({
-    title: 'Pricing - 24Toolkit',
-    description: 'Choose the perfect plan for your needs. Free, Pro, or Unlimited access to 80+ AI-powered tools.',
+    title: t('pricing.seo.title'),
+    description: t('pricing.seo.description'),
   })
 
   const { user, signInWithGoogle } = useAuth()
@@ -66,44 +66,44 @@ export default function PricingPage() {
   const plans = [
     {
       id: 'free',
-      name: 'Free',
+      name: t('pricing.plans.free.name'),
       icon: Sparkle,
-      description: 'Perfect for trying out',
+      description: t('pricing.plans.free.description'),
       price: 0,
-      period: 'forever',
+      period: t('pricing.plans.free.period'),
       color: 'gray',
       gradient: 'from-gray-500 to-gray-600',
       features: PLAN_LIMITS.free.features,
       limitations: PLAN_LIMITS.free.limitations,
-      cta: 'Current Plan',
+      cta: t('pricing.plans.free.cta'),
       disabled: true,
     },
     {
       id: 'pro',
-      name: 'Pro',
+      name: t('pricing.plans.pro.name'),
       icon: Lightning,
-      description: 'For regular users',
+      description: t('pricing.plans.pro.description'),
       price: PLAN_LIMITS.pro.price,
-      period: 'month',
+      period: t('pricing.plans.pro.period'),
       color: 'purple',
       gradient: 'from-purple-500 to-purple-600',
       features: PLAN_LIMITS.pro.features,
       limitations: PLAN_LIMITS.pro.limitations || [],
-      cta: 'Subscribe to Pro',
+      cta: t('pricing.plans.pro.cta'),
       popular: true,
     },
     {
       id: 'unlimited',
-      name: 'Unlimited',
+      name: t('pricing.plans.unlimited.name'),
       icon: Crown,
-      description: 'For power users',
+      description: t('pricing.plans.unlimited.description'),
       price: PLAN_LIMITS.unlimited.price,
-      period: 'month',
+      period: t('pricing.plans.unlimited.period'),
       color: 'sky',
       gradient: 'from-purple-500 to-sky-500',
       features: PLAN_LIMITS.unlimited.features,
       limitations: [],
-      cta: 'Go Unlimited',
+      cta: t('pricing.plans.unlimited.cta'),
       note: PLAN_LIMITS.unlimited.note,
     },
   ]
@@ -115,14 +115,14 @@ export default function PricingPage() {
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-600/20 to-sky-500/20 border border-purple-500/30 mb-6">
             <Rocket size={16} weight="fill" className="text-purple-400" />
-            <span className="text-sm font-medium text-purple-300">Simple, Transparent Pricing</span>
+            <span className="text-sm font-medium text-purple-300">{t('pricing.badge')}</span>
           </div>
           
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Choose Your Plan
+            {t('pricing.title')}
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Unlock the full power of 80+ AI tools. Start free, upgrade when you need more.
+            {t('pricing.subtitle')}
           </p>
         </div>
 
@@ -145,7 +145,7 @@ export default function PricingPage() {
                 {/* Popular Badge */}
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-gradient-to-r from-purple-600 to-purple-500 text-white text-sm font-medium shadow-lg">
-                    Most Popular
+                    {t('pricing.mostPopular')}
                   </div>
                 )}
 
@@ -199,11 +199,11 @@ export default function PricingPage() {
                   }`}
                 >
                   {loadingPlan === plan.id ? (
-                    'Loading...'
+                    t('common.loading')
                   ) : isCurrentPlan ? (
                     <>
                       <Check size={20} weight="bold" />
-                      Current Plan
+                      {t('pricing.currentPlan')}
                     </>
                   ) : (
                     <>
@@ -229,17 +229,17 @@ export default function PricingPage() {
           <div className="inline-flex flex-wrap items-center justify-center gap-6 px-6 py-4 rounded-2xl bg-card border border-white/10">
             <div className="flex items-center gap-2 text-muted-foreground">
               <ShieldCheck size={20} className="text-green-400" />
-              <span className="text-sm">Secure Payment</span>
+              <span className="text-sm">{t('pricing.trustBadges.securePayment')}</span>
             </div>
             <div className="w-px h-6 bg-white/10 hidden sm:block" />
             <div className="flex items-center gap-2 text-muted-foreground">
               <Sparkle size={20} className="text-purple-400" />
-              <span className="text-sm">Cancel Anytime</span>
+              <span className="text-sm">{t('pricing.trustBadges.cancelAnytime')}</span>
             </div>
             <div className="w-px h-6 bg-white/10 hidden sm:block" />
             <div className="flex items-center gap-2 text-muted-foreground">
               <Lightning size={20} className="text-yellow-400" />
-              <span className="text-sm">Instant Access</span>
+              <span className="text-sm">{t('pricing.trustBadges.instantAccess')}</span>
             </div>
           </div>
         </div>
@@ -247,26 +247,26 @@ export default function PricingPage() {
         {/* FAQ */}
         <div className="mt-20 max-w-3xl mx-auto">
           <h2 className="text-2xl font-bold text-foreground text-center mb-8">
-            Frequently Asked Questions
+            {t('pricing.faq.title')}
           </h2>
           
           <div className="space-y-4">
             {[
               {
-                q: 'Can I cancel anytime?',
-                a: 'Yes! You can cancel your subscription at any time. You\'ll continue to have access until the end of your billing period.'
+                q: t('pricing.faq.questions.cancel.q'),
+                a: t('pricing.faq.questions.cancel.a')
               },
               {
-                q: 'What happens when I run out of credits?',
-                a: 'For Free users, credits reset daily at midnight. For Pro users, credits reset monthly. Unlimited users have no limits!'
+                q: t('pricing.faq.questions.credits.q'),
+                a: t('pricing.faq.questions.credits.a')
               },
               {
-                q: 'Do you offer refunds?',
-                a: 'Yes, we offer a 7-day money-back guarantee if you\'re not satisfied with your subscription.'
+                q: t('pricing.faq.questions.refunds.q'),
+                a: t('pricing.faq.questions.refunds.a')
               },
               {
-                q: 'What payment methods do you accept?',
-                a: 'We accept all major credit cards (Visa, Mastercard, American Express) through our secure payment processor, Stripe.'
+                q: t('pricing.faq.questions.payment.q'),
+                a: t('pricing.faq.questions.payment.a')
               },
             ].map((faq, i) => (
               <details

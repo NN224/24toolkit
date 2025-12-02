@@ -246,15 +246,67 @@
     "searchTools": "Search tools..."
   },
   "pricing": {
-    "title": "Simple, Transparent Pricing",
-    "subtitle": "Choose the plan that works for you",
+    "title": "Choose Your Plan",
+    "subtitle": "Unlock the full power of 80+ AI tools. Start free, upgrade when you need more.",
+    "badge": "Simple, Transparent Pricing",
+    "mostPopular": "Most Popular",
+    "currentPlan": "Current Plan",
+    "seo": {
+      "title": "Pricing - 24Toolkit",
+      "description": "Choose the perfect plan for your needs. Free, Pro, or Unlimited access to 80+ AI-powered tools."
+    },
+    "plans": {
+      "free": {
+        "name": "Free",
+        "description": "Perfect for trying out",
+        "period": "forever",
+        "cta": "Current Plan"
+      },
+      "pro": {
+        "name": "Pro",
+        "description": "For regular users",
+        "period": "month",
+        "cta": "Subscribe to Pro"
+      },
+      "unlimited": {
+        "name": "Unlimited",
+        "description": "For power users",
+        "period": "month",
+        "cta": "Go Unlimited"
+      }
+    },
+    "trustBadges": {
+      "securePayment": "Secure Payment",
+      "cancelAnytime": "Cancel Anytime",
+      "instantAccess": "Instant Access"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "questions": {
+        "cancel": {
+          "q": "Can I cancel anytime?",
+          "a": "Yes! You can cancel your subscription at any time. You'll continue to have access until the end of your billing period."
+        },
+        "credits": {
+          "q": "What happens when I run out of credits?",
+          "a": "For Free users, credits reset daily at midnight. For Pro users, credits reset monthly. Unlimited users have no limits!"
+        },
+        "refunds": {
+          "q": "Do you offer refunds?",
+          "a": "Yes, we offer a 7-day money-back guarantee if you're not satisfied with your subscription."
+        },
+        "payment": {
+          "q": "What payment methods do you accept?",
+          "a": "We accept all major credit cards (Visa, Mastercard, American Express) through our secure payment processor, Stripe."
+        }
+      }
+    },
     "free": "Free",
     "pro": "Pro",
     "unlimited": "Unlimited",
     "month": "month",
     "year": "year",
     "popular": "Most Popular",
-    "currentPlan": "Current Plan",
     "upgrade": "Upgrade",
     "downgrade": "Downgrade",
     "features": "Features",
@@ -538,7 +590,192 @@
     "requiresRecentLogin": "Please sign in again to delete your account"
   },
   "legal": {
-    "returnTo24Toolkit": "Return to 24Toolkit"
+    "returnTo24Toolkit": "Return to 24Toolkit",
+    "lastUpdated": "Last updated"
+  },
+  "privacyPolicy": {
+    "title": "Privacy Policy",
+    "sections": {
+      "introduction": {
+        "title": "1. Introduction",
+        "p1": "Welcome to 24Toolkit. We are committed to protecting your privacy and ensuring you have a positive experience on our platform. This policy outlines our practices regarding the collection, use, and disclosure of your information when you use our service.",
+        "p2": "24Toolkit provides over 80 free online tools designed to enhance your productivity. We believe in transparency and your right to privacy, which is why we've designed our tools to work entirely in your browser whenever possible."
+      },
+      "dataCollection": {
+        "title": "2. Data Collection",
+        "priority": "We prioritize your privacy above all else.",
+        "clientSide": "Client-Side Processing:",
+        "clientSideDesc": "The vast majority of our tools operate entirely within your web browser. This means your data never leaves your device. Files you upload, text you enter, and calculations you perform are processed locally on your machine.",
+        "noStorage": "No Personal Data Storage:",
+        "noStorageDesc": "We do not store, collect, or retain any personal information, files, or content that you process through our tools. Each session is independent, and once you close your browser or navigate away, your data is gone.",
+        "aiTools": "AI-Powered Tools:",
+        "aiToolsDesc": "Some of our AI features (such as the AI Translator, AI Email Writer, and AI Hashtag Generator) require server-side processing. For these tools, your input is temporarily transmitted to our secure servers and immediately processed. We do not log, store, or use this data for any purpose beyond providing you with the requested result."
+      },
+      "cookies": {
+        "title": "3. Cookies and Analytics",
+        "analytics": "Google Analytics:",
+        "analyticsDesc": "We use Google Analytics 4 to understand how visitors use our site. This helps us improve the user experience and identify which tools are most valuable. The data collected is anonymized and includes information such as page views, session duration, and general geographic location (country/region level only). Google Analytics may use cookies to collect this information.",
+        "essential": "Essential Cookies:",
+        "essentialDesc": "We use minimal cookies to remember your theme preferences (Dark, Cyber, or Minimal mode) and improve your browsing experience. These cookies do not track you across the web.",
+        "optOut": "Opt-Out:",
+        "optOutDesc": "You can opt out of Google Analytics by installing the Google Analytics Opt-out Browser Add-on or by disabling cookies in your browser settings."
+      },
+      "thirdParty": {
+        "title": "4. Third-Party Services",
+        "desc": "To maintain our free service and continue developing new tools, we display advertisements through Google AdSense. Google AdSense uses cookies and web beacons to display personalized ads based on your browsing habits across the web. These ads help us keep our tools 100% free for all users.",
+        "advertising": "Third-Party Advertising:",
+        "advertisingDesc": "We use Google AdSense to serve ads on our website. Google may use the DART cookie and other technologies to serve ads based on your visits to this site and other websites. You can opt out of personalized advertising by visiting Google Ads Settings or aboutads.info.",
+        "review": "We carefully vet all third-party services to ensure they meet high privacy standards. We recommend reviewing their privacy policies:",
+        "links": {
+          "googlePrivacy": "Google Privacy Policy",
+          "googleAds": "How Google Uses Advertising",
+          "googleAnalytics": "Google Analytics Privacy"
+        }
+      },
+      "rights": {
+        "title": "5. Your Rights",
+        "desc": "Since we don't collect or store personal data, there's no personal information to access, modify, or delete. However, you have the right to:",
+        "disableCookies": "Disable cookies in your browser settings",
+        "optOutAds": "Opt out of personalized advertising",
+        "contactUs": "Contact us with any privacy concerns or questions"
+      },
+      "children": {
+        "title": "6. Children's Privacy",
+        "desc": "Our service is not directed to children under the age of 13. We do not knowingly collect personal information from children. If you are a parent or guardian and believe your child has provided us with personal information, please contact us immediately."
+      },
+      "changes": {
+        "title": "7. Changes to This Policy",
+        "p1": "We may update this Privacy Policy from time to time to reflect changes in our practices or for legal, operational, or regulatory reasons. We will notify you of any significant changes by updating the \"Last Updated\" date at the top of this policy.",
+        "p2": "We encourage you to review this policy periodically to stay informed about how we're protecting your information."
+      },
+      "contact": {
+        "title": "8. Contact Us",
+        "desc": "If you have any questions, concerns, or feedback about this Privacy Policy or our privacy practices, please don't hesitate to reach out:",
+        "info": "Contact Information:",
+        "orVisit": "Or visit our Contact Page to send us a message directly."
+      },
+      "thanks": "Thank you for trusting 24Toolkit. Your privacy is our priority."
+    }
+  },
+  "termsOfService": {
+    "title": "Terms of Service",
+    "sections": {
+      "acceptance": {
+        "title": "1. Acceptance of Terms",
+        "p1": "By accessing and using 24Toolkit (\"the Service\"), you accept and agree to be bound by the terms and provisions of this agreement. If you do not agree to these Terms of Service, please do not use the Service.",
+        "p2": "These terms apply to all visitors, users, and others who access or use the Service. We reserve the right to update, change, or replace any part of these Terms of Service by posting updates on this page. It is your responsibility to check this page periodically for changes."
+      },
+      "description": {
+        "title": "2. Description of Service",
+        "desc": "24Toolkit provides a collection of over 80 free online tools designed to help users with various tasks including, but not limited to:",
+        "items": {
+          "text": "Text processing and formatting utilities",
+          "image": "Image editing and manipulation tools",
+          "code": "Code formatting and development tools",
+          "calculator": "Calculator and conversion utilities",
+          "ai": "AI-powered content generation tools",
+          "security": "Security and encryption utilities",
+          "productivity": "Productivity and organizational tools"
+        },
+        "note": "Most tools operate entirely within your browser, while some AI-powered features require server-side processing. We strive to provide accurate, reliable, and secure tools, but we make no guarantees regarding the accuracy or suitability of results for any particular purpose."
+      },
+      "permitted": {
+        "title": "3. Permitted Usage",
+        "desc": "You agree to use 24Toolkit only for lawful purposes. You are prohibited from:",
+        "items": {
+          "violateLaw": "Using the Service to violate any local, state, national, or international law",
+          "unauthorized": "Attempting to gain unauthorized access to any part of the Service or related systems",
+          "malware": "Introducing viruses, malware, or any other malicious code",
+          "disrupt": "Attempting to interfere with, disrupt, or overload the Service",
+          "bots": "Using automated systems (bots, scrapers) to access the Service without permission",
+          "impersonate": "Impersonating any person or entity, or falsely claiming an affiliation",
+          "harass": "Using the Service to harass, abuse, or harm another person",
+          "reproduce": "Reproducing, duplicating, or copying any part of the Service for commercial purposes without express written permission"
+        },
+        "reserve": "We reserve the right to terminate or restrict your access to the Service if we believe you have violated these terms."
+      },
+      "ip": {
+        "title": "4. Intellectual Property & Brand Usage",
+        "p1": "The Service and its original content, features, functionality, design, code, and branding (including but not limited to the \"24Toolkit\" name, logo, and visual identity) are and will remain the exclusive property of 24Toolkit and its licensors.",
+        "openSource": "Open Source:",
+        "openSourceDesc": "While certain components of the Service may be based on open-source libraries and tools (which are governed by their respective licenses), the 24Toolkit platform as a whole, including its unique design, branding, and proprietary features, is protected by copyright and trademark laws.",
+        "mayNot": "You may not:",
+        "items": {
+          "useBrand": "Use the \"24Toolkit\" name, logo, or branding without written permission",
+          "derivative": "Create derivative works or competing services based on 24Toolkit",
+          "remove": "Remove or alter any copyright, trademark, or proprietary notices"
+        }
+      },
+      "ugc": {
+        "title": "5. User-Generated Content",
+        "p1": "While most tools process data locally in your browser, you may occasionally upload or submit content (such as images, text, or files) to our servers for processing by AI-powered tools.",
+        "confirm": "By submitting content, you confirm that:",
+        "items": {
+          "own": "You own the content or have the necessary rights and permissions to use it",
+          "noViolate": "The content does not violate any third-party rights (copyright, trademark, privacy, etc.)",
+          "notIllegal": "The content is not illegal, harmful, threatening, abusive, or otherwise objectionable"
+        },
+        "noOwnership": "We do not claim ownership of your content. However, by using the Service, you grant us a temporary, non-exclusive license to process your content solely for the purpose of providing the requested service. As stated in our Privacy Policy, we do not store or retain user content beyond the immediate processing period."
+      },
+      "liability": {
+        "title": "6. Limitation of Liability",
+        "important": "IMPORTANT: PLEASE READ THIS SECTION CAREFULLY.",
+        "asIs": "The Service is provided on an \"AS IS\" and \"AS AVAILABLE\" basis. 24Toolkit makes no warranties, expressed or implied, regarding the Service's operation, availability, accuracy, reliability, or suitability for any particular purpose.",
+        "noWarranty": "No Warranty:",
+        "noWarrantyDesc": "We do not guarantee that:",
+        "warrantyItems": {
+          "uninterrupted": "The Service will be uninterrupted, timely, secure, or error-free",
+          "accurate": "Results obtained from the Service will be accurate or reliable",
+          "quality": "The quality of any tools or output will meet your expectations",
+          "errors": "Any errors in the Service will be corrected"
+        },
+        "limitation": "Limitation of Liability:",
+        "limitationDesc": "To the fullest extent permitted by law, 24Toolkit, its owners, employees, and affiliates shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to:",
+        "limitationItems": {
+          "loss": "Loss of profits, data, or goodwill",
+          "interruption": "Service interruption or unavailability",
+          "errors": "Errors or inaccuracies in results",
+          "unauthorized": "Unauthorized access to your data",
+          "other": "Any other damages arising from your use of the Service"
+        },
+        "acknowledge": "You acknowledge that you use the Service at your own risk. Always verify critical results independently, and do not rely solely on our tools for decisions that could result in financial loss, legal liability, or harm."
+      },
+      "thirdParty": {
+        "title": "7. Third-Party Links and Services",
+        "p1": "Our Service may contain links to third-party websites or services that are not owned or controlled by 24Toolkit. We have no control over, and assume no responsibility for, the content, privacy policies, or practices of any third-party sites or services.",
+        "p2": "We strongly advise you to review the terms and privacy policies of any third-party sites you visit."
+      },
+      "indemnification": {
+        "title": "8. Indemnification",
+        "desc": "You agree to defend, indemnify, and hold harmless 24Toolkit, its owners, employees, and affiliates from and against any and all claims, damages, obligations, losses, liabilities, costs, and expenses (including attorney's fees) arising from:",
+        "items": {
+          "use": "Your use of the Service",
+          "violation": "Your violation of these Terms of Service",
+          "thirdParty": "Your violation of any third-party rights, including intellectual property or privacy rights"
+        }
+      },
+      "modifications": {
+        "title": "9. Service Modifications and Termination",
+        "p1": "We reserve the right to modify, suspend, or discontinue the Service (or any part thereof) at any time, with or without notice. We will not be liable to you or any third party for any modification, suspension, or discontinuance of the Service.",
+        "p2": "We may also impose limits on certain features or restrict your access to parts or all of the Service without notice or liability."
+      },
+      "changes": {
+        "title": "10. Changes to Terms",
+        "p1": "We reserve the right to update or modify these Terms of Service at any time. When we do, we will revise the \"Last Updated\" date at the top of this page. Continued use of the Service after any such changes constitutes your acceptance of the new Terms of Service.",
+        "p2": "We encourage you to review these terms periodically to stay informed of any updates."
+      },
+      "governing": {
+        "title": "11. Governing Law",
+        "desc": "These Terms shall be governed and construed in accordance with applicable laws, without regard to its conflict of law provisions. Your use of the Service may also be subject to other local, state, national, or international laws."
+      },
+      "contact": {
+        "title": "12. Contact Information",
+        "desc": "If you have any questions about these Terms of Service, please contact us:",
+        "info": "Contact Information:",
+        "orVisit": "Or visit our Contact Page to send us a message."
+      },
+      "acknowledgment": "By using 24Toolkit, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service."
+    }
   },
   "sitemap": {
     "title": "Sitemap",
