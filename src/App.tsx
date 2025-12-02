@@ -10,7 +10,7 @@ import { AuthProvider } from '@/contexts/AuthContext'
 import { SubscriptionProvider } from '@/contexts/SubscriptionContext'
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
-import { SubscriptionModal } from '@/components/SubscriptionModal'
+import { UpgradeModal } from '@/components/UpgradeModal'
 import HomePage from '@/pages/HomePage'
 import AboutPage from '@/pages/AboutPage'
 import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage'
@@ -133,15 +133,6 @@ const LoadingFallback = ({ name = 'tool' }: { name?: string }) => (
 )
 
 function App() {
-  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false)
-
-  // Listen for subscription modal open events
-  useEffect(() => {
-    const handleOpenModal = () => setShowSubscriptionModal(true)
-    window.addEventListener('open-subscription-modal', handleOpenModal)
-    return () => window.removeEventListener('open-subscription-modal', handleOpenModal)
-  }, [])
-
   return (
     <AuthProvider>
       <SubscriptionProvider>
@@ -150,10 +141,7 @@ function App() {
         <CookieConsent />
         <UserProgress />
         <ScrollToTop />
-        <SubscriptionModal 
-          isOpen={showSubscriptionModal} 
-          onClose={() => setShowSubscriptionModal(false)} 
-        />
+        <UpgradeModal />
         <ErrorBoundary>
         <Routes>
         <Route path="/" element={<Layout />}>

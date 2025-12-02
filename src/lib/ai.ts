@@ -75,20 +75,29 @@ export async function callAI(
     try {
       errorData = await response.json()
     } catch {
+      // Handle 402 Payment Required specifically
+      if (response.status === 402) {
+        throw new AIError(
+          'Daily limit reached. You have used all your free AI requests for today.',
+          'CREDITS_EXHAUSTED',
+          0,
+          false
+        )
+      }
       throw new Error(`HTTP error ${response.status}`)
     }
     
     // Handle specific error codes
-    if (errorData.error === 'NO_CREDITS' || errorData.code === 'CREDITS_EXHAUSTED') {
+    if (response.status === 402 || errorData.error === 'NO_CREDITS' || errorData.code === 'CREDITS_EXHAUSTED') {
       throw new AIError(
-        errorData.message || errorData.error || 'Daily limit reached',
+        errorData.message || errorData.reason || 'Daily limit reached. You have used all your free AI requests for today.',
         'CREDITS_EXHAUSTED',
-        errorData.remainingCredits || errorData.creditsRemaining,
-        errorData.isPremium
+        errorData.remainingCredits || 0,
+        errorData.isPremium || false
       )
     }
     
-    if (errorData.error === 'AUTH_FAILED' || errorData.code === 'AUTH_FAILED') {
+    if (response.status === 401 || errorData.error === 'AUTH_FAILED' || errorData.code === 'AUTH_FAILED') {
       throw new AIError(
         errorData.message || errorData.error || 'Authentication failed',
         'AUTH_FAILED'

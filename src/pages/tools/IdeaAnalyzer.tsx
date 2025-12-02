@@ -6,7 +6,7 @@ import { Sparkle, Lightbulb, Copy, Check, ShareNetwork } from '@phosphor-icons/r
 import { AIBadge } from '@/components/ai/AIBadge';
 import { AILoadingSpinner } from '@/components/ai/AILoadingSpinner';
 import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderSelector';
-import { callAI } from '@/lib/ai';
+import { useAIWithCredits } from '@/hooks/use-ai-with-credits';
 import { AI_PROMPTS, validatePromptInput } from '@/lib/ai-prompts';
 import { toast } from 'sonner';
 import { useSEO } from '@/hooks/useSEO'
@@ -18,11 +18,14 @@ export default function IdeaAnalyzer() {
   useSEO(metadata)
 
   const [idea, setIdea] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const [analysis, setAnalysis] = useState<string>('');
   const [provider, setProvider] = useState<AIProvider>('anthropic');
   const [isArabic, setIsArabic] = useState(false);
   const [copied, setCopied] = useState(false);
+  
+  const { execute: analyzeIdea, isLoading } = useAIWithCredits({
+    successMessage: 'Idea analysis complete!',
+  });
 
   // Detect if input is Arabic
   useEffect(() => {
@@ -64,23 +67,12 @@ export default function IdeaAnalyzer() {
       return;
     }
 
-    setIsLoading(true);
     setAnalysis('');
-
     const systemPrompt = AI_PROMPTS.IDEA_ANALYZER(idea);
-
-    try {
-      await callAI(systemPrompt, provider, (text) => {
-        setAnalysis(text);
-      });
-      
-      toast.success('Idea analysis complete!');
-    } catch (error) {
-      console.error('Analysis error:', error);
-      toast.error('Failed to analyze the idea. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
+    
+    await analyzeIdea(systemPrompt, provider, (text) => {
+      setAnalysis(text);
+    });
   };
 
   return (
