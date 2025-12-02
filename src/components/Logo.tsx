@@ -9,7 +9,7 @@ export default function Logo({ className = '', width = 200, height = 60, compact
   if (compact) {
     return (
       <img 
-        src="/logo.png" 
+        src="/android-chrome-192x192.png" 
         alt="24Toolkit" 
         width={40}
         height={40}
@@ -21,7 +21,7 @@ export default function Logo({ className = '', width = 200, height = 60, compact
   
   return (
     <img 
-      src="/logo.png" 
+      src="/android-chrome-512x512.png" 
       alt="24Toolkit Logo" 
       width={width}
       height={height}
