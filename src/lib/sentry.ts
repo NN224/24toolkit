@@ -1,13 +1,19 @@
 /**
  * Sentry Error Tracking Configuration
  * 
- * Tracks errors, performance, and user sessions in production.
+ * Features:
+ * - Error tracking with full stack traces
+ * - Performance monitoring (Core Web Vitals, API calls)
+ * - Session Replay (video recording on errors)
+ * - Sourcemaps for readable stack traces
+ * 
  * Get your DSN from: https://sentry.io/
  */
 
 import * as Sentry from '@sentry/react'
 
 const SENTRY_DSN = import.meta.env.VITE_SENTRY_DSN
+const IS_PRODUCTION = import.meta.env.MODE === 'production'
 
 export function initSentry() {
   if (!SENTRY_DSN) {
@@ -18,57 +24,120 @@ export function initSentry() {
   Sentry.init({
     dsn: SENTRY_DSN,
     
-    // Environment
+    // Environment & Release
     environment: import.meta.env.MODE,
-    
-    // Release version (set during build)
     release: import.meta.env.VITE_APP_VERSION || '1.0.0',
     
+    // ==========================================================================
     // Integrations
+    // ==========================================================================
     integrations: [
-      // Browser tracing for performance
-      Sentry.browserTracingIntegration(),
-      // Replay for session recording (only on errors)
-      Sentry.replayIntegration({
-        maskAllText: false,
-        blockAllMedia: false,
+      // Performance: Browser Tracing
+      Sentry.browserTracingIntegration({
+        // Track navigation and page loads
+        enableInp: true, // Interaction to Next Paint
       }),
+      
+      // Session Replay: Record user sessions
+      Sentry.replayIntegration({
+        // Privacy settings
+        maskAllText: false,        // Don't mask text (not sensitive)
+        maskAllInputs: true,       // Mask password/credit card inputs
+        blockAllMedia: false,      // Allow images/videos
+        
+        // Network request/response capture
+        networkDetailAllowUrls: [
+          window.location.origin,
+          /\/api\//,
+        ],
+        networkRequestHeaders: ['X-Request-Id'],
+        networkResponseHeaders: ['X-Request-Id'],
+      }),
+      
+      // Capture console errors
+      Sentry.captureConsoleIntegration({
+        levels: ['error'],
+      }),
+      
+      // HTTP client errors
+      Sentry.httpClientIntegration(),
     ],
     
+    // ==========================================================================
     // Performance Monitoring
-    tracesSampleRate: import.meta.env.MODE === 'production' ? 0.1 : 1.0,
+    // ==========================================================================
+    // Sample rate for performance data (0.0 to 1.0)
+    // Production: 10% of transactions
+    // Development: 100% for debugging
+    tracesSampleRate: IS_PRODUCTION ? 0.1 : 1.0,
     
-    // Session Replay - only capture on errors
+    // Profile slow transactions (requires Performance plan)
+    profilesSampleRate: IS_PRODUCTION ? 0.1 : 0,
+    
+    // ==========================================================================
+    // Session Replay
+    // ==========================================================================
+    // Capture 0% of normal sessions (too expensive)
     replaysSessionSampleRate: 0,
+    
+    // Capture 100% of sessions WITH errors (super useful for debugging)
     replaysOnErrorSampleRate: 1.0,
     
-    // Filter out non-critical errors
+    // ==========================================================================
+    // Error Filtering
+    // ==========================================================================
     beforeSend(event, hint) {
       const error = hint.originalException as Error
+      const message = error?.message || ''
       
-      // Ignore network errors (user offline, etc.)
-      if (error?.message?.includes('Network Error')) {
-        return null
-      }
+      // Ignore common non-critical errors
+      const ignoredPatterns = [
+        'Network Error',           // User offline
+        'AbortError',              // Cancelled requests
+        'Too many requests',       // Rate limiting (expected)
+        'Failed to fetch',         // Network issues
+        'Load failed',             // Resource loading issues
+        'ResizeObserver',          // Browser resize observer errors
+        'ChunkLoadError',          // Code splitting failures (user refreshes)
+        'Loading chunk',           // Same as above
+        'Script error',            // Cross-origin script errors (no info)
+      ]
       
-      // Ignore cancelled requests
-      if (error?.message?.includes('AbortError')) {
-        return null
-      }
-      
-      // Ignore rate limit errors (expected behavior)
-      if (error?.message?.includes('Too many requests')) {
-        return null
+      for (const pattern of ignoredPatterns) {
+        if (message.includes(pattern)) {
+          return null
+        }
       }
       
       return event
     },
     
-    // Don't send errors in development
-    enabled: import.meta.env.MODE === 'production',
+    // Filter performance transactions
+    beforeSendTransaction(event) {
+      // Ignore health check pings
+      if (event.transaction?.includes('/api/health')) {
+        return null
+      }
+      return event
+    },
+    
+    // ==========================================================================
+    // General Settings
+    // ==========================================================================
+    // Only enable in production
+    enabled: IS_PRODUCTION,
+    
+    // Attach stack traces to messages
+    attachStacktrace: true,
+    
+    // Send default PII (IP address, etc) - disable for privacy
+    sendDefaultPii: false,
+    
+    // Auto session tracking
+    autoSessionTracking: true,
   })
 
-  console.log('[Sentry] Error tracking initialized')
+  console.log('[Sentry] Error tracking initialized (Performance + Replay enabled)')
 }
 
 /**

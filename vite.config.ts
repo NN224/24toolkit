@@ -1,6 +1,7 @@
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react-swc";
 import { defineConfig, PluginOption } from "vite";
+import { sentryVitePlugin } from "@sentry/vite-plugin";
 
 import sparkPlugin from "@github/spark/spark-vite-plugin";
 import createIconImportProxy from "@github/spark/vitePhosphorIconProxyPlugin";
@@ -40,7 +41,19 @@ export default defineConfig({
     // DO NOT REMOVE
     createIconImportProxy() as PluginOption,
     sparkPlugin() as PluginOption,
-  ],
+    // Sentry sourcemap upload (only in production build)
+    process.env.SENTRY_AUTH_TOKEN && sentryVitePlugin({
+      org: process.env.SENTRY_ORG,
+      project: process.env.SENTRY_PROJECT,
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+      sourcemaps: {
+        filesToDeleteAfterUpload: ["./dist/**/*.map"],
+      },
+      release: {
+        name: process.env.VITE_APP_VERSION || "1.0.0",
+      },
+    }),
+  ].filter(Boolean),
   resolve: {
     alias: {
       "@": resolve(projectRoot, "src"),
@@ -58,6 +71,7 @@ export default defineConfig({
   },
   build: {
     chunkSizeWarningLimit: 1200,
+    sourcemap: true, // Enable sourcemaps for Sentry
     rollupOptions: {
       output: {
         manualChunks(id) {
