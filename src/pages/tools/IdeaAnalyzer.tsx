@@ -32,12 +32,12 @@ export default function IdeaAnalyzer() {
   const copyToClipboard = () => {
     navigator.clipboard.writeText(analysis);
     setCopied(true);
-    toast.success(isArabic ? 'تم النسخ!' : 'Copied!');
+    toast.success('Copied!');
     setTimeout(() => setCopied(false), 2000);
   };
 
   const handleShare = () => {
-    const shareText = `${isArabic ? 'تحليل فكرتي من 24Toolkit:\n\n' : 'My idea analysis from 24Toolkit:\n\n'}${analysis.slice(0, 500)}...`;
+    const shareText = `My idea analysis from 24Toolkit:\n\n${analysis.slice(0, 500)}...`;
     
     if (navigator.share) {
       navigator.share({
@@ -47,13 +47,13 @@ export default function IdeaAnalyzer() {
       });
     } else {
       navigator.clipboard.writeText(shareText);
-      toast.success(isArabic ? 'تم نسخ الرابط!' : 'Link copied!');
+      toast.success('Link copied!');
     }
   };
 
   const handleAnalyze = async () => {
     if (!idea.trim()) {
-      toast.error(isArabic ? 'الرجاء إدخال فكرة للتحليل' : 'Please enter an idea to analyze.');
+      toast.error('Please enter an idea to analyze.');
       return;
     }
 
@@ -74,10 +74,10 @@ export default function IdeaAnalyzer() {
         setAnalysis(text);
       });
       
-      toast.success(isArabic ? 'تم تحليل الفكرة بنجاح!' : 'Idea analysis complete!');
+      toast.success('Idea analysis complete!');
     } catch (error) {
       console.error('Analysis error:', error);
-      toast.error(isArabic ? 'فشل تحليل الفكرة. يرجى المحاولة مرة أخرى.' : 'Failed to analyze the idea. Please try again.');
+      toast.error('Failed to analyze the idea. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -88,10 +88,10 @@ export default function IdeaAnalyzer() {
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-            {isArabic ? 'محلل الأفكار الذكي' : 'AI Idea Analyzer'}
+            AI Idea Analyzer
           </h1>
           <p className="text-lg text-muted-foreground mt-3">
-            {isArabic ? 'احصل على تحليل فوري لفكرتك من خبير AI' : 'Get instant feedback on your next big idea from an AI expert.'}
+            Get instant feedback on your next big idea from an AI expert.
           </p>
           <AIBadge className="mt-2 inline-block" />
         </div>
@@ -100,18 +100,15 @@ export default function IdeaAnalyzer() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Lightbulb size={24} />
-              {isArabic ? 'اوصف فكرتك' : 'Describe Your Idea'}
+              Describe Your Idea
             </CardTitle>
             <CardDescription>
-              {isArabic ? 'كن مفصلاً قدر الإمكان. ما المشكلة التي تحلها؟ لمن هي؟' : 'Be as detailed as you can. What problem does it solve? Who is it for?'}
+              Be as detailed as you can. What problem does it solve? Who is it for?
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <Textarea
-              placeholder={isArabic 
-                ? 'مثال: تطبيق جوال يستخدم AI لإنشاء خطط تمارين شخصية...'
-                : "For example: 'A mobile app that uses AI to create personalized workout plans...'"
-              }
+              placeholder="For example: 'A mobile app that uses AI to create personalized workout plans...'"
               value={idea}
               onChange={(e) => setIdea(e.target.value)}
               rows={6}
@@ -128,10 +125,7 @@ export default function IdeaAnalyzer() {
               className="w-full gap-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
             >
               <Sparkle size={18} weight="fill" />
-              {isLoading 
-                ? (isArabic ? 'جاري التحليل...' : 'Analyzing...') 
-                : (isArabic ? 'حلل الفكرة' : 'Analyze Idea')
-              }
+              {isLoading ? 'Analyzing...' : 'Analyze Idea'}
             </Button>
           </CardContent>
         </Card>
@@ -140,7 +134,7 @@ export default function IdeaAnalyzer() {
           <div className="text-center mt-8">
             <AILoadingSpinner />
             <p className="mt-4 text-muted-foreground">
-              {isArabic ? 'AI يحلل فكرتك...' : 'AI is analyzing your idea...'}
+              AI is analyzing your idea...
             </p>
           </div>
         )}
@@ -150,7 +144,7 @@ export default function IdeaAnalyzer() {
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="flex items-center gap-2">
                 <Lightbulb size={24} className="text-yellow-500" />
-                {isArabic ? 'نتيجة التحليل' : 'Analysis Result'}
+                Analysis Result
               </CardTitle>
               <div className="flex gap-2">
                 <Button
@@ -160,7 +154,7 @@ export default function IdeaAnalyzer() {
                   className="gap-2"
                 >
                   {copied ? <Check size={16} /> : <Copy size={16} />}
-                  {copied ? (isArabic ? 'تم!' : 'Copied!') : (isArabic ? 'نسخ' : 'Copy')}
+                  {copied ? 'Copied!' : 'Copy'}
                 </Button>
                 <Button
                   variant="outline"
@@ -169,7 +163,7 @@ export default function IdeaAnalyzer() {
                   className="gap-2"
                 >
                   <ShareNetwork size={16} />
-                  {isArabic ? 'مشاركة' : 'Share'}
+                  Share
                 </Button>
               </div>
             </CardHeader>

@@ -78,25 +78,23 @@ export default function AIPromptPresets() {
     // Check if all variables are filled
     const missingVars = selectedPreset.variables.filter(v => !variableValues[v.name]?.trim())
     if (missingVars.length > 0) {
-      toast.error(isArabic 
-        ? `يرجى ملء: ${missingVars.map(v => v.nameAr).join(', ')}`
-        : `Please fill: ${missingVars.map(v => v.name).join(', ')}`)
+      toast.error(`Please fill: ${missingVars.map(v => v.name).join(', ')}`)
       return
     }
     
     const prompt = fillTemplate(selectedPreset.template, variableValues)
     setGeneratedPrompt(prompt)
-    toast.success(isArabic ? 'تم إنشاء النص!' : 'Prompt generated!')
+    toast.success('Prompt generated!')
   }
 
   const handleDeletePreset = (presetId: string) => {
-    if (confirm(isArabic ? 'هل تريد حذف هذا القالب؟' : 'Delete this preset?')) {
+    if (confirm('Delete this preset?')) {
       if (deleteUserPreset(presetId)) {
         setPresets(getAllPresets())
         if (selectedPreset?.id === presetId) {
           setSelectedPreset(null)
         }
-        toast.success(isArabic ? 'تم الحذف' : 'Deleted')
+        toast.success('Deleted')
       }
     }
   }
@@ -113,14 +111,12 @@ export default function AIPromptPresets() {
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-3">
             <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-              {isArabic ? 'قوالب AI الجاهزة' : 'AI Prompt Presets'}
+              AI Prompt Presets
             </h1>
             <AIBadge />
           </div>
           <p className="text-lg text-muted-foreground">
-            {isArabic 
-              ? 'استخدم قوالب جاهزة لتوفير الوقت وتحسين نتائج AI'
-              : 'Use ready-made templates to save time and improve AI results'}
+            Use ready-made templates to save time and improve AI results
           </p>
         </div>
 
@@ -133,7 +129,7 @@ export default function AIPromptPresets() {
                 <div className="relative">
                   <MagnifyingGlass size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                   <Input
-                    placeholder={isArabic ? 'ابحث عن قالب...' : 'Search presets...'}
+                    placeholder="Search presets..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="pl-10"
@@ -146,7 +142,7 @@ export default function AIPromptPresets() {
                     className="cursor-pointer"
                     onClick={() => setActiveCategory('all')}
                   >
-                    {isArabic ? 'الكل' : 'All'}
+                    All
                   </Badge>
                   {categories.map(cat => (
                     <Badge
@@ -155,7 +151,7 @@ export default function AIPromptPresets() {
                       className="cursor-pointer"
                       onClick={() => setActiveCategory(cat.id)}
                     >
-                      {cat.icon} {isArabic ? cat.nameAr : cat.name}
+                      {cat.icon} {cat.name}
                     </Badge>
                   ))}
                 </div>
@@ -166,7 +162,7 @@ export default function AIPromptPresets() {
             <Card>
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg">
-                  {isArabic ? 'القوالب' : 'Presets'} ({filteredPresets.length})
+                  Presets ({filteredPresets.length})
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -186,16 +182,16 @@ export default function AIPromptPresets() {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
                             <span className="font-medium text-foreground text-sm truncate">
-                              {isArabic ? preset.nameAr : preset.name}
+                              {preset.name}
                             </span>
                             {preset.isUserCreated && (
                               <Badge variant="secondary" className="text-xs">
-                                {isArabic ? 'مخصص' : 'Custom'}
+                                Custom
                               </Badge>
                             )}
                           </div>
                           <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
-                            {isArabic ? preset.descriptionAr : preset.description}
+                            {preset.description}
                           </p>
                         </div>
                         {preset.isUserCreated && (
@@ -215,7 +211,7 @@ export default function AIPromptPresets() {
                   
                   {filteredPresets.length === 0 && (
                     <p className="text-center text-muted-foreground py-8">
-                      {isArabic ? 'لا توجد قوالب' : 'No presets found'}
+                      No presets found
                     </p>
                   )}
                 </div>
@@ -231,9 +227,9 @@ export default function AIPromptPresets() {
                   <div className="flex items-center gap-2">
                     <span className="text-2xl">{selectedPreset.icon}</span>
                     <div>
-                      <CardTitle>{isArabic ? selectedPreset.nameAr : selectedPreset.name}</CardTitle>
+                      <CardTitle>{selectedPreset.name}</CardTitle>
                       <CardDescription>
-                        {isArabic ? selectedPreset.descriptionAr : selectedPreset.description}
+                        {selectedPreset.description}
                       </CardDescription>
                     </div>
                   </div>
@@ -242,7 +238,7 @@ export default function AIPromptPresets() {
                   {selectedPreset.variables.map(variable => (
                     <div key={variable.name} className="space-y-2">
                       <Label htmlFor={variable.name}>
-                        {isArabic ? variable.nameAr : variable.name}
+                        {variable.name}
                       </Label>
                       
                       {variable.type === 'select' && variable.options ? (
@@ -251,12 +247,12 @@ export default function AIPromptPresets() {
                           onValueChange={(value) => handleVariableChange(variable.name, value)}
                         >
                           <SelectTrigger>
-                            <SelectValue placeholder={isArabic ? variable.placeholderAr : variable.placeholder} />
+                            <SelectValue placeholder={variable.placeholder} />
                           </SelectTrigger>
                           <SelectContent>
                             {variable.options.map(opt => (
                               <SelectItem key={opt.value} value={opt.value}>
-                                {isArabic ? opt.labelAr : opt.label}
+                                {opt.label}
                               </SelectItem>
                             ))}
                           </SelectContent>
@@ -264,7 +260,7 @@ export default function AIPromptPresets() {
                       ) : variable.type === 'textarea' ? (
                         <Textarea
                           id={variable.name}
-                          placeholder={isArabic ? variable.placeholderAr : variable.placeholder}
+                          placeholder={variable.placeholder}
                           value={variableValues[variable.name] || ''}
                           onChange={(e) => handleVariableChange(variable.name, e.target.value)}
                           className="min-h-[100px]"
@@ -272,7 +268,7 @@ export default function AIPromptPresets() {
                       ) : (
                         <Input
                           id={variable.name}
-                          placeholder={isArabic ? variable.placeholderAr : variable.placeholder}
+                          placeholder={variable.placeholder}
                           value={variableValues[variable.name] || ''}
                           onChange={(e) => handleVariableChange(variable.name, e.target.value)}
                         />
@@ -285,7 +281,7 @@ export default function AIPromptPresets() {
                     className="w-full gap-2 bg-gradient-to-r from-purple-600 to-sky-500"
                   >
                     <Lightning size={18} weight="fill" />
-                    {isArabic ? 'إنشاء النص' : 'Generate Prompt'}
+                    Generate Prompt
                   </Button>
                 </CardContent>
               </Card>
@@ -296,7 +292,7 @@ export default function AIPromptPresets() {
                     <Sparkle size={32} className="text-purple-500" />
                   </div>
                   <p className="text-muted-foreground">
-                    {isArabic ? 'اختر قالباً للبدء' : 'Select a preset to get started'}
+                    Select a preset to get started
                   </p>
                 </div>
               </Card>
@@ -308,16 +304,16 @@ export default function AIPromptPresets() {
             <Card className="border-2 border-accent/20">
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <CardTitle>{isArabic ? 'النص المولّد' : 'Generated Prompt'}</CardTitle>
+                  <CardTitle>Generated Prompt</CardTitle>
                   {generatedPrompt && (
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => copyToClipboard(generatedPrompt, isArabic ? 'تم النسخ!' : 'Copied!')}
+                      onClick={() => copyToClipboard(generatedPrompt, 'Copied!')}
                       className="gap-1"
                     >
                       <Copy size={14} />
-                      {isArabic ? 'نسخ' : 'Copy'}
+                      Copy
                     </Button>
                   )}
                 </div>
@@ -334,7 +330,7 @@ export default function AIPromptPresets() {
                     {selectedPreset && (
                       <Link to={getToolPath(selectedPreset.toolId)}>
                         <Button className="w-full gap-2" variant="outline">
-                          {isArabic ? 'استخدم في الأداة' : 'Use in Tool'}
+                          Use in Tool
                           <ArrowRight size={16} />
                         </Button>
                       </Link>
@@ -346,9 +342,7 @@ export default function AIPromptPresets() {
                       <Lightning size={28} className="text-purple-500" />
                     </div>
                     <p className="text-muted-foreground text-sm">
-                      {isArabic 
-                        ? 'املأ المتغيرات واضغط إنشاء'
-                        : 'Fill variables and click Generate'}
+                      Fill variables and click Generate
                     </p>
                   </div>
                 )}
@@ -360,13 +354,13 @@ export default function AIPromptPresets() {
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm flex items-center gap-2">
                   <Sparkle size={16} weight="fill" className="text-yellow-500" />
-                  {isArabic ? 'نصائح سريعة' : 'Quick Tips'}
+                  Quick Tips
                 </CardTitle>
               </CardHeader>
               <CardContent className="text-xs text-muted-foreground space-y-2">
-                <p>• {isArabic ? 'كن محدداً في المتغيرات للحصول على نتائج أفضل' : 'Be specific in variables for better results'}</p>
-                <p>• {isArabic ? 'يمكنك تعديل النص المولد قبل استخدامه' : 'You can edit the generated prompt before using'}</p>
-                <p>• {isArabic ? 'جرب قوالب مختلفة لنفس الهدف' : 'Try different presets for the same goal'}</p>
+                <p>• Be specific in variables for better results</p>
+                <p>• You can edit the generated prompt before using</p>
+                <p>• Try different presets for the same goal</p>
               </CardContent>
             </Card>
           </div>

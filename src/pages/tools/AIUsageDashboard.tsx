@@ -50,10 +50,10 @@ export default function AIUsageDashboard() {
   }
 
   const handleClearData = () => {
-    if (confirm(isArabic ? 'هل تريد حذف جميع بيانات الاستخدام؟' : 'Clear all usage data?')) {
+    if (confirm('Clear all usage data?')) {
       clearUsageData()
       loadData()
-      toast.success(isArabic ? 'تم حذف البيانات' : 'Data cleared')
+      toast.success('Data cleared')
     }
   }
 
@@ -66,7 +66,7 @@ export default function AIUsageDashboard() {
     a.download = '24toolkit-ai-usage.json'
     a.click()
     URL.revokeObjectURL(url)
-    toast.success(isArabic ? 'تم تصدير البيانات' : 'Data exported')
+    toast.success('Data exported')
   }
 
   const formatDuration = (ms: number) => {
@@ -98,25 +98,23 @@ export default function AIUsageDashboard() {
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-3">
               <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-                {isArabic ? 'لوحة تحليلات AI' : 'AI Usage Dashboard'}
+                AI Usage Dashboard
               </h1>
               <AIBadge />
             </div>
             <div className="flex gap-2">
               <Button variant="outline" size="sm" onClick={handleExportData}>
                 <Download size={16} className="mr-1" />
-                {isArabic ? 'تصدير' : 'Export'}
+                Export
               </Button>
               <Button variant="outline" size="sm" onClick={handleClearData}>
                 <Trash size={16} className="mr-1" />
-                {isArabic ? 'حذف' : 'Clear'}
+                Clear
               </Button>
             </div>
           </div>
           <p className="text-lg text-muted-foreground">
-            {isArabic 
-              ? 'تتبع استخدامك لأدوات الذكاء الاصطناعي واحصل على توصيات شخصية' 
-              : 'Track your AI tool usage and get personalized recommendations'}
+            Track your AI tool usage and get personalized recommendations
           </p>
         </div>
 
@@ -128,17 +126,15 @@ export default function AIUsageDashboard() {
                 <ChartLine size={40} className="text-purple-500" />
               </div>
               <h2 className="text-xl font-semibold mb-2">
-                {isArabic ? 'لا توجد بيانات بعد' : 'No usage data yet'}
+                No usage data yet
               </h2>
               <p className="text-muted-foreground mb-6">
-                {isArabic 
-                  ? 'ابدأ باستخدام أدوات AI لرؤية التحليلات' 
-                  : 'Start using AI tools to see your analytics'}
+                Start using AI tools to see your analytics
               </p>
               <Link to="/tools/text-summarizer">
                 <Button className="gap-2 bg-gradient-to-r from-purple-600 to-sky-500">
                   <Sparkle size={18} weight="fill" />
-                  {isArabic ? 'جرب ملخص النصوص' : 'Try Text Summarizer'}
+                  Try Text Summarizer
                   <ArrowRight size={16} />
                 </Button>
               </Link>
@@ -153,7 +149,7 @@ export default function AIUsageDashboard() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-muted-foreground">
-                        {isArabic ? 'إجمالي الطلبات' : 'Total Requests'}
+                        Total Requests
                       </p>
                       <p className="text-3xl font-bold text-foreground">
                         {insights.totalRequests}
@@ -171,7 +167,7 @@ export default function AIUsageDashboard() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-muted-foreground">
-                        {isArabic ? 'نسبة النجاح' : 'Success Rate'}
+                        Success Rate
                       </p>
                       <p className="text-3xl font-bold text-foreground">
                         {insights.successRate}%
@@ -190,7 +186,7 @@ export default function AIUsageDashboard() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-muted-foreground">
-                        {isArabic ? 'متوسط وقت الاستجابة' : 'Avg Response Time'}
+                        Avg Response Time
                       </p>
                       <p className="text-3xl font-bold text-foreground">
                         {formatDuration(insights.averageResponseTime)}
@@ -208,7 +204,7 @@ export default function AIUsageDashboard() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-muted-foreground">
-                        {isArabic ? 'أدوات مستخدمة' : 'Tools Used'}
+                        Tools Used
                       </p>
                       <p className="text-3xl font-bold text-foreground">
                         {insights.totalToolsUsed}
@@ -228,10 +224,10 @@ export default function AIUsageDashboard() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <TrendUp size={20} className="text-purple-500" />
-                    {isArabic ? 'أدواتك المفضلة' : 'Your Favorite Tools'}
+                    Your Favorite Tools
                   </CardTitle>
                   <CardDescription>
-                    {isArabic ? 'الأدوات الأكثر استخداماً' : 'Most frequently used tools'}
+                    Most frequently used tools
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -250,7 +246,7 @@ export default function AIUsageDashboard() {
                                 className="h-1.5 flex-1" 
                               />
                               <span className="text-xs text-muted-foreground">
-                                {tool.count} {isArabic ? 'مرة' : 'uses'}
+                                {tool.count} uses
                               </span>
                             </div>
                           </div>
@@ -259,7 +255,7 @@ export default function AIUsageDashboard() {
                     </div>
                   ) : (
                     <p className="text-muted-foreground text-center py-8">
-                      {isArabic ? 'لا توجد بيانات' : 'No data yet'}
+                      No data yet
                     </p>
                   )}
                 </CardContent>
@@ -270,15 +266,15 @@ export default function AIUsageDashboard() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Sparkle size={20} weight="fill" className="text-purple-500" />
-                    {isArabic ? 'توصيات شخصية' : 'Personalized Suggestions'}
+                    Personalized Suggestions
                   </CardTitle>
                   <CardDescription>
-                    {isArabic ? 'بناءً على استخدامك' : 'Based on your usage patterns'}
+                    Based on your usage patterns
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {(isArabic ? insights.suggestionsAr : insights.suggestions).map((suggestion, i) => (
+                    {insights.suggestions.map((suggestion, i) => (
                       <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-purple-500/5 border border-purple-500/10">
                         <div className="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                           <Sparkle size={14} weight="fill" className="text-purple-500" />
@@ -296,7 +292,7 @@ export default function AIUsageDashboard() {
               <Card>
                 <CardHeader>
                   <CardTitle>
-                    {isArabic ? 'ملخص اليوم' : "Today's Summary"}
+                    Today's Summary
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -304,19 +300,19 @@ export default function AIUsageDashboard() {
                     <div className="text-center p-4 rounded-lg bg-muted/50">
                       <p className="text-2xl font-bold text-foreground">{todaySummary.totalRequests}</p>
                       <p className="text-sm text-muted-foreground">
-                        {isArabic ? 'طلبات' : 'Requests'}
+                        Requests
                       </p>
                     </div>
                     <div className="text-center p-4 rounded-lg bg-muted/50">
                       <p className="text-2xl font-bold text-green-500">{todaySummary.successfulRequests}</p>
                       <p className="text-sm text-muted-foreground">
-                        {isArabic ? 'نجاح' : 'Successful'}
+                        Successful
                       </p>
                     </div>
                     <div className="text-center p-4 rounded-lg bg-muted/50">
                       <p className="text-2xl font-bold text-red-500">{todaySummary.failedRequests}</p>
                       <p className="text-sm text-muted-foreground">
-                        {isArabic ? 'فشل' : 'Failed'}
+                        Failed
                       </p>
                     </div>
                     <div className="text-center p-4 rounded-lg bg-muted/50">
@@ -324,7 +320,7 @@ export default function AIUsageDashboard() {
                         {formatDuration(todaySummary.averageDuration)}
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        {isArabic ? 'متوسط الوقت' : 'Avg Time'}
+                        Avg Time
                       </p>
                     </div>
                   </div>
@@ -335,13 +331,13 @@ export default function AIUsageDashboard() {
             {/* Usage Patterns */}
             <Card>
               <CardHeader>
-                <CardTitle>{isArabic ? 'أنماط الاستخدام' : 'Usage Patterns'}</CardTitle>
+                <CardTitle>Usage Patterns</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <p className="text-sm text-muted-foreground mb-2">
-                      {isArabic ? 'وقت الذروة' : 'Peak Usage Time'}
+                      Peak Usage Time
                     </p>
                     <div className="flex items-center gap-2">
                       <Clock size={20} className="text-sky-500" />
@@ -350,7 +346,7 @@ export default function AIUsageDashboard() {
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground mb-2">
-                      {isArabic ? 'المزود المفضل' : 'Preferred Provider'}
+                      Preferred Provider
                     </p>
                     <Badge variant="secondary" className="text-sm">
                       {insights.favoriteProvider || 'N/A'}

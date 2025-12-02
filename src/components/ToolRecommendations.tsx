@@ -51,12 +51,12 @@ export function ToolRecommendations({
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
           <Sparkle size={20} weight="fill" className="text-purple-500" />
-          {isArabic ? 'أدوات ذات صلة' : 'Related Tools'}
+          Related Tools
         </h3>
         <button
           onClick={() => setDismissed(true)}
           className="text-muted-foreground hover:text-foreground transition-colors"
-          title={isArabic ? 'إخفاء' : 'Dismiss'}
+          title="Dismiss"
         >
           <X size={18} />
         </button>
@@ -73,10 +73,10 @@ export function ToolRecommendations({
               <span className="text-2xl">{rec.icon}</span>
               <div className="flex-1 min-w-0">
                 <h4 className="font-medium text-foreground group-hover:text-purple-500 transition-colors truncate">
-                  {isArabic ? rec.titleAr : rec.title}
+                  {rec.title}
                 </h4>
                 <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">
-                  {isArabic ? rec.reasonAr : rec.reason}
+                  {rec.reason}
                 </p>
               </div>
               <ArrowRight 
@@ -139,7 +139,7 @@ export function ToolRecommendationsPopup({
                 <div className="flex items-center gap-2">
                   <Sparkle size={18} weight="fill" className="text-white" />
                   <span className="font-semibold text-white text-sm">
-                    {isArabic ? 'ماذا تريد أن تفعل بعد؟' : 'What\'s next?'}
+                    What's next?
                   </span>
                 </div>
                 <button
@@ -166,10 +166,10 @@ export function ToolRecommendationsPopup({
                   <span className="text-2xl">{rec.icon}</span>
                   <div className="flex-1 min-w-0">
                     <h4 className="font-medium text-foreground text-sm group-hover:text-purple-500 transition-colors">
-                      {isArabic ? rec.titleAr : rec.title}
+                      {rec.title}
                     </h4>
                     <p className="text-xs text-muted-foreground truncate">
-                      {isArabic ? rec.reasonAr : rec.reason}
+                      {rec.reason}
                     </p>
                   </div>
                   <ArrowRight 
@@ -186,7 +186,7 @@ export function ToolRecommendationsPopup({
                 onClick={onClose}
                 className="text-xs text-muted-foreground hover:text-foreground transition-colors"
               >
-                {isArabic ? 'لا شكراً، أنا بخير' : 'No thanks, I\'m done'}
+                No thanks, I'm done
               </button>
             </div>
           </div>

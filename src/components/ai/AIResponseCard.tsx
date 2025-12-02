@@ -52,7 +52,7 @@ export function AIResponseCard({
   }
 
   const handleCopy = () => {
-    copyToClipboard(content, isArabic ? 'تم النسخ!' : 'Copied to clipboard!')
+    copyToClipboard(content, 'Copied to clipboard!')
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
@@ -78,7 +78,7 @@ export function AIResponseCard({
       window.open(urls[platform], '_blank', 'width=600,height=400')
     }
     
-    toast.success(isArabic ? 'جاري المشاركة...' : 'Sharing...')
+    toast.success('Sharing...')
   }
 
   if (isLoading) {
@@ -96,7 +96,7 @@ export function AIResponseCard({
               <Sparkle size={20} weight="fill" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-purple-500" />
             </div>
             <p className="mt-4 text-muted-foreground text-sm">
-              {isArabic ? 'جاري المعالجة...' : 'Processing...'}
+              Processing...
             </p>
           </div>
         </CardContent>
@@ -160,12 +160,12 @@ export function AIResponseCard({
             {copied ? (
               <>
                 <Check size={16} className="text-green-500" />
-                {isArabic ? 'تم النسخ!' : 'Copied!'}
+                Copied!
               </>
             ) : (
               <>
                 <Copy size={16} />
-                {isArabic ? 'نسخ' : 'Copy'}
+                Copy
               </>
             )}
           </Button>
@@ -176,7 +176,7 @@ export function AIResponseCard({
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="gap-2 flex-1 min-w-[120px]">
                   <ShareNetwork size={16} />
-                  {isArabic ? 'مشاركة' : 'Share'}
+                  Share
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
@@ -195,7 +195,7 @@ export function AIResponseCard({
                 {typeof navigator !== 'undefined' && 'share' in navigator && (
                   <DropdownMenuItem onClick={() => handleShare('native')} className="gap-2 cursor-pointer">
                     <ShareNetwork size={18} />
-                    {isArabic ? 'المزيد...' : 'More...'}
+                    More...
                   </DropdownMenuItem>
                 )}
               </DropdownMenuContent>

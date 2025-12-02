@@ -77,6 +77,10 @@ export async function verifyIdToken(idToken) {
  * Get user profile from Firestore
  * Creates new profile if doesn't exist
  * Resets daily credits if needed
+ * 
+ * Checks subscription status from Stripe webhook data:
+ * - plan: 'free' | 'pro' | 'unlimited'
+ * - status: 'active' | 'trialing' | 'past_due' | 'canceled'
  */
 export async function getUserCredits(userId) {
   const db = getFirestoreAdmin();
@@ -89,7 +93,8 @@ export async function getUserCredits(userId) {
     // Create new user with default credits
     const newUser = {
       aiCredits: DEFAULT_DAILY_CREDITS,
-      isPremium: false,
+      plan: 'free',
+      status: 'active',
       lastResetDate: admin.firestore.Timestamp.fromDate(now),
       createdAt: admin.firestore.Timestamp.fromDate(now),
     };
@@ -97,6 +102,8 @@ export async function getUserCredits(userId) {
     
     return {
       aiCredits: DEFAULT_DAILY_CREDITS,
+      plan: 'free',
+      status: 'active',
       isPremium: false,
       lastResetDate: now,
     };
@@ -105,8 +112,41 @@ export async function getUserCredits(userId) {
   const data = userDoc.data();
   const lastResetDate = data.lastResetDate?.toDate() || now;
   
-  // Check if we need to reset daily credits (new day)
-  if (!isSameDay(lastResetDate, now) && !data.isPremium) {
+  // Check if user has an active paid subscription
+  const plan = data.plan || 'free';
+  const status = data.status || 'active';
+  const isPaidPlan = plan === 'pro' || plan === 'unlimited';
+  const isActiveSubscription = status === 'active' || status === 'trialing';
+  const isPremium = isPaidPlan && isActiveSubscription;
+  
+  // For unlimited plan, no credit limits
+  if (plan === 'unlimited' && isActiveSubscription) {
+    return {
+      aiCredits: Infinity,
+      plan: plan,
+      status: status,
+      isPremium: true,
+      lastResetDate: now,
+    };
+  }
+  
+  // For pro plan, check monthly credits
+  if (plan === 'pro' && isActiveSubscription) {
+    const monthlyCredits = data.credits?.monthlyCredits || 100;
+    const monthlyCreditsUsed = data.credits?.monthlyCreditsUsed || 0;
+    const remainingCredits = Math.max(0, monthlyCredits - monthlyCreditsUsed);
+    
+    return {
+      aiCredits: remainingCredits,
+      plan: plan,
+      status: status,
+      isPremium: true,
+      lastResetDate: now,
+    };
+  }
+  
+  // Free plan: Check if we need to reset daily credits (new day)
+  if (!isSameDay(lastResetDate, now)) {
     await userRef.update({
       aiCredits: DEFAULT_DAILY_CREDITS,
       lastResetDate: admin.firestore.Timestamp.fromDate(now),
@@ -114,14 +154,18 @@ export async function getUserCredits(userId) {
     
     return {
       aiCredits: DEFAULT_DAILY_CREDITS,
-      isPremium: data.isPremium || false,
+      plan: plan,
+      status: status,
+      isPremium: false,
       lastResetDate: now,
     };
   }
   
   return {
     aiCredits: data.aiCredits ?? DEFAULT_DAILY_CREDITS,
-    isPremium: data.isPremium || false,
+    plan: plan,
+    status: status,
+    isPremium: isPremium,
     lastResetDate: lastResetDate,
   };
 }
@@ -129,6 +173,10 @@ export async function getUserCredits(userId) {
 /**
  * Decrement user's AI credits by 1
  * Returns the updated credit count
+ * 
+ * For Pro users: increments monthlyCreditsUsed
+ * For Unlimited users: no decrement (unlimited usage)
+ * For Free users: decrements aiCredits
  */
 export async function decrementUserCredits(userId) {
   const db = getFirestoreAdmin();
@@ -142,7 +190,30 @@ export async function decrementUserCredits(userId) {
       throw new Error('User not found');
     }
     
-    const currentCredits = userDoc.data().aiCredits ?? 0;
+    const data = userDoc.data();
+    const plan = data.plan || 'free';
+    const status = data.status || 'active';
+    const isActiveSubscription = status === 'active' || status === 'trialing';
+    
+    // Unlimited plan: no credits to decrement
+    if (plan === 'unlimited' && isActiveSubscription) {
+      return Infinity;
+    }
+    
+    // Pro plan: increment monthlyCreditsUsed
+    if (plan === 'pro' && isActiveSubscription) {
+      const monthlyCredits = data.credits?.monthlyCredits || 100;
+      const monthlyCreditsUsed = (data.credits?.monthlyCreditsUsed || 0) + 1;
+      
+      transaction.update(userRef, { 
+        'credits.monthlyCreditsUsed': monthlyCreditsUsed 
+      });
+      
+      return Math.max(0, monthlyCredits - monthlyCreditsUsed);
+    }
+    
+    // Free plan: decrement aiCredits
+    const currentCredits = data.aiCredits ?? 0;
     const updatedCredits = Math.max(0, currentCredits - 1);
     
     transaction.update(userRef, { aiCredits: updatedCredits });
@@ -154,27 +225,54 @@ export async function decrementUserCredits(userId) {
 }
 
 /**
- * Check if user can use AI (has credits or is premium)
- * Returns { allowed: boolean, reason?: string, creditsRemaining?: number }
+ * Check if user can use AI (has credits or has active paid subscription)
+ * Returns { allowed: boolean, reason?: string, remainingCredits?: number }
+ * 
+ * Subscription Plans:
+ * - free: 5 daily credits (reset at midnight UTC)
+ * - pro: 100 monthly credits
+ * - unlimited: no limits
  */
 export async function checkAIUsageAllowed(userId) {
   const userCredits = await getUserCredits(userId);
   
-  // Premium users have unlimited access
-  if (userCredits.isPremium) {
+  // Unlimited users have unlimited access
+  if (userCredits.plan === 'unlimited' && userCredits.isPremium) {
     return {
       allowed: true,
       isPremium: true,
-      creditsRemaining: Infinity,
+      plan: 'unlimited',
+      remainingCredits: Infinity,
     };
   }
   
-  // Check if user has credits
+  // Pro users have monthly credits
+  if (userCredits.plan === 'pro' && userCredits.isPremium) {
+    if (userCredits.aiCredits > 0) {
+      return {
+        allowed: true,
+        isPremium: true,
+        plan: 'pro',
+        remainingCredits: userCredits.aiCredits,
+      };
+    }
+    
+    return {
+      allowed: false,
+      isPremium: true,
+      plan: 'pro',
+      remainingCredits: 0,
+      reason: 'Monthly limit reached. You have used all 100 Pro AI requests for this month. Credits reset on your billing date.',
+    };
+  }
+  
+  // Free users: check daily credits
   if (userCredits.aiCredits > 0) {
     return {
       allowed: true,
       isPremium: false,
-      creditsRemaining: userCredits.aiCredits,
+      plan: 'free',
+      remainingCredits: userCredits.aiCredits,
     };
   }
   
@@ -182,7 +280,8 @@ export async function checkAIUsageAllowed(userId) {
   return {
     allowed: false,
     isPremium: false,
-    creditsRemaining: 0,
+    plan: 'free',
+    remainingCredits: 0,
     reason: 'Daily limit reached. You have used all 5 free AI requests for today. Credits reset at midnight.',
   };
 }

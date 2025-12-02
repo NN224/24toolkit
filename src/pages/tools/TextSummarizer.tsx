@@ -41,7 +41,7 @@ export default function TextSummarizer() {
 
   const handleSummarize = async () => {
     if (!text.trim()) {
-      toast.error(isArabic ? 'الرجاء إدخال نص لتلخيصه' : 'Please enter some text to summarize')
+      toast.error('Please enter some text to summarize')
       return
     }
 
@@ -67,11 +67,11 @@ export default function TextSummarizer() {
       await callAI(promptText, provider, (accumulatedText) => {
         setSummary(accumulatedText)
       })
-      toast.success(isArabic ? 'تم تلخيص النص بنجاح!' : 'Text summarized successfully!')
-      triggerRecommendations(isArabic ? 'تم تلخيص النص بنجاح!' : 'Text summarized successfully!')
+      toast.success('Text summarized successfully!')
+      triggerRecommendations('Text summarized successfully!')
     } catch (error) {
       console.error('Summarization error:', error)
-      toast.error(error instanceof Error ? error.message : (isArabic ? 'فشل في تلخيص النص' : 'Failed to summarize text'))
+      toast.error(error instanceof Error ? error.message : 'Failed to summarize text')
     } finally {
       setIsLoading(false)
     }
@@ -80,7 +80,7 @@ export default function TextSummarizer() {
   const handleClear = () => {
     setText('')
     setSummary('')
-    toast.success(isArabic ? 'تم المسح' : 'Cleared')
+    toast.success('Cleared')
   }
 
   return (
@@ -89,30 +89,28 @@ export default function TextSummarizer() {
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-3">
             <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-              {isArabic ? 'ملخص النصوص الذكي' : 'AI Text Summarizer'}
+              AI Text Summarizer
             </h1>
             <AIBadge />
           </div>
           <p className="text-lg text-muted-foreground">
-            {isArabic 
-              ? 'حوّل المقالات والوثائق الطويلة إلى نقاط موجزة وسهلة الفهم'
-              : 'Transform long articles and documents into concise, digestible bullet points with AI-powered summarization.'}
+            Transform long articles and documents into concise, digestible bullet points with AI-powered summarization.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>{isArabic ? 'النص المدخل' : 'Input Text'}</CardTitle>
+              <CardTitle>Input Text</CardTitle>
               <CardDescription>
-                {isArabic ? 'الصق النص الذي تريد تلخيصه' : 'Paste the text you want to summarize'}
+                Paste the text you want to summarize
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <Textarea
                   id="text-input"
-                  placeholder={isArabic ? 'الصق مقالتك أو وثيقتك أو أي نص طويل هنا...' : 'Paste your article, document, or any long text here...'}
+                  placeholder="Paste your article, document, or any long text here..."
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                   className="min-h-[400px] resize-y font-normal"
@@ -120,9 +118,9 @@ export default function TextSummarizer() {
                   dir={isArabic ? 'rtl' : 'ltr'}
                 />
                 <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>{text.length.toLocaleString()} / {MAX_CHARS.toLocaleString()} {isArabic ? 'حرف' : 'characters'}</span>
+                  <span>{text.length.toLocaleString()} / {MAX_CHARS.toLocaleString()} characters</span>
                   <span className={text.length > MAX_CHARS * 0.9 ? 'text-orange-500 font-medium' : ''}>
-                    {text.length > MAX_CHARS * 0.9 && (isArabic ? 'اقتربت من الحد' : 'Approaching limit')}
+                    {text.length > MAX_CHARS * 0.9 && 'Approaching limit'}
                   </span>
                 </div>
               </div>
@@ -133,12 +131,12 @@ export default function TextSummarizer() {
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Select value={summaryLength} onValueChange={(value) => setSummaryLength(value as SummaryLength)}>
                     <SelectTrigger className="w-full sm:w-[180px]">
-                      <SelectValue placeholder={isArabic ? 'طول الملخص' : 'Summary length'} />
+                      <SelectValue placeholder="Summary length" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="short">{isArabic ? 'قصير (3 نقاط)' : 'Short (3 points)'}</SelectItem>
-                      <SelectItem value="medium">{isArabic ? 'متوسط (5 نقاط)' : 'Medium (5 points)'}</SelectItem>
-                      <SelectItem value="detailed">{isArabic ? 'مفصل (8 نقاط)' : 'Detailed (8 points)'}</SelectItem>
+                      <SelectItem value="short">Short (3 points)</SelectItem>
+                      <SelectItem value="medium">Medium (5 points)</SelectItem>
+                      <SelectItem value="detailed">Detailed (8 points)</SelectItem>
                     </SelectContent>
                   </Select>
                   
@@ -148,7 +146,7 @@ export default function TextSummarizer() {
                     className="gap-2 flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
                   >
                     <Sparkle size={16} weight="fill" />
-                    {isArabic ? 'لخّص' : 'Summarize'}
+                    Summarize
                     <ArrowRight size={16} />
                   </Button>
                 </div>
@@ -158,17 +156,17 @@ export default function TextSummarizer() {
                   variant="outline"
                   className="w-full"
                 >
-                  {isArabic ? 'مسح الكل' : 'Clear All'}
+                  Clear All
                 </Button>
               </div>
             </CardContent>
           </Card>
 
           <AIResponseCard
-            title={isArabic ? 'نتيجة الملخص' : 'Summary Result'}
+            title="Summary Result"
             content={summary}
             isLoading={isLoading}
-            emptyMessage={isArabic ? 'سيظهر الملخص هنا' : 'Your summary will appear here'}
+            emptyMessage="Your summary will appear here"
             variant="purple"
             showShare={true}
             shareText={summary.slice(0, 200) + '... - Created with 24Toolkit'}

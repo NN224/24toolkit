@@ -161,7 +161,7 @@ Respond naturally and helpfully:`
 
       setMessages(prev => [...prev, assistantMessage])
     } catch (error) {
-      toast.error(isArabic ? 'حدث خطأ' : 'An error occurred')
+      toast.error('An error occurred')
       console.error(error)
     } finally {
       setIsLoading(false)
@@ -187,7 +187,7 @@ Respond naturally and helpfully:`
 
   const clearChat = () => {
     setMessages([])
-    toast.success(isArabic ? 'تم مسح المحادثة' : 'Chat cleared')
+    toast.success('Chat cleared')
   }
 
   return (
@@ -197,14 +197,12 @@ Respond naturally and helpfully:`
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-3">
             <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-              {isArabic ? 'دردشة AI متعددة الأدوات' : 'Multi-Tool AI Chat'}
+              Multi-Tool AI Chat
             </h1>
             <AIBadge />
           </div>
           <p className="text-lg text-muted-foreground">
-            {isArabic 
-              ? 'تحدث مع AI يفهم احتياجاتك ويستخدم الأدوات المناسبة تلقائياً'
-              : 'Chat with AI that understands your needs and uses the right tools automatically'}
+            Chat with AI that understands your needs and uses the right tools automatically
           </p>
         </div>
 
@@ -219,7 +217,7 @@ Respond naturally and helpfully:`
                 <div>
                   <CardTitle className="text-base">AI Assistant</CardTitle>
                   <p className="text-xs text-muted-foreground">
-                    {isArabic ? 'يستخدم أدوات متعددة' : 'Uses multiple tools'}
+                    Uses multiple tools
                   </p>
                 </div>
               </div>
@@ -240,28 +238,26 @@ Respond naturally and helpfully:`
                   <Sparkle size={40} weight="fill" className="text-purple-500" />
                 </div>
                 <h3 className="text-lg font-medium mb-2">
-                  {isArabic ? 'كيف يمكنني مساعدتك؟' : 'How can I help you?'}
+                  How can I help you?
                 </h3>
                 <p className="text-muted-foreground text-sm mb-4 max-w-md">
-                  {isArabic 
-                    ? 'اطلب مني ترجمة، تلخيص، كتابة بريد، أو أي شيء آخر!'
-                    : 'Ask me to translate, summarize, write emails, or anything else!'}
+                  Ask me to translate, summarize, write emails, or anything else!
                 </p>
                 <div className="flex flex-wrap gap-2 justify-center">
                   <Badge variant="secondary" className="cursor-pointer hover:bg-purple-500/20"
-                    onClick={() => setInput(isArabic ? 'ترجم لي هذا النص للإنجليزية: ' : 'Translate this to Arabic: ')}>
+                    onClick={() => setInput('Translate this to Arabic: ')}>
                     <Translate size={12} className="mr-1" />
-                    {isArabic ? 'ترجم' : 'Translate'}
+                    Translate
                   </Badge>
                   <Badge variant="secondary" className="cursor-pointer hover:bg-purple-500/20"
-                    onClick={() => setInput(isArabic ? 'لخص لي هذا: ' : 'Summarize this: ')}>
+                    onClick={() => setInput('Summarize this: ')}>
                     <TextT size={12} className="mr-1" />
-                    {isArabic ? 'لخص' : 'Summarize'}
+                    Summarize
                   </Badge>
                   <Badge variant="secondary" className="cursor-pointer hover:bg-purple-500/20"
-                    onClick={() => setInput(isArabic ? 'اكتب بريد احترافي عن: ' : 'Write a professional email about: ')}>
+                    onClick={() => setInput('Write a professional email about: ')}>
                     <Envelope size={12} className="mr-1" />
-                    {isArabic ? 'بريد' : 'Email'}
+                    Email
                   </Badge>
                 </div>
               </div>
@@ -304,10 +300,10 @@ Respond naturally and helpfully:`
                         size="sm"
                         variant="ghost"
                         className="mt-1 h-6 px-2 text-xs"
-                        onClick={() => copyToClipboard(message.content, isArabic ? 'تم النسخ!' : 'Copied!')}
+                        onClick={() => copyToClipboard(message.content, 'Copied!')}
                       >
                         <Copy size={12} className="mr-1" />
-                        {isArabic ? 'نسخ' : 'Copy'}
+                        Copy
                       </Button>
                     )}
                   </div>
@@ -342,7 +338,7 @@ Respond naturally and helpfully:`
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder={isArabic ? 'اكتب رسالتك...' : 'Type your message...'}
+                placeholder="Type your message..."
                 className="min-h-[50px] max-h-[150px] resize-none"
                 disabled={isLoading}
               />

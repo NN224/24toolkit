@@ -67,25 +67,25 @@ export default function SmartHistory() {
   }
 
   const handleDelete = (entryId: string) => {
-    if (confirm(isArabic ? 'حذف هذا السجل؟' : 'Delete this entry?')) {
+    if (confirm('Delete this entry?')) {
       deleteHistoryEntry(entryId)
       loadHistory()
-      toast.success(isArabic ? 'تم الحذف' : 'Deleted')
+      toast.success('Deleted')
     }
   }
 
   const handleClearAll = () => {
-    if (confirm(isArabic ? 'حذف كل السجل؟' : 'Clear all history?')) {
+    if (confirm('Clear all history?')) {
       clearHistory()
       loadHistory()
-      toast.success(isArabic ? 'تم الحذف' : 'History cleared')
+      toast.success('History cleared')
     }
   }
 
   const handleToggleFavorite = (entryId: string) => {
     toggleFavorite(entryId)
     loadHistory()
-    toast.success(isArabic ? 'تم التحديث' : 'Updated')
+    toast.success('Updated')
   }
 
   const handleExport = () => {
@@ -97,7 +97,7 @@ export default function SmartHistory() {
     a.download = '24toolkit-history.json'
     a.click()
     URL.revokeObjectURL(url)
-    toast.success(isArabic ? 'تم التصدير' : 'Exported')
+    toast.success('Exported')
   }
 
   const formatDate = (timestamp: number) => {
@@ -108,10 +108,10 @@ export default function SmartHistory() {
     const diffHours = Math.floor(diffMs / 3600000)
     const diffDays = Math.floor(diffMs / 86400000)
     
-    if (diffMins < 1) return isArabic ? 'الآن' : 'Just now'
-    if (diffMins < 60) return isArabic ? `منذ ${diffMins} دقيقة` : `${diffMins}m ago`
-    if (diffHours < 24) return isArabic ? `منذ ${diffHours} ساعة` : `${diffHours}h ago`
-    if (diffDays < 7) return isArabic ? `منذ ${diffDays} يوم` : `${diffDays}d ago`
+    if (diffMins < 1) return 'Just now'
+    if (diffMins < 60) return `${diffMins}m ago`
+    if (diffHours < 24) return `${diffHours}h ago`
+    if (diffDays < 7) return `${diffDays}d ago`
     return date.toLocaleDateString()
   }
 
@@ -130,27 +130,25 @@ export default function SmartHistory() {
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-3">
               <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-                {isArabic ? 'السجل الذكي' : 'Smart History'}
+                Smart History
               </h1>
               <Badge variant="secondary">
-                {stats.totalEntries} {isArabic ? 'سجل' : 'entries'}
+                {stats.totalEntries} entries
               </Badge>
             </div>
             <div className="flex gap-2">
               <Button variant="outline" size="sm" onClick={handleExport}>
                 <Download size={16} className="mr-1" />
-                {isArabic ? 'تصدير' : 'Export'}
+                Export
               </Button>
               <Button variant="outline" size="sm" onClick={handleClearAll}>
                 <Trash size={16} className="mr-1" />
-                {isArabic ? 'حذف الكل' : 'Clear'}
+                Clear
               </Button>
             </div>
           </div>
           <p className="text-lg text-muted-foreground">
-            {isArabic 
-              ? 'سجل كامل لاستخدامك للأدوات - يمكنك إعادة استخدام أي نتيجة سابقة'
-              : 'Complete history of your tool usage - reuse any previous result'}
+            Complete history of your tool usage - reuse any previous result
           </p>
         </div>
 
@@ -160,19 +158,19 @@ export default function SmartHistory() {
             <Card>
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm">
-                  {isArabic ? 'إحصائيات' : 'Statistics'}
+                  Statistics
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">
-                    {isArabic ? 'إجمالي السجلات' : 'Total entries'}
+                    Total entries
                   </span>
                   <span className="font-medium">{stats.totalEntries}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">
-                    {isArabic ? 'المفضلة' : 'Favorites'}
+                    Favorites
                   </span>
                   <span className="font-medium">{getFavorites().length}</span>
                 </div>
@@ -183,7 +181,7 @@ export default function SmartHistory() {
               <Card>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm">
-                    {isArabic ? 'الأدوات الأكثر استخداماً' : 'Most Used Tools'}
+                    Most Used Tools
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -216,7 +214,7 @@ export default function SmartHistory() {
                   <div className="relative flex-1">
                     <MagnifyingGlass size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                     <Input
-                      placeholder={isArabic ? 'ابحث في السجل...' : 'Search history...'}
+                      placeholder="Search history..."
                       value={searchQuery}
                       onChange={(e) => handleSearch(e.target.value)}
                       className="pl-10"
@@ -228,7 +226,7 @@ export default function SmartHistory() {
                       size="sm"
                       onClick={() => setActiveFilter('all')}
                     >
-                      {isArabic ? 'الكل' : 'All'}
+                      All
                     </Button>
                     <Button
                       variant={activeFilter === 'favorites' ? 'default' : 'outline'}
@@ -237,7 +235,7 @@ export default function SmartHistory() {
                       className="gap-1"
                     >
                       <Star size={14} weight="fill" />
-                      {isArabic ? 'المفضلة' : 'Favorites'}
+                      Favorites
                     </Button>
                   </div>
                 </div>
@@ -270,7 +268,7 @@ export default function SmartHistory() {
                           <div className="space-y-2">
                             <div>
                               <p className="text-xs text-muted-foreground mb-1">
-                                {isArabic ? 'الإدخال:' : 'Input:'}
+                                Input:
                               </p>
                               <p className="text-sm text-foreground bg-muted/50 rounded p-2 line-clamp-2">
                                 {entry.input}
@@ -278,7 +276,7 @@ export default function SmartHistory() {
                             </div>
                             <div>
                               <p className="text-xs text-muted-foreground mb-1">
-                                {isArabic ? 'النتيجة:' : 'Output:'}
+                                Output:
                               </p>
                               <p className="text-sm text-foreground bg-muted/50 rounded p-2 line-clamp-3">
                                 {entry.output}
@@ -291,8 +289,8 @@ export default function SmartHistory() {
                           <Button
                             size="sm"
                             variant="ghost"
-                            onClick={() => copyToClipboard(entry.output, isArabic ? 'تم النسخ!' : 'Copied!')}
-                            title={isArabic ? 'نسخ النتيجة' : 'Copy output'}
+                            onClick={() => copyToClipboard(entry.output, 'Copied!')}
+                            title="Copy output"
                           >
                             <Copy size={16} />
                           </Button>
@@ -300,7 +298,7 @@ export default function SmartHistory() {
                             size="sm"
                             variant="ghost"
                             onClick={() => handleToggleFavorite(entry.id)}
-                            title={isArabic ? 'مفضلة' : 'Favorite'}
+                            title="Favorite"
                           >
                             <Star 
                               size={16} 
@@ -312,7 +310,7 @@ export default function SmartHistory() {
                             size="sm"
                             variant="ghost"
                             onClick={() => handleDelete(entry.id)}
-                            title={isArabic ? 'حذف' : 'Delete'}
+                            title="Delete"
                           >
                             <Trash size={16} />
                           </Button>
@@ -329,19 +327,15 @@ export default function SmartHistory() {
                     <ClockCounterClockwise size={32} className="text-purple-500" />
                   </div>
                   <h3 className="text-lg font-medium mb-2">
-                    {searchQuery 
-                      ? (isArabic ? 'لا توجد نتائج' : 'No results found')
-                      : (isArabic ? 'لا يوجد سجل بعد' : 'No history yet')}
+                    {searchQuery ? 'No results found' : 'No history yet'}
                   </h3>
                   <p className="text-muted-foreground text-sm mb-4">
-                    {isArabic 
-                      ? 'ابدأ باستخدام الأدوات وسيظهر سجلك هنا'
-                      : 'Start using tools and your history will appear here'}
+                    Start using tools and your history will appear here
                   </p>
                   <Link to="/tools/text-summarizer">
                     <Button className="gap-2">
                       <Sparkle size={16} weight="fill" />
-                      {isArabic ? 'جرب ملخص النصوص' : 'Try Text Summarizer'}
+                      Try Text Summarizer
                       <ArrowRight size={16} />
                     </Button>
                   </Link>

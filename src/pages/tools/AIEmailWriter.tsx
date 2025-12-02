@@ -130,7 +130,7 @@ export default function AIEmailWriter() {
           {generatedEmail && (
             <div className="mt-4">
               <AIResponseCard
-                title={isArabic ? 'البريد الإلكتروني' : 'Generated Email'}
+                title="Generated Email"
                 content={generatedEmail}
                 variant="blue"
                 showShare={true}

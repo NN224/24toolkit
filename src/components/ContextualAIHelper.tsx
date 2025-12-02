@@ -210,7 +210,7 @@ export function ContextualAIHelper() {
               <div className="flex items-center gap-2">
                 <Lightbulb size={18} weight="fill" className="text-yellow-500" />
                 <span className="text-sm font-medium text-foreground">
-                  {isArabic ? 'نصيحة ذكية' : 'Smart Tip'}
+                  Smart Tip
                 </span>
               </div>
               <button
@@ -274,7 +274,7 @@ export function ToolHelpButton({ toolId }: ToolHelpButtonProps) {
       <button
         onClick={() => setShowHelp(!showHelp)}
         className="p-2 rounded-lg hover:bg-muted transition-colors"
-        title={isArabic ? 'مساعدة' : 'Help'}
+        title="Help"
       >
         <Question size={20} className="text-muted-foreground" />
       </button>
@@ -291,7 +291,7 @@ export function ToolHelpButton({ toolId }: ToolHelpButtonProps) {
               <div className="flex items-center gap-2">
                 <Sparkle size={16} weight="fill" className="text-yellow-500" />
                 <span className="font-medium text-sm">
-                  {isArabic ? 'نصائح لهذه الأداة' : 'Tips for this tool'}
+                  Tips for this tool
                 </span>
               </div>
             </div>
