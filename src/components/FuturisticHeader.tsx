@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { MagnifyingGlass, Microphone, User, Moon, Sun, Lightning, SignIn } from '@phosphor-icons/react'
 import { searchTools, allTools, type Tool } from '@/lib/tools-data'
 import { useTheme } from '@/components/ThemeProvider'
@@ -8,6 +9,7 @@ import { UserMenu } from '@/components/UserMenu'
 import { useAuth } from '@/contexts/AuthContext'
 import { LoginModal } from '@/components/auth/LoginModal'
 import { CreditsBadge } from '@/components/ai/CreditsBadge'
+import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 
 /**
  * Get the SpeechRecognition constructor from the window object.
@@ -40,6 +42,7 @@ export default function FuturisticHeader() {
   const [showLoginModal, setShowLoginModal] = useState(false)
   const { theme, setTheme } = useTheme()
   const { user } = useAuth()
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const recognitionRef = useRef<SpeechRecognition | null>(null)
   
@@ -160,6 +163,9 @@ export default function FuturisticHeader() {
             </button>
 
             <div className="flex items-center gap-3">
+              {/* Language Switcher */}
+              <LanguageSwitcher />
+              
               <button 
                 onClick={startVoiceSearch}
                 className={`p-2 rounded-lg bg-card/50 transition-all border border-white/10 ${
