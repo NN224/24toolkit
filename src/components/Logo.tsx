@@ -11,9 +11,9 @@ export default function Logo({ className = '', width = 200, height = 60, compact
       <img 
         src="/android-chrome-192x192.png" 
         alt="24Toolkit" 
-        width={40}
-        height={40}
-        className={className}
+        width={width}
+        height={height}
+        className={`${className} brightness-110 contrast-110`}
         style={{ objectFit: 'contain' }}
       />
     )
@@ -25,7 +25,7 @@ export default function Logo({ className = '', width = 200, height = 60, compact
       alt="24Toolkit Logo" 
       width={width}
       height={height}
-      className={className}
+      className={`${className} brightness-110 contrast-110`}
       style={{ objectFit: 'contain' }}
     />
   )
