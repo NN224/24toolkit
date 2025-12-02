@@ -127,9 +127,28 @@ const Notepad = React.lazy(() => import('@/pages/tools/Notepad'))
 const DailyPlannerTemplate = React.lazy(() => import('@/pages/tools/DailyPlannerTemplate'))
 const PomodoroTimer = React.lazy(() => import('@/pages/tools/PomodoroTimer'))
 
-// Reusable loading fallback component
+// Beautiful loading fallback component with skeleton
 const LoadingFallback = ({ name = 'tool' }: { name?: string }) => (
-  <div className="p-4 text-center">Loading {name}...</div>
+  <div className="p-8 animate-scale-pop">
+    <div className="max-w-3xl mx-auto">
+      {/* Header skeleton */}
+      <div className="text-center mb-8 space-y-4">
+        <div className="skeleton w-64 h-10 mx-auto rounded-lg" />
+        <div className="skeleton w-96 h-6 mx-auto rounded-lg" />
+      </div>
+      
+      {/* Card skeleton */}
+      <div className="bg-card/50 backdrop-blur-sm border border-white/10 rounded-xl p-6 space-y-4">
+        <div className="skeleton w-48 h-6 rounded-lg" />
+        <div className="skeleton w-full h-32 rounded-lg" />
+        <div className="skeleton w-32 h-10 rounded-lg" />
+      </div>
+      
+      <p className="text-center mt-6 text-muted-foreground text-sm">
+        ✨ Loading {name}...
+      </p>
+    </div>
+  </div>
 )
 
 function App() {

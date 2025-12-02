@@ -28,29 +28,48 @@ const inspirationalQuotes = [
 function ToolCard({ tool }: { tool: any }) {
   const Icon = tool.icon
 
+  // Extract glow color from tool.color gradient
+  const getGlowColor = (color: string) => {
+    if (color.includes('purple')) return 'rgba(147, 51, 234, 0.4)'
+    if (color.includes('blue')) return 'rgba(59, 130, 246, 0.4)'
+    if (color.includes('green')) return 'rgba(34, 197, 94, 0.4)'
+    if (color.includes('orange')) return 'rgba(249, 115, 22, 0.4)'
+    if (color.includes('pink')) return 'rgba(236, 72, 153, 0.4)'
+    if (color.includes('violet')) return 'rgba(139, 92, 246, 0.4)'
+    if (color.includes('teal')) return 'rgba(20, 184, 166, 0.4)'
+    return 'rgba(147, 51, 234, 0.4)'
+  }
+
   return (
     <Link to={tool.path} className="group block h-full">
-      <Card className="h-full bg-card/50 backdrop-blur-sm border border-white/10 hover:border-accent/30 transition-all relative overflow-hidden"
-        style={{ boxShadow: '0 0 8px rgba(109,40,217,0.2)' }}
+      <Card 
+        className="h-full bg-card/50 backdrop-blur-sm border border-white/10 hover:border-accent/50 transition-all relative overflow-hidden card-hover-lift shine-effect"
+        style={{ 
+          boxShadow: '0 0 8px rgba(109,40,217,0.2)',
+          '--glow-color': getGlowColor(tool.color)
+        } as React.CSSProperties}
       >
+        {/* Gradient overlay on hover */}
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 to-sky-500/0 group-hover:from-purple-500/5 group-hover:to-sky-500/5 transition-all duration-500" />
+        
         <CardHeader className="relative">
           <div className="flex items-start justify-between mb-4">
             <div
-              className={`w-14 h-14 rounded-xl bg-gradient-to-br ${tool.color} flex items-center justify-center`}
-              style={{ boxShadow: '0 2px 10px rgba(0,0,0,0.3)' }}
+              className={`w-14 h-14 rounded-xl bg-gradient-to-br ${tool.color} flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-3`}
+              style={{ boxShadow: '0 4px 15px rgba(0,0,0,0.3)' }}
             >
-              <Icon size={28} weight="bold" className="text-white" />
+              <Icon size={28} weight="bold" className="text-white icon-animate transition-transform" />
             </div>
             {tool.isAI && (
-              <span className="px-3 py-1 text-xs font-bold bg-gradient-to-r from-purple-600 to-sky-500 text-white rounded-full">
-                AI
+              <span className="px-3 py-1 text-xs font-bold bg-gradient-to-r from-purple-600 to-sky-500 text-white rounded-full animate-pulse-glow">
+                AI ✨
               </span>
             )}
           </div>
-          <CardTitle className="text-xl text-foreground group-hover:text-accent transition-colors">
+          <CardTitle className="text-xl text-foreground group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-sky-400 group-hover:bg-clip-text transition-all duration-300">
             {tool.title}
           </CardTitle>
-          <CardDescription className="text-muted-foreground">
+          <CardDescription className="text-muted-foreground group-hover:text-muted-foreground/80 transition-colors">
             {tool.description}
           </CardDescription>
         </CardHeader>
@@ -140,32 +159,33 @@ export default function HomePage() {
         <div className="text-center mb-20">
           <div className="mb-4">
             <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
-              <span className="bg-gradient-to-r from-purple-500 to-sky-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-purple-500 via-pink-500 to-sky-500 bg-clip-text text-transparent animate-gradient-text">
                 Your Complete
               </span>
               <br />
-              <span className="text-foreground">Online Toolkit</span>
+              <span className="text-foreground animate-float" style={{ display: 'inline-block' }}>Online Toolkit</span>
             </h1>
           </div>
           
-          <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto animate-scale-pop">
             80+ free, powerful tools for developers, creators, and everyday users. 
             Everything runs in your browser - fast, secure, and private.
           </p>
 
           <p className="text-sm text-accent/80 mb-10 italic">
-            {randomQuote}
+            ✨ {randomQuote} ✨
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 mb-10">
             <Button
               size="lg"
               onClick={handleRandomTool}
-              className="bg-gradient-to-r from-purple-600 to-sky-500 text-white hover:opacity-90 transition-all px-8 py-6 text-lg font-semibold rounded-xl"
-              style={{ boxShadow: '0 0 20px rgba(109,40,217,0.4)' }}
+              className="bg-gradient-to-r from-purple-600 via-pink-500 to-sky-500 text-white hover:opacity-90 transition-all px-8 py-6 text-lg font-semibold rounded-xl animate-pulse-glow hover:scale-105 active:scale-95 group"
+              style={{ boxShadow: '0 0 30px rgba(109,40,217,0.5)' }}
             >
-              <Sparkle size={24} weight="fill" className="mr-2" />
+              <Sparkle size={24} weight="fill" className="mr-2 animate-sparkle" />
               I'm Feeling Lucky
+              <span className="ml-2 opacity-70">🎲</span>
             </Button>
           </div>
 

@@ -116,7 +116,7 @@ function SidebarContent({ user, showTooltips = false, onNavigate }: SidebarConte
   return (
     <div className="flex flex-col h-full p-3 gap-4">
       <Link to="/" onClick={onNavigate} className="flex items-center justify-center group mb-2">
-        <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-gradient-to-br from-violet-500/30 to-cyan-400/30 backdrop-blur-md border border-violet-400/50 hover:border-violet-300/70 hover:scale-105 transition-all overflow-hidden shadow-lg shadow-violet-500/30 ring-2 ring-violet-500/20">
+        <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-gradient-to-br from-violet-500/30 to-cyan-400/30 backdrop-blur-md border border-violet-400/50 hover:border-violet-300/70 hover:scale-110 transition-all overflow-hidden shadow-lg shadow-violet-500/30 ring-2 ring-violet-500/20 animate-float">
           <Logo 
             width={44} 
             height={44}
@@ -135,17 +135,17 @@ function SidebarContent({ user, showTooltips = false, onNavigate }: SidebarConte
             <button
               key={category.id}
               onClick={() => handleCategoryClick(category.id)}
-              className={`flex items-center justify-center p-3 rounded-xl transition-all group relative w-full ${
+              className={`flex items-center justify-center p-3 rounded-xl transition-all group relative w-full hover:scale-105 active:scale-95 ${
                 isActive 
-                  ? 'bg-accent/20 border-2 border-accent/50' 
+                  ? 'bg-accent/20 border-2 border-accent/50 animate-border-glow' 
                   : 'text-muted-foreground hover:text-foreground hover:bg-white/5 border-2 border-transparent hover:border-white/10'
               }`}
-              style={isActive ? { boxShadow: '0 0 8px rgba(109,40,217,0.3)' } : {}}
+              style={isActive ? { boxShadow: '0 0 15px rgba(109,40,217,0.4)' } : {}}
             >
-              <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${category.color} flex items-center justify-center flex-shrink-0`}
-                style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.3)' }}
+              <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${category.color} flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6`}
+                style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.4)' }}
               >
-                <Icon size={20} weight={isActive ? 'fill' : 'bold'} className="text-white" />
+                <Icon size={20} weight={isActive ? 'fill' : 'bold'} className="text-white transition-transform" />
               </div>
             </button>
           )

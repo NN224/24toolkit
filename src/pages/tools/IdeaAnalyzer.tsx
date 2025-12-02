@@ -23,8 +23,9 @@ export default function IdeaAnalyzer() {
   const [isArabic, setIsArabic] = useState(false);
   const [copied, setCopied] = useState(false);
   
-  const { execute: analyzeIdea, isLoading } = useAIWithCredits({
+  const { execute: analyzeIdea, isLoading, ConfettiEffect } = useAIWithCredits({
     successMessage: 'Idea analysis complete!',
+    celebrateOnSuccess: true,
   });
 
   // Detect if input is Arabic
@@ -77,6 +78,9 @@ export default function IdeaAnalyzer() {
 
   return (
     <div className="py-12 px-4 sm:px-6 lg:px-8">
+      {/* Confetti celebration on success */}
+      <ConfettiEffect />
+      
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-semibold text-foreground tracking-tight">

@@ -1,20 +1,23 @@
 /**
- * Enhanced hook for AI calls with credit handling and better UX
+ * Enhanced hook for AI calls with credit handling, better UX, and confetti celebration
  */
 import { useState } from 'react'
 import { callAI, AIError, type AIProvider } from '@/lib/ai'
 import { toast } from 'sonner'
 import { useSubscription } from '@/contexts/SubscriptionContext'
+import Confetti from '@/components/Confetti'
 
 interface UseAIOptions {
   onSuccess?: (result: string) => void
   onError?: (error: Error) => void
   successMessage?: string
+  celebrateOnSuccess?: boolean
 }
 
 export function useAIWithCredits(options: UseAIOptions = {}) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
+  const [showConfetti, setShowConfetti] = useState(false)
   const { refreshSubscription, openUpgradeModal } = useSubscription()
 
   const execute = async (
@@ -24,6 +27,7 @@ export function useAIWithCredits(options: UseAIOptions = {}) {
   ) => {
     setIsLoading(true)
     setError(null)
+    setShowConfetti(false)
 
     try {
       const result = await callAI(prompt, provider, onUpdate)
@@ -31,8 +35,16 @@ export function useAIWithCredits(options: UseAIOptions = {}) {
       // Refresh credits after successful AI call
       await refreshSubscription()
       
+      // Celebrate with confetti! 🎉
+      if (options.celebrateOnSuccess !== false) {
+        setShowConfetti(true)
+        setTimeout(() => setShowConfetti(false), 3000)
+      }
+      
       if (options.successMessage) {
-        toast.success(options.successMessage)
+        toast.success(options.successMessage, {
+          icon: '🎉',
+        })
       }
       
       if (options.onSuccess) {
@@ -142,5 +154,6 @@ export function useAIWithCredits(options: UseAIOptions = {}) {
     execute,
     isLoading,
     error,
+    ConfettiEffect: () => <Confetti trigger={showConfetti} />,
   }
 }
