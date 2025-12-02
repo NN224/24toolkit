@@ -8,6 +8,7 @@ import {
 } from 'firebase/auth'
 import { auth, googleProvider, githubProvider, facebookProvider, getUserProfile, type UserProfile } from '@/lib/firebase'
 import { toast } from 'sonner'
+import { setUser as setSentryUser } from '@/lib/sentry'
 
 interface AuthContextType {
   user: User | null
@@ -89,8 +90,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
       if (firebaseUser) {
         // Fetch/create user profile when user signs in
         await fetchUserProfile(firebaseUser)
+        
+        // Set user context for Sentry error tracking
+        setSentryUser({
+          id: firebaseUser.uid,
+          email: firebaseUser.email || undefined,
+          username: firebaseUser.displayName || undefined,
+        })
       } else {
         setUserProfile(null)
+        // Clear Sentry user context
+        setSentryUser(null)
       }
       
       setLoading(false)

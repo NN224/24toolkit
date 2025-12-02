@@ -4,13 +4,23 @@ import "@github/spark/spark"
 
 import App from './App.tsx'
 import { ErrorFallback } from './ErrorFallback.tsx'
+import { initSentry, captureError } from './lib/sentry'
 
 import "./main.css"
 import "./styles/theme.css"
 import "./index.css"
 
+// Initialize Sentry error tracking
+initSentry()
+
+// Enhanced error handler that reports to Sentry
+const handleError = (error: Error, info: { componentStack?: string }) => {
+  captureError(error, { componentStack: info.componentStack })
+  console.error('App Error:', error, info)
+}
+
 createRoot(document.getElementById('root')!).render(
-  <ErrorBoundary FallbackComponent={ErrorFallback}>
+  <ErrorBoundary FallbackComponent={ErrorFallback} onError={handleError}>
     <App />
   </ErrorBoundary>
 )
