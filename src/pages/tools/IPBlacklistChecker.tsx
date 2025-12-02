@@ -42,7 +42,7 @@ interface IPCheckResult {
 export default function IPBlacklistChecker() {
   const { t } = useTranslation()
   const metadata = getPageMetadata('ip-blacklist-checker')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/ip-blacklist-checker' })
 
   const [ipAddress, setIpAddress] = useState('')
   const [result, setResult] = useState<IPCheckResult | null>(null)

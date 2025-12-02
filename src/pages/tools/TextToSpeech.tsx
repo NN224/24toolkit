@@ -15,7 +15,7 @@ export default function TextToSpeech() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('text-to-speech')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/text-to-speech' })
 
   const [text, setText] = useState('')
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([])

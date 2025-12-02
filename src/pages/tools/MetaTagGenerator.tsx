@@ -15,7 +15,7 @@ export default function MetaTagGenerator() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('meta-tag-generator')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/meta-tag-generator' })
 
   const [pageTitle, setPageTitle] = useState('')
   const [description, setDescription] = useState('')

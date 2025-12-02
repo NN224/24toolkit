@@ -15,7 +15,7 @@ export default function HTTPRedirectChecker() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('http-redirect-checker')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/http-redirect-checker' })
 
   const [url, setUrl] = useState('')
   const [redirectChain, setRedirectChain] = useState<any[]>([])

@@ -14,7 +14,7 @@ export default function PalindromeChecker() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('palindrome-checker')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/palindrome-checker' })
 
   const [text, setText] = useState('')
   const [checked, setChecked] = useState(false)

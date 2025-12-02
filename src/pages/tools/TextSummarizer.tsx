@@ -23,7 +23,7 @@ export default function TextSummarizer() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('text-summarizer')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/text-summarizer' })
 
   // Smart tool recommendations
   const { triggerRecommendations, PopupComponent } = useToolRecommendations('text-summarizer')

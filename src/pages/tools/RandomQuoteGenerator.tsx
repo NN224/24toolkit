@@ -31,7 +31,7 @@ export default function RandomQuoteGenerator() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('random-quote-generator')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/random-quote-generator' })
 
   const [quote, setQuote] = useState(quotes[0])
   const [key, setKey] = useState(0)

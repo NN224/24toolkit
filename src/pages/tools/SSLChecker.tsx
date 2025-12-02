@@ -51,7 +51,7 @@ interface SSLResult {
 export default function SSLChecker() {
   const { t } = useTranslation()
   const metadata = getPageMetadata('ssl-checker')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/ssl-checker' })
 
   const [domain, setDomain] = useState('')
   const [result, setResult] = useState<SSLResult | null>(null)

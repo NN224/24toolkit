@@ -13,7 +13,7 @@ export default function ImageCropper() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('image-cropper')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/image-cropper' })
 
   const [image, setImage] = useState<string | null>(null)
   const [crop, setCrop] = useState({ x: 0, y: 0 })

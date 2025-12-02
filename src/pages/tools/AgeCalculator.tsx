@@ -13,7 +13,7 @@ export default function AgeCalculator() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('age-calculator')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/age-calculator' })
 
   const [birthDate, setBirthDate] = useState('')
   const [targetDate, setTargetDate] = useState('')

@@ -13,7 +13,7 @@ export default function TextReverser() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('text-reverser')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/text-reverser' })
 
   const [text, setText] = useState('')
   const [result, setResult] = useState('')

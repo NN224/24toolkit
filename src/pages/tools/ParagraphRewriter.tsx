@@ -23,7 +23,7 @@ export default function ParagraphRewriter() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('paragraph-rewriter')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/paragraph-rewriter' })
 
   const [inputText, setInputText] = useState('')
   const [outputText, setOutputText] = useState('')

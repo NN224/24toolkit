@@ -15,7 +15,7 @@ export default function FileHashVerifier() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('file-hash-verifier')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/file-hash-verifier' })
 
   const [file, setFile] = useState<File | null>(null)
   const [calculatedHash, setCalculatedHash] = useState('')

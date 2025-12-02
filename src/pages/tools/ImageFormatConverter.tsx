@@ -15,7 +15,7 @@ export default function ImageFormatConverter() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('image-format-converter')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/image-format-converter' })
 
   const [image, setImage] = useState<string | null>(null)
   const [originalFormat, setOriginalFormat] = useState<string>('')

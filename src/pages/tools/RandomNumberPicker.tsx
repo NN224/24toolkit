@@ -15,7 +15,7 @@ export default function RandomNumberPicker() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('random-number-picker')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/random-number-picker' })
 
   const [min, setMin] = useState(1)
   const [max, setMax] = useState(100)

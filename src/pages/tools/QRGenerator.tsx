@@ -16,7 +16,7 @@ export default function QRGenerator() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('qr-generator')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/qr-generator' })
 
   const [text, setText] = useState('')
   const [size, setSize] = useState(256)

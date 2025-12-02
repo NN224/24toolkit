@@ -14,7 +14,7 @@ export default function URLEncoderDecoder() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('url-encoder-decoder')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/url-encoder-decoder' })
 
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')

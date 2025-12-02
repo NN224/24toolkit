@@ -13,7 +13,7 @@ export default function DiceRollerCoinFlipper() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('dice-roller-coin-flipper')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/dice-roller-coin-flipper' })
 
   const [diceResult, setDiceResult] = useState<number | null>(null)
   const [coinResult, setCoinResult] = useState<'Heads' | 'Tails' | null>(null)

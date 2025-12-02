@@ -14,7 +14,7 @@ export default function WordCounter() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('word-counter')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/word-counter' })
 
   const [text, setText] = useState('')
 

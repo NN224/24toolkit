@@ -21,7 +21,7 @@ export default function ColorPicker() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('color-picker')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/color-picker' })
 
   const [selectedColor, setSelectedColor] = useState('#4A90E2')
   const [palette, setPalette] = useState<ColorPalette[]>([])

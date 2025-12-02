@@ -17,7 +17,7 @@ export default function HashGenerator() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('hash-generator')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/hash-generator' })
 
   const [text, setText] = useState('')
   const [hashes, setHashes] = useState({

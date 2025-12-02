@@ -14,7 +14,7 @@ export default function BackgroundRemover() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('background-remover')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/background-remover' })
 
   const [image, setImage] = useState<string | null>(null)
   const [processedImage, setProcessedImage] = useState<string | null>(null)

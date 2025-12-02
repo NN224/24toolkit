@@ -15,7 +15,7 @@ export default function Base64Tool() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('base64-tool')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/base64-tool' })
 
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')

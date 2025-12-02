@@ -14,7 +14,7 @@ export default function MemeGenerator() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('meme-generator')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/meme-generator' })
 
   const [image, setImage] = useState<string | null>(null)
   const [topText, setTopText] = useState('')

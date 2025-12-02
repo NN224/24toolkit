@@ -52,7 +52,7 @@ interface UserSettings {
 export default function SettingsPage() {
   // SEO
   const metadata = getPageMetadata('settings')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/settings' })
 
   const { t } = useTranslation()
   const { user, signOut } = useAuth()

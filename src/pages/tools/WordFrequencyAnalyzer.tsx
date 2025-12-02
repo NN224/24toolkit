@@ -13,7 +13,7 @@ export default function WordFrequencyAnalyzer() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('word-frequency-analyzer')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/word-frequency-analyzer' })
 
   const [text, setText] = useState('')
 

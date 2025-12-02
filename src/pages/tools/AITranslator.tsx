@@ -32,7 +32,7 @@ export default function AITranslator() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('ai-translator')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/ai-translator' })
 
   const [inputText, setInputText] = useState('')
   const [targetLang, setTargetLang] = useState('es')

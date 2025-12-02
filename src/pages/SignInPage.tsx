@@ -16,7 +16,8 @@ export default function SignInPage() {
   useSEO({
     title: 'Sign In | 24Toolkit',
     description: 'Sign in to access all tools and save your preferences',
-    keywords: 'sign in, login, authentication, 24toolkit'
+    keywords: 'sign in, login, authentication, 24toolkit',
+    canonicalPath: '/signin'
   })
 
   // Redirect if already logged in

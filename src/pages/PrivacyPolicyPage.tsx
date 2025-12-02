@@ -11,7 +11,7 @@ export default function PrivacyPolicyPage() {
   const isArabic = i18n.language === 'ar'
   // Set SEO metadata for privacy policy page
   const privacyMetadata = getPageMetadata('privacyPolicy')
-  useSEO(privacyMetadata)
+  useSEO({ ...privacyMetadata, canonicalPath: '/privacy-policy' })
 
   return (
     <div className="min-h-screen bg-background">

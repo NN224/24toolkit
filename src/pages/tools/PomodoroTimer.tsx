@@ -13,7 +13,7 @@ export default function PomodoroTimer() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('pomodoro-timer')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/pomodoro-timer' })
 
   const [timeLeft, setTimeLeft] = useState(25 * 60)
   const [isRunning, setIsRunning] = useState(false)

@@ -14,7 +14,7 @@ export default function UUIDGenerator() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('uuid-generator')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/uuid-generator' })
 
   const [uuids, setUuids] = useState<string[]>([])
   const [count, setCount] = useState(1)

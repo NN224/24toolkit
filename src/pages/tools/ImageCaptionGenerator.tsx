@@ -17,7 +17,7 @@ export default function ImageCaptionGenerator() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('image-caption-generator')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/image-caption-generator' })
 
   const [imageUrl, setImageUrl] = useState<string>('')
   const [caption, setCaption] = useState('')

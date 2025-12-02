@@ -15,7 +15,7 @@ export default function WatermarkAdder() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('watermark-adder')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/watermark-adder' })
 
   const [image, setImage] = useState<string | null>(null)
   const [watermarkText, setWatermarkText] = useState('© Your Watermark')

@@ -19,7 +19,7 @@ export default function PasswordGenerator() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('password-generator')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/password-generator' })
 
   // Track tool usage
   useEffect(() => {

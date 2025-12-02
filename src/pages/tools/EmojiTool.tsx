@@ -15,7 +15,7 @@ export default function EmojiTool() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('emoji-tool')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/emoji-tool' })
 
   const [text, setText] = useState('')
 

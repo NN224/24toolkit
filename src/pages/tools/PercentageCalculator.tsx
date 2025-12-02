@@ -14,7 +14,7 @@ export default function PercentageCalculator() {
 
   // Set SEO metadata
   const metadata = getPageMetadata('percentage-calculator')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/percentage-calculator' })
 
   const [value, setValue] = useState('')
   const [percent, setPercent] = useState('')

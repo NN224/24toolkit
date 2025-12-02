@@ -15,7 +15,7 @@ export default function RegexTester() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('regex-tester')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/regex-tester' })
 
   const [pattern, setPattern] = useState('')
   const [flags, setFlags] = useState('g')

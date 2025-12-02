@@ -13,7 +13,7 @@ export default function ImageFilterEditor() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('image-filter-editor')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/image-filter-editor' })
 
   const [image, setImage] = useState<string | null>(null)
   const [filters, setFilters] = useState({

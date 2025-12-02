@@ -25,7 +25,7 @@ export default function AIHashtagGenerator() {
 
   // Set SEO metadata
   const metadata = getPageMetadata('ai-hashtag-generator')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/ai-hashtag-generator' })
 
   const [content, setContent] = useState('')
   const [hashtags, setHashtags] = useState<string[]>([])

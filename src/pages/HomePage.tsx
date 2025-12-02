@@ -137,7 +137,7 @@ export default function HomePage() {
   
   // Set SEO metadata for home page
   const homeMetadata = getPageMetadata('home')
-  useSEO(homeMetadata)
+  useSEO({ ...homeMetadata, canonicalPath: '/' })
 
   const handleRandomTool = () => {
     const randomTool = allTools[Math.floor(Math.random() * allTools.length)]

@@ -13,7 +13,7 @@ export default function BMICalculator() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('bmi-calculator')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/bmi-calculator' })
 
   const [weight, setWeight] = useState('')
   const [height, setHeight] = useState('')

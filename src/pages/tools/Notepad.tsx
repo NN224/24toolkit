@@ -13,7 +13,7 @@ export default function Notepad() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('notepad')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/notepad' })
 
   const [note, setNote] = useState('')
 

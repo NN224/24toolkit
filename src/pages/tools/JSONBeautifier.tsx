@@ -16,7 +16,7 @@ export default function JSONBeautifier() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('json-beautifier')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/json-beautifier' })
 
   const [input, setInput] = useState('')
   const [formatted, setFormatted] = useState('')

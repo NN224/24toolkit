@@ -13,7 +13,7 @@ export default function TextDiffChecker() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('text-diff-checker')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/text-diff-checker' })
 
   const [text1, setText1] = useState('')
   const [text2, setText2] = useState('')

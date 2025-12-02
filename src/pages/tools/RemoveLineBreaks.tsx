@@ -13,7 +13,7 @@ export default function RemoveLineBreaks() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('remove-line-breaks')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/remove-line-breaks' })
 
   const [text, setText] = useState('')
 

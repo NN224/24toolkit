@@ -16,7 +16,7 @@ export default function HTMLFormatter() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('html-formatter')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/html-formatter' })
 
   const [input, setInput] = useState('')
   const [formatted, setFormatted] = useState('')

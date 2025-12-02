@@ -15,7 +15,7 @@ export default function ImageToText() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('image-to-text')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/image-to-text' })
 
   const [image, setImage] = useState<string | null>(null)
   const [extractedText, setExtractedText] = useState('')

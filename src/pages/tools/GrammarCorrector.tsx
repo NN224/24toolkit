@@ -17,7 +17,7 @@ export default function GrammarCorrector() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('grammar-corrector')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/grammar-corrector' })
 
   const [text, setText] = useState('')
   const [correctedText, setCorrectedText] = useState('')

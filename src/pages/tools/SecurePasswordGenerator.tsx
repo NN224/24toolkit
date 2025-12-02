@@ -15,7 +15,7 @@ import { getPageMetadata } from '@/lib/seo-metadata'
 export default function SecurePasswordGenerator() {
   // Set SEO metadata
   const metadata = getPageMetadata('secure-password-generator')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/secure-password-generator' })
 
   const { t } = useTranslation()
   const [password, setPassword] = useState('')

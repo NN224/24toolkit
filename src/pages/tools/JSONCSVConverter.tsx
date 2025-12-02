@@ -15,7 +15,7 @@ export default function JSONCSVConverter() {
 
   // Set SEO metadata
   const metadata = getPageMetadata('json-csv-converter')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/json-csv-converter' })
 
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')

@@ -15,7 +15,7 @@ export default function HTTPHeaderAnalyzer() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('http-header-analyzer')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/http-header-analyzer' })
 
   const [url, setUrl] = useState('')
   const [headers, setHeaders] = useState<Record<string, string>>({})

@@ -14,7 +14,7 @@ export default function TextCaseConverter() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('text-case-converter')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/text-case-converter' })
 
   const [text, setText] = useState('')
   const [result, setResult] = useState('')

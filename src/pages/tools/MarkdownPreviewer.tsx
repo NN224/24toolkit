@@ -15,7 +15,7 @@ export default function MarkdownPreviewer() {
 
   // Set SEO metadata
   const metadata = getPageMetadata('markdown-previewer')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/markdown-previewer' })
 
   const [markdown, setMarkdown] = useState(`# Welcome to Markdown Previewer
 

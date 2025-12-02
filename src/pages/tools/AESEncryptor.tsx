@@ -16,7 +16,7 @@ export default function AESEncryptor() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('aes-encryptor')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/aes-encryptor' })
 
   const [plaintext, setPlaintext] = useState('')
   const [ciphertext, setCiphertext] = useState('')

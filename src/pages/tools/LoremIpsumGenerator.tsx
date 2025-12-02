@@ -23,7 +23,7 @@ export default function LoremIpsumGenerator() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('lorem-ipsum-generator')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/lorem-ipsum-generator' })
 
   const [output, setOutput] = useState('')
   const [paragraphs, setParagraphs] = useState(3)

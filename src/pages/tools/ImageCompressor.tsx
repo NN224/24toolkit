@@ -17,7 +17,7 @@ export default function ImageCompressor() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('image-compressor')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/image-compressor' })
 
   // Smart tool recommendations
   const { triggerRecommendations, PopupComponent } = useToolRecommendations('image-compressor')

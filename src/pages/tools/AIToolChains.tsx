@@ -40,7 +40,7 @@ interface StepState {
 
 export default function AIToolChains() {
   const metadata = getPageMetadata('ai-tool-chains')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/ai-tool-chains' })
 
   const { t } = useTranslation()
   const [input, setInput] = useState('')

@@ -11,6 +11,7 @@ export default function PricingPage() {
   useSEO({
     title: t('pricing.seo.title'),
     description: t('pricing.seo.description'),
+    canonicalPath: '/pricing'
   })
 
   const { user, signInWithGoogle } = useAuth()

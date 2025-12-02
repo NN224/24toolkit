@@ -16,7 +16,7 @@ interface ColorInfo {
 export default function ImageColorExtractor() {
   // Set SEO metadata
   const metadata = getPageMetadata('image-color-extractor')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/image-color-extractor' })
 
   const { t } = useTranslation()
   const [image, setImage] = useState<string | null>(null)

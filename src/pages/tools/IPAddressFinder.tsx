@@ -14,7 +14,7 @@ export default function IPAddressFinder() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('ip-address-finder')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/ip-address-finder' })
 
   const [ipInfo, setIpInfo] = useState<{
     ip: string

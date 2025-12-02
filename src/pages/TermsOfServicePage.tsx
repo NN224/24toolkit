@@ -11,7 +11,7 @@ export default function TermsOfServicePage() {
   const isArabic = i18n.language === 'ar'
   // Set SEO metadata for terms of service page
   const termsMetadata = getPageMetadata('termsOfService')
-  useSEO(termsMetadata)
+  useSEO({ ...termsMetadata, canonicalPath: '/terms-of-service' })
 
   return (
     <div className="min-h-screen bg-background">

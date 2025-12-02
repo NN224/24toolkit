@@ -22,7 +22,7 @@ export default function CodeFormatter() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('code-formatter')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/code-formatter' })
 
   const [code, setCode] = useState('')
   const [formattedCode, setFormattedCode] = useState('')

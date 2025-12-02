@@ -11,7 +11,7 @@ import { getPageMetadata } from '@/lib/seo-metadata'
 export default function DailyPlannerTemplate() {
   // Set SEO metadata
   const metadata = getPageMetadata('daily-planner-template')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/daily-planner-template' })
 
   const { t } = useTranslation()
   const [date, setDate] = useState(new Date().toISOString().split('T')[0])

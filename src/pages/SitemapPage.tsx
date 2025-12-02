@@ -11,7 +11,7 @@ export default function SitemapPage() {
   const { t } = useTranslation()
   // Set SEO metadata for sitemap page
   const sitemapMetadata = getPageMetadata('sitemap')
-  useSEO(sitemapMetadata)
+  useSEO({ ...sitemapMetadata, canonicalPath: '/sitemap' })
 
   const staticPages = [
     { title: t('nav.home'), path: '/' },

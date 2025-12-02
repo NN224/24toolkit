@@ -14,7 +14,7 @@ export default function ImageResizer() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('image-resizer')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/image-resizer' })
 
   const [image, setImage] = useState<string | null>(null)
   const [resizedImage, setResizedImage] = useState<string | null>(null)

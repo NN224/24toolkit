@@ -23,7 +23,7 @@ export default function ContactPage() {
   
   // Set SEO metadata for contact page
   const contactMetadata = getPageMetadata('contact')
-  useSEO(contactMetadata)
+  useSEO({ ...contactMetadata, canonicalPath: '/contact' })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

@@ -10,7 +10,7 @@ export default function AboutPage() {
   const { t } = useTranslation()
   // Set SEO metadata for about page
   const aboutMetadata = getPageMetadata('about')
-  useSEO(aboutMetadata)
+  useSEO({ ...aboutMetadata, canonicalPath: '/about' })
   
   return (
     <div className="py-12 px-4 sm:px-6 lg:px-8">

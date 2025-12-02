@@ -19,7 +19,7 @@ export default function JWTDecoder() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('jwt-decoder')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/jwt-decoder' })
 
   const [jwt, setJwt] = useState('')
   const [decoded, setDecoded] = useState<DecodedJWT | null>(null)

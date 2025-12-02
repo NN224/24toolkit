@@ -12,7 +12,7 @@ import { getPageMetadata } from '@/lib/seo-metadata'
 export default function PDFToWord() {
   // Set SEO metadata
   const metadata = getPageMetadata('pdf-to-word')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/pdf-to-word' })
 
   const { t } = useTranslation()
   const [file, setFile] = useState<File | null>(null)

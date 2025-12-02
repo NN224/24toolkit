@@ -247,7 +247,7 @@ export default function UnitConverter() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('unit-converter')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/unit-converter' })
 
   const [category, setCategory] = useState<UnitCategory>('length')
   const [fromUnit, setFromUnit] = useState('meter')

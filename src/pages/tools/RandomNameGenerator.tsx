@@ -29,7 +29,7 @@ export default function RandomNameGenerator() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('random-name-generator')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/random-name-generator' })
 
   const [names, setNames] = useState<string[]>([])
   const [count, setCount] = useState(5)

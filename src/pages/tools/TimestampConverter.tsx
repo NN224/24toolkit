@@ -15,7 +15,7 @@ export default function TimestampConverter() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('timestamp-converter')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/timestamp-converter' })
 
   const [timestamp, setTimestamp] = useState('')
   const [readable, setReadable] = useState('')

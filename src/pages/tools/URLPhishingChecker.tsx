@@ -15,7 +15,7 @@ export default function URLPhishingChecker() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('url-phishing-checker')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/url-phishing-checker' })
 
   const [url, setUrl] = useState('')
   const [result, setResult] = useState<null | { status: 'safe' | 'suspicious' | 'dangerous', reasons: string[] }>(null)

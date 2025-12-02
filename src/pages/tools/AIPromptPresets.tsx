@@ -33,7 +33,7 @@ import { allTools } from '@/lib/tools-data'
 
 export default function AIPromptPresets() {
   const metadata = getPageMetadata('ai-prompt-presets')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/ai-prompt-presets' })
 
   const { t } = useTranslation()
   const [presets, setPresets] = useState<PromptPreset[]>([])

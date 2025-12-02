@@ -15,7 +15,7 @@ export default function PasswordStrengthChecker() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('password-strength-checker')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/password-strength-checker' })
 
   const [password, setPassword] = useState('')
 

@@ -32,7 +32,7 @@ import { Link } from 'react-router-dom'
 
 export default function AIUsageDashboard() {
   const metadata = getPageMetadata('ai-usage-dashboard')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/ai-usage-dashboard' })
 
   const { t } = useTranslation()
   const [insights, setInsights] = useState<UserInsights | null>(null)

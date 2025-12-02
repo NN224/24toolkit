@@ -15,7 +15,7 @@ export default function CurrencyConverter() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('currency-converter')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/currency-converter' })
 
   const [amount, setAmount] = useState('')
   const [fromCurrency, setFromCurrency] = useState('USD')

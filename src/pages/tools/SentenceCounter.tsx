@@ -13,7 +13,7 @@ export default function SentenceCounter() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('sentence-counter')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/sentence-counter' })
 
   const [text, setText] = useState('')
 

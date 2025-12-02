@@ -13,7 +13,7 @@ export default function TipCalculator() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('tip-calculator')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/tip-calculator' })
 
   const [billAmount, setBillAmount] = useState('')
   const [tipPercent, setTipPercent] = useState('15')

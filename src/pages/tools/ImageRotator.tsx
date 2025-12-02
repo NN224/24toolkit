@@ -12,7 +12,7 @@ export default function ImageRotator() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('image-rotator')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/image-rotator' })
 
   const [image, setImage] = useState<string | null>(null)
   const [rotation, setRotation] = useState(0)

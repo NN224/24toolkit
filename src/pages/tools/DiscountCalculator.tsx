@@ -12,7 +12,7 @@ export default function DiscountCalculator() {
   const { t } = useTranslation()
   // Set SEO metadata
   const metadata = getPageMetadata('discount-calculator')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/discount-calculator' })
 
   const [originalPrice, setOriginalPrice] = useState('')
   const [discountPercent, setDiscountPercent] = useState('')

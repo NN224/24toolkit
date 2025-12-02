@@ -35,7 +35,7 @@ import { allTools } from '@/lib/tools-data'
 
 export default function SmartHistory() {
   const metadata = getPageMetadata('smart-history')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/smart-history' })
 
   const { t } = useTranslation()
   const [history, setHistory] = useState<HistoryEntry[]>([])

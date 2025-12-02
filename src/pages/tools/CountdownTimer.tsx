@@ -13,7 +13,7 @@ export default function CountdownTimer() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('countdown-timer')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/countdown-timer' })
 
   const [minutes, setMinutes] = useState(5)
   const [seconds, setSeconds] = useState(0)

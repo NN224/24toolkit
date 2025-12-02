@@ -11,7 +11,7 @@ export default function Stopwatch() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('stopwatch')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/stopwatch' })
 
   const [time, setTime] = useState(0)
   const [isRunning, setIsRunning] = useState(false)

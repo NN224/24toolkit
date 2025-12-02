@@ -43,7 +43,7 @@ interface DetectedIntent {
 
 export default function MultiToolChat() {
   const metadata = getPageMetadata('multi-tool-chat')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/multi-tool-chat' })
 
   const { t } = useTranslation()
   const [messages, setMessages] = useState<Message[]>([])

@@ -16,7 +16,7 @@ export default function RandomStringGenerator() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('random-string-generator')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/random-string-generator' })
 
   const [result, setResult] = useState('')
   const [length, setLength] = useState(16)

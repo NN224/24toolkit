@@ -18,7 +18,7 @@ export default function IdeaAnalyzer() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('idea-analyzer')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/idea-analyzer' })
 
   const [idea, setIdea] = useState('');
   const [analysis, setAnalysis] = useState<string>('');

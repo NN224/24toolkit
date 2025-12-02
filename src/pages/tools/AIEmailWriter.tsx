@@ -21,7 +21,7 @@ export default function AIEmailWriter() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('ai-email-writer')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/ai-email-writer' })
 
   const [topic, setTopic] = useState('')
   const [mode, setMode] = useState<EmailMode>('formal')

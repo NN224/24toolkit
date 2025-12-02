@@ -16,7 +16,7 @@ export default function TextEncryptor() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('text-encryptor')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/text-encryptor' })
 
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')

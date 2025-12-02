@@ -16,7 +16,7 @@ export default function FindReplace() {
   
   // Set SEO metadata
   const metadata = getPageMetadata('find-replace')
-  useSEO(metadata)
+  useSEO({ ...metadata, canonicalPath: '/tools/find-replace' })
 
   const [text, setText] = useState('')
   const [findText, setFindText] = useState('')
