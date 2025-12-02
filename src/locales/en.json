@@ -216,7 +216,16 @@
       "history": "Usage history"
     },
     "yesDeleteAccount": "Yes, Delete My Account",
-    "languageChanged": "Language changed"
+    "languageChanged": "Language changed",
+    "signInFirst": "Please sign in first",
+    "enterName": "Please enter a name",
+    "changesSaved": "Changes saved successfully!",
+    "saveChangesFailed": "Failed to save changes. Please try again.",
+    "accountDeleted": "Account deleted successfully",
+    "signInAgainToDelete": "Please sign in again to delete your account",
+    "deleteAccountFailed": "Failed to delete account. Please try again.",
+    "signedOut": "Signed out successfully",
+    "customerPortalFailed": "Failed to open customer portal"
   },
   "about": {
     "title": "About 24Toolkit",
