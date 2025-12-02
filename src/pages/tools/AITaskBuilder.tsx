@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Sparkle, ListChecks } from '@phosphor-icons/react';
+import { Sparkle, ListChecks, Copy, Check, ShareNetwork } from '@phosphor-icons/react';
 import { AIBadge } from '@/components/ai/AIBadge';
 import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderSelector';
 import { callAI } from '@/lib/ai';
@@ -26,6 +26,31 @@ export default function AITaskBuilder() {
   const [isLoading, setIsLoading] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [provider, setProvider] = useState<AIProvider>('anthropic');
+  const [copied, setCopied] = useState(false);
+
+  const copyTasksToClipboard = () => {
+    const tasksText = tasks.map((t, i) => `${i + 1}. ${t.text}`).join('\n');
+    navigator.clipboard.writeText(tasksText);
+    setCopied(true);
+    toast.success('Tasks copied!');
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleShare = () => {
+    const tasksText = tasks.map((t, i) => `${i + 1}. ${t.text}`).join('\n');
+    const shareText = `My Action Plan from 24Toolkit:\n\n${tasksText}`;
+    
+    if (navigator.share) {
+      navigator.share({
+        title: '24Toolkit - Task Builder',
+        text: shareText,
+        url: window.location.href,
+      });
+    } else {
+      navigator.clipboard.writeText(shareText);
+      toast.success('Link copied!');
+    }
+  };
 
   const handleGenerateTasks = async () => {
     if (!goal.trim()) {
@@ -138,9 +163,31 @@ export default function AITaskBuilder() {
 
         {tasks.length > 0 && (
           <Card className="mt-8">
-            <CardHeader>
-              <CardTitle>Your Action Plan</CardTitle>
-              <CardDescription>Here are the steps to achieve your goal. Check them off as you go!</CardDescription>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <div>
+                <CardTitle>Your Action Plan</CardTitle>
+                <CardDescription>Here are the steps to achieve your goal. Check them off as you go!</CardDescription>
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={copyTasksToClipboard}
+                  className="gap-2"
+                >
+                  {copied ? <Check size={16} /> : <Copy size={16} />}
+                  {copied ? 'Copied!' : 'Copy'}
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleShare}
+                  className="gap-2"
+                >
+                  <ShareNetwork size={16} />
+                  Share
+                </Button>
+              </div>
             </CardHeader>
             <CardContent>
               <ul className="space-y-3">
