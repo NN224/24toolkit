@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { useEasterEgg } from '@/hooks/use-easter-egg'
@@ -135,6 +136,7 @@ function ToolSection({
 }
 
 export default function HomePage() {
+  const { t } = useTranslation()
   const [selectedFilter, setSelectedFilter] = useState('all')
   const [randomQuote] = useState(() => inspirationalQuotes[Math.floor(Math.random() * inspirationalQuotes.length)])
   const navigate = useNavigate()
@@ -160,16 +162,15 @@ export default function HomePage() {
           <div className="mb-4">
             <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
               <span className="bg-gradient-to-r from-purple-500 via-pink-500 to-sky-500 bg-clip-text text-transparent animate-gradient-text">
-                Your Complete
+                {t('home.title')}
               </span>
               <br />
-              <span className="text-foreground animate-float" style={{ display: 'inline-block' }}>Online Toolkit</span>
+              <span className="text-foreground animate-float" style={{ display: 'inline-block' }}>{t('home.titleHighlight')}</span>
             </h1>
           </div>
           
           <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto animate-scale-pop">
-            80+ free, powerful tools for developers, creators, and everyday users. 
-            Everything runs in your browser - fast, secure, and private.
+            {t('home.subtitle')}
           </p>
 
           <p className="text-sm text-accent/80 mb-10 italic">
@@ -183,9 +184,9 @@ export default function HomePage() {
               className="bg-gradient-to-r from-purple-600 via-pink-500 to-sky-500 text-white hover:opacity-90 transition-all px-8 py-6 text-lg font-semibold rounded-xl animate-pulse-glow hover:scale-105 active:scale-95 group"
               style={{ boxShadow: '0 0 30px rgba(109,40,217,0.5)' }}
             >
-              <Sparkle size={24} weight="fill" className="mr-2 animate-sparkle" />
-              I'm Feeling Lucky
-              <span className="ml-2 opacity-70">🎲</span>
+              <Sparkle size={24} weight="fill" className="ltr:mr-2 rtl:ml-2 animate-sparkle" />
+              {t('home.feelingLucky')}
+              <span className="ltr:ml-2 rtl:mr-2 opacity-70">🎲</span>
             </Button>
           </div>
 
@@ -198,7 +199,7 @@ export default function HomePage() {
                   : 'bg-card/50 text-muted-foreground hover:text-foreground border border-white/10'
               }`}
             >
-              All Tools
+              {t('categories.all')}
             </button>
             {Object.entries(categories).map(([id, category]) => {
               const icons: Record<string, any> = {
@@ -238,37 +239,37 @@ export default function HomePage() {
 
             <ToolSection
               id="ai"
-              title="AI Tools"
+              title={t('categories.ai')}
               emoji="🤖"
-              description="Powered by artificial intelligence"
+              description={t('home.sections.ai')}
               tools={getToolsByCategory('ai')}
               accentColor="from-purple-500 to-pink-500"
-              badge="AI-Powered"
+              badge={t('common.aiPowered')}
             />
 
             <ToolSection
               id="text"
-              title="Text Tools"
+              title={t('categories.text')}
               emoji="📝"
-              description="Transform and analyze text"
+              description={t('home.sections.text')}
               tools={getToolsByCategory('text')}
               accentColor="from-blue-500 to-cyan-500"
             />
 
             <ToolSection
               id="dev"
-              title="Developer Tools"
+              title={t('categories.developer')}
               emoji="💻"
-              description="Essential utilities for developers"
+              description={t('home.sections.dev')}
               tools={getToolsByCategory('dev')}
               accentColor="from-green-500 to-emerald-500"
             />
 
             <ToolSection
               id="image"
-              title="Image Tools"
+              title={t('categories.image')}
               emoji="🖼️"
-              description="Edit and transform images"
+              description={t('home.sections.image')}
               tools={getToolsByCategory('image')}
               accentColor="from-orange-500 to-red-500"
             />
@@ -280,27 +281,27 @@ export default function HomePage() {
 
             <ToolSection
               id="security"
-              title="Security Tools"
+              title={t('categories.security')}
               emoji="🔒"
-              description="Encryption and security utilities"
+              description={t('home.sections.security')}
               tools={getToolsByCategory('security')}
               accentColor="from-violet-500 to-purple-500"
             />
 
             <ToolSection
               id="calc"
-              title="Calculators"
+              title={t('categories.calculators')}
               emoji="🔢"
-              description="Converters and calculators"
+              description={t('home.sections.calc')}
               tools={getToolsByCategory('calc')}
               accentColor="from-teal-500 to-cyan-500"
             />
 
             <ToolSection
               id="fun"
-              title="Fun Tools"
+              title={t('categories.fun')}
               emoji="🎲"
-              description="Creative and everyday utilities"
+              description={t('home.sections.fun')}
               tools={getToolsByCategory('fun')}
               accentColor="from-pink-500 to-rose-500"
             />

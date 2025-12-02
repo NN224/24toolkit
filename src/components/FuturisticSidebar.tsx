@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import {
   Brain,
   TextT,
@@ -23,13 +24,13 @@ import Logo from '@/components/Logo'
 import { useAuth } from '@/contexts/AuthContext'
 
 const categories = [
-  { id: 'ai', label: 'AI Tools', icon: Brain, color: 'from-purple-500 to-pink-500' },
-  { id: 'text', label: 'Text Tools', icon: TextT, color: 'from-blue-500 to-cyan-500' },
-  { id: 'dev', label: 'Dev Tools', icon: Code, color: 'from-green-500 to-emerald-500' },
-  { id: 'image', label: 'Image Tools', icon: ImageSquare, color: 'from-orange-500 to-red-500' },
-  { id: 'security', label: 'Security', icon: ShieldCheck, color: 'from-violet-500 to-purple-500' },
-  { id: 'calc', label: 'Calculators', icon: Calculator, color: 'from-teal-500 to-cyan-500' },
-  { id: 'fun', label: 'Fun Tools', icon: Sparkle, color: 'from-pink-500 to-rose-500' }
+  { id: 'ai', labelKey: 'categories.ai', icon: Brain, color: 'from-purple-500 to-pink-500' },
+  { id: 'text', labelKey: 'categories.text', icon: TextT, color: 'from-blue-500 to-cyan-500' },
+  { id: 'dev', labelKey: 'categories.developer', icon: Code, color: 'from-green-500 to-emerald-500' },
+  { id: 'image', labelKey: 'categories.image', icon: ImageSquare, color: 'from-orange-500 to-red-500' },
+  { id: 'security', labelKey: 'categories.security', icon: ShieldCheck, color: 'from-violet-500 to-purple-500' },
+  { id: 'calc', labelKey: 'categories.calculators', icon: Calculator, color: 'from-teal-500 to-cyan-500' },
+  { id: 'fun', labelKey: 'categories.fun', icon: Sparkle, color: 'from-pink-500 to-rose-500' }
 ]
 
 export default function FuturisticSidebar() {
@@ -90,6 +91,7 @@ interface SidebarContentProps {
 }
 
 function SidebarContent({ user, showTooltips = false, onNavigate }: SidebarContentProps) {
+  const { t } = useTranslation()
   const location = useLocation()
   const navigate = useNavigate()
   const isHomePage = location.pathname === '/'
@@ -157,7 +159,7 @@ function SidebarContent({ user, showTooltips = false, onNavigate }: SidebarConte
                   {button}
                 </TooltipTrigger>
                 <TooltipContent side="right" className="font-medium">
-                  {category.label}
+                  {t(category.labelKey)}
                 </TooltipContent>
               </Tooltip>
             )
@@ -188,7 +190,7 @@ function SidebarContent({ user, showTooltips = false, onNavigate }: SidebarConte
             </button>
           </TooltipTrigger>
           <TooltipContent side="right" className="font-medium">
-            Pricing
+            {t('nav.pricing')}
           </TooltipContent>
         </Tooltip>
 
@@ -212,7 +214,7 @@ function SidebarContent({ user, showTooltips = false, onNavigate }: SidebarConte
               </button>
             </TooltipTrigger>
             <TooltipContent side="right" className="font-medium">
-              Settings
+              {t('nav.settings')}
             </TooltipContent>
           </Tooltip>
         ) : (
@@ -230,7 +232,7 @@ function SidebarContent({ user, showTooltips = false, onNavigate }: SidebarConte
               </button>
             </TooltipTrigger>
             <TooltipContent side="right" className="font-medium">
-              Sign In
+              {t('common.signIn')}
             </TooltipContent>
           </Tooltip>
         )}

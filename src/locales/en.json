@@ -23,7 +23,8 @@
     "process": "Process",
     "viewAll": "View All",
     "learnMore": "Learn More",
-    "getStarted": "Get Started"
+    "getStarted": "Get Started",
+    "aiPowered": "AI-Powered"
   },
   "home": {
     "title": "Your Complete",
@@ -41,7 +42,16 @@
     "funTools": "Fun & Productivity",
     "featuredTools": "Featured Tools",
     "popularTools": "Popular Tools",
-    "newTools": "New Tools"
+    "newTools": "New Tools",
+    "sections": {
+      "ai": "Powered by artificial intelligence",
+      "text": "Transform and analyze text",
+      "dev": "Essential utilities for developers",
+      "image": "Edit and transform images",
+      "security": "Encryption and security utilities",
+      "calc": "Converters and calculators",
+      "fun": "Creative and everyday utilities"
+    }
   },
   "nav": {
     "home": "Home",
