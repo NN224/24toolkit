@@ -2,6 +2,7 @@ import { ErrorBoundary as ReactErrorBoundary, type FallbackProps } from 'react-e
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { AlertTriangle, RotateCcw, Home } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import type { ReactNode, ReactElement } from 'react'
 
 /**
@@ -9,6 +10,7 @@ import type { ReactNode, ReactElement } from 'react'
  * Handles both chunk load errors and general runtime errors.
  */
 function ErrorFallbackUI({ error, resetErrorBoundary }: FallbackProps) {
+  const { t } = useTranslation()
   const isChunkLoadError = error?.message?.includes('Loading chunk') || 
                            error?.message?.includes('Failed to fetch dynamically imported module') ||
                            error?.name === 'ChunkLoadError'
@@ -24,12 +26,12 @@ function ErrorFallbackUI({ error, resetErrorBoundary }: FallbackProps) {
         <Alert variant="destructive" className="mb-6">
           <AlertTriangle className="h-5 w-5" />
           <AlertTitle className="ml-2">
-            {isChunkLoadError ? 'Failed to Load Tool' : 'Something Went Wrong'}
+            {isChunkLoadError ? t('errorBoundary.failedToLoadTool') : t('errorBoundary.somethingWentWrong')}
           </AlertTitle>
           <AlertDescription className="mt-2">
             {isChunkLoadError 
-              ? 'This tool failed to load. This may be due to a network issue or the app was recently updated. Please try refreshing the page.'
-              : 'An unexpected error occurred while rendering this component. Please try again or return to the home page.'
+              ? t('errorBoundary.toolFailedToLoad')
+              : t('errorBoundary.unexpectedError')
             }
           </AlertDescription>
         </Alert>
@@ -38,7 +40,7 @@ function ErrorFallbackUI({ error, resetErrorBoundary }: FallbackProps) {
         {import.meta.env.DEV && error && (
           <div className="bg-card border rounded-lg p-4 mb-6">
             <h3 className="font-semibold text-sm text-muted-foreground mb-2">
-              Error Details (Dev Only):
+              {t('errorBoundary.errorDetails')}
             </h3>
             <pre className="text-xs text-destructive bg-muted/50 p-3 rounded border overflow-auto max-h-32">
               {error.name}: {error.message}
@@ -53,7 +55,7 @@ function ErrorFallbackUI({ error, resetErrorBoundary }: FallbackProps) {
             variant="outline"
           >
             <RotateCcw className="h-4 w-4 mr-2" />
-            Try Again
+            {t('common.tryAgain')}
           </Button>
           <Button
             onClick={handleGoHome}
@@ -61,7 +63,7 @@ function ErrorFallbackUI({ error, resetErrorBoundary }: FallbackProps) {
             variant="default"
           >
             <Home className="h-4 w-4 mr-2" />
-            Go Home
+            {t('errorBoundary.goHome')}
           </Button>
         </div>
       </div>

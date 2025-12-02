@@ -9,12 +9,12 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 const languages = [
-  { code: 'en', name: 'English', nativeName: 'EN', flag: '🇺🇸' },
-  { code: 'ar', name: 'العربية', nativeName: 'ع', flag: '🇸🇦' },
+  { code: 'en', nativeName: 'EN', flag: '🇺🇸' },
+  { code: 'ar', nativeName: 'ع', flag: '🇸🇦' },
 ];
 
 export function LanguageSwitcher() {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   
   const currentLanguage = languages.find(lang => lang.code === i18n.language) || languages[0];
   
@@ -33,7 +33,7 @@ export function LanguageSwitcher() {
                      hover:from-indigo-500/20 hover:via-purple-500/20 hover:to-pink-500/20
                      border border-white/10 hover:border-white/20
                      transition-all duration-300 group cursor-pointer"
-          title="Change language"
+          title={t('common.changeLanguage')}
         >
           {/* Animated globe icon */}
           <motion.div
@@ -110,9 +110,11 @@ export function LanguageSwitcher() {
             
             {/* Language name */}
             <div className="flex flex-col">
-              <span className="font-medium">{lang.name}</span>
+              <span className="font-medium">
+                {lang.code === 'en' ? t('common.english') : t('common.arabic')}
+              </span>
               <span className="text-xs text-gray-500">
-                {lang.code === 'en' ? 'English' : 'Arabic'}
+                {lang.nativeName}
               </span>
             </div>
             

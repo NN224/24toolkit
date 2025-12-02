@@ -58,6 +58,7 @@ export default function AITranslator() {
     setTranslatedText('')
     
     try {
+      // Use English language name for AI prompt (AI models understand English names better)
       const targetLanguage = languages.find(l => l.code === targetLang)?.name || 'English'
       const promptText = AI_PROMPTS.TRANSLATOR(inputText, targetLanguage)
 

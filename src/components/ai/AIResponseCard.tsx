@@ -162,12 +162,12 @@ export function AIResponseCard({
             {copied ? (
               <>
                 <Check size={16} className="text-green-500" />
-                Copied!
+                {t('common.copied')}
               </>
             ) : (
               <>
                 <Copy size={16} />
-                Copy
+                {t('common.copy')}
               </>
             )}
           </Button>
@@ -178,26 +178,26 @@ export function AIResponseCard({
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="gap-2 flex-1 min-w-[120px]">
                   <ShareNetwork size={16} />
-                  Share
+                  {t('common.share')}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
                 <DropdownMenuItem onClick={() => handleShare('twitter')} className="gap-2 cursor-pointer">
                   <TwitterLogo size={18} weight="fill" className="text-[#1DA1F2]" />
-                  Twitter / X
+                  {t('common.twitter')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => handleShare('linkedin')} className="gap-2 cursor-pointer">
                   <LinkedinLogo size={18} weight="fill" className="text-[#0077B5]" />
-                  LinkedIn
+                  {t('common.linkedin')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => handleShare('whatsapp')} className="gap-2 cursor-pointer">
                   <WhatsappLogo size={18} weight="fill" className="text-[#25D366]" />
-                  WhatsApp
+                  {t('common.whatsapp')}
                 </DropdownMenuItem>
                 {typeof navigator !== 'undefined' && 'share' in navigator && (
                   <DropdownMenuItem onClick={() => handleShare('native')} className="gap-2 cursor-pointer">
                     <ShareNetwork size={18} />
-                    More...
+                    {t('common.nativeShare')}
                   </DropdownMenuItem>
                 )}
               </DropdownMenuContent>

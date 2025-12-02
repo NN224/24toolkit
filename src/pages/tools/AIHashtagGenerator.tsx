@@ -199,15 +199,15 @@ export default function AIHashtagGenerator() {
                   <DropdownMenuContent align="end" className="w-48">
                     <DropdownMenuItem onClick={() => handleShare('twitter')} className="gap-2 cursor-pointer">
                       <TwitterLogo size={18} weight="fill" className="text-[#1DA1F2]" />
-                      Twitter / X
+                      {t('common.twitter')}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => handleShare('linkedin')} className="gap-2 cursor-pointer">
                       <LinkedinLogo size={18} weight="fill" className="text-[#0077B5]" />
-                      LinkedIn
+                      {t('common.linkedin')}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => handleShare('whatsapp')} className="gap-2 cursor-pointer">
                       <WhatsappLogo size={18} weight="fill" className="text-[#25D366]" />
-                      WhatsApp
+                      {t('common.whatsapp')}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>

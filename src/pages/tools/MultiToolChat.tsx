@@ -247,19 +247,19 @@ Respond naturally and helpfully:`
                 </p>
                 <div className="flex flex-wrap gap-2 justify-center">
                   <Badge variant="secondary" className="cursor-pointer hover:bg-purple-500/20"
-                    onClick={() => setInput('Translate this to Arabic: ')}>
+                    onClick={() => setInput(t('tools.multiToolChat.translatePrompt'))}>
                     <Translate size={12} className="mr-1" />
-                    Translate
+                    {t('tools.multiToolChat.translate')}
                   </Badge>
                   <Badge variant="secondary" className="cursor-pointer hover:bg-purple-500/20"
-                    onClick={() => setInput('Summarize this: ')}>
+                    onClick={() => setInput(t('tools.multiToolChat.summarizePrompt'))}>
                     <TextT size={12} className="mr-1" />
-                    Summarize
+                    {t('tools.multiToolChat.summarize')}
                   </Badge>
                   <Badge variant="secondary" className="cursor-pointer hover:bg-purple-500/20"
-                    onClick={() => setInput('Write a professional email about: ')}>
+                    onClick={() => setInput(t('tools.multiToolChat.emailPrompt'))}>
                     <Envelope size={12} className="mr-1" />
-                    Email
+                    {t('tools.multiToolChat.email')}
                   </Badge>
                 </div>
               </div>
@@ -302,10 +302,10 @@ Respond naturally and helpfully:`
                         size="sm"
                         variant="ghost"
                         className="mt-1 h-6 px-2 text-xs"
-                        onClick={() => copyToClipboard(message.content, 'Copied!')}
+                        onClick={() => copyToClipboard(message.content, t('common.copied'))}
                       >
                         <Copy size={12} className="mr-1" />
-                        Copy
+                        {t('common.copy')}
                       </Button>
                     )}
                   </div>

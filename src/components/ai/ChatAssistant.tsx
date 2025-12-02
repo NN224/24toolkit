@@ -144,8 +144,8 @@ export default function FloatingChatAssistant() {
     const contactKeywords = ['contact', 'email', 'support', 'help', 'reach', 'تواصل', 'دعم', 'مساعدة', 'إيميل', 'بريد']
     if (contactKeywords.some(k => lowerQuery.includes(k) || query.includes(k))) {
       return lang === 'ar'
-        ? `📧 **للتواصل معنا:**\n\n• البريد: support@24toolkit.com\n• Twitter: @24Toolkit\n• صفحة التواصل: /contact\n\nنحن هنا لمساعدتك! 💙`
-        : `📧 **Contact Us:**\n\n• Email: support@24toolkit.com\n• Twitter: @24Toolkit\n• Contact Page: /contact\n\nWe're here to help! 💙`
+        ? `📧 **${t('tools.chatAssistant.contactUs')}**\n\n• ${t('tools.chatAssistant.contactEmail')}\n• ${t('tools.chatAssistant.contactTwitter')}\n• ${t('tools.chatAssistant.contactPage')}\n\n${t('tools.chatAssistant.weAreHere')}`
+        : `📧 **${t('tools.chatAssistant.contactUs')}**\n\n• ${t('tools.chatAssistant.contactEmail')}\n• ${t('tools.chatAssistant.contactTwitter')}\n• ${t('tools.chatAssistant.contactPage')}\n\n${t('tools.chatAssistant.weAreHere')}`
     }
 
     // Services & Features

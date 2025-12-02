@@ -495,9 +495,9 @@ export default function SettingsPage() {
                           }}
                           className="w-full px-4 py-2 bg-background border border-white/10 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
                         >
-                          <option value="ar">Arabic</option>
-                          <option value="en">English</option>
-                          <option value="both">Both</option>
+                          <option value="ar">{t('common.arabic')}</option>
+                          <option value="en">{t('common.english')}</option>
+                          <option value="both">{t('common.both')}</option>
                         </select>
                       </div>
 

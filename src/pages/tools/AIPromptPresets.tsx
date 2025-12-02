@@ -311,11 +311,11 @@ export default function AIPromptPresets() {
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => copyToClipboard(generatedPrompt, 'Copied!')}
+                      onClick={() => copyToClipboard(generatedPrompt, t('common.copied'))}
                       className="gap-1"
                     >
                       <Copy size={14} />
-                      Copy
+                      {t('common.copy')}
                     </Button>
                   )}
                 </div>

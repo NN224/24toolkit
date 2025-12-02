@@ -3,10 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { MagnifyingGlass, X } from '@phosphor-icons/react'
-import { allTools } from '@/lib/tools-data'
+import { allTools, getToolTitle, getToolDescription } from '@/lib/tools-data'
 
 export default function CommandPalette() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const [search, setSearch] = useState('')
   const navigate = useNavigate()
@@ -122,16 +122,16 @@ export default function CommandPalette() {
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2">
                                   <h3 className="font-semibold text-foreground group-hover:text-accent transition-colors">
-                                    {tool.title}
+                                    {getToolTitle(tool, i18n.language)}
                                   </h3>
                                   {tool.isAI && (
                                     <span className="px-2 py-0.5 text-xs font-bold bg-gradient-to-r from-purple-600 to-sky-500 text-white rounded-full">
-                                      AI
+                                      {t('common.aiPowered')}
                                     </span>
                                   )}
                                 </div>
                                 <p className="text-sm text-muted-foreground truncate">
-                                  {tool.description}
+                                  {getToolDescription(tool, i18n.language)}
                                 </p>
                               </div>
                             </motion.button>
@@ -140,7 +140,7 @@ export default function CommandPalette() {
                       </div>
                     ) : (
                       <div className="p-12 text-center">
-                        <p className="text-muted-foreground">No tools found</p>
+                        <p className="text-muted-foreground">{t('search.noResults')}</p>
                       </div>
                     )}
                   </div>

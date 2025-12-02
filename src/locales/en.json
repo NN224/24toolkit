@@ -48,7 +48,15 @@
     "sharing": "Sharing...",
     "easterEggFound": "Easter Egg Found! 🥚",
     "premium": "Premium",
-    "close": "Close"
+    "close": "Close",
+    "changeLanguage": "Change language",
+    "english": "English",
+    "arabic": "Arabic",
+    "both": "Both",
+    "twitter": "Twitter / X",
+    "linkedin": "LinkedIn",
+    "whatsapp": "WhatsApp",
+    "nativeShare": "Share"
   },
   "ai": {
     "signInRequired": "Please sign in to use AI features",
@@ -67,6 +75,14 @@
     "title": "This app has encountered a runtime error",
     "description": "Something unexpected happened while running the application. The error details are shown below.",
     "errorDetails": "Error Details:"
+  },
+  "errorBoundary": {
+    "failedToLoadTool": "Failed to Load Tool",
+    "somethingWentWrong": "Something Went Wrong",
+    "toolFailedToLoad": "This tool failed to load. This may be due to a network issue or the app was recently updated. Please try refreshing the page.",
+    "unexpectedError": "An unexpected error occurred while rendering this component. Please try again or return to the home page.",
+    "errorDetails": "Error Details (Dev Only):",
+    "goHome": "Go Home"
   },
   "aiProvider": {
     "label": "AI Provider",
@@ -507,6 +523,7 @@
     "searchPlaceholder": "Search {{count}}+ tools...",
     "signIn": "Sign In",
     "searchForTools": "Search for tools...",
+    "searchAriaLabel": "Search tools",
     "quickSearchTips": "Quick search tips",
     "typeToSearch": "Type to search from {{count}}+ tools",
     "searchExamples": "Try: \"compress image\", \"convert json\", \"password generator\"",
@@ -2397,7 +2414,12 @@
       "cardDescription": "The chat assistant is available as a floating button in the bottom-right corner of every page.",
       "lookForChat": "Look for the chat button in the bottom-right corner of your screen!",
       "assistantHelp": "The assistant can help you find tools, answer questions, and provide guidance in both English and Arabic.",
-      "browseAllTools": "Browse All Tools"
+      "browseAllTools": "Browse All Tools",
+      "contactUs": "Contact Us:",
+      "contactEmail": "Email: support@24toolkit.com",
+      "contactTwitter": "Twitter: @24Toolkit",
+      "contactPage": "Contact Page: /contact",
+      "weAreHere": "We're here to help! 💙"
     },
     "aiTaskBuilder": {
       "title": "AI Task Builder",
@@ -2425,8 +2447,11 @@
       "howCanIHelp": "How can I help you?",
       "askMeAnything": "Ask me to translate, summarize, write emails, or anything else!",
       "translate": "Translate",
+      "translatePrompt": "Translate this to Arabic: ",
       "summarize": "Summarize",
+      "summarizePrompt": "Summarize this: ",
       "email": "Email",
+      "emailPrompt": "Write a professional email about: ",
       "typeYourMessage": "Type your message...",
       "chatCleared": "Chat cleared",
       "anErrorOccurred": "An error occurred"

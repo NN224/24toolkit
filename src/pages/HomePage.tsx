@@ -16,9 +16,10 @@ import {
   ShieldCheck,
   Calculator
 } from '@phosphor-icons/react'
-import { getToolsByCategory, categories, allTools } from '@/lib/tools-data'
+import { getToolsByCategory, categories, allTools, getToolTitle, getToolDescription, getCategoryTitle } from '@/lib/tools-data'
 
 function ToolCard({ tool }: { tool: any }) {
+  const { i18n, t } = useTranslation()
   const Icon = tool.icon
 
   // Extract glow color from tool.color gradient
@@ -55,15 +56,15 @@ function ToolCard({ tool }: { tool: any }) {
             </div>
             {tool.isAI && (
               <span className="px-3 py-1 text-xs font-bold bg-gradient-to-r from-purple-600 to-sky-500 text-white rounded-full animate-pulse-glow">
-                AI ✨
+                {t('common.aiPowered')} ✨
               </span>
             )}
           </div>
           <CardTitle className="text-xl text-foreground group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-sky-400 group-hover:bg-clip-text transition-all duration-300">
-            {tool.title}
+            {getToolTitle(tool, i18n.language)}
           </CardTitle>
           <CardDescription className="text-muted-foreground group-hover:text-muted-foreground/80 transition-colors">
-            {tool.description}
+            {getToolDescription(tool, i18n.language)}
           </CardDescription>
         </CardHeader>
       </Card>
@@ -128,7 +129,7 @@ function ToolSection({
 }
 
 export default function HomePage() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [selectedFilter, setSelectedFilter] = useState('all')
   const [randomQuoteIndex] = useState(() => Math.floor(Math.random() * 5))
   const navigate = useNavigate()
@@ -215,7 +216,7 @@ export default function HomePage() {
                   }`}
                 >
                   <Icon size={16} weight="bold" />
-                  {category.title}
+                  {getCategoryTitle(id as keyof typeof categories, i18n.language)}
                 </button>
               )
             })}
