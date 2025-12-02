@@ -885,7 +885,26 @@
       "width": "العرض",
       "height": "الارتفاع",
       "inputTooShort": "يجب أن يكون الإدخال على الأقل {{min}} حرفاً",
-      "inputTooLong": "يجب ألا يتجاوز الإدخال {{max}} حرفاً"
+      "inputTooLong": "يجب ألا يتجاوز الإدخال {{max}} حرفاً",
+      "aiPowered": "مدعوم بالذكاء الاصطناعي",
+      "approachingLimit": "اقتراب من الحد اليومي",
+      "characters": "أحرف",
+      "clearAll": "مسح الكل",
+      "copiedToClipboard": "تم النسخ إلى الحافظة!",
+      "copyFailed": "فشل النسخ",
+      "copyResult": "نسخ النتيجة",
+      "copyText": "نسخ النص",
+      "delete": "حذف",
+      "imageLoaded": "تم تحميل الصورة!",
+      "invalidInput": "إدخال غير صالح",
+      "loading": "جاري التحميل...",
+      "note": "ملاحظة",
+      "pleaseEnterText": "الرجاء إدخال نص",
+      "pleaseSelectImage": "الرجاء اختيار صورة",
+      "pleaseUploadImage": "الرجاء رفع صورة أولاً",
+      "poweredByAI": "مدعوم بالذكاء الاصطناعي",
+      "share": "مشاركة",
+      "typeOrPaste": "اكتب أو الصق نصك هنا..."
     },
     "aiIdeaAnalyzer": {
       "name": "محلل الأفكار الذكي",
@@ -909,7 +928,16 @@
       "name": "ملخص النصوص الذكي",
       "description": "حوّل المقالات الطويلة إلى ملخصات مختصرة",
       "summaryResult": "نتيجة الملخص",
-      "summaryAppear": "سيظهر الملخص هنا"
+      "summaryAppear": "سيظهر الملخص هنا",
+      "detailed": "مفصل",
+      "inputText": "النص المدخل",
+      "medium": "متوسط",
+      "pasteText": "الصق نصك هنا",
+      "placeholder": "الصق النص الذي تريد تلخيصه...",
+      "short": "قصير",
+      "summarize": "تلخيص",
+      "summarized": "تم تلخيص النص!",
+      "summaryLength": "طول الملخص"
     },
     "paragraphRewriter": {
       "name": "معيد صياغة الفقرات",
@@ -998,7 +1026,16 @@
     },
     "aiTranslator": {
       "name": "المترجم الذكي",
-      "description": "ترجمة النصوص بين لغات متعددة"
+      "description": "ترجمة النصوص بين لغات متعددة",
+      "aiPoweredTranslation": "ترجمة بالذكاء الاصطناعي",
+      "enterTextToTranslate": "أدخل النص للترجمة",
+      "naturalTranslations": "ترجمات طبيعية تراعي السياق",
+      "targetLanguage": "اللغة المستهدفة",
+      "textToTranslate": "النص المراد ترجمته",
+      "translate": "ترجمة",
+      "translating": "جاري الترجمة...",
+      "translation": "الترجمة",
+      "translationComplete": "اكتملت الترجمة!"
     },
     "aiEmailWriter": {
       "name": "كاتب البريد الذكي",
@@ -1275,11 +1312,35 @@
     },
     "base64Tool": {
       "name": "Base64 ترميز/فك",
-      "description": "ترميز وفك ترميز نصوص Base64"
+      "description": "ترميز وفك ترميز نصوص Base64",
+      "aboutBase64": "حول Base64",
+      "aboutDescription": "Base64 هو نظام ترميز من ثنائي إلى نص",
+      "decode": "فك الترميز",
+      "decoded": "تم فك الترميز!",
+      "decodedResult": "نتيجة فك الترميز",
+      "encode": "ترميز",
+      "encoded": "تم الترميز!",
+      "encodedResult": "نتيجة الترميز",
+      "enterBase64String": "أدخل نص Base64",
+      "enterBase64ToDecode": "أدخل نص Base64 لفك الترميز",
+      "enterPlainText": "أدخل نص عادي",
+      "enterTextToEncode": "أدخل نص للترميز",
+      "input": "الإدخال",
+      "invalidBase64": "نص Base64 غير صالح",
+      "output": "الإخراج",
+      "resultWillAppear": "ستظهر النتيجة هنا"
     },
     "urlEncoderDecoder": {
       "name": "ترميز/فك URL",
-      "description": "ترميز وفك ترميز الروابط"
+      "description": "ترميز وفك ترميز الروابط",
+      "decode": "فك الترميز",
+      "decoded": "تم فك الترميز!",
+      "encode": "ترميز",
+      "encoded": "تم الترميز!",
+      "enterText": "أدخل نص أو رابط",
+      "input": "الإدخال",
+      "output": "الإخراج",
+      "resultWillAppear": "ستظهر النتيجة هنا"
     },
     "uuidGenerator": {
       "name": "مولد UUID",
@@ -1569,7 +1630,29 @@
       "rotate180": "تدوير 180°",
       "rotate270": "تدوير 270°",
       "flipHorizontal": "قلب أفقي",
-      "flipVertical": "قلب عمودي"
+      "flipVertical": "قلب عمودي",
+      "uploadImage": "رفع صورة",
+      "transform": "تحويل",
+      "rotateAndFlipControls": "أدوات التدوير والقلب",
+      "rotate": "تدوير",
+      "flip": "قلب",
+      "left90": "يسار 90°",
+      "right90": "يمين 90°",
+      "horizontal": "أفقي",
+      "vertical": "عمودي",
+      "quickAngles": "زوايا سريعة",
+      "rotation": "التدوير",
+      "flippedH": "مقلوب أفقياً",
+      "flippedV": "مقلوب عمودياً",
+      "originalOrientation": "الاتجاه الأصلي",
+      "selectImageFile": "الرجاء اختيار ملف صورة",
+      "imageLoaded": "تم تحميل الصورة!",
+      "rotatedLeft": "تم التدوير لليسار",
+      "rotatedRight": "تم التدوير لليمين",
+      "flippedHorizontally": "تم القلب أفقياً",
+      "flippedVertically": "تم القلب عمودياً",
+      "imageDownloaded": "تم تحميل الصورة!",
+      "cleared": "تم المسح"
     },
     "imageCompressor": {
       "name": "ضاغط الصور",
@@ -1885,7 +1968,14 @@
       "years": "سنوات",
       "months": "شهور",
       "days": "أيام",
-      "nextBirthday": "عيد الميلاد القادم"
+      "nextBirthday": "عيد الميلاد القادم",
+      "enterBirthDate": "أدخل تاريخ ميلادك",
+      "leaveEmptyForToday": "اتركه فارغاً لليوم",
+      "targetDate": "التاريخ المستهدف",
+      "toNextBirthday": "أيام حتى عيد الميلاد القادم",
+      "totalDays": "إجمالي الأيام",
+      "totalHours": "إجمالي الساعات",
+      "yourAge": "عمرك"
     },
     "bmiCalculator": {
       "name": "حاسبة مؤشر كتلة الجسم",
