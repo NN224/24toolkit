@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import React, { Suspense, useState, useEffect } from 'react'
+import * as Sentry from '@sentry/react'
 import { Toaster } from '@/components/ui/sonner'
 import Layout from '@/components/Layout'
 import ScrollToTop from '@/components/ScrollToTop'
@@ -20,6 +21,31 @@ import SitemapPage from '@/pages/SitemapPage'
 import SettingsPage from '@/pages/SettingsPage'
 import SignInPage from '@/pages/SignInPage'
 import PricingPage from '@/pages/PricingPage'
+
+// Temporary Sentry test button - REMOVE AFTER TESTING
+function SentryTestButton() {
+  return (
+    <button
+      onClick={() => {
+        throw new Error('This is your first error!');
+      }}
+      style={{
+        position: 'fixed',
+        bottom: '100px',
+        right: '20px',
+        zIndex: 9999,
+        background: 'red',
+        color: 'white',
+        padding: '10px 20px',
+        borderRadius: '8px',
+        cursor: 'pointer',
+        fontWeight: 'bold',
+      }}
+    >
+      🔥 Test Sentry Error
+    </button>
+  );
+}
 
 /*
  * React 19 Compatibility Notes:
