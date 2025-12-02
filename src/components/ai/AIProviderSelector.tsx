@@ -2,6 +2,7 @@ import { Label } from '@/components/ui/label'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { Sparkle, Lightning, GoogleLogo, Globe } from '@phosphor-icons/react'
 import type { AIProvider } from '@/lib/ai'
+import { useTranslation } from 'react-i18next'
 
 // Re-export for convenience
 export type { AIProvider }
@@ -15,10 +16,10 @@ interface AIProviderSelectorProps {
 }
 
 const PROVIDERS = {
-  anthropic: { name: 'Claude', icon: Sparkle, description: 'High quality' },
-  groq: { name: 'Groq', icon: Lightning, description: 'Fast' },
-  gemini: { name: 'Gemini', icon: GoogleLogo, description: 'Free tier' },
-  openrouter: { name: 'OpenRouter', icon: Globe, description: 'Multi-model' },
+  anthropic: { name: 'Claude', icon: Sparkle, descKey: 'aiProvider.highQuality' },
+  groq: { name: 'Groq', icon: Lightning, descKey: 'aiProvider.fast' },
+  gemini: { name: 'Gemini', icon: GoogleLogo, descKey: 'aiProvider.freeTier' },
+  openrouter: { name: 'OpenRouter', icon: Globe, descKey: 'aiProvider.multiModel' },
 }
 
 /**
@@ -29,17 +30,18 @@ const PROVIDERS = {
 export function AIProviderSelector({ 
   value, 
   onValueChange, 
-  label = 'AI Provider',
+  label,
   className,
   showAll = false 
 }: AIProviderSelectorProps) {
+  const { t } = useTranslation()
   const providersToShow = showAll 
     ? (['anthropic', 'groq', 'gemini', 'openrouter'] as AIProvider[])
     : (['anthropic', 'groq'] as AIProvider[])
 
   return (
     <div className={className}>
-      <Label className="text-sm text-muted-foreground">{label}</Label>
+      <Label className="text-sm text-muted-foreground">{label || t('aiProvider.label')}</Label>
       <ToggleGroup 
         type="single" 
         value={value} 
@@ -55,7 +57,7 @@ export function AIProviderSelector({
               key={providerId}
               value={providerId} 
               className="flex-1 min-w-[100px] gap-1.5"
-              title={provider.description}
+              title={t(provider.descKey)}
             >
               <Icon size={16} weight="bold" />
               {provider.name}
@@ -64,7 +66,7 @@ export function AIProviderSelector({
         })}
       </ToggleGroup>
       <p className="text-xs text-muted-foreground mt-1">
-        Auto-fallback enabled if provider is unavailable
+        {t('aiProvider.autoFallback')}
       </p>
     </div>
   )

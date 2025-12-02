@@ -6,6 +6,7 @@ import { callAI, AIError, type AIProvider } from '@/lib/ai'
 import { toast } from 'sonner'
 import { useSubscription } from '@/contexts/SubscriptionContext'
 import Confetti from '@/components/Confetti'
+import i18n from '@/i18n'
 
 interface UseAIOptions {
   onSuccess?: (result: string) => void
@@ -61,8 +62,8 @@ export function useAIWithCredits(options: UseAIOptions = {}) {
         // Show upgrade modal with custom message
         toast.error(
           <div className="flex flex-col gap-2">
-            <p className="font-semibold">Daily Limit Reached! 🚀</p>
-            <p className="text-sm">You've used all your free AI requests for today.</p>
+            <p className="font-semibold">{i18n.t('ai.dailyLimitReached')} 🚀</p>
+            <p className="text-sm">{i18n.t('ai.usedAllRequests')}</p>
             <button
               onClick={() => {
                 toast.dismiss()
@@ -70,7 +71,7 @@ export function useAIWithCredits(options: UseAIOptions = {}) {
               }}
               className="mt-2 px-3 py-1.5 bg-gradient-to-r from-purple-600 to-sky-500 text-white rounded-lg text-sm font-medium hover:opacity-90 transition-all"
             >
-              Upgrade Now
+              {i18n.t('ai.upgradeNow')}
             </button>
           </div>,
           {
@@ -94,8 +95,8 @@ export function useAIWithCredits(options: UseAIOptions = {}) {
       if (error instanceof AIError && error.code === 'AUTH_FAILED') {
         toast.error(
           <div className="flex flex-col gap-2">
-            <p className="font-semibold">Sign In Required</p>
-            <p className="text-sm">Please sign in to use AI features.</p>
+            <p className="font-semibold">{i18n.t('ai.signInRequiredTitle')}</p>
+            <p className="text-sm">{i18n.t('ai.signInToUse')}</p>
             <button
               onClick={() => {
                 toast.dismiss()
@@ -103,7 +104,7 @@ export function useAIWithCredits(options: UseAIOptions = {}) {
               }}
               className="mt-2 px-3 py-1.5 bg-gradient-to-r from-purple-600 to-sky-500 text-white rounded-lg text-sm font-medium hover:opacity-90 transition-all"
             >
-              Sign In
+              {i18n.t('common.signIn')}
             </button>
           </div>,
           {
@@ -122,8 +123,8 @@ export function useAIWithCredits(options: UseAIOptions = {}) {
       if (error instanceof AIError && error.code === 'SERVICE_UNAVAILABLE') {
         toast.error(
           <div className="flex flex-col gap-1">
-            <p className="font-semibold">Service Temporarily Unavailable</p>
-            <p className="text-sm">All AI providers are currently busy. Please try again in a few moments.</p>
+            <p className="font-semibold">{i18n.t('ai.serviceUnavailable')}</p>
+            <p className="text-sm">{i18n.t('ai.serviceUnavailableDesc')}</p>
           </div>,
           {
             duration: 5000,
@@ -137,7 +138,7 @@ export function useAIWithCredits(options: UseAIOptions = {}) {
       }
       
       // Generic error handling
-      const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred'
+      const errorMessage = error instanceof Error ? error.message : i18n.t('ai.unexpectedError')
       toast.error(errorMessage)
       
       if (options.onError) {

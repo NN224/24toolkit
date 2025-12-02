@@ -9,6 +9,7 @@ import {
 import { auth, googleProvider, githubProvider, facebookProvider, getUserProfile, type UserProfile } from '@/lib/firebase'
 import { toast } from 'sonner'
 import { setUser as setSentryUser } from '@/lib/sentry'
+import i18n from '@/i18n'
 
 interface AuthContextType {
   user: User | null
@@ -113,19 +114,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const signInWithProvider = async (provider: AuthProvider, providerName: string) => {
     try {
       const result = await signInWithPopup(auth, provider)
-      toast.success(`Welcome ${result.user.displayName || result.user.email}!`)
+      toast.success(i18n.t('auth.welcomeMessage', { name: result.user.displayName || result.user.email }))
     } catch (error: any) {
       // Sign in error
       
       // Handle specific errors
       if (error.code === 'auth/popup-closed-by-user') {
-        toast.error('Sign-in cancelled')
+        toast.error(i18n.t('auth.signInCancelled'))
       } else if (error.code === 'auth/popup-blocked') {
-        toast.error('Please allow popups')
+        toast.error(i18n.t('auth.allowPopups'))
       } else if (error.code === 'auth/account-exists-with-different-credential') {
-        toast.error('This email is used with a different sign-in method')
+        toast.error(i18n.t('auth.emailUsedDifferent'))
       } else {
-        toast.error('Sign-in failed. Please try again.')
+        toast.error(i18n.t('auth.signInFailed'))
       }
       throw error
     }
@@ -139,10 +140,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       await firebaseSignOut(auth)
       setUserProfile(null)
-      toast.success('Signed out successfully')
+      toast.success(i18n.t('auth.signedOutSuccess'))
     } catch (error) {
       console.error('Sign out error:', error)
-      toast.error('Failed to sign out')
+      toast.error(i18n.t('auth.signOutFailed'))
       throw error
     }
   }

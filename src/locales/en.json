@@ -42,7 +42,78 @@
     "saveChanges": "Save Changes",
     "saving": "Saving...",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "copyFailed": "Failed to copy to clipboard",
+    "sharing": "Sharing...",
+    "easterEggFound": "Easter Egg Found! 🥚",
+    "premium": "Premium"
+  },
+  "ai": {
+    "signInRequired": "Please sign in to use AI features",
+    "signInRequiredTitle": "Sign In Required",
+    "signInDescription": "Create a free account to get 5 AI credits per day.",
+    "signInToUse": "Please sign in to use AI features.",
+    "dailyLimitReached": "Daily Limit Reached!",
+    "usedAllRequests": "You've used all your free AI requests for today.",
+    "upgradeNow": "Upgrade Now",
+    "requestFailed": "AI request failed",
+    "serviceUnavailable": "Service Temporarily Unavailable",
+    "serviceUnavailableDesc": "All AI providers are currently busy. Please try again in a few moments.",
+    "unexpectedError": "An unexpected error occurred"
+  },
+  "aiProvider": {
+    "label": "AI Provider",
+    "highQuality": "High quality",
+    "fast": "Fast",
+    "freeTier": "Free tier",
+    "multiModel": "Multi-model",
+    "autoFallback": "Auto-fallback enabled if provider is unavailable"
+  },
+  "credits": {
+    "unlimitedPlan": "Unlimited Plan",
+    "proPlan": "Pro Plan",
+    "freePlan": "Free Plan",
+    "unlimitedAccess": "Unlimited AI access with priority",
+    "remainingThisMonth": "{{remaining}} AI requests remaining this month",
+    "remainingToday": "{{remaining}} free AI request remaining today",
+    "remainingToday_plural": "{{remaining}} free AI requests remaining today",
+    "remainingClickUpgrade": "{{remaining}} AI credits remaining today - Click to upgrade",
+    "resetIn": "Credits reset in {{time}}",
+    "upgradeToUnlimited": "Upgrade to Unlimited",
+    "upgradeToPro": "Upgrade to Pro"
+  },
+  "progress": {
+    "title": "Your Progress",
+    "toolsExplored": "Tools Explored",
+    "complete": "Complete",
+    "totalUses": "Total Uses",
+    "dayStreak": "Day Streak",
+    "days": "days",
+    "achievementsTitle": "Achievements",
+    "achievementUnlocked": "Achievement Unlocked!",
+    "keepExploring": "Keep exploring to unlock all achievements! 🚀",
+    "achievements": {
+      "firstTool": {
+        "title": "Getting Started",
+        "description": "Use your first tool"
+      },
+      "explorer": {
+        "title": "Explorer",
+        "description": "Use 5 different tools"
+      },
+      "enthusiast": {
+        "title": "Enthusiast",
+        "description": "Use 15 different tools"
+      },
+      "powerUser": {
+        "title": "Power User",
+        "description": "Use 30 different tools"
+      },
+      "master": {
+        "title": "Toolkit Master",
+        "description": "Use 50 different tools"
+      }
+    }
   },
   "home": {
     "title": "Your Complete",
@@ -136,7 +207,38 @@
       "exclusiveUpdates": "Exclusive updates"
     },
     "termsAgree": "By signing in, you agree to our",
-    "and": "and"
+    "and": "and",
+    "welcomeMessage": "Welcome {{name}}!",
+    "signInCancelled": "Sign-in cancelled",
+    "allowPopups": "Please allow popups",
+    "emailUsedDifferent": "This email is used with a different sign-in method",
+    "signInFailed": "Sign-in failed. Please try again.",
+    "signedOutSuccess": "Signed out successfully",
+    "signOutFailed": "Failed to sign out",
+    "signInRequired": "Please sign in to use AI features",
+    "signInToAccess": "Please sign in"
+  },
+  "loginModal": {
+    "signInRequired": "Sign In Required",
+    "accessPremium": "Access premium features",
+    "whySignIn": "Why sign in?",
+    "benefits": {
+      "aiTools": "Access premium AI tools",
+      "saveProgress": "Save your progress",
+      "unlimited": "Unlimited usage",
+      "free": "100% free - no credit card"
+    },
+    "continueWithGoogle": "Continue with Google",
+    "continueWithGithub": "Continue with GitHub",
+    "continueWithFacebook": "Continue with Facebook",
+    "privacyNote": "By signing in, you agree to our Terms of Service and Privacy Policy. Your data is encrypted and secure."
+  },
+  "chatAssistant": {
+    "title": "Tool Assistant",
+    "chat": "Chat",
+    "finder": "Finder",
+    "typeMessage": "Type a message...",
+    "searchTools": "Search tools..."
   },
   "pricing": {
     "title": "Simple, Transparent Pricing",
@@ -158,7 +260,35 @@
     "comparePlans": "Compare Plans",
     "creditsPerDay": "credits/day",
     "creditsPerMonth": "credits/month",
-    "unlimitedCredits": "Unlimited"
+    "unlimitedCredits": "Unlimited",
+    "signedIn": "Signed in! Now you can subscribe.",
+    "signInFirst": "Please sign in first",
+    "checkoutFailed": "Failed to start checkout. Please try again.",
+    "selectPlan": "Now select a plan."
+  },
+  "subscription": {
+    "unlockPower": "Unlock Unlimited AI Power",
+    "usedAllCredits": "You've used all your free credits today. Upgrade for more!",
+    "compareAllPlans": "Compare all plans",
+    "freeCreditsReset": "Free credits reset daily at midnight",
+    "features": {
+      "moreCredits": {
+        "title": "More AI Credits",
+        "description": "Pro: 100/month • Unlimited: No limits!"
+      },
+      "noAds": {
+        "title": "No Advertisements",
+        "description": "Enjoy a clean, ad-free experience"
+      },
+      "priority": {
+        "title": "Priority Processing",
+        "description": "Faster responses with priority queue"
+      },
+      "premium": {
+        "title": "Premium Features",
+        "description": "Smart History, early access & more"
+      }
+    }
   },
   "settings": {
     "title": "Settings",
@@ -296,7 +426,12 @@
     "foundResults_one": "Found {{count}} result",
     "foundResults_other": "Found {{count}} results",
     "foundResults": "Found {{count}} result(s)",
-    "noToolsFound": "No tools found for \"{{query}}\""
+    "noToolsFound": "No tools found for \"{{query}}\"",
+    "voiceNotSupported": "Voice search not supported in your browser",
+    "listening": "Listening... Speak now!",
+    "searchingFor": "Searching for: \"{{query}}\"",
+    "voiceRecognitionError": "Voice recognition error",
+    "voiceSearchFailed": "Could not start voice search"
   },
   "signIn": {
     "welcome": "Welcome Back",

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Copy, ShareNetwork, Check, TwitterLogo, LinkedinLogo, WhatsappLogo, Sparkle } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
+import { useTranslation } from 'react-i18next'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,6 +35,7 @@ export function AIResponseCard({
   shareText,
   children
 }: AIResponseCardProps) {
+  const { t } = useTranslation()
   const [copied, setCopied] = useState(false)
   const [isArabic, setIsArabic] = useState(false)
   const copyToClipboard = useCopyToClipboard()
@@ -52,7 +54,7 @@ export function AIResponseCard({
   }
 
   const handleCopy = () => {
-    copyToClipboard(content, 'Copied to clipboard!')
+    copyToClipboard(content, t('common.copied'))
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
@@ -78,7 +80,7 @@ export function AIResponseCard({
       window.open(urls[platform], '_blank', 'width=600,height=400')
     }
     
-    toast.success('Sharing...')
+    toast.success(t('common.sharing'))
   }
 
   if (isLoading) {

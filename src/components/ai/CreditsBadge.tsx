@@ -2,6 +2,7 @@ import { Sparkle, Crown, Lightning, Rocket } from '@phosphor-icons/react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useSubscription } from '@/contexts/SubscriptionContext'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 interface CreditsBadgeProps {
   className?: string
@@ -12,6 +13,7 @@ interface CreditsBadgeProps {
  * Displays the user's remaining AI credits based on subscription
  */
 export function CreditsBadge({ className = '', showLabel = true }: CreditsBadgeProps) {
+  const { t } = useTranslation()
   const { user } = useAuth()
   const { currentPlan, isPaid, getCreditsDisplay, openUpgradeModal } = useSubscription()
   const navigate = useNavigate()
@@ -26,11 +28,11 @@ export function CreditsBadge({ className = '', showLabel = true }: CreditsBadgeP
       <button 
         onClick={() => navigate('/pricing')}
         className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gradient-to-r from-purple-500/20 to-sky-500/20 border border-sky-500/30 hover:opacity-80 transition-all ${className}`}
-        title="Unlimited Plan"
+        title={t('credits.unlimitedPlan')}
       >
         <Crown size={14} weight="fill" className="text-sky-400" />
         {showLabel && (
-          <span className="text-xs font-medium bg-gradient-to-r from-purple-400 to-sky-400 bg-clip-text text-transparent">Unlimited</span>
+          <span className="text-xs font-medium bg-gradient-to-r from-purple-400 to-sky-400 bg-clip-text text-transparent">{t('pricing.unlimited')}</span>
         )}
       </button>
     )
@@ -43,7 +45,7 @@ export function CreditsBadge({ className = '', showLabel = true }: CreditsBadgeP
       <button 
         onClick={() => navigate('/pricing')}
         className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-500/20 border border-purple-500/30 hover:opacity-80 transition-all ${className}`}
-        title={`Pro Plan - ${creditsStr}`}
+        title={`${t('credits.proPlan')} - ${creditsStr}`}
       >
         <Lightning size={14} weight="fill" className="text-purple-400" />
         {showLabel && (
@@ -72,7 +74,7 @@ export function CreditsBadge({ className = '', showLabel = true }: CreditsBadgeP
             ? 'bg-orange-500/20 border-orange-500/30'
             : 'bg-purple-500/20 border-purple-500/30'
       } ${className}`}
-      title={`${remaining} AI credits remaining today - Click to upgrade`}
+      title={t('credits.remainingClickUpgrade', { remaining })}
     >
       <Sparkle 
         size={14} 
@@ -94,6 +96,7 @@ export function CreditsBadge({ className = '', showLabel = true }: CreditsBadgeP
  * Full credits display with more details
  */
 export function CreditsDisplay() {
+  const { t } = useTranslation()
   const { user } = useAuth()
   const { currentPlan, getCreditsDisplay, openUpgradeModal } = useSubscription()
   const navigate = useNavigate()
@@ -108,8 +111,8 @@ export function CreditsDisplay() {
       <div className="flex items-center gap-2 p-3 rounded-lg bg-gradient-to-r from-purple-500/10 to-sky-500/10 border border-sky-500/20">
         <Crown size={20} weight="fill" className="text-sky-400" />
         <div>
-          <p className="text-sm font-medium bg-gradient-to-r from-purple-400 to-sky-400 bg-clip-text text-transparent">Unlimited Plan</p>
-          <p className="text-xs text-muted-foreground">Unlimited AI access with priority</p>
+          <p className="text-sm font-medium bg-gradient-to-r from-purple-400 to-sky-400 bg-clip-text text-transparent">{t('credits.unlimitedPlan')}</p>
+          <p className="text-xs text-muted-foreground">{t('credits.unlimitedAccess')}</p>
         </div>
       </div>
     )
@@ -128,7 +131,7 @@ export function CreditsDisplay() {
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <Lightning size={18} weight="fill" className="text-purple-400" />
-            <span className="text-sm font-medium text-purple-400">Pro Plan</span>
+            <span className="text-sm font-medium text-purple-400">{t('credits.proPlan')}</span>
           </div>
           <span className="text-sm font-bold text-purple-400">{remaining}/{total}</span>
         </div>
@@ -142,7 +145,7 @@ export function CreditsDisplay() {
         </div>
         
         <p className="text-xs text-muted-foreground mt-2">
-          {remaining} AI requests remaining this month
+          {t('credits.remainingThisMonth', { remaining })}
         </p>
         
         {/* Upgrade button */}
@@ -151,7 +154,7 @@ export function CreditsDisplay() {
           className="w-full mt-3 py-2 px-3 rounded-lg bg-gradient-to-r from-purple-600/20 to-sky-500/20 border border-sky-500/30 text-sky-400 text-xs font-medium hover:from-purple-600/30 hover:to-sky-500/30 transition-all flex items-center justify-center gap-1.5"
         >
           <Crown size={14} weight="fill" />
-          Upgrade to Unlimited
+          {t('credits.upgradeToUnlimited')}
         </button>
       </div>
     )
@@ -180,7 +183,7 @@ export function CreditsDisplay() {
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <Sparkle size={18} weight="fill" className="text-purple-400" />
-          <span className="text-sm font-medium">Free Plan</span>
+          <span className="text-sm font-medium">{t('credits.freePlan')}</span>
         </div>
         <span className="text-sm font-bold text-purple-400">{remaining}/{total}</span>
       </div>
@@ -201,8 +204,8 @@ export function CreditsDisplay() {
       
       <p className="text-xs text-muted-foreground mt-2">
         {remaining === 0 
-          ? `Credits reset in ${getTimeUntilReset()}`
-          : `${remaining} free AI request${remaining !== 1 ? 's' : ''} remaining today`
+          ? t('credits.resetIn', { time: getTimeUntilReset() })
+          : t('credits.remainingToday', { remaining, count: remaining })
         }
       </p>
       
@@ -212,7 +215,7 @@ export function CreditsDisplay() {
         className="w-full mt-3 py-2 px-3 rounded-lg bg-gradient-to-r from-purple-600/20 to-sky-500/20 border border-purple-500/30 text-purple-400 text-xs font-medium hover:from-purple-600/30 hover:to-sky-500/30 transition-all flex items-center justify-center gap-1.5"
       >
         <Rocket size={14} weight="fill" />
-        Upgrade to Pro
+        {t('credits.upgradeToPro')}
       </button>
     </div>
   )

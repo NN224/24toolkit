@@ -3,6 +3,7 @@ import { X, Check, Sparkle, Lightning, Crown, Rocket, Star } from '@phosphor-ico
 import { useAuth } from '@/contexts/AuthContext'
 import { useSubscription, PLAN_LIMITS } from '@/contexts/SubscriptionContext'
 import { toast } from 'sonner'
+import { useTranslation } from 'react-i18next'
 
 interface PricingModalProps {
   isOpen: boolean
@@ -11,6 +12,7 @@ interface PricingModalProps {
 }
 
 export function PricingModal({ isOpen, onClose, highlightPlan = 'pro' }: PricingModalProps) {
+  const { t } = useTranslation()
   const { user, signInWithGoogle } = useAuth()
   const { currentPlan } = useSubscription()
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null)
@@ -21,9 +23,9 @@ export function PricingModal({ isOpen, onClose, highlightPlan = 'pro' }: Pricing
     if (!user) {
       try {
         await signInWithGoogle()
-        toast.success('Signed in! Now you can subscribe.')
+        toast.success(t('pricing.signedIn'))
       } catch (error) {
-        toast.error('Please sign in first')
+        toast.error(t('pricing.signInFirst'))
       }
       return
     }
@@ -60,7 +62,7 @@ export function PricingModal({ isOpen, onClose, highlightPlan = 'pro' }: Pricing
       }
     } catch (error) {
       console.error('Checkout error:', error)
-      toast.error('Failed to start checkout. Please try again.')
+      toast.error(t('pricing.checkoutFailed'))
     } finally {
       setLoadingPlan(null)
     }

@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { toast } from 'sonner'
+import i18n from '@/i18n'
 
 const quotes = [
   "We built 24Toolkit because developers deserve better tools. 🚀",
@@ -28,7 +29,7 @@ export function useEasterEgg() {
         keySequence.every((key, index) => key === targetSequence[index])
       ) {
         const randomQuote = quotes[Math.floor(Math.random() * quotes.length)]
-        toast.success('Easter Egg Found! 🥚', {
+        toast.success(i18n.t('common.easterEggFound'), {
           description: randomQuote,
           duration: 5000
         })

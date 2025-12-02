@@ -5,6 +5,7 @@ import type { Icon as PhosphorIcon } from '@phosphor-icons/react'
 import { useAuth } from '@/contexts/AuthContext'
 import { PLAN_LIMITS } from '@/contexts/SubscriptionContext'
 import { toast } from 'sonner'
+import { useTranslation } from 'react-i18next'
 
 interface SubscriptionModalProps {
   isOpen: boolean
@@ -13,34 +14,35 @@ interface SubscriptionModalProps {
 
 interface Feature {
   icon: PhosphorIcon
-  title: string
-  description: string
+  titleKey: string
+  descriptionKey: string
 }
 
 const features: Feature[] = [
   {
     icon: Sparkle,
-    title: 'More AI Credits',
-    description: 'Pro: 100/month • Unlimited: No limits!'
+    titleKey: 'subscription.features.moreCredits.title',
+    descriptionKey: 'subscription.features.moreCredits.description'
   },
   {
     icon: Lightning,
-    title: 'No Advertisements',
-    description: 'Enjoy a clean, ad-free experience'
+    titleKey: 'subscription.features.noAds.title',
+    descriptionKey: 'subscription.features.noAds.description'
   },
   {
     icon: Rocket,
-    title: 'Priority Processing',
-    description: 'Faster responses with priority queue'
+    titleKey: 'subscription.features.priority.title',
+    descriptionKey: 'subscription.features.priority.description'
   },
   {
     icon: Crown,
-    title: 'Premium Features',
-    description: 'Smart History, early access & more'
+    titleKey: 'subscription.features.premium.title',
+    descriptionKey: 'subscription.features.premium.description'
   }
 ]
 
 export function SubscriptionModal({ isOpen, onClose }: SubscriptionModalProps) {
+  const { t } = useTranslation()
   const [isAnimating, setIsAnimating] = useState(false)
   const [loading, setLoading] = useState(false)
   const { user, signInWithGoogle } = useAuth()
@@ -56,9 +58,9 @@ export function SubscriptionModal({ isOpen, onClose }: SubscriptionModalProps) {
     if (!user) {
       try {
         await signInWithGoogle()
-        toast.success('Signed in! Now select a plan.')
+        toast.success(t('pricing.signedIn'))
       } catch (error) {
-        toast.error('Please sign in to subscribe')
+        toast.error(t('pricing.signInFirst'))
       }
       return
     }
@@ -91,7 +93,7 @@ export function SubscriptionModal({ isOpen, onClose }: SubscriptionModalProps) {
       }
     } catch (error) {
       console.error('Checkout error:', error)
-      toast.error('Failed to start checkout. Please try again.')
+      toast.error(t('pricing.checkoutFailed'))
     } finally {
       setLoading(false)
     }
@@ -137,10 +139,10 @@ export function SubscriptionModal({ isOpen, onClose }: SubscriptionModalProps) {
               <Rocket size={32} weight="fill" className="text-white" />
             </div>
             <h2 className="text-2xl font-bold text-foreground mb-2">
-              Unlock Unlimited AI Power 🚀
+              {t('subscription.unlockPower')} 🚀
             </h2>
             <p className="text-muted-foreground">
-              You've used all your free credits today. Upgrade for more!
+              {t('subscription.usedAllCredits')}
             </p>
           </div>
 
@@ -157,8 +159,8 @@ export function SubscriptionModal({ isOpen, onClose }: SubscriptionModalProps) {
                     <Icon size={20} weight="fill" className="text-purple-400" />
                   </div>
                   <div>
-                    <h3 className="font-medium text-foreground">{feature.title}</h3>
-                    <p className="text-sm text-muted-foreground">{feature.description}</p>
+                    <h3 className="font-medium text-foreground">{t(feature.titleKey)}</h3>
+                    <p className="text-sm text-muted-foreground">{t(feature.descriptionKey)}</p>
                   </div>
                   <Check size={20} weight="bold" className="flex-shrink-0 text-green-400 ml-auto" />
                 </div>
@@ -211,7 +213,7 @@ export function SubscriptionModal({ isOpen, onClose }: SubscriptionModalProps) {
               onClick={goToPricing}
               className="w-full mt-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center justify-center gap-1"
             >
-              Compare all plans
+              {t('subscription.compareAllPlans')}
               <ArrowRight size={14} />
             </button>
           </div>
@@ -220,7 +222,7 @@ export function SubscriptionModal({ isOpen, onClose }: SubscriptionModalProps) {
           <div className="relative px-6 py-4 bg-white/5 border-t border-white/10">
             <p className="text-center text-sm text-muted-foreground">
               <Sparkle size={14} weight="fill" className="inline text-purple-400 mr-1" />
-              Free credits reset daily at midnight
+              {t('subscription.freeCreditsReset')}
             </p>
           </div>
         </div>

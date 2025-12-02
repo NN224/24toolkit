@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Trophy, Target, Flame, TrendUp, X, Sparkle } from '@phosphor-icons/react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 interface ToolUsageStats {
   toolsUsed: Set<string>;
@@ -12,8 +13,8 @@ interface ToolUsageStats {
 
 interface Achievement {
   id: string;
-  title: string;
-  description: string;
+  titleKey: string;
+  descriptionKey: string;
   icon: any;
   requirement: number;
   unlocked: boolean;
@@ -23,8 +24,8 @@ interface Achievement {
 const ACHIEVEMENTS: Achievement[] = [
   {
     id: 'first_tool',
-    title: 'Getting Started',
-    description: 'Use your first tool',
+    titleKey: 'progress.achievements.firstTool.title',
+    descriptionKey: 'progress.achievements.firstTool.description',
     icon: Sparkle,
     requirement: 1,
     unlocked: false,
@@ -32,8 +33,8 @@ const ACHIEVEMENTS: Achievement[] = [
   },
   {
     id: 'explorer',
-    title: 'Explorer',
-    description: 'Use 5 different tools',
+    titleKey: 'progress.achievements.explorer.title',
+    descriptionKey: 'progress.achievements.explorer.description',
     icon: Target,
     requirement: 5,
     unlocked: false,
@@ -41,8 +42,8 @@ const ACHIEVEMENTS: Achievement[] = [
   },
   {
     id: 'enthusiast',
-    title: 'Enthusiast',
-    description: 'Use 15 different tools',
+    titleKey: 'progress.achievements.enthusiast.title',
+    descriptionKey: 'progress.achievements.enthusiast.description',
     icon: TrendUp,
     requirement: 15,
     unlocked: false,
@@ -50,8 +51,8 @@ const ACHIEVEMENTS: Achievement[] = [
   },
   {
     id: 'power_user',
-    title: 'Power User',
-    description: 'Use 30 different tools',
+    titleKey: 'progress.achievements.powerUser.title',
+    descriptionKey: 'progress.achievements.powerUser.description',
     icon: Flame,
     requirement: 30,
     unlocked: false,
@@ -59,8 +60,8 @@ const ACHIEVEMENTS: Achievement[] = [
   },
   {
     id: 'master',
-    title: 'Toolkit Master',
-    description: 'Use 50 different tools',
+    titleKey: 'progress.achievements.master.title',
+    descriptionKey: 'progress.achievements.master.description',
     icon: Trophy,
     requirement: 50,
     unlocked: false,
@@ -71,6 +72,7 @@ const ACHIEVEMENTS: Achievement[] = [
 const TOTAL_TOOLS = 80;
 
 export function UserProgress() {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [stats, setStats] = useState<ToolUsageStats>({
     toolsUsed: new Set<string>(),
@@ -218,9 +220,9 @@ export function UserProgress() {
                   </div>
                   <div className="flex-1">
                     <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">
-                      Achievement Unlocked!
+                      {t('progress.achievementUnlocked')}
                     </p>
-                    <h4 className="text-lg font-bold text-foreground">{newAchievement.title}</h4>
+                    <h4 className="text-lg font-bold text-foreground">{t(newAchievement.titleKey)}</h4>
                   </div>
                   <button
                     onClick={() => setNewAchievement(null)}
@@ -229,7 +231,7 @@ export function UserProgress() {
                     <X size={20} />
                   </button>
                 </div>
-                <p className="text-sm text-muted-foreground">{newAchievement.description}</p>
+                <p className="text-sm text-muted-foreground">{t(newAchievement.descriptionKey)}</p>
               </div>
             </div>
           </motion.div>
@@ -259,7 +261,7 @@ export function UserProgress() {
               <div className="glass-card m-4 p-6 md:p-8 rounded-2xl border border-border/50">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-3xl font-bold gradient-text">Your Progress</h2>
+                  <h2 className="text-3xl font-bold gradient-text">{t('progress.title')}</h2>
                   <button
                     onClick={() => setIsOpen(false)}
                     className="text-muted-foreground hover:text-foreground transition-colors p-2"
@@ -271,7 +273,7 @@ export function UserProgress() {
                 {/* Overall Progress */}
                 <div className="mb-8">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-muted-foreground">Tools Explored</span>
+                    <span className="text-sm font-medium text-muted-foreground">{t('progress.toolsExplored')}</span>
                     <span className="text-sm font-bold text-foreground">
                       {stats.toolsUsed.size} / {TOTAL_TOOLS}
                     </span>
@@ -286,7 +288,7 @@ export function UserProgress() {
                     />
                   </div>
                   <p className="text-xs text-muted-foreground mt-1 text-right">
-                    {progress.toFixed(1)}% Complete
+                    {progress.toFixed(1)}% {t('progress.complete')}
                   </p>
                 </div>
 
@@ -295,7 +297,7 @@ export function UserProgress() {
                   <div className="bg-gradient-to-br from-purple-600/20 to-sky-500/20 p-4 rounded-xl border border-purple-500/30">
                     <div className="flex items-center gap-2 mb-1">
                       <Target size={20} className="text-purple-400" weight="fill" />
-                      <span className="text-xs text-muted-foreground font-medium">Total Uses</span>
+                      <span className="text-xs text-muted-foreground font-medium">{t('progress.totalUses')}</span>
                     </div>
                     <p className="text-2xl font-bold text-foreground">{stats.totalUsageCount}</p>
                   </div>
@@ -303,9 +305,9 @@ export function UserProgress() {
                   <div className="bg-gradient-to-br from-orange-600/20 to-red-500/20 p-4 rounded-xl border border-orange-500/30">
                     <div className="flex items-center gap-2 mb-1">
                       <Flame size={20} className="text-orange-400" weight="fill" />
-                      <span className="text-xs text-muted-foreground font-medium">Day Streak</span>
+                      <span className="text-xs text-muted-foreground font-medium">{t('progress.dayStreak')}</span>
                     </div>
-                    <p className="text-2xl font-bold text-foreground">{stats.streakDays} days</p>
+                    <p className="text-2xl font-bold text-foreground">{stats.streakDays} {t('progress.days')}</p>
                   </div>
                 </div>
 
@@ -313,7 +315,7 @@ export function UserProgress() {
                 <div>
                   <h3 className="text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
                     <Trophy size={24} className="text-yellow-500" weight="fill" />
-                    Achievements
+                    {t('progress.achievementsTitle')}
                   </h3>
                   <div className="space-y-3">
                     {achievementList.map((achievement) => (
@@ -342,8 +344,8 @@ export function UserProgress() {
                             />
                           </div>
                           <div className="flex-1">
-                            <h4 className="font-semibold text-foreground">{achievement.title}</h4>
-                            <p className="text-sm text-muted-foreground">{achievement.description}</p>
+                            <h4 className="font-semibold text-foreground">{t(achievement.titleKey)}</h4>
+                            <p className="text-sm text-muted-foreground">{t(achievement.descriptionKey)}</p>
                           </div>
                           {achievement.unlocked ? (
                             <span className="text-green-500 font-bold text-sm">✓</span>
@@ -361,7 +363,7 @@ export function UserProgress() {
                 {/* Footer */}
                 <div className="mt-6 pt-6 border-t border-border/50 text-center">
                   <p className="text-sm text-muted-foreground">
-                    Keep exploring to unlock all achievements! 🚀
+                    {t('progress.keepExploring')}
                   </p>
                 </div>
               </div>

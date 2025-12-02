@@ -105,12 +105,12 @@ export default function SettingsPage() {
 
   const handleSaveProfile = async () => {
     if (!user) {
-      toast.error('Please sign in first')
+      toast.error(t('settings.signInFirst'))
       return
     }
 
     if (!displayName.trim()) {
-      toast.error('Please enter a name')
+      toast.error(t('settings.enterName'))
       return
     }
 
@@ -120,10 +120,10 @@ export default function SettingsPage() {
       await updateProfile(user, {
         displayName: displayName.trim()
       })
-      toast.success('Changes saved successfully!')
+      toast.success(t('settings.changesSaved'))
     } catch (error) {
       console.error('Failed to update profile:', error)
-      toast.error('Failed to save changes. Please try again.')
+      toast.error(t('settings.saveChangesFailed'))
     } finally {
       setIsSaving(false)
     }
@@ -135,22 +135,22 @@ export default function SettingsPage() {
     try {
       // Delete user account from Firebase
       await user.delete()
-      toast.success('Account deleted successfully')
+      toast.success(t('settings.accountDeleted'))
       // User will be redirected automatically by AuthContext
     } catch (error: any) {
       console.error('Failed to delete account:', error)
       if (error.code === 'auth/requires-recent-login') {
-        toast.error('Please sign in again to delete your account')
+        toast.error(t('settings.signInAgainToDelete'))
         await signOut()
       } else {
-        toast.error('Failed to delete account. Please try again.')
+        toast.error(t('settings.deleteAccountFailed'))
       }
     }
   }
 
   const handleSignOut = async () => {
     await signOut()
-    toast.success('Signed out successfully')
+    toast.success(t('settings.signedOut'))
   }
 
   const tabs = [
@@ -370,7 +370,7 @@ export default function SettingsPage() {
                                 window.location.href = data.url
                               }
                             } catch (error) {
-                              toast.error('Failed to open customer portal')
+                              toast.error(t('settings.customerPortalFailed'))
                             }
                           }}
                           className="w-full py-3 rounded-lg bg-white/10 hover:bg-white/20 text-foreground font-medium transition-colors"
@@ -491,7 +491,7 @@ export default function SettingsPage() {
                           value={language}
                           onChange={(e) => {
                             setLanguage(e.target.value)
-                            toast.success('Language changed')
+                            toast.success(t('settings.languageChanged'))
                           }}
                           className="w-full px-4 py-2 bg-background border border-white/10 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
                         >

@@ -2,6 +2,7 @@ import { ReactNode, useState, useEffect } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { LoginModal } from './LoginModal'
 import { CircleNotch } from '@phosphor-icons/react'
+import { useTranslation } from 'react-i18next'
 
 interface ProtectedRouteProps {
   children: ReactNode
@@ -9,6 +10,7 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children, requireAuth = true }: ProtectedRouteProps) {
+  const { t } = useTranslation()
   const { user, loading } = useAuth()
   const [showLoginModal, setShowLoginModal] = useState(false)
 
@@ -24,7 +26,7 @@ export function ProtectedRoute({ children, requireAuth = true }: ProtectedRouteP
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <CircleNotch size={48} className="animate-spin text-accent mx-auto mb-4" />
-          <p className="text-muted-foreground">Loading...</p>
+          <p className="text-muted-foreground">{t('common.loading')}</p>
         </div>
       </div>
     )

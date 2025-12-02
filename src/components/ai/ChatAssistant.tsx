@@ -3,6 +3,7 @@ import { ChatCircleDots, X, PaperPlaneRight, Sparkle, MagnifyingGlass, Robot } f
 import { TOOLKIT_INFO, TOOL_CATEGORIES, CONTACT_INFO, FAQ } from '@/lib/chatbot-knowledge'
 import { callAI } from '@/lib/ai'
 import { toast } from 'sonner'
+import { useTranslation } from 'react-i18next'
 
 type ChatMode = 'chat' | 'finder'
 
@@ -58,6 +59,8 @@ ${faqList}
 }
 
 export default function FloatingChatAssistant() {
+  const { t, i18n } = useTranslation()
+  const isRTL = i18n.language === 'ar'
   const [isOpen, setIsOpen] = useState(false)
   const [mode, setMode] = useState<ChatMode>('chat')
   const [useAI, setUseAI] = useState(false) // Toggle for AI mode
@@ -283,7 +286,7 @@ export default function FloatingChatAssistant() {
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <Sparkle size={20} weight="fill" className="text-white" />
-                  <h3 className="font-semibold text-white">Tool Assistant</h3>
+                  <h3 className="font-semibold text-white">{t('chatAssistant.title')}</h3>
                 </div>
                 <div className="flex items-center gap-2">
                   <button

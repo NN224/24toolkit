@@ -3,6 +3,7 @@ import { toast } from 'sonner'
 import { callAI, AIError, type AIProvider } from '@/lib/ai'
 import { useAuth } from '@/contexts/AuthContext'
 import { openSubscriptionModal } from '@/components/SubscriptionModal'
+import i18n from '@/i18n'
 
 interface UseAIOptions {
   provider: AIProvider
@@ -29,21 +30,21 @@ export function useAI(options: UseAIOptions) {
   ): Promise<string> => {
     // Check if user is logged in
     if (!user) {
-      toast.error('Please sign in to use AI features', {
-        description: 'Create a free account to get 5 AI credits per day.',
+      toast.error(i18n.t('ai.signInRequired'), {
+        description: i18n.t('ai.signInDescription'),
         action: {
-          label: 'Sign In',
+          label: i18n.t('common.signIn'),
           onClick: () => window.dispatchEvent(new CustomEvent('open-login-modal'))
         }
       })
-      throw new AIError('Please sign in to use AI features', 'AUTH_REQUIRED')
+      throw new AIError(i18n.t('ai.signInRequired'), 'AUTH_REQUIRED')
     }
 
     // Check credits locally before making API call (for non-premium users)
     if (userProfile && !userProfile.isPremium && userProfile.aiCredits <= 0) {
       // Open subscription/upgrade modal
       openSubscriptionModal()
-      throw new AIError('Daily limit reached', 'CREDITS_EXHAUSTED', 0, false)
+      throw new AIError(i18n.t('ai.dailyLimitReached'), 'CREDITS_EXHAUSTED', 0, false)
     }
 
     setLoading(true)
@@ -73,10 +74,10 @@ export function useAI(options: UseAIOptions) {
           // Open subscription/upgrade modal
           openSubscriptionModal()
         } else if (error.code === 'AUTH_REQUIRED') {
-          toast.error('Please sign in', {
-            description: 'Create a free account to use AI features.',
+          toast.error(i18n.t('common.signIn'), {
+            description: i18n.t('ai.signInToUse'),
             action: {
-              label: 'Sign In',
+              label: i18n.t('common.signIn'),
               onClick: () => window.dispatchEvent(new CustomEvent('open-login-modal'))
             }
           })
@@ -87,7 +88,7 @@ export function useAI(options: UseAIOptions) {
         throw error
       }
       
-      const errorMsg = error instanceof Error ? error.message : (options.errorMessage || 'AI request failed')
+      const errorMsg = error instanceof Error ? error.message : (options.errorMessage || i18n.t('ai.requestFailed'))
       toast.error(errorMsg)
       options.onError?.(error instanceof Error ? error : new Error(errorMsg))
       throw error

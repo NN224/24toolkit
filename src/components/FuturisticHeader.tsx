@@ -102,7 +102,7 @@ export default function FuturisticHeader() {
     const SpeechRecognitionCtor = getSpeechRecognition()
     
     if (!SpeechRecognitionCtor) {
-      toast.error('Voice search not supported in your browser')
+      toast.error(t('header.voiceNotSupported'))
       return
     }
 
@@ -115,7 +115,7 @@ export default function FuturisticHeader() {
 
       recognition.onstart = () => {
         setIsListening(true)
-        toast.info('Listening... Speak now!')
+        toast.info(t('header.listening'))
       }
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -123,7 +123,7 @@ export default function FuturisticHeader() {
         const transcript = event.results[0][0].transcript
         setSearchQuery(transcript)
         setSearchOpen(true)
-        toast.success(`Searching for: "${transcript}"`)
+        toast.success(t('header.searchingFor', { query: transcript }))
       }
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -136,7 +136,7 @@ export default function FuturisticHeader() {
           'not-allowed': 'Microphone permission denied.',
           'network': 'Network error occurred.',
         }
-        toast.error(errorMessages[event.error] || 'Voice recognition error')
+        toast.error(errorMessages[event.error] || t('header.voiceRecognitionError'))
       }
 
       recognition.onend = () => {
@@ -146,7 +146,7 @@ export default function FuturisticHeader() {
       recognitionRef.current = recognition
       recognition.start()
     } catch (error) {
-      toast.error('Could not start voice search')
+      toast.error(t('header.voiceSearchFailed'))
       setIsListening(false)
     }
   }

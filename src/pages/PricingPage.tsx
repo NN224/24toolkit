@@ -4,8 +4,10 @@ import { useAuth } from '@/contexts/AuthContext'
 import { useSubscription, PLAN_LIMITS } from '@/contexts/SubscriptionContext'
 import { useSEO } from '@/hooks/useSEO'
 import { toast } from 'sonner'
+import { useTranslation } from 'react-i18next'
 
 export default function PricingPage() {
+  const { t } = useTranslation()
   useSEO({
     title: 'Pricing - 24Toolkit',
     description: 'Choose the perfect plan for your needs. Free, Pro, or Unlimited access to 80+ AI-powered tools.',
@@ -20,9 +22,9 @@ export default function PricingPage() {
     if (!user) {
       try {
         await signInWithGoogle()
-        toast.success('Signed in! Now you can subscribe.')
+        toast.success(t('pricing.signedIn'))
       } catch (error) {
-        toast.error('Please sign in first')
+        toast.error(t('pricing.signInFirst'))
       }
       return
     }
@@ -55,7 +57,7 @@ export default function PricingPage() {
       }
     } catch (error) {
       console.error('Checkout error:', error)
-      toast.error('Failed to start checkout. Please try again.')
+      toast.error(t('pricing.checkoutFailed'))
     } finally {
       setLoadingPlan(null)
     }
