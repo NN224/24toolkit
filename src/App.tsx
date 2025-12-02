@@ -474,6 +474,8 @@ function App() {
         </Routes>
         </ErrorBoundary>
         <Toaster position="top-center" />
+        {/* Temporary Sentry test button - REMOVE AFTER TESTING */}
+        <SentryTestButton />
       </BrowserRouter>
       </SubscriptionProvider>
     </AuthProvider>
