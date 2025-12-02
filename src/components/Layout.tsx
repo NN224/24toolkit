@@ -58,7 +58,7 @@ export default function Layout() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-accent transition-colors"
-                  aria-label="GitHub"
+                  aria-label={t('footer.github')}
                 >
                   <GithubLogo size={22} weight="fill" />
                 </a>
@@ -67,7 +67,7 @@ export default function Layout() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-accent transition-colors"
-                  aria-label="X (Twitter)"
+                  aria-label={t('footer.twitter')}
                 >
                   <TwitterLogo size={22} weight="fill" />
                 </a>
@@ -76,7 +76,7 @@ export default function Layout() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-accent transition-colors"
-                  aria-label="YouTube"
+                  aria-label={t('footer.youtube')}
                 >
                   <YoutubeLogo size={22} weight="fill" />
                 </a>

@@ -584,7 +584,10 @@
     "madeWith": "صنع بـ",
     "by": "بواسطة",
     "allRightsReserved": "جميع الحقوق محفوظة",
-    "followUs": "تابعنا"
+    "followUs": "تابعنا",
+    "github": "جيت هاب",
+    "twitter": "X (تويتر)",
+    "youtube": "يوتيوب"
   },
   "search": {
     "placeholder": "ابحث عن الأدوات...",
@@ -828,6 +831,13 @@
       "compressed": "المضغوطة",
       "preview": "معاينة",
       "processed": "المعالجة",
+      "converted": "المحولة",
+      "resized": "المقاسة",
+      "uploaded": "المرفوعة",
+      "cropped": "المقصاة",
+      "bytes": "بايت",
+      "kb": "كيلوبايت",
+      "mb": "ميجابايت",
       "input": "الإدخال",
       "output": "الإخراج",
       "result": "النتيجة",

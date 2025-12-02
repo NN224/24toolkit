@@ -194,7 +194,7 @@ export default function ImageCropper() {
               {croppedImage ? (
                 <>
                   <div className="border rounded-lg p-4 bg-muted">
-                    <img src={croppedImage} alt="Cropped" className="w-full h-auto max-h-[400px] object-contain" />
+                    <img src={croppedImage} alt={t('tools.common.cropped')} className="w-full h-auto max-h-[400px] object-contain" />
                   </div>
 
                   <Button onClick={handleDownload} className="w-full">

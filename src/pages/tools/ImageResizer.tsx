@@ -222,7 +222,7 @@ export default function ImageResizer() {
               {resizedImage ? (
                 <>
                   <div className="border rounded-lg p-4">
-                    <img src={resizedImage} alt="Resized" className="w-full h-auto max-h-[300px] object-contain" />
+                    <img src={resizedImage} alt={t('tools.common.resized')} className="w-full h-auto max-h-[300px] object-contain" />
                     <p className="text-xs text-muted-foreground mt-2 text-center">
                       Resized: {width} × {height}
                     </p>

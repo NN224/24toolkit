@@ -152,7 +152,7 @@ export default function ImageToText() {
                   <div className="relative rounded-lg overflow-hidden border border-border">
                     <img
                       src={image}
-                      alt="Uploaded"
+                      alt={t('tools.common.uploaded')}
                       className="w-full h-auto max-h-[400px] object-contain bg-muted"
                     />
                   </div>

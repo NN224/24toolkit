@@ -169,7 +169,7 @@ export default function ImageFormatConverter() {
               {convertedImage ? (
                 <>
                   <div className="border rounded-lg p-4 bg-muted">
-                    <img src={convertedImage} alt="Converted" className="w-full h-auto max-h-[300px] object-contain" />
+                    <img src={convertedImage} alt={t('tools.common.converted')} className="w-full h-auto max-h-[300px] object-contain" />
                   </div>
 
                   <div className="p-3 bg-green-50 border border-green-200 rounded-lg">

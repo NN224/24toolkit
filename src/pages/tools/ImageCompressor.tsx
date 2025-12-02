@@ -128,9 +128,9 @@ export default function ImageCompressor() {
   }
 
   const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes'
+    if (bytes === 0) return `0 ${t('tools.common.bytes')}`
     const kilobyte = 1024
-    const sizes = ['Bytes', 'KB', 'MB']
+    const sizes = [t('tools.common.bytes'), t('tools.common.kb'), t('tools.common.mb')]
     const sizeIndex = Math.floor(Math.log(bytes) / Math.log(kilobyte))
     return Math.round(bytes / Math.pow(kilobyte, sizeIndex) * 100) / 100 + ' ' + sizes[sizeIndex]
   }

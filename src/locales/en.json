@@ -584,7 +584,10 @@
     "madeWith": "Made with",
     "by": "by",
     "allRightsReserved": "All rights reserved",
-    "followUs": "Follow us"
+    "followUs": "Follow us",
+    "github": "GitHub",
+    "twitter": "X (Twitter)",
+    "youtube": "YouTube"
   },
   "search": {
     "placeholder": "Search for tools...",
@@ -826,6 +829,13 @@
       "compressed": "Compressed",
       "preview": "Preview",
       "processed": "Processed",
+      "converted": "Converted",
+      "resized": "Resized",
+      "uploaded": "Uploaded",
+      "cropped": "Cropped",
+      "bytes": "Bytes",
+      "kb": "KB",
+      "mb": "MB",
       "input": "Input",
       "output": "Output",
       "result": "Result",
