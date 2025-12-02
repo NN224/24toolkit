@@ -124,8 +124,8 @@ export function initSentry() {
     // ==========================================================================
     // General Settings
     // ==========================================================================
-    // Only enable in production
-    enabled: IS_PRODUCTION,
+    // Enable when DSN is configured (works in all environments)
+    enabled: !!SENTRY_DSN,
     
     // Attach stack traces to messages
     attachStacktrace: true,
