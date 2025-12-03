@@ -217,7 +217,7 @@ export default function SignInPage() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           className="hidden lg:block space-y-8"
-        >
+      >
           {/* Logo & Title */}
           <div>
             <Link to="/" className="inline-flex items-center gap-3 group mb-6">
@@ -353,20 +353,20 @@ export default function SignInPage() {
                       {activeTab === 'signin'
                         ? 'Sign in to access your tools and settings'
                         : 'Sign up to unlock all features and save your work'}
-                    </p>
-                  </div>
+            </p>
+          </div>
 
                   {/* Provider Buttons */}
-                  <div className="space-y-3">
-                    {providers.map((provider) => {
-                      const Icon = provider.icon
-                      return (
-                        <motion.button
-                          key={provider.name}
-                          onClick={provider.onClick}
+          <div className="space-y-3">
+            {providers.map((provider) => {
+              const Icon = provider.icon
+              return (
+                <motion.button
+                  key={provider.name}
+                  onClick={provider.onClick}
                           disabled={isLoading}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                           className={`w-full flex items-center justify-center gap-3 px-6 py-3.5 rounded-xl font-medium transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed ${provider.bgColor} ${provider.textColor} border ${provider.borderColor}`}
                         >
                           {isLoading ? (
@@ -379,17 +379,17 @@ export default function SignInPage() {
                               </span>
                             </>
                           )}
-                        </motion.button>
-                      )
-                    })}
-                  </div>
+                </motion.button>
+              )
+            })}
+          </div>
 
-                  {/* Divider */}
-                  <div className="relative my-6">
-                    <div className="absolute inset-0 flex items-center">
-                      <div className="w-full border-t border-white/10" />
-                    </div>
-                    <div className="relative flex justify-center text-sm">
+          {/* Divider */}
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-white/10" />
+            </div>
+            <div className="relative flex justify-center text-sm">
                       <span className="px-4 bg-card text-muted-foreground">or</span>
                     </div>
                   </div>
@@ -559,44 +559,44 @@ export default function SignInPage() {
                     </div>
                     <div className="relative flex justify-center text-sm">
                       <span className="px-4 bg-card text-muted-foreground">or</span>
-                    </div>
-                  </div>
-
-                  {/* Continue as Guest */}
-                  <Link to={redirectTo}>
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium transition-all border border-white/10 hover:border-white/20 text-muted-foreground hover:text-foreground"
-                    >
-                      <span>Continue as Guest</span>
-                      <ArrowRight size={18} />
-                    </motion.button>
-                  </Link>
-
-                  {/* Terms */}
-                  <p className="mt-6 text-xs text-center text-muted-foreground">
-                    By continuing, you agree to our{' '}
-                    <Link to="/terms-of-service" className="text-purple-400 hover:text-purple-300 underline">
-                      Terms
-                    </Link>
-                    {' '}and{' '}
-                    <Link to="/privacy-policy" className="text-purple-400 hover:text-purple-300 underline">
-                      Privacy Policy
-                    </Link>
-                  </p>
-                </motion.div>
-              </AnimatePresence>
             </div>
           </div>
 
+          {/* Continue as Guest */}
+                  <Link to={redirectTo}>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium transition-all border border-white/10 hover:border-white/20 text-muted-foreground hover:text-foreground"
+            >
+                      <span>Continue as Guest</span>
+                      <ArrowRight size={18} />
+            </motion.button>
+          </Link>
+
+          {/* Terms */}
+          <p className="mt-6 text-xs text-center text-muted-foreground">
+                    By continuing, you agree to our{' '}
+                    <Link to="/terms-of-service" className="text-purple-400 hover:text-purple-300 underline">
+                      Terms
+            </Link>
+                    {' '}and{' '}
+                    <Link to="/privacy-policy" className="text-purple-400 hover:text-purple-300 underline">
+                      Privacy Policy
+            </Link>
+          </p>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+        </div>
+
           {/* Mobile Benefits */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
             className="lg:hidden mt-6 grid grid-cols-2 gap-3"
-          >
+        >
             {benefits.slice(0, 4).map((benefit) => {
               const Icon = benefit.icon
               return (
@@ -606,7 +606,7 @@ export default function SignInPage() {
                 >
                   <Icon size={20} weight="duotone" className={benefit.color} />
                   <span className="text-xs font-medium text-foreground">{benefit.text}</span>
-                </div>
+            </div>
               )
             })}
           </motion.div>
