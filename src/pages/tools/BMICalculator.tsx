@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { Activity } from '@phosphor-icons/react'
+import { Heartbeat } from '@phosphor-icons/react'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 import { RelatedTools } from '@/components/RelatedTools'
@@ -64,7 +64,7 @@ export default function BMICalculator() {
       <div className="space-y-2">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-gradient-to-br from-pink-500 to-rose-500">
-            <Activity size={24} className="text-white" weight="bold" />
+            <Heartbeat size={24} className="text-white" weight="bold" />
           </div>
           <div>
             <h1 className="text-3xl font-semibold text-foreground">{t('tools.bmiCalculator.name')}</h1>
