@@ -112,7 +112,7 @@ export default async function handler(req, res) {
 // ============================================
 
 async function handleCheckoutComplete(session) {
-  const userId = session.client_reference_id || session.metadata?.userId;
+  const userId = session.metadata?.userId;
   
   if (!userId) {
     console.error('No userId found in checkout session');

@@ -57,10 +57,9 @@ export default async function handler(req, res) {
       success_url: successUrl || 'https://24toolkit.com/settings?success=true',
       cancel_url: cancelUrl || 'https://24toolkit.com/pricing?canceled=true',
       customer_email: userEmail || undefined,
-      client_reference_id: userId,
       metadata: {
         userId: userId,
-        plan: isPro ? 'pro' : 'unlimited',
+        plan: isPro ? 'pro' : 'unlimited'
       },
       allow_promotion_codes: true,
     });
