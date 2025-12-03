@@ -215,7 +215,7 @@ export default function FuturisticHeader() {
                   onClick={() => setTheme('minimal')}
                   className={`px-3 py-1.5 rounded text-xs font-medium transition-all ${
                     theme === 'minimal' 
-                      ? 'bg-gradient-to-r from-gray-400 to-gray-600 text-white' 
+                      ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white' 
                       : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
