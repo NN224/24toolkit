@@ -620,6 +620,8 @@
     "serverError": "Server error. Please try again later.",
     "timeout": "Request timed out",
     "invalidInput": "Invalid input",
+    "inputTooShort": "Input must be at least {{min}} characters long",
+    "inputTooLong": "Input must not exceed {{max}} characters",
     "required": "This field is required",
     "tooLong": "Input is too long",
     "tooShort": "Input is too short",
