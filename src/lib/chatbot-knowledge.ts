@@ -115,7 +115,7 @@ export const TOOL_CATEGORIES = {
           en: 'Analyze and evaluate your ideas with AI',
           ar: 'تحليل وتقييم أفكارك بالذكاء الاصطناعي'
         },
-        path: '/tools/idea-analyzer',
+        path: '/tools/ai-idea-analyzer',
         keywords: ['idea', 'analyze', 'evaluate', 'فكرة', 'تحليل', 'تقييم']
       },
       {

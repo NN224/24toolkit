@@ -63,7 +63,7 @@ const AIUsageDashboard = React.lazy(() => import('@/pages/tools/AIUsageDashboard
 const AIPromptPresets = React.lazy(() => import('@/pages/tools/AIPromptPresets'))
 const SmartHistory = React.lazy(() => import('@/pages/tools/SmartHistory'))
 const MultiToolChat = React.lazy(() => import('@/pages/tools/MultiToolChat'))
-const IdeaAnalyzer = React.lazy(() => import('@/pages/tools/IdeaAnalyzer'))
+const AIIdeaAnalyzer = React.lazy(() => import('@/pages/tools/AIIdeaAnalyzer'))
 const TextCaseConverter = React.lazy(() => import('@/pages/tools/TextCaseConverter'))
 const RemoveLineBreaks = React.lazy(() => import('@/pages/tools/RemoveLineBreaks'))
 const WordFrequencyAnalyzer = React.lazy(() => import('@/pages/tools/WordFrequencyAnalyzer'))
@@ -275,11 +275,11 @@ function App() {
             }
           />
           <Route
-            path="tools/idea-analyzer"
+            path="tools/ai-idea-analyzer"
             element={
               <ProtectedRoute>
                 <Suspense fallback={<div className="p-4 text-center">Loading Idea Analyzer...</div>}>
-                  <IdeaAnalyzer />
+                  <AIIdeaAnalyzer />
                 </Suspense>
               </ProtectedRoute>
             }

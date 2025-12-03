@@ -150,7 +150,7 @@ export const allTools: Tool[] = [
     description: 'Get instant feedback on your next big idea from an AI expert.',
     descriptionAr: 'احصل على ملاحظات فورية حول فكرتك الكبيرة التالية من خبير ذكاء اصطناعي.',
     icon: Lightbulb,
-    path: '/tools/idea-analyzer',
+    path: '/tools/ai-idea-analyzer',
     color: 'from-purple-500 to-pink-500',
     category: 'ai',
     isAI: true

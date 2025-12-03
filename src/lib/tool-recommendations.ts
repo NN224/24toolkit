@@ -340,7 +340,7 @@ export const TOOL_METADATA: Record<string, {
     titleAr: 'محلل الأفكار',
     description: 'Analyze your business ideas',
     descriptionAr: 'تحليل أفكارك التجارية',
-    path: '/tools/idea-analyzer',
+    path: '/tools/ai-idea-analyzer',
     icon: '💡'
   },
   'password-generator': {
