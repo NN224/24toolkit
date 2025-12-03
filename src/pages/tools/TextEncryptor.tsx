@@ -10,6 +10,7 @@ import { toast } from 'sonner'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function TextEncryptor() {
   const { t } = useTranslation()
@@ -231,6 +232,9 @@ export default function TextEncryptor() {
           </CardContent>
         </Card>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="text-encryptor" category="security" />
     </div>
   )
 }

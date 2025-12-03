@@ -7,6 +7,7 @@ import { Trash, ListNumbers } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function SentenceCounter() {
   const { t } = useTranslation()
@@ -153,6 +154,9 @@ export default function SentenceCounter() {
           )}
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="sentence-counter" category="text" />
     </div>
   )
 }

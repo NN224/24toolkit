@@ -11,6 +11,7 @@ import imageCompression from 'browser-image-compression'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 import { ToolRecommendations, useToolRecommendations } from '@/components/ToolRecommendations'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function ImageCompressor() {
   const { t } = useTranslation()
@@ -320,6 +321,9 @@ export default function ImageCompressor() {
         {/* Recommendations Popup */}
         <PopupComponent />
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="image-compressor" category="image" />
     </div>
   )
 }

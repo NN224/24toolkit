@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Play, Pause, ArrowClockwise } from '@phosphor-icons/react'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function Stopwatch() {
   const { t } = useTranslation()
@@ -95,6 +96,9 @@ export default function Stopwatch() {
           </CardContent>
         </Card>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="stopwatch" category="fun" />
     </div>
   )
 }

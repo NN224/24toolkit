@@ -7,6 +7,7 @@ import { Copy, Trash, Key } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 interface DecodedJWT {
   header: any
@@ -232,6 +233,9 @@ export default function JWTDecoder() {
           </CardContent>
         </Card>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="jwt-decoder" category="dev" />
     </div>
   )
 }

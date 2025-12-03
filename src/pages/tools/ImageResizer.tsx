@@ -8,6 +8,7 @@ import { Upload, Download, Trash, Image as ImageIcon } from '@phosphor-icons/rea
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function ImageResizer() {
   const { t } = useTranslation()
@@ -245,6 +246,9 @@ export default function ImageResizer() {
           </Card>
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="image-resizer" category="image" />
     </div>
   )
 }

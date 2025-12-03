@@ -10,6 +10,7 @@ import { Copy, Trash, MagnifyingGlass } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function FindReplace() {
   const { t } = useTranslation()
@@ -212,6 +213,9 @@ export default function FindReplace() {
           </Card>
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="find-replace" category="text" />
     </div>
   )
 }

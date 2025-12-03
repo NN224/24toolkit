@@ -15,6 +15,7 @@ import { callAI } from '@/lib/ai'
 import { AI_PROMPTS, validatePromptInput } from '@/lib/ai-prompts'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 type Tone = 'formal' | 'neutral' | 'casual'
 
@@ -255,6 +256,9 @@ export default function ParagraphRewriter() {
           </div>
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="paragraph-rewriter" category="ai" />
     </div>
   )
 }

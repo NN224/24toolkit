@@ -9,6 +9,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { ShieldCheck, ShieldWarning, ShieldSlash, CheckCircle, XCircle } from '@phosphor-icons/react'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function PasswordStrengthChecker() {
   const { t } = useTranslation()
@@ -266,6 +267,9 @@ export default function PasswordStrengthChecker() {
           )}
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="password-strength-checker" category="security" />
     </div>
   )
 }

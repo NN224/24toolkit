@@ -11,6 +11,7 @@ import { callAI } from '@/lib/ai'
 import { AI_PROMPTS, validatePromptInput } from '@/lib/ai-prompts'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function GrammarCorrector() {
   const { t } = useTranslation()
@@ -194,6 +195,9 @@ export default function GrammarCorrector() {
           )}
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="grammar-corrector" category="ai" />
     </div>
   )
 }

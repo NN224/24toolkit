@@ -10,6 +10,7 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function JSONBeautifier() {
   const { t } = useTranslation()
@@ -173,6 +174,9 @@ export default function JSONBeautifier() {
           </Card>
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="json-beautifier" category="dev" />
     </div>
   )
 }

@@ -8,6 +8,7 @@ import { NetworkSlash, Copy } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function IPAddressFinder() {
   const { t } = useTranslation()
@@ -193,6 +194,9 @@ export default function IPAddressFinder() {
           </CardContent>
         </Card>
       )}
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="ip-address-finder" category="dev" />
     </div>
   )
 }

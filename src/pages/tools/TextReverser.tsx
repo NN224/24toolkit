@@ -7,6 +7,7 @@ import { Copy, Trash, ArrowsLeftRight } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function TextReverser() {
   const { t } = useTranslation()
@@ -163,6 +164,9 @@ export default function TextReverser() {
           )}
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="text-reverser" category="text" />
     </div>
   )
 }

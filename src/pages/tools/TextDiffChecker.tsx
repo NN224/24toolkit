@@ -7,6 +7,7 @@ import { Trash, GitDiff } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function TextDiffChecker() {
   const { t } = useTranslation()
@@ -195,6 +196,9 @@ export default function TextDiffChecker() {
           )}
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="text-diff-checker" category="text" />
     </div>
   )
 }

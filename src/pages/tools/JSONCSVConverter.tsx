@@ -9,6 +9,7 @@ import { toast } from 'sonner'
 import Papa from 'papaparse'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function JSONCSVConverter() {
   const { t } = useTranslation()
@@ -195,6 +196,9 @@ export default function JSONCSVConverter() {
           </CardContent>
         </Card>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="json-csv-converter" category="dev" />
     </div>
   )
 }

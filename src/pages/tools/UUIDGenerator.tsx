@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function UUIDGenerator() {
   const { t } = useTranslation()
@@ -124,6 +125,9 @@ export default function UUIDGenerator() {
           </CardContent>
         </Card>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="uuid-generator" category="dev" />
     </div>
   )
 }

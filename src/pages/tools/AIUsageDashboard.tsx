@@ -20,6 +20,7 @@ import { toast } from 'sonner'
 import { AIBadge } from '@/components/ai/AIBadge'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 import { 
   getUserInsights, 
   getDailySummary,
@@ -360,6 +361,9 @@ export default function AIUsageDashboard() {
           </div>
         )}
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="ai-usage-dashboard" category="ai" />
     </div>
   )
 }

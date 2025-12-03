@@ -8,6 +8,7 @@ import { toast } from 'sonner'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function URLEncoderDecoder() {
   const { t } = useTranslation()
@@ -185,6 +186,9 @@ export default function URLEncoderDecoder() {
           </CardContent>
         </Card>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="url-encoder-decoder" category="dev" />
     </div>
   )
 }

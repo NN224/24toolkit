@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Tag } from '@phosphor-icons/react'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function DiscountCalculator() {
   const { t } = useTranslation()
@@ -142,6 +143,9 @@ export default function DiscountCalculator() {
           )}
         </CardContent>
       </Card>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="discount-calculator" category="calc" />
     </div>
   )
 }

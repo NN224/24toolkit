@@ -15,6 +15,7 @@ import { AI_PROMPTS, validatePromptInput } from '@/lib/ai-prompts'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 import { ToolRecommendations, useToolRecommendations } from '@/components/ToolRecommendations'
+import { RelatedTools } from '@/components/RelatedTools'
 
 type SummaryLength = 'short' | 'medium' | 'detailed'
 
@@ -190,6 +191,9 @@ export default function TextSummarizer() {
         {/* Recommendations Popup */}
         <PopupComponent />
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="text-summarizer" category="ai" />
     </div>
   )
 }

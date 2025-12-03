@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Percent } from '@phosphor-icons/react'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function PercentageCalculator() {
   const { t } = useTranslation()
@@ -218,6 +219,9 @@ export default function PercentageCalculator() {
           </Card>
         </TabsContent>
       </Tabs>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="percentage-calculator" category="calc" />
     </div>
   )
 }

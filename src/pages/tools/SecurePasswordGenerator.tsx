@@ -11,6 +11,7 @@ import { Copy, Sparkle } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function SecurePasswordGenerator() {
   // Set SEO metadata
@@ -294,6 +295,9 @@ export default function SecurePasswordGenerator() {
           </Card>
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="secure-password-generator" category="security" />
     </div>
   )
 }

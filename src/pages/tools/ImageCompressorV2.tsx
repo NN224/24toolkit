@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label'
 import { Upload, Download, Trash, Gauge } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import imageCompression from 'browser-image-compression'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function ImageCompressorV2() {
   const { t } = useTranslation()
@@ -278,6 +279,9 @@ export default function ImageCompressorV2() {
           </Card>
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="image-compressor" category="image" />
     </div>
   )
 }

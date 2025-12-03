@@ -8,6 +8,7 @@ import { CheckCircle, XCircle, Trash } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function PalindromeChecker() {
   const { t } = useTranslation()
@@ -185,6 +186,9 @@ export default function PalindromeChecker() {
           </Card>
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="palindrome-checker" category="text" />
     </div>
   )
 }

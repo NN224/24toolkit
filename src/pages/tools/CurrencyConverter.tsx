@@ -9,6 +9,7 @@ import { CurrencyDollar } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function CurrencyConverter() {
   const { t } = useTranslation()
@@ -161,6 +162,9 @@ export default function CurrencyConverter() {
           )}
         </CardContent>
       </Card>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="currency-converter" category="calc" />
     </div>
   )
 }

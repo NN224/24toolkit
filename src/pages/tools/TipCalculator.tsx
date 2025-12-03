@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Receipt } from '@phosphor-icons/react'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function TipCalculator() {
   const { t } = useTranslation()
@@ -160,6 +161,9 @@ export default function TipCalculator() {
           )}
         </CardContent>
       </Card>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="tip-calculator" category="calc" />
     </div>
   )
 }

@@ -8,6 +8,7 @@ import { toast } from 'sonner'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function TextCaseConverter() {
   const { t } = useTranslation()
@@ -185,6 +186,9 @@ export default function TextCaseConverter() {
           )}
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="text-case-converter" category="text" />
     </div>
   )
 }

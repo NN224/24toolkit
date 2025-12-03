@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChatCircleDots, ArrowRight } from '@phosphor-icons/react';
 import { AIBadge } from '@/components/ai/AIBadge';
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function ChatAssistantPage() {
   const { t } = useTranslation();
@@ -59,6 +60,9 @@ export default function ChatAssistantPage() {
           </CardContent>
         </Card>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="multi-tool-chat" category="ai" />
     </div>
   );
 }

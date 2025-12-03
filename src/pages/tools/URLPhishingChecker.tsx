@@ -9,6 +9,7 @@ import { ShieldCheck, ShieldWarning, MagnifyingGlass } from '@phosphor-icons/rea
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function URLPhishingChecker() {
   const { t } = useTranslation()
@@ -189,6 +190,9 @@ export default function URLPhishingChecker() {
           )}
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="url-phishing-checker" category="security" />
     </div>
   )
 }

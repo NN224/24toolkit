@@ -9,6 +9,7 @@ import { toast } from 'sonner'
 import { motion } from 'framer-motion'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function RandomNumberPicker() {
   const { t } = useTranslation()
@@ -159,6 +160,9 @@ export default function RandomNumberPicker() {
           )}
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="random-number-picker" category="fun" />
     </div>
   )
 }

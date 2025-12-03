@@ -10,6 +10,7 @@ import { Lock, LockOpen, Copy } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function AESEncryptor() {
   const { t } = useTranslation()
@@ -265,6 +266,9 @@ export default function AESEncryptor() {
           </TabsContent>
         </Tabs>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="aes-encryptor" category="security" />
     </div>
   )
 }

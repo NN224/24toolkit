@@ -7,6 +7,7 @@ import { toast } from 'sonner'
 import { motion } from 'framer-motion'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function DiceRollerCoinFlipper() {
   const { t } = useTranslation()
@@ -116,6 +117,9 @@ export default function DiceRollerCoinFlipper() {
           </Card>
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="dice-roller-coin-flipper" category="fun" />
     </div>
   )
 }

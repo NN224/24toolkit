@@ -7,6 +7,7 @@ import { toast } from 'sonner'
 import { motion } from 'framer-motion'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function PomodoroTimer() {
   const { t } = useTranslation()
@@ -202,6 +203,9 @@ export default function PomodoroTimer() {
           </Card>
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="pomodoro-timer" category="fun" />
     </div>
   )
 }

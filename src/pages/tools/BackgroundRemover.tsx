@@ -8,6 +8,7 @@ import { AILoadingSpinner } from '@/components/ai/AILoadingSpinner'
 import { AIBadge } from '@/components/ai/AIBadge'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function BackgroundRemover() {
   const { t } = useTranslation()
@@ -212,6 +213,9 @@ export default function BackgroundRemover() {
           </Card>
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="background-remover" category="image" />
     </div>
   )
 }

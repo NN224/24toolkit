@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ArrowsDownUp } from '@phosphor-icons/react'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 type UnitCategory = 'length' | 'weight' | 'temperature' | 'volume' | 'area' | 'speed'
 
@@ -401,6 +402,9 @@ export default function UnitConverter() {
           </div>
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="unit-converter" category="calc" />
     </div>
   )
 }

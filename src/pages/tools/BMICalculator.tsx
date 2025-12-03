@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Activity } from '@phosphor-icons/react'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function BMICalculator() {
   const { t } = useTranslation()
@@ -165,6 +166,9 @@ export default function BMICalculator() {
           )}
         </CardContent>
       </Card>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="bmi-calculator" category="calc" />
     </div>
   )
 }

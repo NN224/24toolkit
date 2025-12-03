@@ -12,6 +12,7 @@ import { AI_PROMPTS, validatePromptInput } from '@/lib/ai-prompts';
 import { toast } from 'sonner';
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function IdeaAnalyzer() {
   const { t } = useTranslation();
@@ -184,6 +185,9 @@ export default function IdeaAnalyzer() {
           </Card>
         )}
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="ai-idea-analyzer" category="ai" />
     </div>
   );
 }

@@ -7,6 +7,7 @@ import { FileText, Copy } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function DailyPlannerTemplate() {
   // Set SEO metadata
@@ -130,6 +131,9 @@ _____________________________________`
           </Card>
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="daily-planner" category="fun" />
     </div>
   )
 }
