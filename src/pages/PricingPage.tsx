@@ -137,7 +137,7 @@ export default function PricingPage() {
             return (
               <div
                 key={plan.id}
-                className={`relative flex flex-col p-6 lg:p-8 rounded-2xl border-2 transition-all ${
+                className={`relative flex flex-col p-6 lg:p-8 rounded-2xl border-2 transition-all shine-effect card-hover-lift ${
                   plan.popular
                     ? 'border-purple-500 bg-purple-500/5 scale-105 shadow-xl shadow-purple-500/20'
                     : 'border-white/10 bg-card hover:border-white/20'
@@ -189,14 +189,14 @@ export default function PricingPage() {
                 <button
                   onClick={() => plan.id !== 'free' && handleSubscribe(plan.id as 'pro' | 'unlimited')}
                   disabled={isPlanDisabled || loadingPlan === plan.id}
-                  className={`w-full py-4 rounded-xl font-semibold text-lg transition-all flex items-center justify-center gap-2 ${
+                  className={`w-full py-4 rounded-xl font-semibold text-lg transition-all flex items-center justify-center gap-2 ripple-effect ${
                     isCurrentPlan
                       ? 'bg-green-500/20 text-green-400 cursor-default'
                       : plan.id === 'free'
                         ? 'bg-white/10 text-muted-foreground cursor-not-allowed'
                         : plan.popular
-                          ? 'bg-gradient-to-r from-purple-600 to-purple-500 text-white hover:opacity-90 shadow-lg shadow-purple-500/25'
-                          : 'bg-gradient-to-r from-purple-600 to-sky-500 text-white hover:opacity-90'
+                          ? 'bg-gradient-to-r from-purple-600 to-purple-500 text-white hover:scale-105 active:scale-95 shadow-lg shadow-purple-500/25'
+                          : 'bg-gradient-to-r from-purple-600 to-sky-500 text-white hover:scale-105 active:scale-95'
                   }`}
                 >
                   {loadingPlan === plan.id ? (

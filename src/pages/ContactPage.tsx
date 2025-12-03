@@ -144,7 +144,7 @@ export default function ContactPage() {
                   type="submit"
                   size="lg"
                   disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-purple-600 to-sky-500 hover:from-purple-700 hover:to-sky-600 text-white shadow-lg hover:shadow-xl transition-all relative overflow-hidden group"
+                  className="w-full bg-gradient-to-r from-purple-600 to-sky-500 hover:from-purple-700 hover:to-sky-600 text-white shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all relative overflow-hidden group ripple-effect"
                 >
                   <AnimatePresence mode="wait">
                     {isSubmitting ? (
@@ -211,7 +211,7 @@ export default function ContactPage() {
                       rel="noopener noreferrer"
                       whileHover={{ scale: 1.02, x: 4 }}
                       whileTap={{ scale: 0.98 }}
-                      className="flex items-center gap-4 p-4 rounded-xl bg-muted/20 hover:bg-muted/30 border border-border/30 hover:border-accent/50 transition-all group"
+                      className="flex items-center gap-4 p-4 rounded-xl bg-muted/20 hover:bg-muted/30 border border-border/30 hover:border-accent/50 transition-all group shine-effect"
                     >
                       <div className="p-2 rounded-lg bg-gradient-to-br from-purple-600/20 to-sky-500/20 group-hover:from-purple-600/30 group-hover:to-sky-500/30 transition-colors">
                         <GithubLogo size={24} weight="fill" className="text-foreground" />
@@ -228,7 +228,7 @@ export default function ContactPage() {
                       rel="noopener noreferrer"
                       whileHover={{ scale: 1.02, x: 4 }}
                       whileTap={{ scale: 0.98 }}
-                      className="flex items-center gap-4 p-4 rounded-xl bg-muted/20 hover:bg-muted/30 border border-border/30 hover:border-accent/50 transition-all group"
+                      className="flex items-center gap-4 p-4 rounded-xl bg-muted/20 hover:bg-muted/30 border border-border/30 hover:border-accent/50 transition-all group shine-effect"
                     >
                       <div className="p-2 rounded-lg bg-gradient-to-br from-purple-600/20 to-sky-500/20 group-hover:from-purple-600/30 group-hover:to-sky-500/30 transition-colors">
                         <TwitterLogo size={24} weight="fill" className="text-foreground" />
@@ -245,7 +245,7 @@ export default function ContactPage() {
                       rel="noopener noreferrer"
                       whileHover={{ scale: 1.02, x: 4 }}
                       whileTap={{ scale: 0.98 }}
-                      className="flex items-center gap-4 p-4 rounded-xl bg-muted/20 hover:bg-muted/30 border border-border/30 hover:border-accent/50 transition-all group"
+                      className="flex items-center gap-4 p-4 rounded-xl bg-muted/20 hover:bg-muted/30 border border-border/30 hover:border-accent/50 transition-all group shine-effect"
                     >
                       <div className="p-2 rounded-lg bg-gradient-to-br from-purple-600/20 to-sky-500/20 group-hover:from-purple-600/30 group-hover:to-sky-500/30 transition-colors">
                         <YoutubeLogo size={24} weight="fill" className="text-foreground" />

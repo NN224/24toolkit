@@ -42,7 +42,7 @@ export default function AboutPage() {
           </Card>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card>
+            <Card className="shine-effect card-hover-lift">
               <CardHeader>
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mb-3">
                   <Lightning size={20} weight="fill" className="text-white" />
@@ -56,7 +56,7 @@ export default function AboutPage() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="shine-effect card-hover-lift">
               <CardHeader>
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mb-3">
                   <Globe size={20} weight="fill" className="text-white" />
@@ -70,7 +70,7 @@ export default function AboutPage() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="shine-effect card-hover-lift">
               <CardHeader>
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-3">
                   <Code size={20} weight="fill" className="text-white" />

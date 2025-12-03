@@ -7,7 +7,6 @@ import { useTheme } from '@/components/ThemeProvider'
 import { toast } from 'sonner'
 import { UserMenu } from '@/components/UserMenu'
 import { useAuth } from '@/contexts/AuthContext'
-import { LoginModal } from '@/components/auth/LoginModal'
 import { CreditsBadge } from '@/components/ai/CreditsBadge'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 
@@ -44,7 +43,6 @@ export default function FuturisticHeader() {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<Tool[]>([])
   const [isListening, setIsListening] = useState(false)
-  const [showLoginModal, setShowLoginModal] = useState(false)
   const { theme, setTheme } = useTheme()
   const { user } = useAuth()
   const { t } = useTranslation()
@@ -74,14 +72,16 @@ export default function FuturisticHeader() {
   }, [])
 
   // Listen for login modal open events (from AI tools when credits exhausted)
+  // Now redirects to sign-in page instead of showing modal
   useEffect(() => {
     const handleOpenLoginModal = () => {
-      setShowLoginModal(true)
+      const currentPath = window.location.pathname
+      navigate(`/sign-in?redirect=${encodeURIComponent(currentPath)}&mode=signin`)
     }
 
     window.addEventListener('open-login-modal', handleOpenLoginModal)
     return () => window.removeEventListener('open-login-modal', handleOpenLoginModal)
-  }, [])
+  }, [navigate])
 
   useEffect(() => {
     if (searchQuery.trim()) {
@@ -215,7 +215,7 @@ export default function FuturisticHeader() {
                   onClick={() => setTheme('minimal')}
                   className={`px-3 py-1.5 rounded text-xs font-medium transition-all ${
                     theme === 'minimal' 
-                      ? 'bg-gradient-to-r from-gray-400 to-gray-600 text-white' 
+                      ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white' 
                       : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
@@ -232,24 +232,21 @@ export default function FuturisticHeader() {
                 <UserMenu />
               ) : (
                 <button 
-                  onClick={() => setShowLoginModal(true)}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-sky-500 text-white font-medium transition-all hover:opacity-90 border border-white/10"
-                  style={{ boxShadow: '0 0 8px rgba(109,40,217,0.3)' }}
+                  onClick={() => navigate('/sign-in')}
+                  className="group relative flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 via-purple-500 to-sky-500 text-white font-semibold transition-all hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50 active:scale-95 border border-white/20 min-w-[44px]"
+                  style={{ boxShadow: '0 4px 15px rgba(109,40,217,0.4)' }}
+                  aria-label={t('header.signIn')}
                 >
-                  <SignIn size={18} weight="bold" />
-                  <span className="hidden sm:inline">{t('header.signIn')}</span>
+                  <SignIn size={20} weight="bold" className="group-hover:scale-110 transition-transform" />
+                  <span className="hidden sm:inline text-sm whitespace-nowrap">{t('header.signIn')}</span>
+                  {/* Glow effect */}
+                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-400 to-sky-400 opacity-0 group-hover:opacity-20 blur-xl transition-opacity pointer-events-none" />
                 </button>
               )}
             </div>
           </div>
         </div>
       </header>
-      
-      {/* Login Modal */}
-      <LoginModal 
-        isOpen={showLoginModal}
-        onClose={() => setShowLoginModal(false)}
-      />
 
       {searchOpen && (
         <>
