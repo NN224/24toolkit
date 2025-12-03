@@ -27,8 +27,9 @@ export default function PalindromeChecker() {
       return
     }
 
-    const cleanText = text.toLowerCase().replace(/[^a-z0-9]/g, '')
-    const reversed = cleanText.split('').reverse().join('')
+    const normalizedText = text.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+    const cleanText = normalizedText.toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
+    const reversed = Array.from(cleanText).reverse().join('');
     const result = cleanText === reversed
 
     setIsPalindrome(result)
