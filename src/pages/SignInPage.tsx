@@ -21,12 +21,28 @@ import {
 type TabType = 'signin' | 'signup'
 
 export default function SignInPage() {
-  const { user, signInWithGoogle, signInWithGithub, signInWithFacebook } = useAuth()
+  const { 
+    user, 
+    signInWithGoogle, 
+    signInWithGithub, 
+    signInWithFacebook,
+    signInWithEmail,
+    signUpWithEmail,
+    resetPassword
+  } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState<TabType>('signin')
   const [isLoading, setIsLoading] = useState(false)
+  const [showResetPassword, setShowResetPassword] = useState(false)
+  
+  // Form states
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [displayName, setDisplayName] = useState('')
+  const [formError, setFormError] = useState('')
 
   // Get redirect path from URL
   const searchParams = new URLSearchParams(location.search)
@@ -59,11 +75,85 @@ export default function SignInPage() {
 
   const handleProviderSignIn = async (providerFn: () => Promise<any>) => {
     setIsLoading(true)
+    setFormError('')
     try {
       await providerFn()
       // Redirect handled by useEffect above
     } catch (error) {
       console.error('Sign in error:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleEmailSignIn = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setFormError('')
+    
+    if (!email) {
+      setFormError(t('auth.emailRequired'))
+      return
+    }
+    if (!password) {
+      setFormError(t('auth.passwordRequired'))
+      return
+    }
+    
+    setIsLoading(true)
+    try {
+      await signInWithEmail(email, password)
+      // Redirect handled by useEffect
+    } catch (error) {
+      // Error already handled by toast in AuthContext
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleEmailSignUp = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setFormError('')
+    
+    if (!email) {
+      setFormError(t('auth.emailRequired'))
+      return
+    }
+    if (!password) {
+      setFormError(t('auth.passwordRequired'))
+      return
+    }
+    if (password !== confirmPassword) {
+      setFormError(t('auth.passwordsDontMatch'))
+      return
+    }
+    
+    setIsLoading(true)
+    try {
+      await signUpWithEmail(email, password, displayName)
+      // Redirect handled by useEffect
+    } catch (error) {
+      // Error already handled by toast in AuthContext
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setFormError('')
+    
+    if (!email) {
+      setFormError(t('auth.emailRequired'))
+      return
+    }
+    
+    setIsLoading(true)
+    try {
+      await resetPassword(email)
+      setShowResetPassword(false)
+      setEmail('')
+    } catch (error) {
+      // Error already handled by toast in AuthContext
     } finally {
       setIsLoading(false)
     }
@@ -293,6 +383,174 @@ export default function SignInPage() {
                       )
                     })}
                   </div>
+
+                  {/* Divider */}
+                  <div className="relative my-6">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="w-full border-t border-white/10" />
+                    </div>
+                    <div className="relative flex justify-center text-sm">
+                      <span className="px-4 bg-card text-muted-foreground">or</span>
+                    </div>
+                  </div>
+
+                  {/* Email/Password Form */}
+                  {!showResetPassword ? (
+                    <form onSubmit={activeTab === 'signin' ? handleEmailSignIn : handleEmailSignUp} className="space-y-4">
+                      {/* Error Message */}
+                      {formError && (
+                        <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 text-sm">
+                          {formError}
+                        </div>
+                      )}
+
+                      {/* Name Field (Sign Up only) */}
+                      {activeTab === 'signup' && (
+                        <div>
+                          <label htmlFor="displayName" className="block text-sm font-medium text-foreground mb-2">
+                            {t('auth.fullName')}
+                          </label>
+                          <input
+                            id="displayName"
+                            type="text"
+                            value={displayName}
+                            onChange={(e) => setDisplayName(e.target.value)}
+                            placeholder="John Doe"
+                            className="w-full px-4 py-3 rounded-xl bg-background border border-white/10 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none transition-all text-foreground placeholder:text-muted-foreground"
+                          />
+                        </div>
+                      )}
+
+                      {/* Email Field */}
+                      <div>
+                        <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
+                          {t('auth.email')}
+                        </label>
+                        <input
+                          id="email"
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="you@example.com"
+                          required
+                          className="w-full px-4 py-3 rounded-xl bg-background border border-white/10 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none transition-all text-foreground placeholder:text-muted-foreground"
+                        />
+                      </div>
+
+                      {/* Password Field */}
+                      <div>
+                        <label htmlFor="password" className="block text-sm font-medium text-foreground mb-2">
+                          {t('auth.password')}
+                        </label>
+                        <input
+                          id="password"
+                          type="password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          placeholder="••••••••"
+                          required
+                          className="w-full px-4 py-3 rounded-xl bg-background border border-white/10 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none transition-all text-foreground placeholder:text-muted-foreground"
+                        />
+                      </div>
+
+                      {/* Confirm Password (Sign Up only) */}
+                      {activeTab === 'signup' && (
+                        <div>
+                          <label htmlFor="confirmPassword" className="block text-sm font-medium text-foreground mb-2">
+                            {t('auth.confirmPassword')}
+                          </label>
+                          <input
+                            id="confirmPassword"
+                            type="password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            placeholder="••••••••"
+                            required
+                            className="w-full px-4 py-3 rounded-xl bg-background border border-white/10 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none transition-all text-foreground placeholder:text-muted-foreground"
+                          />
+                        </div>
+                      )}
+
+                      {/* Forgot Password (Sign In only) */}
+                      {activeTab === 'signin' && (
+                        <div className="text-right">
+                          <button
+                            type="button"
+                            onClick={() => setShowResetPassword(true)}
+                            className="text-sm text-purple-400 hover:text-purple-300 transition-colors"
+                          >
+                            {t('auth.forgotPassword')}
+                          </button>
+                        </div>
+                      )}
+
+                      {/* Submit Button */}
+                      <motion.button
+                        type="submit"
+                        disabled={isLoading}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-semibold transition-all bg-gradient-to-r from-purple-600 to-sky-500 text-white shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {isLoading ? (
+                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        ) : (
+                          <span>
+                            {activeTab === 'signin' ? t('auth.signInWithEmail') : t('auth.signUpWithEmail')}
+                          </span>
+                        )}
+                      </motion.button>
+                    </form>
+                  ) : (
+                    /* Reset Password Form */
+                    <form onSubmit={handleResetPassword} className="space-y-4">
+                      {formError && (
+                        <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 text-sm">
+                          {formError}
+                        </div>
+                      )}
+
+                      <div>
+                        <label htmlFor="resetEmail" className="block text-sm font-medium text-foreground mb-2">
+                          {t('auth.email')}
+                        </label>
+                        <input
+                          id="resetEmail"
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="you@example.com"
+                          required
+                          className="w-full px-4 py-3 rounded-xl bg-background border border-white/10 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none transition-all text-foreground placeholder:text-muted-foreground"
+                        />
+                      </div>
+
+                      <motion.button
+                        type="submit"
+                        disabled={isLoading}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-semibold transition-all bg-gradient-to-r from-purple-600 to-sky-500 text-white shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {isLoading ? (
+                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        ) : (
+                          <span>{t('auth.resetPassword')}</span>
+                        )}
+                      </motion.button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowResetPassword(false)
+                          setFormError('')
+                        }}
+                        className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        {t('auth.backToSignIn')}
+                      </button>
+                    </form>
+                  )}
 
                   {/* Divider */}
                   <div className="relative my-6">
