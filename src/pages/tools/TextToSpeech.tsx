@@ -9,6 +9,7 @@ import { SpeakerHigh, Stop, Download } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function TextToSpeech() {
   const { t } = useTranslation()
@@ -163,6 +164,9 @@ export default function TextToSpeech() {
           </Card>
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="text-to-speech" category="fun" />
     </div>
   )
 }

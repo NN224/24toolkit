@@ -7,6 +7,7 @@ import { Copy, Trash, Smiley } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 const popularEmojis = ['😀', '😊', '😍', '🎉', '✨', '❤️', '👍', '🔥', '💯', '🌟', '🚀', '💪', '🎯', '⭐', '✅']
 
@@ -148,6 +149,9 @@ export default function EmojiTool() {
           </Card>
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="emoji-tool" category="text" />
     </div>
   )
 }

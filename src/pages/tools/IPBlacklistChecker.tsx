@@ -9,6 +9,7 @@ import { ShieldCheck, ShieldWarning, MagnifyingGlass, CheckCircle, XCircle, Warn
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 interface BlacklistResult {
   name: string
@@ -335,6 +336,9 @@ export default function IPBlacklistChecker() {
           )}
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="ip-blacklist-checker" category="security" />
     </div>
   )
 }

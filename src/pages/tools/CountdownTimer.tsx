@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label'
 import { Play, Pause, ArrowClockwise } from '@phosphor-icons/react'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function CountdownTimer() {
   const { t } = useTranslation()
@@ -156,6 +157,9 @@ export default function CountdownTimer() {
           )}
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="countdown-timer" category="fun" />
     </div>
   )
 }

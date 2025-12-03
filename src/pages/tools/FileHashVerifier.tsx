@@ -9,6 +9,7 @@ import { Upload, CheckCircle, XCircle } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function FileHashVerifier() {
   const { t } = useTranslation()
@@ -181,6 +182,9 @@ export default function FileHashVerifier() {
           )}
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="file-hash-verifier" category="security" />
     </div>
   )
 }

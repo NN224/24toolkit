@@ -9,6 +9,7 @@ import { toast } from 'sonner'
 import { createWorker } from 'tesseract.js'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function ImageToText() {
   const { t } = useTranslation()
@@ -246,6 +247,9 @@ export default function ImageToText() {
           </div>
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="image-to-text" category="image" />
     </div>
   )
 }

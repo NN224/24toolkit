@@ -9,6 +9,7 @@ import { toast } from 'sonner'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function TimestampConverter() {
   const { t } = useTranslation()
@@ -220,6 +221,9 @@ export default function TimestampConverter() {
           </Card>
         )}
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="timestamp-converter" category="dev" />
     </div>
   )
 }

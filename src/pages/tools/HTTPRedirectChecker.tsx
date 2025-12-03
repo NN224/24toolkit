@@ -9,6 +9,7 @@ import { ArrowRight, MagnifyingGlass, CheckCircle, Warning } from '@phosphor-ico
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function HTTPRedirectChecker() {
   const { t } = useTranslation()
@@ -224,6 +225,9 @@ export default function HTTPRedirectChecker() {
           )}
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="http-redirect-checker" category="security" />
     </div>
   )
 }

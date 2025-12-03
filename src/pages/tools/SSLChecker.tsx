@@ -9,6 +9,7 @@ import { Certificate, MagnifyingGlass, CheckCircle, XCircle, Warning, Clock, Shi
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 interface SSLResult {
   success: boolean
@@ -336,6 +337,9 @@ export default function SSLChecker() {
           )}
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="ssl-checker" category="security" />
     </div>
   )
 }

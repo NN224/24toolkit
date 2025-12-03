@@ -19,6 +19,7 @@ import { toast } from 'sonner'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 import { 
   getHistory,
   searchHistory,
@@ -347,6 +348,9 @@ export default function SmartHistory() {
           </div>
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="smart-history" category="ai" />
     </div>
   )
 }

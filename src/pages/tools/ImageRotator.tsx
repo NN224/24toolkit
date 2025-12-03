@@ -6,6 +6,7 @@ import { Upload, Trash, ArrowsClockwise, ArrowsCounterClockwise, ArrowsHorizonta
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function ImageRotator() {
   const { t } = useTranslation()
@@ -266,6 +267,9 @@ export default function ImageRotator() {
           </Card>
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="image-rotator" category="image" />
     </div>
   )
 }

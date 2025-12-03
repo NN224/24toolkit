@@ -7,6 +7,7 @@ import { Trash } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function WordFrequencyAnalyzer() {
   const { t } = useTranslation()
@@ -120,6 +121,9 @@ export default function WordFrequencyAnalyzer() {
           )}
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="word-frequency-analyzer" category="text" />
     </div>
   )
 }

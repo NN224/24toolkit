@@ -9,6 +9,7 @@ import { Copy, Tag } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function MetaTagGenerator() {
   const { t } = useTranslation()
@@ -164,6 +165,9 @@ ${description ? `<meta property="twitter:description" content="${description}">`
           )}
         </CardContent>
       </Card>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="meta-tag-generator" category="dev" />
     </div>
   )
 }

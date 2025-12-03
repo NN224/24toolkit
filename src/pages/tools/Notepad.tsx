@@ -7,6 +7,7 @@ import { FloppyDisk, Trash, NotePencil } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function Notepad() {
   const { t } = useTranslation()
@@ -97,6 +98,9 @@ export default function Notepad() {
           </CardContent>
         </Card>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="notepad" category="fun" />
     </div>
   )
 }

@@ -7,6 +7,7 @@ import { toast } from 'sonner'
 import Cropper, { Area } from 'react-easy-crop'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function ImageCropper() {
   const { t } = useTranslation()
@@ -214,6 +215,9 @@ export default function ImageCropper() {
           </Card>
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="image-cropper" category="image" />
     </div>
   )
 }

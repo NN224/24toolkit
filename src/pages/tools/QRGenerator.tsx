@@ -10,6 +10,7 @@ import { toast } from 'sonner'
 import { QRCodeCanvas } from 'qrcode.react'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function QRGenerator() {
   const { t } = useTranslation()
@@ -140,6 +141,9 @@ export default function QRGenerator() {
             </CardContent>
           </Card>
         </div>
+
+        {/* Related Tools for internal linking */}
+        <RelatedTools currentToolId="qr-generator" category="fun" />
       </div>
     </div>
   )

@@ -8,6 +8,7 @@ import { Upload, Download, Trash, FilePdf, FileDoc, Info } from '@phosphor-icons
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function PDFToWord() {
   // Set SEO metadata
@@ -260,6 +261,9 @@ export default function PDFToWord() {
           </div>
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="pdf-to-word" category="fun" />
     </div>
   )
 }

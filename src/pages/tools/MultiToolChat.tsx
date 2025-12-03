@@ -26,6 +26,7 @@ import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 import { callAI } from '@/lib/ai'
 import { allTools } from '@/lib/tools-data'
+import { RelatedTools } from '@/components/RelatedTools'
 
 interface Message {
   id: string
@@ -356,6 +357,9 @@ Respond naturally and helpfully:`
           </div>
         </Card>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="multi-tool-chat" category="ai" />
     </div>
   )
 }

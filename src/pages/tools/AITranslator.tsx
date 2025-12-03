@@ -13,6 +13,7 @@ import { callAI } from '@/lib/ai'
 import { AI_PROMPTS, validatePromptInput } from '@/lib/ai-prompts'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 const languages = [
   { code: 'es', name: 'Spanish' },
@@ -164,6 +165,9 @@ export default function AITranslator() {
           )}
         </CardContent>
       </Card>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="ai-translator" category="ai" />
     </div>
   )
 }

@@ -21,6 +21,7 @@ import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderS
 import { AIBadge } from '@/components/ai/AIBadge'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 import { 
   CHAIN_TEMPLATES, 
   executeChain, 
@@ -369,6 +370,9 @@ export default function AIToolChains() {
           </div>
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="ai-tool-chains" category="ai" />
     </div>
   )
 }

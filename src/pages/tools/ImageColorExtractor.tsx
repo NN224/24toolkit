@@ -6,6 +6,7 @@ import { Upload, Trash, Palette } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 interface ColorInfo {
   hex: string
@@ -256,6 +257,9 @@ export default function ImageColorExtractor() {
           </Card>
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="image-color-extractor" category="image" />
     </div>
   )
 }

@@ -10,6 +10,7 @@ import { Copy, Sparkle } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function RandomStringGenerator() {
   const { t } = useTranslation()
@@ -265,6 +266,9 @@ export default function RandomStringGenerator() {
           </Card>
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="random-string-generator" category="security" />
     </div>
   )
 }

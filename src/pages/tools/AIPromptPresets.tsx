@@ -21,6 +21,7 @@ import { AIBadge } from '@/components/ai/AIBadge'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 import { 
   getAllPresets,
   getPresetCategories,
@@ -368,6 +369,9 @@ export default function AIPromptPresets() {
           </div>
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="ai-prompt-presets" category="ai" />
     </div>
   )
 }

@@ -7,6 +7,7 @@ import { toast } from 'sonner'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 type ImageFormat = 'png' | 'jpeg' | 'webp'
 
@@ -232,6 +233,9 @@ export default function ImageFormatConverter() {
           </CardContent>
         </Card>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="image-format-converter" category="image" />
     </div>
   )
 }

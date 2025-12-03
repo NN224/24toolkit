@@ -11,6 +11,7 @@ import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { callAI } from '@/lib/ai'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function ImageCaptionGenerator() {
   const { t } = useTranslation()
@@ -245,6 +246,9 @@ Make them versatile enough to inspire the user to adapt for their specific image
           )}
         </div>
       </div>
+
+    {/* Related Tools for internal linking */}
+    <RelatedTools currentToolId="image-caption-generator" category="ai" />
     </div>
   )
 }
