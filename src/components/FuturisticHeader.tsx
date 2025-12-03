@@ -233,11 +233,14 @@ export default function FuturisticHeader() {
               ) : (
                 <button 
                   onClick={() => setShowLoginModal(true)}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-sky-500 text-white font-medium transition-all hover:opacity-90 border border-white/10"
-                  style={{ boxShadow: '0 0 8px rgba(109,40,217,0.3)' }}
+                  className="group relative flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 via-purple-500 to-sky-500 text-white font-semibold transition-all hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50 active:scale-95 border border-white/20 min-w-[44px]"
+                  style={{ boxShadow: '0 4px 15px rgba(109,40,217,0.4)' }}
+                  aria-label={t('header.signIn')}
                 >
-                  <SignIn size={18} weight="bold" />
-                  <span className="hidden sm:inline">{t('header.signIn')}</span>
+                  <SignIn size={20} weight="bold" className="group-hover:scale-110 transition-transform" />
+                  <span className="hidden sm:inline text-sm whitespace-nowrap">{t('header.signIn')}</span>
+                  {/* Glow effect */}
+                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-400 to-sky-400 opacity-0 group-hover:opacity-20 blur-xl transition-opacity pointer-events-none" />
                 </button>
               )}
             </div>

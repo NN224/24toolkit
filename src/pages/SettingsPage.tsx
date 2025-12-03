@@ -213,7 +213,7 @@ export default function SettingsPage() {
             animate={{ opacity: 1, x: 0 }}
             className="lg:col-span-3"
           >
-            <div className="bg-card border border-white/10 rounded-xl p-6 space-y-6">
+            <div className="bg-card border border-white/10 rounded-xl p-6 space-y-6 shine-effect">
               {/* Profile Tab */}
               {activeTab === 'profile' && (
                 <>
@@ -276,7 +276,7 @@ export default function SettingsPage() {
                       <button
                         onClick={handleSaveProfile}
                         disabled={isSaving || !displayName.trim()}
-                        className="px-6 py-2 bg-gradient-to-r from-purple-600 to-sky-500 text-white rounded-lg font-medium hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-6 py-2 bg-gradient-to-r from-purple-600 to-sky-500 text-white rounded-lg font-medium hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed ripple-effect"
                       >
                         {isSaving ? t('common.saving') : t('common.saveChanges')}
                       </button>

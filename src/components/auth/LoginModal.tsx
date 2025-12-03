@@ -120,7 +120,7 @@ export function LoginModal({ isOpen, onClose, redirectPath }: LoginModalProps) {
                   <button
                     onClick={() => handleSignIn('google')}
                     disabled={isLoading}
-                    className="w-full flex items-center justify-center gap-3 px-6 py-3.5 bg-white hover:bg-gray-50 text-gray-700 rounded-xl font-medium transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed border border-gray-300"
+                    className="w-full flex items-center justify-center gap-3 px-6 py-3.5 bg-white hover:bg-gray-50 text-gray-700 rounded-xl font-medium transition-all shadow-md hover:shadow-lg hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed border border-gray-300 ripple-effect"
                   >
                     {loadingProvider === 'google' ? (
                       <div className="w-5 h-5 border-2 border-gray-300 border-t-gray-700 rounded-full animate-spin" />
@@ -139,7 +139,7 @@ export function LoginModal({ isOpen, onClose, redirectPath }: LoginModalProps) {
                   <button
                     onClick={() => handleSignIn('github')}
                     disabled={isLoading}
-                    className="w-full flex items-center justify-center gap-3 px-6 py-3.5 bg-[#24292e] hover:bg-[#1b1f23] text-white rounded-xl font-medium transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full flex items-center justify-center gap-3 px-6 py-3.5 bg-[#24292e] hover:bg-[#1b1f23] text-white rounded-xl font-medium transition-all shadow-md hover:shadow-lg hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed ripple-effect"
                   >
                     {loadingProvider === 'github' ? (
                       <div className="w-5 h-5 border-2 border-gray-600 border-t-white rounded-full animate-spin" />
@@ -155,7 +155,7 @@ export function LoginModal({ isOpen, onClose, redirectPath }: LoginModalProps) {
                   <button
                     onClick={() => handleSignIn('facebook')}
                     disabled={isLoading}
-                    className="w-full flex items-center justify-center gap-3 px-6 py-3.5 bg-[#1877F2] hover:bg-[#166FE5] text-white rounded-xl font-medium transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full flex items-center justify-center gap-3 px-6 py-3.5 bg-[#1877F2] hover:bg-[#166FE5] text-white rounded-xl font-medium transition-all shadow-md hover:shadow-lg hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed ripple-effect"
                   >
                     {loadingProvider === 'facebook' ? (
                       <div className="w-5 h-5 border-2 border-blue-300 border-t-white rounded-full animate-spin" />
