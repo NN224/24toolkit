@@ -3,38 +3,171 @@ import { motion } from 'framer-motion'
 import { AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts'
 import { Brain, Zap, DollarSign, TrendingUp, Clock } from 'lucide-react'
 import StatCard from '@/components/admin/StatCard'
+import { collection, query, where, getDocs, orderBy, limit, Timestamp } from 'firebase/firestore'
+import { db } from '@/lib/firebase'
+import { format, subDays, startOfDay } from 'date-fns'
+
+interface AIUsageData {
+  userId: string
+  userEmail?: string
+  tool: string
+  model?: string
+  timestamp: any
+  cost?: number
+  success: boolean
+}
 
 export default function AIAnalyticsPage() {
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d'>('30d')
+  const [isLoading, setIsLoading] = useState(true)
+  const [usageOverTime, setUsageOverTime] = useState<any[]>([])
+  const [requestsByTool, setRequestsByTool] = useState<any[]>([])
+  const [modelDistribution, setModelDistribution] = useState<any[]>([])
+  const [topUsers, setTopUsers] = useState<any[]>([])
+  const [stats, setStats] = useState({
+    totalRequests: 0,
+    totalCost: 0,
+    avgResponseTime: 0,
+    successRate: 0
+  })
 
-  // Mock data
-  const usageOverTime = [
-    { date: 'Jan 1', requests: 450 },
-    { date: 'Jan 8', requests: 680 },
-    { date: 'Jan 15', requests: 820 },
-    { date: 'Jan 22', requests: 950 },
-    { date: 'Jan 29', requests: 1100 },
-  ]
+  useEffect(() => {
+    loadAnalytics()
+  }, [timeRange])
 
-  const requestsByTool = [
-    { tool: 'Text Rewriter', count: 2340, cost: 45.60 },
-    { tool: 'Email Writer', count: 1890, cost: 38.20 },
-    { tool: 'Content Generator', count: 1650, cost: 32.40 },
-    { tool: 'Code Explainer', count: 980, cost: 19.80 },
-    { tool: 'Resume Builder', count: 750, cost: 15.20 },
-  ]
+  const loadAnalytics = async () => {
+    try {
+      setIsLoading(true)
+      
+      // Calculate date range
+      const days = timeRange === '7d' ? 7 : timeRange === '30d' ? 30 : 90
+      const startDate = startOfDay(subDays(new Date(), days))
+      const startTimestamp = Timestamp.fromDate(startDate)
+      
+      // Get AI usage data
+      const aiUsageRef = collection(db, 'ai-usage')
+      const aiQuery = query(
+        aiUsageRef,
+        where('timestamp', '>=', startTimestamp),
+        orderBy('timestamp', 'desc'),
+        limit(1000)
+      )
+      
+      const snapshot = await getDocs(aiQuery)
+      const usageData: AIUsageData[] = snapshot.docs.map(doc => ({
+        userId: doc.data().userId,
+        userEmail: doc.data().userEmail,
+        tool: doc.data().tool || 'Unknown',
+        model: doc.data().model,
+        timestamp: doc.data().timestamp,
+        cost: doc.data().cost || 0,
+        success: doc.data().success !== false
+      }))
 
-  const modelDistribution = [
-    { name: 'GPT-4', value: 45, color: '#8b5cf6' },
-    { name: 'Claude-3', value: 35, color: '#06b6d4' },
-    { name: 'GPT-3.5', value: 20, color: '#10b981' },
-  ]
+      // Calculate stats
+      calculateStats(usageData, days)
+      
+    } catch (error) {
+      console.error('Failed to load analytics:', error)
+      // Set empty data on error
+      setUsageOverTime([])
+      setRequestsByTool([])
+      setModelDistribution([])
+      setTopUsers([])
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
-  const topUsers = [
-    { email: 'user1@example.com', requests: 450, cost: 9.20 },
-    { email: 'user2@example.com', requests: 380, cost: 7.80 },
-    { email: 'user3@example.com', requests: 320, cost: 6.50 },
-  ]
+  const calculateStats = (data: AIUsageData[], days: number) => {
+    // Total requests
+    const totalRequests = data.length
+    
+    // Total cost
+    const totalCost = data.reduce((sum, item) => sum + (item.cost || 0), 0)
+    
+    // Success rate
+    const successfulRequests = data.filter(item => item.success).length
+    const successRate = totalRequests > 0 ? (successfulRequests / totalRequests) * 100 : 0
+    
+    setStats({
+      totalRequests,
+      totalCost,
+      avgResponseTime: 1.2, // Would need actual timing data
+      successRate
+    })
+
+    // Usage over time
+    const dateMap = new Map<string, number>()
+    data.forEach(item => {
+      if (item.timestamp?.toDate) {
+        const date = format(item.timestamp.toDate(), 'MMM dd')
+        dateMap.set(date, (dateMap.get(date) || 0) + 1)
+      }
+    })
+    
+    const timeData = Array.from(dateMap.entries())
+      .map(([date, requests]) => ({ date, requests }))
+      .slice(-10)
+    setUsageOverTime(timeData.length > 0 ? timeData : [
+      { date: format(new Date(), 'MMM dd'), requests: 0 }
+    ])
+
+    // Requests by tool
+    const toolMap = new Map<string, { count: number, cost: number }>()
+    data.forEach(item => {
+      const tool = item.tool
+      const existing = toolMap.get(tool) || { count: 0, cost: 0 }
+      toolMap.set(tool, {
+        count: existing.count + 1,
+        cost: existing.cost + (item.cost || 0)
+      })
+    })
+    
+    const toolData = Array.from(toolMap.entries())
+      .map(([tool, stats]) => ({ tool, ...stats }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5)
+    setRequestsByTool(toolData.length > 0 ? toolData : [
+      { tool: 'No data', count: 0, cost: 0 }
+    ])
+
+    // Model distribution
+    const modelMap = new Map<string, number>()
+    data.forEach(item => {
+      const model = item.model || 'Unknown'
+      modelMap.set(model, (modelMap.get(model) || 0) + 1)
+    })
+    
+    const colors = ['#8b5cf6', '#06b6d4', '#10b981', '#f59e0b', '#ef4444']
+    const modelData = Array.from(modelMap.entries())
+      .map(([name, value], index) => ({ 
+        name, 
+        value, 
+        color: colors[index % colors.length] 
+      }))
+    setModelDistribution(modelData.length > 0 ? modelData : [
+      { name: 'No data', value: 1, color: '#6b7280' }
+    ])
+
+    // Top users
+    const userMap = new Map<string, { requests: number, cost: number, email: string }>()
+    data.forEach(item => {
+      const userId = item.userId
+      const email = item.userEmail || 'Unknown'
+      const existing = userMap.get(userId) || { requests: 0, cost: 0, email }
+      userMap.set(userId, {
+        email,
+        requests: existing.requests + 1,
+        cost: existing.cost + (item.cost || 0)
+      })
+    })
+    
+    const userData = Array.from(userMap.values())
+      .sort((a, b) => b.requests - a.requests)
+      .slice(0, 10)
+    setTopUsers(userData.length > 0 ? userData : [])
+  }
 
   return (
     <div className="space-y-8">
@@ -65,10 +198,38 @@ export default function AIAnalyticsPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard title="Total Requests" value="45,678" change="+12%" trend="up" icon={Zap} color="purple" />
-        <StatCard title="AI Cost (MTD)" value="$234.56" change="+8%" trend="up" icon={DollarSign} color="green" />
-        <StatCard title="Avg Response Time" value="1.2s" change="-15%" trend="down" icon={Clock} color="blue" />
-        <StatCard title="Success Rate" value="98.5%" change="+2%" trend="up" icon={TrendingUp} color="amber" />
+        <StatCard 
+          title="Total Requests" 
+          value={stats.totalRequests.toLocaleString()} 
+          change={timeRange} 
+          icon={Zap} 
+          color="purple" 
+          isLoading={isLoading}
+        />
+        <StatCard 
+          title="AI Cost" 
+          value={`$${stats.totalCost.toFixed(2)}`} 
+          change={timeRange}
+          icon={DollarSign} 
+          color="green" 
+          isLoading={isLoading}
+        />
+        <StatCard 
+          title="Avg Response" 
+          value={`${stats.avgResponseTime.toFixed(1)}s`} 
+          change="Estimated"
+          icon={Clock} 
+          color="blue" 
+          isLoading={isLoading}
+        />
+        <StatCard 
+          title="Success Rate" 
+          value={`${stats.successRate.toFixed(1)}%`} 
+          change={timeRange}
+          icon={TrendingUp} 
+          color="amber" 
+          isLoading={isLoading}
+        />
       </div>
 
       {/* Charts */}

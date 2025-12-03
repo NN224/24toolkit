@@ -204,6 +204,29 @@ async function updateUserSubscription(userId, subscription) {
 
   await db.collection('users').doc(userId).set(updateData, { merge: true });
 
+  // Also create/update subscriptions collection for admin dashboard
+  try {
+    await db.collection('subscriptions').doc(subscription.id).set({
+      userId: userId,
+      userEmail: subscription.metadata?.userEmail || null,
+      plan: plan,
+      status: status,
+      amount: subscription.items.data[0]?.price?.unit_amount ? 
+              subscription.items.data[0].price.unit_amount / 100 : 
+              (plan === 'unlimited' ? 9.99 : 4.99),
+      stripeCustomerId: subscription.customer,
+      stripeSubscriptionId: subscription.id,
+      currentPeriodStart: new Date(subscription.current_period_start * 1000),
+      currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+      createdAt: new Date(subscription.created * 1000),
+      updatedAt: new Date()
+    }, { merge: true });
+    
+    console.log(`Subscription document created: ${subscription.id}`);
+  } catch (error) {
+    console.error('Failed to create subscription document:', error);
+  }
+
   console.log(`Subscription updated for user ${userId}: ${plan} (${status})`);
 }
 
