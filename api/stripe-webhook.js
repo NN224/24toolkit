@@ -1,20 +1,21 @@
 import Stripe from 'stripe';
-import { initializeApp, cert, getApps } from 'firebase-admin/app';
-import { getFirestore } from 'firebase-admin/firestore';
+import admin from 'firebase-admin';
 import { initSentryBackend, captureBackendError, flushSentry } from './_utils/sentry.js';
 
 // Initialize Firebase Admin
-if (!getApps().length) {
-  initializeApp({
-    credential: cert({
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-    }),
-  });
+if (!admin.apps.length) {
+  try {
+    const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT || '{}');
+    admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount),
+    });
+    console.log('✅ Firebase Admin initialized');
+  } catch (error) {
+    console.error('❌ Firebase Admin initialization failed:', error.message);
+  }
 }
 
-const db = getFirestore();
+const db = admin.firestore();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: '2023-10-16',
 });
@@ -113,23 +114,35 @@ export default async function handler(req, res) {
 
 async function handleCheckoutComplete(session) {
   const userId = session.metadata?.userId;
+  const plan = session.metadata?.plan || 'free';
   
   if (!userId) {
-    console.error('No userId found in checkout session');
+    console.error('❌ No userId in checkout session');
     return;
   }
 
   const subscriptionId = session.subscription;
   const customerId = session.customer;
 
-  // Update user document with Stripe IDs
-  await db.collection('users').doc(userId).set({
-    stripeCustomerId: customerId,
-    stripeSubscriptionId: subscriptionId,
-    updatedAt: new Date(),
-  }, { merge: true });
+  console.log(`💳 Processing checkout for user ${userId}, plan: ${plan}`);
 
-  console.log(`Checkout complete for user ${userId}`);
+  // Fetch subscription to get full details
+  if (subscriptionId) {
+    try {
+      const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+      await updateUserSubscription(userId, subscription);
+      console.log(`✅ Checkout complete for user ${userId}`);
+    } catch (error) {
+      console.error('❌ Failed to fetch subscription:', error.message);
+      // Fallback: still update customer ID
+      await db.collection('users').doc(userId).set({
+        stripeCustomerId: customerId,
+        stripeSubscriptionId: subscriptionId,
+        plan: plan,
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      }, { merge: true });
+    }
+  }
 }
 
 async function handleSubscriptionUpdate(subscription) {
@@ -156,16 +169,26 @@ async function handleSubscriptionUpdate(subscription) {
 }
 
 async function updateUserSubscription(userId, subscription) {
-  // Determine plan from price
-  const priceId = subscription.items.data[0]?.price?.id;
-  let plan = 'free';
+  // Determine plan from metadata or price
+  let plan = subscription.metadata?.plan || 'free';
   
-  // Map Stripe price IDs to plans
-  // You'll need to update these with your actual Stripe price IDs
-  if (priceId === process.env.STRIPE_PRO_PRICE_ID || priceId?.includes('pro')) {
-    plan = 'pro';
-  } else if (priceId === process.env.STRIPE_UNLIMITED_PRICE_ID || priceId?.includes('unlimited')) {
-    plan = 'unlimited';
+  // Fallback: check price ID if no metadata
+  if (plan === 'free') {
+    const priceId = subscription.items.data[0]?.price?.id;
+    const amount = subscription.items.data[0]?.price?.unit_amount;
+    
+    console.log(`🔍 Price ID: ${priceId}, Amount: ${amount}`);
+    
+    // Detect by amount (in cents)
+    if (amount === 499) {
+      plan = 'pro'; // $4.99
+    } else if (amount === 999) {
+      plan = 'unlimited'; // $9.99
+    } else if (priceId?.includes('eID')) {
+      plan = 'pro';
+    } else {
+      plan = 'unlimited';
+    }
   }
 
   // Map Stripe status to our status
@@ -185,30 +208,45 @@ async function updateUserSubscription(userId, subscription) {
   const updateData = {
     plan: plan,
     status: status,
+    stripeCustomerId: subscription.customer,
     stripeSubscriptionId: subscription.id,
-    currentPeriodStart: new Date(subscription.current_period_start * 1000),
-    currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+    currentPeriodStart: admin.firestore.Timestamp.fromDate(new Date(subscription.current_period_start * 1000)),
+    currentPeriodEnd: admin.firestore.Timestamp.fromDate(new Date(subscription.current_period_end * 1000)),
     cancelAtPeriodEnd: subscription.cancel_at_period_end,
-    updatedAt: new Date(),
+    updatedAt: admin.firestore.FieldValue.serverTimestamp(),
   };
 
   // Set credits based on plan
   if (plan === 'pro') {
-    updateData['credits.monthlyCredits'] = 100;
-    updateData['credits.monthlyCreditsUsed'] = 0;
-    updateData['credits.lastMonthlyReset'] = new Date();
+    updateData.credits = {
+      monthlyCredits: 100,
+      monthlyCreditsUsed: 0,
+      lastMonthlyReset: admin.firestore.FieldValue.serverTimestamp(),
+    };
+    // Also set aiCredits for compatibility
+    updateData.aiCredits = 100;
   } else if (plan === 'unlimited') {
-    updateData['credits.dailyUnlimitedUsed'] = 0;
-    updateData['credits.lastUnlimitedReset'] = new Date();
+    updateData.credits = {
+      unlimited: true,
+      lastUnlimitedReset: admin.firestore.FieldValue.serverTimestamp(),
+    };
+    updateData.aiCredits = 999999; // Large number for unlimited
   }
 
   await db.collection('users').doc(userId).set(updateData, { merge: true });
+  
+  console.log(`✅ User ${userId} updated: ${plan} (${status})`);
 
-  // Also create/update subscriptions collection for admin dashboard
+  // Create/update subscriptions collection for admin dashboard
   try {
+    // Get user email from Firestore
+    const userDoc = await db.collection('users').doc(userId).get();
+    const userData = userDoc.data();
+    const userEmail = userData?.email || subscription.metadata?.userEmail || null;
+    
     await db.collection('subscriptions').doc(subscription.id).set({
       userId: userId,
-      userEmail: subscription.metadata?.userEmail || null,
+      userEmail: userEmail,
       plan: plan,
       status: status,
       amount: subscription.items.data[0]?.price?.unit_amount ? 
@@ -216,18 +254,16 @@ async function updateUserSubscription(userId, subscription) {
               (plan === 'unlimited' ? 9.99 : 4.99),
       stripeCustomerId: subscription.customer,
       stripeSubscriptionId: subscription.id,
-      currentPeriodStart: new Date(subscription.current_period_start * 1000),
-      currentPeriodEnd: new Date(subscription.current_period_end * 1000),
-      createdAt: new Date(subscription.created * 1000),
-      updatedAt: new Date()
+      currentPeriodStart: admin.firestore.Timestamp.fromDate(new Date(subscription.current_period_start * 1000)),
+      currentPeriodEnd: admin.firestore.Timestamp.fromDate(new Date(subscription.current_period_end * 1000)),
+      createdAt: admin.firestore.Timestamp.fromDate(new Date(subscription.created * 1000)),
+      updatedAt: admin.firestore.FieldValue.serverTimestamp()
     }, { merge: true });
     
-    console.log(`Subscription document created: ${subscription.id}`);
+    console.log(`✅ Subscription document created: ${subscription.id}`);
   } catch (error) {
-    console.error('Failed to create subscription document:', error);
+    console.error('❌ Failed to create subscription document:', error.message);
   }
-
-  console.log(`Subscription updated for user ${userId}: ${plan} (${status})`);
 }
 
 async function handleSubscriptionDeleted(subscription) {
@@ -253,16 +289,19 @@ async function downgradeToFree(userId) {
   await db.collection('users').doc(userId).set({
     plan: 'free',
     status: 'active',
-    stripeSubscriptionId: null,
-    currentPeriodStart: null,
-    currentPeriodEnd: null,
+    stripeSubscriptionId: admin.firestore.FieldValue.delete(),
+    currentPeriodStart: admin.firestore.FieldValue.delete(),
+    currentPeriodEnd: admin.firestore.FieldValue.delete(),
     cancelAtPeriodEnd: false,
-    'credits.dailyCredits': 5,
-    'credits.dailyCreditsUsed': 0,
-    updatedAt: new Date(),
+    aiCredits: 5,
+    credits: {
+      dailyCredits: 5,
+      dailyCreditsUsed: 0,
+    },
+    updatedAt: admin.firestore.FieldValue.serverTimestamp(),
   }, { merge: true });
 
-  console.log(`User ${userId} downgraded to free`);
+  console.log(`✅ User ${userId} downgraded to free`);
 }
 
 async function handlePaymentSucceeded(invoice) {
@@ -284,14 +323,18 @@ async function handlePaymentSucceeded(invoice) {
   const userData = userDoc.data();
   if (userData.plan === 'pro') {
     await db.collection('users').doc(userDoc.id).set({
-      'credits.monthlyCreditsUsed': 0,
-      'credits.lastMonthlyReset': new Date(),
+      credits: {
+        monthlyCredits: 100,
+        monthlyCreditsUsed: 0,
+        lastMonthlyReset: admin.firestore.FieldValue.serverTimestamp(),
+      },
+      aiCredits: 100,
       status: 'active',
-      updatedAt: new Date(),
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     }, { merge: true });
   }
 
-  console.log(`Payment succeeded for user ${userDoc.id}`);
+  console.log(`✅ Payment succeeded for user ${userDoc.id}`);
 }
 
 async function handlePaymentFailed(invoice) {
@@ -310,8 +353,8 @@ async function handlePaymentFailed(invoice) {
   
   await db.collection('users').doc(userDoc.id).set({
     status: 'past_due',
-    updatedAt: new Date(),
+    updatedAt: admin.firestore.FieldValue.serverTimestamp(),
   }, { merge: true });
 
-  console.log(`Payment failed for user ${userDoc.id}`);
+  console.log(`⚠️ Payment failed for user ${userDoc.id}`);
 }

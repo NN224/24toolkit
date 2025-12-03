@@ -38,12 +38,11 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    // Determine plan details for custom display
+    // Determine plan from price ID
     const isPro = priceId.includes('eID'); // Pro price ID contains 'eID'
-    const planName = isPro ? 'Pro Plan' : 'Unlimited Plan';
-    const planDescription = isPro 
-      ? '100 AI requests/month • No ads • Smart History'
-      : 'Unlimited AI • Priority Support • Early Access';
+    const plan = isPro ? 'pro' : 'unlimited';
+    
+    console.log(`Creating checkout: Plan=${plan}, PriceID=${priceId}`);
 
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
@@ -59,10 +58,20 @@ export default async function handler(req, res) {
       customer_email: userEmail || undefined,
       metadata: {
         userId: userId,
-        plan: isPro ? 'pro' : 'unlimited'
+        userEmail: userEmail || '',
+        plan: plan,
+      },
+      subscription_data: {
+        metadata: {
+          userId: userId,
+          userEmail: userEmail || '',
+          plan: plan,
+        },
       },
       allow_promotion_codes: true,
     });
+    
+    console.log(`✅ Checkout session created: ${session.id}`);
 
     return res.status(200).json({ url: session.url });
 
