@@ -254,6 +254,9 @@ export default function ColorPicker() {
             </CardContent>
           </Card>
         </div>
+
+        {/* Related Tools for internal linking */}
+        <RelatedTools currentToolId="color-picker" category="fun" />
       </div>
     </div>
   )

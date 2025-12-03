@@ -18,17 +18,26 @@ export function RelatedTools({ currentToolId, category, limit = 6 }: RelatedTool
   const { t, i18n } = useTranslation()
 
   // Get related tools - prioritize same category, then others
-  const relatedTools = allTools
-    .filter(tool => tool.id !== currentToolId) // Exclude current tool
-    .filter(tool => !category || tool.category === category) // Filter by category if provided
-    .slice(0, limit) // Limit number of related tools
-
-  // If we don't have enough tools from the same category, add some from other categories
-  if (relatedTools.length < limit && category) {
-    const additionalTools = allTools
-      .filter(tool => tool.id !== currentToolId && tool.category !== category)
-      .slice(0, limit - relatedTools.length)
-    relatedTools.push(...additionalTools)
+  let relatedTools: Tool[] = []
+  
+  if (category) {
+    // Get tools from same category first
+    const sameCategory = allTools
+      .filter(tool => tool.id !== currentToolId && tool.category === category)
+    
+    // If we don't have enough, add tools from other categories
+    if (sameCategory.length < limit) {
+      const otherCategories = allTools
+        .filter(tool => tool.id !== currentToolId && tool.category !== category)
+      relatedTools = [...sameCategory, ...otherCategories].slice(0, limit)
+    } else {
+      relatedTools = sameCategory.slice(0, limit)
+    }
+  } else {
+    // No category specified, show any related tools
+    relatedTools = allTools
+      .filter(tool => tool.id !== currentToolId)
+      .slice(0, limit)
   }
 
   if (relatedTools.length === 0) {
