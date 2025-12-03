@@ -81,7 +81,7 @@ export default function ImageCaptionGenerator() {
 
       if (data.caption) {
         setCaption(data.caption)
-        toast.success(t('tools.imageCaptionGenerator.captionGenerated'))
+      toast.success(t('tools.imageCaptionGenerator.captionGenerated'))
       } else {
         throw new Error('No caption received from API')
       }

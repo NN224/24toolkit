@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app'
 import { getAuth, GoogleAuthProvider, GithubAuthProvider, FacebookAuthProvider } from 'firebase/auth'
 import { getFirestore, doc, getDoc, setDoc, updateDoc, Timestamp } from 'firebase/firestore'
+import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check'
 
 // Firebase configuration
 // Get these from Firebase Console: https://console.firebase.google.com/
@@ -15,6 +16,23 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
+
+// Initialize Firebase App Check with reCAPTCHA v3
+// This protects your Firebase resources from abuse
+if (import.meta.env.VITE_RECAPTCHA_SITE_KEY) {
+  try {
+    initializeAppCheck(app, {
+      provider: new ReCaptchaV3Provider(import.meta.env.VITE_RECAPTCHA_SITE_KEY),
+      // Optional: Use debug token in development
+      isTokenAutoRefreshEnabled: true
+    })
+    console.log('✅ Firebase App Check initialized')
+  } catch (error) {
+    console.warn('⚠️ App Check initialization failed:', error)
+  }
+} else {
+  console.warn('⚠️ App Check not initialized: VITE_RECAPTCHA_SITE_KEY is missing')
+}
 
 // Initialize Firebase Authentication
 export const auth = getAuth(app)

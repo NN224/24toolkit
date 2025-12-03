@@ -7,7 +7,6 @@ import { useTheme } from '@/components/ThemeProvider'
 import { toast } from 'sonner'
 import { UserMenu } from '@/components/UserMenu'
 import { useAuth } from '@/contexts/AuthContext'
-import { LoginModal } from '@/components/auth/LoginModal'
 import { CreditsBadge } from '@/components/ai/CreditsBadge'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 
@@ -44,7 +43,6 @@ export default function FuturisticHeader() {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<Tool[]>([])
   const [isListening, setIsListening] = useState(false)
-  const [showLoginModal, setShowLoginModal] = useState(false)
   const { theme, setTheme } = useTheme()
   const { user } = useAuth()
   const { t } = useTranslation()
@@ -74,14 +72,16 @@ export default function FuturisticHeader() {
   }, [])
 
   // Listen for login modal open events (from AI tools when credits exhausted)
+  // Now redirects to sign-in page instead of showing modal
   useEffect(() => {
     const handleOpenLoginModal = () => {
-      setShowLoginModal(true)
+      const currentPath = window.location.pathname
+      navigate(`/sign-in?redirect=${encodeURIComponent(currentPath)}&mode=signin`)
     }
 
     window.addEventListener('open-login-modal', handleOpenLoginModal)
     return () => window.removeEventListener('open-login-modal', handleOpenLoginModal)
-  }, [])
+  }, [navigate])
 
   useEffect(() => {
     if (searchQuery.trim()) {
@@ -232,7 +232,7 @@ export default function FuturisticHeader() {
                 <UserMenu />
               ) : (
                 <button 
-                  onClick={() => setShowLoginModal(true)}
+                  onClick={() => navigate('/sign-in')}
                   className="group relative flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 via-purple-500 to-sky-500 text-white font-semibold transition-all hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50 active:scale-95 border border-white/20 min-w-[44px]"
                   style={{ boxShadow: '0 4px 15px rgba(109,40,217,0.4)' }}
                   aria-label={t('header.signIn')}
@@ -247,12 +247,6 @@ export default function FuturisticHeader() {
           </div>
         </div>
       </header>
-      
-      {/* Login Modal */}
-      <LoginModal 
-        isOpen={showLoginModal}
-        onClose={() => setShowLoginModal(false)}
-      />
 
       {searchOpen && (
         <>
