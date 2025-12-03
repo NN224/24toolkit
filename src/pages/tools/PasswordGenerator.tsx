@@ -13,6 +13,7 @@ import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 import { trackToolUsage } from '@/components/UserProgress'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function PasswordGenerator() {
   const { t } = useTranslation()
@@ -238,6 +239,9 @@ export default function PasswordGenerator() {
             </CardContent>
           </Card>
         </div>
+
+        {/* Related Tools for internal linking */}
+        <RelatedTools currentToolId="password-generator" category="fun" />
       </div>
     </div>
   )

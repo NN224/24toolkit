@@ -8,6 +8,7 @@ import { toast } from 'sonner'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 import { trackToolUsage } from '@/components/UserProgress'
+import { RelatedTools } from '@/components/RelatedTools'
 
 export default function WordCounter() {
   const { t } = useTranslation()
@@ -163,6 +164,9 @@ export default function WordCounter() {
               </CardContent>
             </Card>
           </div>
+
+          {/* Related Tools for internal linking */}
+          <RelatedTools currentToolId="word-counter" category="text" />
         </div>
       </div>
     </div>

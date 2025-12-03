@@ -13,6 +13,7 @@ import { callAI } from '@/lib/ai'
 import { AI_PROMPTS, validatePromptInput } from '@/lib/ai-prompts'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
+import { RelatedTools } from '@/components/RelatedTools'
 
 type EmailMode = 'formal' | 'casual' | 'business'
 
@@ -151,6 +152,9 @@ export default function AIEmailWriter() {
           )}
         </CardContent>
       </Card>
+
+      {/* Related Tools for internal linking */}
+      <RelatedTools currentToolId="ai-email-writer" category="ai" />
     </div>
   )
 }
