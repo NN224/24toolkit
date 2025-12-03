@@ -31,6 +31,7 @@
     { "source": "/api/customer-portal", "destination": "/api/customer-portal.js" },
     { "source": "/api/ssl-check", "destination": "/api/ssl-check.js" },
     { "source": "/api/ip-check", "destination": "/api/ip-check.js" },
+    { "source": "/api/generate-caption", "destination": "/api/generate-caption.js" },
     { "source": "/_spark/llm", "destination": "/api/_spark/llm.ts" },
     { "source": "/_spark/user", "destination": "/api/_spark/user.ts" },
     { "source": "/_spark/loaded", "destination": "/api/_spark/loaded.ts" },
@@ -43,6 +44,14 @@
   "headers": [
     {
       "source": "/api/ai",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "POST, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
+      ]
+    },
+    {
+      "source": "/api/generate-caption",
       "headers": [
         { "key": "Access-Control-Allow-Origin", "value": "*" },
         { "key": "Access-Control-Allow-Methods", "value": "POST, OPTIONS" },

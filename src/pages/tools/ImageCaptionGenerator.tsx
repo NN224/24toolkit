@@ -6,9 +6,7 @@ import { Copy, Image as ImageIcon, Sparkle, Upload } from '@phosphor-icons/react
 import { toast } from 'sonner'
 import { AILoadingSpinner } from '@/components/ai/AILoadingSpinner'
 import { AIBadge } from '@/components/ai/AIBadge'
-import { AIProviderSelector, type AIProvider } from '@/components/ai/AIProviderSelector'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
-import { callAI } from '@/lib/ai'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 import { RelatedTools } from '@/components/RelatedTools'
@@ -23,7 +21,6 @@ export default function ImageCaptionGenerator() {
   const [imageUrl, setImageUrl] = useState<string>('')
   const [caption, setCaption] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [provider, setProvider] = useState<AIProvider>('anthropic')
   const copyToClipboard = useCopyToClipboard()
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,25 +57,34 @@ export default function ImageCaptionGenerator() {
     setCaption('')
 
     try {
-      // Vision API requires multimodal support
-      // Currently, we need to inform users about the limitation
-      // and provide a text-based alternative
+      // Extract base64 data from data URL
+      const base64Data = imageUrl.split(',')[1]
+      const mimeType = imageUrl.split(';')[0].split(':')[1]
       
-      const prompt = `You are an image caption generator. Since I cannot see the image directly, please generate 3 different creative, descriptive captions that could work for various types of images. Format them as:
-
-1. [First caption - descriptive and detailed]
-2. [Second caption - artistic and evocative]
-3. [Third caption - short and impactful]
-
-Make them versatile enough to inspire the user to adapt for their specific image.`
-      
-      let response = ''
-      await callAI(prompt, provider, (text) => {
-        response = text
-        setCaption(text)
+      // Call our API endpoint with the image
+      const response = await fetch('/api/generate-caption', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          image: base64Data,
+          mimeType: mimeType
+        })
       })
-      
-      toast.success(t('tools.imageCaptionGenerator.captionGenerated'))
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to generate caption')
+      }
+
+      if (data.caption) {
+        setCaption(data.caption)
+        toast.success(t('tools.imageCaptionGenerator.captionGenerated'))
+      } else {
+        throw new Error('No caption received from API')
+      }
     } catch (error) {
       console.error('Caption generation error:', error)
       toast.error(error instanceof Error ? error.message : t('tools.imageCaptionGenerator.generationFailed'))
@@ -160,8 +166,6 @@ Make them versatile enough to inspire the user to adapt for their specific image
                   </div>
 
                   <div className="space-y-3">
-                    <AIProviderSelector value={provider} onValueChange={setProvider} />
-
                     <div className="flex gap-2">
                       <Button
                         onClick={handleGenerateCaption}
