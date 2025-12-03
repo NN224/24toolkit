@@ -19,3 +19,12 @@
   Access-Control-Allow-Origin: *
   Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS
   Access-Control-Allow-Headers: Content-Type, Authorization
+
+# Global Security Headers
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://*.google.com https://*.googleapis.com https://*.gstatic.com https://*.firebaseapp.com https://*.doubleclick.net https://www.googletagmanager.com https://pagead2.googlesyndication.com https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https:; font-src 'self' https: data:; img-src 'self' data: blob: https:; connect-src 'self' data: blob: https://*.sentry.io https://*.ingest.sentry.io https://*.google.com https://*.googleapis.com https://*.gstatic.com https://*.firebaseapp.com https://*.doubleclick.net https://pagead2.googlesyndication.com https://api.github.com https://github.com https://models.inference.ai.azure.com https://cdn.jsdelivr.net https://unpkg.com; worker-src 'self' blob: data:; frame-src https: data:; frame-ancestors 'self'; base-uri 'self'; form-action 'self';
