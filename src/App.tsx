@@ -13,6 +13,9 @@ import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { UpgradeModal } from '@/components/UpgradeModal'
 import HomePage from '@/pages/HomePage'
 import AboutPage from '@/pages/AboutPage'
+
+// Admin components (lazy loaded)
+const AdminRoutes = React.lazy(() => import('@/pages/admin/AdminRoutes'))
 import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage'
 import TermsOfServicePage from '@/pages/TermsOfServicePage'
 import ContactPage from '@/pages/ContactPage'
@@ -443,6 +446,14 @@ function App() {
           <Route path="tools/notepad" element={<Suspense fallback={<LoadingFallback name="Notepad" />}><Notepad /></Suspense>} />
           <Route path="tools/daily-planner-template" element={<Suspense fallback={<LoadingFallback name="Daily Planner" />}><DailyPlannerTemplate /></Suspense>} />
           <Route path="tools/pomodoro-timer" element={<Suspense fallback={<LoadingFallback name="Pomodoro Timer" />}><PomodoroTimer /></Suspense>} />
+          
+          {/* Admin Routes */}
+          <Route path="admin/*" element={
+            <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="text-center">Loading Admin Panel...</div></div>}>
+              <AdminRoutes />
+            </Suspense>
+          } />
+          
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
         </Routes>
