@@ -60,24 +60,24 @@ export default function StatCard({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -4 }}
-      className="bg-card/50 backdrop-blur-sm border border-white/10 hover:border-white/20 rounded-2xl p-6 transition-all shine-effect"
+      whileHover={{ y: -4, scale: 1.02 }}
+      className="bg-gradient-to-br from-slate-900/80 to-slate-900/50 backdrop-blur-xl border border-purple-500/20 hover:border-purple-500/40 rounded-2xl p-6 transition-all shadow-lg hover:shadow-purple-500/20"
     >
       <div className="flex items-start justify-between mb-4">
         <div>
-          <p className="text-sm text-muted-foreground font-medium mb-1">
+          <p className="text-sm text-purple-300/70 font-medium mb-2">
             {title}
           </p>
           {isLoading ? (
-            <div className="h-8 w-32 bg-white/5 rounded animate-shimmer" />
+            <div className="h-8 w-32 bg-purple-500/10 rounded-lg animate-pulse" />
           ) : (
-            <h3 className="text-3xl font-bold text-foreground">
+            <h3 className="text-3xl font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
               {value}
             </h3>
           )}
         </div>
 
-        <div className={`p-3 rounded-xl bg-gradient-to-br ${colors.gradient}`}>
+        <div className={`p-3 rounded-xl bg-gradient-to-br ${colors.gradient} shadow-lg shadow-${color}-500/30`}>
           <Icon size={24} className="text-white" />
         </div>
       </div>

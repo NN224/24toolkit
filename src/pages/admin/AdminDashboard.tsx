@@ -70,11 +70,11 @@ export default function AdminDashboard() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">
+      <div className="bg-gradient-to-r from-purple-950/30 to-slate-900/30 backdrop-blur-sm border border-purple-500/20 rounded-2xl p-6">
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 via-sky-400 to-purple-400 bg-clip-text text-transparent mb-2">
           Welcome back! 👋
         </h1>
-        <p className="text-muted-foreground">
+        <p className="text-purple-300/70">
           Here's what's happening with your platform today.
         </p>
       </div>
@@ -129,17 +129,18 @@ export default function AdminDashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="group p-6 bg-card/50 backdrop-blur-sm border border-white/10 hover:border-purple-500/50 rounded-2xl transition-all shine-effect"
+          whileHover={{ scale: 1.02, y: -4 }}
+          className="group p-6 bg-gradient-to-br from-slate-900/80 to-slate-900/50 backdrop-blur-xl border border-purple-500/20 hover:border-blue-500/50 rounded-2xl transition-all shadow-lg hover:shadow-blue-500/20"
         >
           <div className="flex items-center gap-4 mb-3">
-            <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 shadow-lg shadow-blue-500/30">
               <Users size={24} className="text-white" />
             </div>
-            <h3 className="text-lg font-semibold text-foreground group-hover:text-purple-400 transition-colors">
+            <h3 className="text-lg font-semibold text-white group-hover:text-blue-400 transition-colors">
               Manage Users
             </h3>
           </div>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-purple-300/60">
             View and manage all registered users
           </p>
         </motion.a>
@@ -149,17 +150,18 @@ export default function AdminDashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="group p-6 bg-card/50 backdrop-blur-sm border border-white/10 hover:border-purple-500/50 rounded-2xl transition-all shine-effect"
+          whileHover={{ scale: 1.02, y: -4 }}
+          className="group p-6 bg-gradient-to-br from-slate-900/80 to-slate-900/50 backdrop-blur-xl border border-purple-500/20 hover:border-purple-500/50 rounded-2xl transition-all shadow-lg hover:shadow-purple-500/20"
         >
           <div className="flex items-center gap-4 mb-3">
-            <div className="p-3 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 shadow-lg shadow-purple-500/30">
               <TrendingUp size={24} className="text-white" />
             </div>
-            <h3 className="text-lg font-semibold text-foreground group-hover:text-purple-400 transition-colors">
+            <h3 className="text-lg font-semibold text-white group-hover:text-purple-400 transition-colors">
               AI Analytics
             </h3>
           </div>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-purple-300/60">
             Monitor AI usage and costs
           </p>
         </motion.a>
@@ -169,17 +171,18 @@ export default function AdminDashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="group p-6 bg-card/50 backdrop-blur-sm border border-white/10 hover:border-purple-500/50 rounded-2xl transition-all shine-effect"
+          whileHover={{ scale: 1.02, y: -4 }}
+          className="group p-6 bg-gradient-to-br from-slate-900/80 to-slate-900/50 backdrop-blur-xl border border-purple-500/20 hover:border-green-500/50 rounded-2xl transition-all shadow-lg hover:shadow-green-500/20"
         >
           <div className="flex items-center gap-4 mb-3">
-            <div className="p-3 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 shadow-lg shadow-green-500/30">
               <DollarSign size={24} className="text-white" />
             </div>
-            <h3 className="text-lg font-semibold text-foreground group-hover:text-purple-400 transition-colors">
+            <h3 className="text-lg font-semibold text-white group-hover:text-green-400 transition-colors">
               Revenue
             </h3>
           </div>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-purple-300/60">
             Track subscriptions and earnings
           </p>
         </motion.a>

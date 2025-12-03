@@ -44,16 +44,16 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   }
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
       {/* Sidebar - Desktop */}
-      <aside className="hidden lg:flex lg:flex-col w-64 bg-card border-r border-white/10 fixed h-full">
+      <aside className="hidden lg:flex lg:flex-col w-64 bg-slate-900/50 backdrop-blur-xl border-r border-purple-500/20 fixed h-full shadow-2xl shadow-purple-500/10">
         {/* Logo */}
-        <div className="p-6 border-b border-white/10">
+        <div className="p-6 border-b border-purple-500/20 bg-gradient-to-r from-purple-950/50 to-slate-900/50">
           <div className="flex items-center gap-3 mb-2">
             <Logo className="w-10 h-10" />
             <div>
-              <h2 className="text-lg font-bold text-foreground">24Toolkit</h2>
-              <span className="text-xs text-muted-foreground">Admin Panel</span>
+              <h2 className="text-lg font-bold bg-gradient-to-r from-purple-400 to-sky-400 bg-clip-text text-transparent">24Toolkit</h2>
+              <span className="text-xs text-purple-300/70">Admin Panel</span>
             </div>
           </div>
         </div>
@@ -82,31 +82,31 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </nav>
 
         {/* User Info */}
-        <div className="p-4 border-t border-white/10">
+        <div className="p-4 border-t border-purple-500/20 bg-gradient-to-t from-slate-950/80 to-transparent">
           <div className="flex items-center gap-3 mb-3">
             {user?.photoURL ? (
               <img
                 src={user.photoURL}
                 alt={user.displayName || 'Admin'}
-                className="w-10 h-10 rounded-full border-2 border-purple-500"
+                className="w-10 h-10 rounded-full border-2 border-purple-500 shadow-lg shadow-purple-500/30"
               />
             ) : (
-              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-sky-500 flex items-center justify-center text-white font-bold">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-sky-500 flex items-center justify-center text-white font-bold shadow-lg shadow-purple-500/30">
                 {user?.displayName?.[0] || 'A'}
               </div>
             )}
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-foreground truncate">
+              <p className="text-sm font-semibold text-purple-100 truncate">
                 {user?.displayName || 'Admin'}
               </p>
-              <p className="text-xs text-muted-foreground truncate">
+              <p className="text-xs text-purple-300/60 truncate">
                 {user?.email}
               </p>
             </div>
           </div>
           <button
             onClick={handleSignOut}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors text-sm font-medium"
+            className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-red-500/20 text-red-300 hover:bg-red-500/30 transition-all border border-red-500/30 text-sm font-medium hover:scale-[1.02]"
           >
             <LogOut size={16} />
             Sign Out
@@ -117,7 +117,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       {/* Main Content */}
       <main className="flex-1 lg:ml-64">
         {/* Header */}
-        <header className="sticky top-0 z-40 bg-card/80 backdrop-blur-xl border-b border-white/10">
+        <header className="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-xl border-b border-purple-500/20 shadow-lg shadow-purple-500/5">
           <div className="px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex items-center justify-between">
               {/* Mobile Menu Button */}
@@ -128,7 +128,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
 
-              <h1 className="text-xl sm:text-2xl font-bold text-foreground hidden lg:block">
+              <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-400 via-sky-400 to-purple-400 bg-clip-text text-transparent hidden lg:block">
                 Admin Dashboard
               </h1>
 
@@ -136,7 +136,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               <div className="flex items-center gap-3">
                 <button
                   onClick={handleRefresh}
-                  className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors text-sm font-medium"
+                  className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg bg-purple-500/10 hover:bg-purple-500/20 transition-all border border-purple-500/20 text-sm font-medium text-purple-300"
                 >
                   <RefreshCw size={16} />
                   <span className="hidden sm:inline">Refresh</span>
@@ -144,7 +144,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
                 <a
                   href="/"
-                  className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-sky-500 text-white hover:opacity-90 transition-opacity text-sm font-medium"
+                  className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-sky-500 text-white hover:scale-[1.02] transition-transform text-sm font-medium shadow-lg shadow-purple-500/30"
                 >
                   Back to Site
                 </a>
@@ -168,15 +168,15 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 animate={{ x: 0 }}
                 exit={{ x: -300 }}
                 onClick={(e) => e.stopPropagation()}
-                className="w-64 h-full bg-card border-r border-white/10 overflow-y-auto"
+                className="w-64 h-full bg-slate-900/95 backdrop-blur-xl border-r border-purple-500/20 overflow-y-auto"
               >
                 {/* Same sidebar content */}
-                <div className="p-6 border-b border-white/10">
+                <div className="p-6 border-b border-purple-500/20 bg-gradient-to-r from-purple-950/50 to-slate-900/50">
                   <div className="flex items-center gap-3 mb-2">
                     <Logo className="w-10 h-10" />
                     <div>
-                      <h2 className="text-lg font-bold text-foreground">24Toolkit</h2>
-                      <span className="text-xs text-muted-foreground">Admin Panel</span>
+                      <h2 className="text-lg font-bold bg-gradient-to-r from-purple-400 to-sky-400 bg-clip-text text-transparent">24Toolkit</h2>
+                      <span className="text-xs text-purple-300/70">Admin Panel</span>
                     </div>
                   </div>
                 </div>
@@ -209,9 +209,44 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </AnimatePresence>
 
         {/* Content */}
-        <div className="p-4 sm:p-6 lg:p-8">
+        <div className="p-4 sm:p-6 lg:p-8 min-h-[calc(100vh-120px)]">
           {children}
         </div>
+
+        {/* Admin Footer */}
+        <footer className="border-t border-purple-500/20 bg-slate-900/50 backdrop-blur-xl mt-auto">
+          <div className="px-4 sm:px-6 lg:px-8 py-6">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="text-center sm:text-left">
+                <p className="text-sm text-purple-300/80 font-medium">
+                  © {new Date().getFullYear()} 24Toolkit Admin
+                </p>
+                <p className="text-xs text-purple-300/50 mt-1">
+                  Manage your platform with ease
+                </p>
+              </div>
+              
+              <div className="flex items-center gap-4">
+                <a
+                  href="/docs"
+                  className="text-sm text-purple-300/70 hover:text-purple-300 transition-colors"
+                >
+                  Documentation
+                </a>
+                <a
+                  href="/support"
+                  className="text-sm text-purple-300/70 hover:text-purple-300 transition-colors"
+                >
+                  Support
+                </a>
+                <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30">
+                  <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                  <span className="text-xs text-green-300 font-medium">System Online</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </footer>
       </main>
     </div>
   )
