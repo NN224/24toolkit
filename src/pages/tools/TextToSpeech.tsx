@@ -72,8 +72,71 @@ export default function TextToSpeech() {
     toast.success(t('tools.textToSpeech.stopped'))
   }
 
-  const handleDownload = () => {
-    toast.info(t('tools.textToSpeech.downloadNotice'))
+  const handleDownload = async () => {
+    if (!text.trim()) {
+      toast.error(t('tools.textToSpeech.enterTextError'))
+      return
+    }
+
+    try {
+      // Create audio context
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
+      const destination = audioContext.createMediaStreamDestination()
+      
+      // Create media recorder
+      const mediaRecorder = new MediaRecorder(destination.stream)
+      const audioChunks: Blob[] = []
+      
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunks.push(event.data)
+        }
+      }
+      
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' })
+        const url = URL.createObjectURL(audioBlob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = 'speech.wav'
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+        URL.revokeObjectURL(url)
+        audioContext.close()
+        toast.success(t('tools.textToSpeech.downloadSuccess') || 'Audio downloaded successfully!')
+      }
+      
+      // Start recording
+      mediaRecorder.start()
+      
+      // Create utterance
+      const utterance = new SpeechSynthesisUtterance(text)
+      const voice = voices.find(v => v.name === selectedVoice)
+      
+      if (voice) {
+        utterance.voice = voice
+      }
+      
+      utterance.onend = () => {
+        setTimeout(() => {
+          mediaRecorder.stop()
+        }, 500)
+      }
+      
+      utterance.onerror = () => {
+        mediaRecorder.stop()
+        audioContext.close()
+        toast.error(t('tools.textToSpeech.conversionFailed'))
+      }
+      
+      // Speak
+      window.speechSynthesis.speak(utterance)
+      toast.info(t('tools.textToSpeech.generatingAudio') || 'Generating audio...')
+    } catch (error) {
+      console.error('Download error:', error)
+      toast.error(t('tools.textToSpeech.downloadError') || 'Failed to download audio')
+    }
   }
 
   return (

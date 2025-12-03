@@ -74,7 +74,7 @@ export function SEO({ title, description, keywords, canonicalPath, image }: SEOP
     const canonicalUrl = `${BASE_URL}${path === '/' ? '' : path}`
     
     // Build image URL
-    const imageUrl = image ? `${BASE_URL}${image}` : `${BASE_URL}/og-image.png`
+    const imageUrl = image ? `${BASE_URL}${image}` : `${BASE_URL}/og-image.jpg`
     
     // Update canonical link
     updateCanonicalLink(canonicalUrl)
@@ -90,9 +90,9 @@ export function SEO({ title, description, keywords, canonicalPath, image }: SEOP
     updateMetaTag('property', 'og:description', description)
     updateMetaTag('property', 'og:url', canonicalUrl)
     updateMetaTag('property', 'og:image', imageUrl)
-    updateMetaTag('property', 'og:image:width', '2848')
-    updateMetaTag('property', 'og:image:height', '1504')
-    updateMetaTag('property', 'og:image:type', 'image/png')
+    updateMetaTag('property', 'og:image:width', '1200')
+    updateMetaTag('property', 'og:image:height', '633')
+    updateMetaTag('property', 'og:image:type', 'image/jpeg')
     
     // Twitter Card tags
     updateMetaTag('name', 'twitter:card', 'summary_large_image')
@@ -130,7 +130,7 @@ export function useSEO({ title, description, keywords, canonicalPath, image }: S
     const canonicalUrl = `${BASE_URL}${path === '/' ? '' : path}`
     
     // Build image URL
-    const imageUrl = image ? `${BASE_URL}${image}` : `${BASE_URL}/og-image.png`
+    const imageUrl = image ? `${BASE_URL}${image}` : `${BASE_URL}/og-image.jpg`
     
     // Update canonical link
     updateCanonicalLink(canonicalUrl)
@@ -144,9 +144,9 @@ export function useSEO({ title, description, keywords, canonicalPath, image }: S
     updateMetaTag('property', 'og:description', description)
     updateMetaTag('property', 'og:url', canonicalUrl)
     updateMetaTag('property', 'og:image', imageUrl)
-    updateMetaTag('property', 'og:image:width', '2848')
-    updateMetaTag('property', 'og:image:height', '1504')
-    updateMetaTag('property', 'og:image:type', 'image/png')
+    updateMetaTag('property', 'og:image:width', '1200')
+    updateMetaTag('property', 'og:image:height', '633')
+    updateMetaTag('property', 'og:image:type', 'image/jpeg')
     updateMetaTag('name', 'twitter:card', 'summary_large_image')
     updateMetaTag('name', 'twitter:title', title)
     updateMetaTag('name', 'twitter:description', description)

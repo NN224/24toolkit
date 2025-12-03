@@ -9,6 +9,7 @@ import { AIBadge } from '@/components/ai/AIBadge'
 import { useSEO } from '@/hooks/useSEO'
 import { getPageMetadata } from '@/lib/seo-metadata'
 import { RelatedTools } from '@/components/RelatedTools'
+import { removeBackground } from '@imgly/background-removal'
 
 export default function BackgroundRemover() {
   const { t } = useTranslation()
@@ -20,6 +21,7 @@ export default function BackgroundRemover() {
   const [image, setImage] = useState<string | null>(null)
   const [processedImage, setProcessedImage] = useState<string | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
+  const [useAI, setUseAI] = useState(true) // Use AI model by default
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +42,48 @@ export default function BackgroundRemover() {
     toast.success(t('tools.backgroundRemover.imageLoaded'))
   }
 
-  const processImageWithAI = async () => {
+  const processWithISNet = async () => {
+    if (!image) {
+      toast.error(t('tools.backgroundRemover.uploadFirst'))
+      return
+    }
+
+    setIsProcessing(true)
+
+    try {
+      // Fetch the image as a blob
+      const response = await fetch(image)
+      const blob = await response.blob()
+      
+      // Remove background using ISNet-Lite
+      const result = await removeBackground(blob, {
+        model: 'isnet',
+        output: {
+          format: 'image/png',
+          quality: 0.9,
+          type: 'foreground'
+        },
+        progress: (key, current, total) => {
+          console.log(`Processing: ${key} - ${current}/${total}`)
+        }
+      })
+      
+      // Convert blob to base64
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setProcessedImage(reader.result as string)
+        setIsProcessing(false)
+        toast.success(t('tools.backgroundRemover.backgroundRemoved'))
+      }
+      reader.readAsDataURL(result)
+    } catch (error) {
+      console.error('ISNet error:', error)
+      setIsProcessing(false)
+      toast.error(t('tools.backgroundRemover.processFailed'))
+    }
+  }
+
+  const processWithLocalAlgorithm = async () => {
     if (!image) {
       toast.error(t('tools.backgroundRemover.uploadFirst'))
       return
@@ -86,6 +129,14 @@ export default function BackgroundRemover() {
     }
   }
 
+  const processImageWithAI = async () => {
+    if (useAI) {
+      return processWithISNet()
+    } else {
+      return processWithLocalAlgorithm()
+    }
+  }
+
   const handleDownload = () => {
     if (!processedImage) return
 
@@ -118,11 +169,29 @@ export default function BackgroundRemover() {
           </p>
         </div>
 
-        <Card className="mb-6 bg-blue-50 border-blue-200">
+        <Card className="mb-6">
           <CardContent className="pt-6">
-            <p className="text-sm text-blue-800">
-              <strong>{t('tools.backgroundRemover.demoMode')}:</strong> {t('tools.backgroundRemover.demoModeDescription')}
-            </p>
+            <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border">
+              <div className="flex items-center gap-2">
+                <Sparkle size={20} weight="fill" className="text-purple-500" />
+                <div>
+                  <p className="text-sm font-medium">
+                    {useAI ? 'AI Model (ISNet-Lite)' : 'Fast Algorithm'}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {useAI ? 'High quality, slower' : 'Fast, good for solid backgrounds'}
+                  </p>
+                </div>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setUseAI(!useAI)}
+                disabled={isProcessing}
+              >
+                {useAI ? 'Switch to Fast' : 'Switch to AI'}
+              </Button>
+            </div>
           </CardContent>
         </Card>
 

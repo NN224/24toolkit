@@ -51,27 +51,65 @@ export default function PDFToWord() {
     setProgress(0)
     setConversionComplete(false)
 
-    const progressInterval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 90) {
-          clearInterval(progressInterval)
-          return 90
-        }
-        return prev + 10
-      })
-    }, 500)
-
-    setTimeout(() => {
-      clearInterval(progressInterval)
+    try {
+      // Load PDF.js dynamically
+      const pdfjsLib = await import('pdfjs-dist') as any
+      pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.js`
+      
+      setProgress(10)
+      
+      // Read PDF file
+      const arrayBuffer = await file.arrayBuffer()
+      setProgress(20)
+      
+      // Load PDF document
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise
+      setProgress(30)
+      
+      let fullText = ''
+      const totalPages = pdf.numPages
+      
+      // Extract text from each page
+      for (let i = 1; i <= totalPages; i++) {
+        const page = await pdf.getPage(i)
+        const textContent = await page.getTextContent()
+        const pageText = textContent.items.map((item: any) => item.str).join(' ')
+        fullText += `\n\n--- Page ${i} ---\n\n${pageText}`
+        
+        // Update progress
+        setProgress(30 + (i / totalPages) * 60)
+      }
+      
+      setProgress(95)
+      
+      // Create RTF content
+      const rtfContent = `{\\rtf1\\ansi\\deff0\n{\\fonttbl{\\f0 Arial;}}\n\\f0\\fs24\n${fullText.replace(/\n/g, '\\par\n')}\n}`
+      
+      // Create blob and download
+      const blob = new Blob([rtfContent], { type: 'application/rtf' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `${file.name.replace('.pdf', '')}_converted.rtf`
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+      
       setProgress(100)
-      setIsProcessing(false)
       setConversionComplete(true)
-      toast.info(t('tools.pdfToWord.demoNotice'))
-    }, 5000)
+      toast.success(t('tools.pdfToWord.conversionSuccess') || 'PDF converted successfully!')
+    } catch (error) {
+      console.error('PDF conversion error:', error)
+      toast.error(t('tools.pdfToWord.conversionError') || 'Failed to convert PDF')
+    } finally {
+      setIsProcessing(false)
+    }
   }
 
   const handleDownload = () => {
-    toast.info(t('tools.pdfToWord.demoDownloadNotice'))
+    // Download is now handled in handleConvert
+    handleConvert()
   }
 
   const handleClear = () => {
@@ -101,13 +139,6 @@ export default function PDFToWord() {
         </div>
 
         <div className="space-y-6">
-          <Alert>
-            <Info size={16} className="mt-0.5" />
-            <AlertDescription>
-              <strong>{t('tools.pdfToWord.demoMode')}</strong> {t('tools.pdfToWord.demoModeDesc')}
-            </AlertDescription>
-          </Alert>
-
           <Card>
             <CardHeader>
               <CardTitle>{t('tools.pdfToWord.uploadPdf')}</CardTitle>
