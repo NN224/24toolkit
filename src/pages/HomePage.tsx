@@ -149,11 +149,11 @@ export default function HomePage() {
     : getToolsByCategory(selectedFilter)
 
   return (
-    <div className="py-8 sm:py-12 px-4 sm:px-6 lg:px-8 relative">
+    <div className="py-4 sm:py-8 lg:py-12 px-4 sm:px-6 lg:px-8 relative">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12 sm:mb-20">
-          <div className="mb-4">
-            <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold mb-4 sm:mb-6 tracking-tight">
+        <div className="text-center mb-8 sm:mb-12 lg:mb-20">
+          <div className="mb-2 sm:mb-4">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-2 sm:mb-4 lg:mb-6 tracking-tight">
               <span className="bg-gradient-to-r from-purple-500 via-pink-500 to-sky-500 bg-clip-text text-transparent animate-gradient-text">
                 {t('home.title')}
               </span>
@@ -162,31 +162,31 @@ export default function HomePage() {
             </h1>
           </div>
           
-          <p className="text-base sm:text-xl text-muted-foreground mb-6 sm:mb-8 max-w-3xl mx-auto animate-scale-pop">
+          <p className="text-sm sm:text-base lg:text-xl text-muted-foreground mb-4 sm:mb-6 lg:mb-8 max-w-3xl mx-auto animate-scale-pop">
             {t('home.subtitle')}
           </p>
 
-          <p className="text-xs sm:text-sm text-accent/80 mb-6 sm:mb-10 italic">
+          <p className="text-xs text-accent/80 mb-4 sm:mb-6 lg:mb-10 italic hidden sm:block">
             ✨ {t(`home.quotes.${randomQuoteIndex}`)} ✨
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-6 sm:mb-10">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 lg:gap-4 mb-4 sm:mb-6 lg:mb-10">
             <Button
               size="lg"
               onClick={handleRandomTool}
-              className="bg-gradient-to-r from-purple-600 via-pink-500 to-sky-500 text-white hover:opacity-90 transition-all px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg font-semibold rounded-xl animate-pulse-glow hover:scale-105 active:scale-95 group"
+              className="bg-gradient-to-r from-purple-600 via-pink-500 to-sky-500 text-white hover:opacity-90 transition-all px-4 sm:px-6 lg:px-8 py-3 sm:py-4 lg:py-6 text-sm sm:text-base lg:text-lg font-semibold rounded-xl animate-pulse-glow hover:scale-105 active:scale-95 group"
               style={{ boxShadow: '0 0 30px rgba(109,40,217,0.5)' }}
             >
-              <Sparkle size={20} weight="fill" className="ltr:mr-2 rtl:ml-2 animate-sparkle sm:w-6 sm:h-6" />
+              <Sparkle size={18} weight="fill" className="ltr:mr-1.5 rtl:ml-1.5 animate-sparkle sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
               {t('home.feelingLucky')}
-              <span className="ltr:ml-2 rtl:mr-2 opacity-70">🎲</span>
+              <span className="ltr:ml-1.5 rtl:mr-1.5 opacity-70 hidden sm:inline">🎲</span>
             </Button>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-6 sm:mb-8">
+          <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 lg:gap-3 mb-4 sm:mb-6 lg:mb-8">
             <button
               onClick={() => setSelectedFilter('all')}
-              className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all ${
+              className={`px-2 sm:px-3 lg:px-4 py-1 sm:py-1.5 lg:py-2 rounded-lg text-[10px] sm:text-xs lg:text-sm font-medium transition-all ${
                 selectedFilter === 'all'
                   ? 'bg-gradient-to-r from-purple-600 to-sky-500 text-white'
                   : 'bg-card/50 text-muted-foreground hover:text-foreground border border-white/10'
@@ -209,15 +209,15 @@ export default function HomePage() {
                 <button
                   key={id}
                   onClick={() => setSelectedFilter(id)}
-                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 sm:gap-2 ${
+                  className={`px-2 sm:px-3 lg:px-4 py-1 sm:py-1.5 lg:py-2 rounded-lg text-[10px] sm:text-xs lg:text-sm font-medium transition-all flex items-center gap-1 sm:gap-1.5 lg:gap-2 ${
                     selectedFilter === id
                       ? 'bg-gradient-to-r from-purple-600 to-sky-500 text-white'
                       : 'bg-card/50 text-muted-foreground hover:text-foreground border border-white/10'
                   }`}
                 >
-                  <Icon size={14} weight="bold" className="sm:w-4 sm:h-4" />
-                  <span className="hidden sm:inline">{getCategoryTitle(id as keyof typeof categories, i18n.language)}</span>
-                  <span className="sm:hidden">{getCategoryTitle(id as keyof typeof categories, i18n.language).split(' ')[0]}</span>
+                  <Icon size={12} weight="bold" className="sm:w-3.5 sm:h-3.5 lg:w-4 lg:h-4" />
+                  <span className="hidden lg:inline">{getCategoryTitle(id as keyof typeof categories, i18n.language)}</span>
+                  <span className="lg:hidden">{getCategoryTitle(id as keyof typeof categories, i18n.language).split(' ')[0]}</span>
                 </button>
               )
             })}
@@ -227,7 +227,7 @@ export default function HomePage() {
         {selectedFilter === 'all' ? (
           <>
             {/* Ad after hero section */}
-            <div className="mb-16 flex justify-center">
+            <div className="mb-8 sm:mb-12 lg:mb-16 flex justify-center">
               <AdBanner className="w-full max-w-5xl" />
             </div>
 

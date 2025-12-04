@@ -26,10 +26,10 @@ export default function Layout() {
         <FuturisticSidebar />
         <FuturisticHeader />
         
-        <main className="relative lg:ml-20 pt-20 min-h-screen">
+        <main className="relative lg:ml-20 pt-16 sm:pt-20 min-h-screen">
           {/* Top Ad Unit */}
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <AdSense slot="1234567890" format="horizontal" className="mb-6" />
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-4">
+            <AdSense slot="1234567890" format="horizontal" className="mb-4 sm:mb-6" />
           </div>
           
           <Outlet />

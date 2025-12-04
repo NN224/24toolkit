@@ -154,25 +154,25 @@ export default function FuturisticHeader() {
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-30 lg:left-20 bg-[#0a0f1e]/80 backdrop-blur-sm border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-3 sm:py-4">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-2 sm:py-3 lg:py-4">
           <div className="flex items-center justify-between gap-2 sm:gap-4">
             <button
               onClick={() => setSearchOpen(true)}
-              className="flex-1 max-w-2xl bg-card/50 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 flex items-center gap-2 sm:gap-3 group transition-all focus:ring-2 focus:ring-accent focus:outline-none border border-white/10"
+              className="flex-1 max-w-2xl bg-card/50 rounded-lg sm:rounded-xl px-2 sm:px-3 lg:px-4 py-2 sm:py-2.5 lg:py-3 flex items-center gap-2 sm:gap-3 group transition-all focus:ring-2 focus:ring-accent focus:outline-none border border-white/10"
               style={{ boxShadow: '0 0 8px rgba(109,40,217,0.3)' }}
             >
-              <MagnifyingGlass size={18} className="text-muted-foreground flex-shrink-0 sm:w-5 sm:h-5" />
-              <span className="text-xs sm:text-sm text-muted-foreground flex-1 ltr:text-left rtl:text-right truncate">
+              <MagnifyingGlass size={16} className="text-muted-foreground flex-shrink-0 sm:w-[18px] sm:h-[18px] lg:w-5 lg:h-5" />
+              <span className="text-[11px] sm:text-xs lg:text-sm text-muted-foreground flex-1 ltr:text-left rtl:text-right truncate">
                 {t('header.searchPlaceholder', { count: toolCount })}
               </span>
-              <kbd className="hidden sm:inline-flex px-2 py-1 text-xs font-semibold text-muted-foreground bg-white/5 border border-white/10 rounded">
+              <kbd className="hidden lg:inline-flex px-2 py-1 text-xs font-semibold text-muted-foreground bg-white/5 border border-white/10 rounded">
                 {shortcutHint}
               </kbd>
             </button>
 
-            <div className="flex items-center gap-1.5 sm:gap-3">
-              {/* Language Switcher - hidden on very small screens */}
-              <div className="hidden xs:block sm:block">
+            <div className="flex items-center gap-1 sm:gap-2 lg:gap-3">
+              {/* Language Switcher - hidden on small screens */}
+              <div className="hidden sm:block">
                 <LanguageSwitcher />
               </div>
               
@@ -227,7 +227,7 @@ export default function FuturisticHeader() {
               </div>
 
               {/* AI Credits Badge - shown for logged-in users - hidden on mobile */}
-              {user && <div className="hidden sm:block"><CreditsBadge /></div>}
+              {user && <div className="hidden lg:block"><CreditsBadge /></div>}
 
               {/* User Menu or Sign In */}
               {user ? (
@@ -235,14 +235,14 @@ export default function FuturisticHeader() {
               ) : (
                 <button 
                   onClick={() => navigate('/sign-in')}
-                  className="group relative flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl bg-gradient-to-r from-purple-600 via-purple-500 to-sky-500 text-white font-semibold transition-all hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50 active:scale-95 border border-white/20 min-w-[40px] sm:min-w-[44px]"
+                  className="group relative flex items-center justify-center gap-1 sm:gap-1.5 lg:gap-2 px-2.5 sm:px-3 lg:px-5 py-1.5 sm:py-2 lg:py-2.5 rounded-lg bg-gradient-to-r from-purple-600 via-purple-500 to-sky-500 text-white font-semibold transition-all hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50 active:scale-95 border border-white/20 min-w-[36px] sm:min-w-[40px]"
                   style={{ boxShadow: '0 4px 15px rgba(109,40,217,0.4)' }}
                   aria-label={t('header.signIn')}
                 >
-                  <SignIn size={18} weight="bold" className="group-hover:scale-110 transition-transform sm:w-5 sm:h-5" />
-                  <span className="hidden sm:inline text-sm whitespace-nowrap">{t('header.signIn')}</span>
+                  <SignIn size={16} weight="bold" className="group-hover:scale-110 transition-transform sm:w-[18px] sm:h-[18px] lg:w-5 lg:h-5" />
+                  <span className="hidden lg:inline text-sm whitespace-nowrap">{t('header.signIn')}</span>
                   {/* Glow effect */}
-                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-400 to-sky-400 opacity-0 group-hover:opacity-20 blur-xl transition-opacity pointer-events-none" />
+                  <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-purple-400 to-sky-400 opacity-0 group-hover:opacity-20 blur-xl transition-opacity pointer-events-none" />
                 </button>
               )}
             </div>
