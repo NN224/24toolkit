@@ -30,62 +30,55 @@ export default function AdminDashboard() {
       setIsLoading(true)
       setError(null)
 
-      // Try to load from Firebase, fallback to demo data
-      try {
-        const { collection, getDocs, query, where, Timestamp } = await import('firebase/firestore')
-        const { db } = await import('@/lib/firebase')
+      const { collection, getDocs, query, where, Timestamp } = await import('firebase/firestore')
+      const { db } = await import('@/lib/firebase')
 
-        // Get total users count
-        const usersRef = collection(db, 'users')
-        const usersSnapshot = await getDocs(query(usersRef))
-        const totalUsers = usersSnapshot.size
+      // Get total users count
+      const usersRef = collection(db, 'users')
+      const usersSnapshot = await getDocs(query(usersRef))
+      const totalUsers = usersSnapshot.size
+      
+      console.log('📊 Admin Stats - Total users:', totalUsers)
 
-        // Get active subscriptions
-        let activeSubscriptions = 0
-        usersSnapshot.docs.forEach(doc => {
-          const plan = doc.data().plan
-          if (plan === 'pro' || plan === 'unlimited') {
-            activeSubscriptions++
-          }
-        })
-
-        // Get AI requests today
-        const today = new Date()
-        today.setHours(0, 0, 0, 0)
-        const todayTimestamp = Timestamp.fromDate(today)
-        
-        let aiRequestsToday = 0
-        try {
-          const aiUsageRef = collection(db, 'ai-usage')
-          const todayQuery = query(aiUsageRef, where('timestamp', '>=', todayTimestamp))
-          const aiSnapshot = await getDocs(todayQuery)
-          aiRequestsToday = aiSnapshot.size
-        } catch {
-          // Collection might not exist yet
+      // Get active subscriptions
+      let activeSubscriptions = 0
+      usersSnapshot.docs.forEach(doc => {
+        const data = doc.data()
+        const plan = data.plan || data.subscription?.plan
+        if (plan === 'pro' || plan === 'unlimited' || data.isPremium) {
+          activeSubscriptions++
         }
+      })
+      
+      console.log('📊 Admin Stats - Active subs:', activeSubscriptions)
 
-        // Calculate estimated revenue
-        const revenueThisMonth = (activeSubscriptions * 7.5)
-
-        setStats({
-          totalUsers,
-          activeSubscriptions,
-          aiRequestsToday,
-          revenueThisMonth
-        })
-      } catch (firebaseError) {
-        console.warn('Firebase not available, using demo data:', firebaseError)
-        // Use demo data if Firebase fails
-        setStats({
-          totalUsers: 156,
-          activeSubscriptions: 23,
-          aiRequestsToday: 847,
-          revenueThisMonth: 172.50
-        })
+      // Get AI requests today
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+      const todayTimestamp = Timestamp.fromDate(today)
+      
+      let aiRequestsToday = 0
+      try {
+        const aiUsageRef = collection(db, 'ai-usage')
+        const todayQuery = query(aiUsageRef, where('timestamp', '>=', todayTimestamp))
+        const aiSnapshot = await getDocs(todayQuery)
+        aiRequestsToday = aiSnapshot.size
+      } catch (aiError) {
+        console.warn('AI usage collection not found or needs index:', aiError)
       }
-    } catch (err) {
+
+      // Calculate estimated revenue
+      const revenueThisMonth = (activeSubscriptions * 7.5)
+
+      setStats({
+        totalUsers,
+        activeSubscriptions,
+        aiRequestsToday,
+        revenueThisMonth
+      })
+    } catch (err: any) {
       console.error('Failed to load dashboard stats:', err)
-      setError('Failed to load statistics')
+      setError(err?.message || 'Failed to load statistics')
     } finally {
       setIsLoading(false)
     }

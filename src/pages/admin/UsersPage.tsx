@@ -35,35 +35,41 @@ export default function UsersPage() {
     try {
       setIsLoading(true)
       
-      try {
-        const { collection, getDocs, query, orderBy, limit } = await import('firebase/firestore')
-        const { db } = await import('@/lib/firebase')
-        
-        const usersRef = collection(db, 'users')
-        const q = query(usersRef, orderBy('createdAt', 'desc'), limit(100))
-        const snapshot = await getDocs(q)
-        
-        const usersData = snapshot.docs.map(doc => ({
+      const { collection, getDocs, query, limit } = await import('firebase/firestore')
+      const { db } = await import('@/lib/firebase')
+      
+      const usersRef = collection(db, 'users')
+      // Simple query without orderBy to avoid index requirement
+      const q = query(usersRef, limit(100))
+      const snapshot = await getDocs(q)
+      
+      console.log('📊 Users loaded:', snapshot.size)
+      
+      const usersData = snapshot.docs.map(doc => {
+        const data = doc.data()
+        return {
           uid: doc.id,
-          ...doc.data()
-        } as User))
-        
-        setUsers(usersData)
-        setFilteredUsers(usersData)
-      } catch (firebaseError) {
-        console.warn('Firebase not available, using demo data:', firebaseError)
-        // Demo data
-        const demoUsers: User[] = [
-          { uid: 'demo1', email: 'john@example.com', displayName: 'John Doe', plan: 'pro', createdAt: new Date(), aiRequestsUsed: 45 },
-          { uid: 'demo2', email: 'jane@example.com', displayName: 'Jane Smith', plan: 'unlimited', createdAt: new Date(), aiRequestsUsed: 120 },
-          { uid: 'demo3', email: 'bob@example.com', displayName: 'Bob Wilson', plan: 'free', createdAt: new Date(), aiRequestsUsed: 5 },
-        ]
-        setUsers(demoUsers)
-        setFilteredUsers(demoUsers)
-      }
-    } catch (error) {
+          email: data.email || '',
+          displayName: data.displayName || data.name || '',
+          photoURL: data.photoURL,
+          plan: data.plan || (data.isPremium ? 'pro' : 'free'),
+          createdAt: data.createdAt,
+          aiRequestsUsed: data.aiRequestsUsed || data.aiCreditsUsed || 0
+        } as User
+      })
+      
+      // Sort by createdAt client-side
+      usersData.sort((a, b) => {
+        const dateA = a.createdAt?.toDate?.() || a.createdAt || new Date(0)
+        const dateB = b.createdAt?.toDate?.() || b.createdAt || new Date(0)
+        return new Date(dateB).getTime() - new Date(dateA).getTime()
+      })
+      
+      setUsers(usersData)
+      setFilteredUsers(usersData)
+    } catch (error: any) {
       console.error('Failed to load users:', error)
-      toast.error('Failed to load users')
+      toast.error(error?.message || 'Failed to load users')
     } finally {
       setIsLoading(false)
     }
