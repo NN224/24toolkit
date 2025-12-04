@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext'
 // Admin emails - يمكنك تغييرهم
 const ADMIN_EMAILS = [
   'info@24toolkit.com',
-  'owner@nnh.ae',
+  'admin@nnh.ae',
   // أضف emails الـ admins هنا
 ]
 

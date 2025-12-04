@@ -779,7 +779,7 @@
           "noViolate": "The content does not violate any third-party rights (copyright, trademark, privacy, etc.)",
           "notIllegal": "The content is not illegal, harmful, threatening, abusive, or otherwise objectionable"
         },
-        "noOwnership": "We do not claim ownership of your content. However, by using the Service, you grant us a temporary, non-exclusive license to process your content solely for the purpose of providing the requested service. As stated in our Privacy Policy, we do not store or retain user content beyond the immediate processing period."
+        "noadminship": "We do not claim adminship of your content. However, by using the Service, you grant us a temporary, non-exclusive license to process your content solely for the purpose of providing the requested service. As stated in our Privacy Policy, we do not store or retain user content beyond the immediate processing period."
       },
       "liability": {
         "title": "6. Limitation of Liability",
@@ -794,7 +794,7 @@
           "errors": "Any errors in the Service will be corrected"
         },
         "limitation": "Limitation of Liability:",
-        "limitationDesc": "To the fullest extent permitted by law, 24Toolkit, its owners, employees, and affiliates shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to:",
+        "limitationDesc": "To the fullest extent permitted by law, 24Toolkit, its admins, employees, and affiliates shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to:",
         "limitationItems": {
           "loss": "Loss of profits, data, or goodwill",
           "interruption": "Service interruption or unavailability",
@@ -811,7 +811,7 @@
       },
       "indemnification": {
         "title": "8. Indemnification",
-        "desc": "You agree to defend, indemnify, and hold harmless 24Toolkit, its owners, employees, and affiliates from and against any and all claims, damages, obligations, losses, liabilities, costs, and expenses (including attorney's fees) arising from:",
+        "desc": "You agree to defend, indemnify, and hold harmless 24Toolkit, its admins, employees, and affiliates from and against any and all claims, damages, obligations, losses, liabilities, costs, and expenses (including attorney's fees) arising from:",
         "items": {
           "use": "Your use of the Service",
           "violation": "Your violation of these Terms of Service",

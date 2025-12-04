@@ -108,7 +108,7 @@ export default function TermsOfServicePage() {
                     <li>{t('termsOfService.sections.ugc.items.noViolate')}</li>
                     <li>{t('termsOfService.sections.ugc.items.notIllegal')}</li>
                   </ul>
-                  <p className="mt-4">{t('termsOfService.sections.ugc.noOwnership')}</p>
+                  <p className="mt-4">{t('termsOfService.sections.ugc.noadminship')}</p>
                 </div>
               </section>
 
