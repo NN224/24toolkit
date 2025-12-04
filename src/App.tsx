@@ -15,6 +15,12 @@ import HomePage from '@/pages/HomePage'
 import AboutPage from '@/pages/AboutPage'
 import BlogPage from '@/pages/BlogPage'
 
+// Blog post pages (lazy loaded)
+const AIToolsProductivity2025 = React.lazy(() => import('@/pages/blog/AIToolsProductivity2025'))
+const ImageOptimizationGuide = React.lazy(() => import('@/pages/blog/ImageOptimizationGuide'))
+const OnlineSecurityTips = React.lazy(() => import('@/pages/blog/OnlineSecurityTips'))
+const FreeToolsEntrepreneurs = React.lazy(() => import('@/pages/blog/FreeToolsEntrepreneurs'))
+
 // Admin components (lazy loaded)
 const AdminRoutes = React.lazy(() => import('@/pages/admin/AdminRoutes'))
 import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage'
@@ -171,6 +177,10 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="about" element={<AboutPage />} />
           <Route path="blog" element={<BlogPage />} />
+          <Route path="blog/ai-tools-productivity-2025" element={<Suspense fallback={<LoadingFallback name="Blog Post" />}><AIToolsProductivity2025 /></Suspense>} />
+          <Route path="blog/image-optimization-guide" element={<Suspense fallback={<LoadingFallback name="Blog Post" />}><ImageOptimizationGuide /></Suspense>} />
+          <Route path="blog/online-security-tips-ar" element={<Suspense fallback={<LoadingFallback name="Blog Post" />}><OnlineSecurityTips /></Suspense>} />
+          <Route path="blog/free-tools-entrepreneurs-ar" element={<Suspense fallback={<LoadingFallback name="Blog Post" />}><FreeToolsEntrepreneurs /></Suspense>} />
           <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
           <Route path="terms-of-service" element={<TermsOfServicePage />} />
           <Route path="contact" element={<ContactPage />} />

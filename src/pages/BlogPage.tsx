@@ -67,7 +67,8 @@ function BlogCard({ post }: { post: BlogPost }) {
   const isArabic = post.lang === 'ar'
   
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group card-hover-lift">
+    <Link to={`/blog/${post.id}`} className="block">
+      <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group card-hover-lift">
       <div className="relative h-40 sm:h-48 overflow-hidden">
         <img 
           src={post.image} 
@@ -127,6 +128,7 @@ function BlogCard({ post }: { post: BlogPost }) {
         </button>
       </CardContent>
     </Card>
+    </Link>
   )
 }
 
