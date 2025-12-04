@@ -203,7 +203,7 @@ export function ContextualAIHelper() {
           animate={{ opacity: 1, x: 0, y: 0 }}
           exit={{ opacity: 0, x: 100 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="fixed bottom-24 right-6 w-[320px] max-w-[calc(100vw-3rem)] z-40"
+          className="fixed bottom-20 sm:bottom-24 right-4 sm:right-6 w-[calc(100vw-2rem)] sm:w-[320px] max-w-[320px] z-40"
         >
           <div className="bg-card/95 backdrop-blur-md rounded-2xl border border-yellow-500/30 shadow-lg overflow-hidden">
             {/* Header */}

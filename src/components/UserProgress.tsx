@@ -191,13 +191,13 @@ export function UserProgress() {
       {/* Progress Button - positioned to avoid sidebar on desktop (lg:left-24 = 96px, sidebar is 80px) */}
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 left-6 lg:left-24 z-40 bg-gradient-to-r from-purple-600 to-sky-500 text-white p-4 rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300"
+        className="fixed bottom-4 sm:bottom-6 left-4 sm:left-6 lg:left-24 z-40 bg-gradient-to-r from-purple-600 to-sky-500 text-white p-3 sm:p-4 rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300"
         style={{ boxShadow: '0 0 30px rgba(109,40,217,0.5)' }}
         aria-label={t('progress.viewProgress')}
       >
-        <Trophy size={24} weight="fill" />
+        <Trophy size={20} weight="fill" className="sm:w-6 sm:h-6" />
         {stats.toolsUsed.size > 0 && (
-          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
+          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center">
             {stats.toolsUsed.size}
           </span>
         )}
@@ -210,7 +210,7 @@ export function UserProgress() {
             initial={{ x: -400, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -400, opacity: 0 }}
-            className="fixed top-6 left-6 lg:left-24 z-50 max-w-sm"
+            className="fixed top-4 sm:top-6 left-4 sm:left-6 lg:left-24 z-50 w-[calc(100%-2rem)] sm:w-auto sm:max-w-sm"
           >
             <div className={`bg-gradient-to-r ${newAchievement.color} p-1 rounded-xl shadow-2xl`}>
               <div className="bg-card p-4 rounded-lg">

@@ -90,36 +90,36 @@ function ToolSection({
   badge?: string
 }) {
   return (
-    <section id={id} className="mb-32 scroll-mt-24">
-      <div className="mb-10">
-        <div className="relative mb-8">
-          <div className="absolute left-0 right-0 top-1/2 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
+    <section id={id} className="mb-20 sm:mb-32 scroll-mt-24">
+      <div className="mb-6 sm:mb-10">
+        <div className="relative mb-6 sm:mb-8">
+          <div className="absolute left-0 right-0 top-1/2 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent hidden sm:block" />
           
-          <div className="relative flex items-center gap-4 mb-6 bg-background w-fit pr-8">
+          <div className="relative flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-6 bg-background w-full sm:w-fit sm:pr-8">
             <div 
-              className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${accentColor} flex items-center justify-center`}
+              className={`w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br ${accentColor} flex items-center justify-center flex-shrink-0`}
               style={{ boxShadow: '0 4px 20px rgba(109,40,217,0.3)' }}
             >
-              <span className="text-3xl">{emoji}</span>
+              <span className="text-2xl sm:text-3xl">{emoji}</span>
             </div>
-            <div>
-              <div className="flex items-center gap-3">
-                <h2 className="text-5xl font-bold text-foreground">
+            <div className="w-full sm:w-auto">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground">
                   {title}
                 </h2>
                 {badge && (
-                  <span className="px-4 py-1.5 text-sm font-bold bg-gradient-to-r from-purple-600 to-sky-500 text-white rounded-full">
+                  <span className="px-2 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm font-bold bg-gradient-to-r from-purple-600 to-sky-500 text-white rounded-full">
                     {badge}
                   </span>
                 )}
               </div>
-              <p className="text-muted-foreground text-lg mt-1">{description}</p>
+              <p className="text-muted-foreground text-sm sm:text-lg mt-1">{description}</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {tools.map((tool) => (
           <ToolCard key={tool.id} tool={tool} />
         ))}
@@ -149,11 +149,11 @@ export default function HomePage() {
     : getToolsByCategory(selectedFilter)
 
   return (
-    <div className="py-12 px-4 sm:px-6 lg:px-8 relative">
+    <div className="py-8 sm:py-12 px-4 sm:px-6 lg:px-8 relative">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-20">
+        <div className="text-center mb-12 sm:mb-20">
           <div className="mb-4">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
+            <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold mb-4 sm:mb-6 tracking-tight">
               <span className="bg-gradient-to-r from-purple-500 via-pink-500 to-sky-500 bg-clip-text text-transparent animate-gradient-text">
                 {t('home.title')}
               </span>
@@ -162,31 +162,31 @@ export default function HomePage() {
             </h1>
           </div>
           
-          <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto animate-scale-pop">
+          <p className="text-base sm:text-xl text-muted-foreground mb-6 sm:mb-8 max-w-3xl mx-auto animate-scale-pop">
             {t('home.subtitle')}
           </p>
 
-          <p className="text-sm text-accent/80 mb-10 italic">
+          <p className="text-xs sm:text-sm text-accent/80 mb-6 sm:mb-10 italic">
             ✨ {t(`home.quotes.${randomQuoteIndex}`)} ✨
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-4 mb-10">
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-6 sm:mb-10">
             <Button
               size="lg"
               onClick={handleRandomTool}
-              className="bg-gradient-to-r from-purple-600 via-pink-500 to-sky-500 text-white hover:opacity-90 transition-all px-8 py-6 text-lg font-semibold rounded-xl animate-pulse-glow hover:scale-105 active:scale-95 group"
+              className="bg-gradient-to-r from-purple-600 via-pink-500 to-sky-500 text-white hover:opacity-90 transition-all px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg font-semibold rounded-xl animate-pulse-glow hover:scale-105 active:scale-95 group"
               style={{ boxShadow: '0 0 30px rgba(109,40,217,0.5)' }}
             >
-              <Sparkle size={24} weight="fill" className="ltr:mr-2 rtl:ml-2 animate-sparkle" />
+              <Sparkle size={20} weight="fill" className="ltr:mr-2 rtl:ml-2 animate-sparkle sm:w-6 sm:h-6" />
               {t('home.feelingLucky')}
               <span className="ltr:ml-2 rtl:mr-2 opacity-70">🎲</span>
             </Button>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-6 sm:mb-8">
             <button
               onClick={() => setSelectedFilter('all')}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all ${
                 selectedFilter === 'all'
                   ? 'bg-gradient-to-r from-purple-600 to-sky-500 text-white'
                   : 'bg-card/50 text-muted-foreground hover:text-foreground border border-white/10'
@@ -209,14 +209,15 @@ export default function HomePage() {
                 <button
                   key={id}
                   onClick={() => setSelectedFilter(id)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${
+                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 sm:gap-2 ${
                     selectedFilter === id
                       ? 'bg-gradient-to-r from-purple-600 to-sky-500 text-white'
                       : 'bg-card/50 text-muted-foreground hover:text-foreground border border-white/10'
                   }`}
                 >
-                  <Icon size={16} weight="bold" />
-                  {getCategoryTitle(id as keyof typeof categories, i18n.language)}
+                  <Icon size={14} weight="bold" className="sm:w-4 sm:h-4" />
+                  <span className="hidden sm:inline">{getCategoryTitle(id as keyof typeof categories, i18n.language)}</span>
+                  <span className="sm:hidden">{getCategoryTitle(id as keyof typeof categories, i18n.language).split(' ')[0]}</span>
                 </button>
               )
             })}

@@ -100,6 +100,10 @@ export default function Layout() {
                 {t('footer.about')}
               </Link>
               <span>•</span>
+              <Link to="/blog" className="hover:text-accent transition-colors">
+                Blog
+              </Link>
+              <span>•</span>
               <Link to="/sitemap" className="hover:text-accent transition-colors">
                 {t('footer.sitemap')}
               </Link>

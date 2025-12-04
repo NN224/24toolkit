@@ -133,7 +133,7 @@ export function ToolRecommendationsPopup({
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.95 }}
           transition={{ duration: 0.2 }}
-          className="fixed bottom-6 right-6 w-[380px] max-w-[calc(100vw-3rem)] z-50"
+          className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 w-[calc(100vw-2rem)] sm:w-[380px] max-w-[380px] z-50"
         >
           <div className="bg-card/95 backdrop-blur-sm rounded-2xl border-2 border-purple-500/30 shadow-2xl overflow-hidden">
             {/* Header */}

@@ -154,15 +154,15 @@ export default function FuturisticHeader() {
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-30 lg:left-20 bg-[#0a0f1e]/80 backdrop-blur-sm border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-3 sm:py-4">
+          <div className="flex items-center justify-between gap-2 sm:gap-4">
             <button
               onClick={() => setSearchOpen(true)}
-              className="flex-1 max-w-2xl bg-card/50 rounded-xl px-4 py-3 flex items-center gap-3 group transition-all focus:ring-2 focus:ring-accent focus:outline-none border border-white/10"
+              className="flex-1 max-w-2xl bg-card/50 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 flex items-center gap-2 sm:gap-3 group transition-all focus:ring-2 focus:ring-accent focus:outline-none border border-white/10"
               style={{ boxShadow: '0 0 8px rgba(109,40,217,0.3)' }}
             >
-              <MagnifyingGlass size={20} className="text-muted-foreground" />
-              <span className="text-sm text-muted-foreground flex-1 ltr:text-left rtl:text-right">
+              <MagnifyingGlass size={18} className="text-muted-foreground flex-shrink-0 sm:w-5 sm:h-5" />
+              <span className="text-xs sm:text-sm text-muted-foreground flex-1 ltr:text-left rtl:text-right truncate">
                 {t('header.searchPlaceholder', { count: toolCount })}
               </span>
               <kbd className="hidden sm:inline-flex px-2 py-1 text-xs font-semibold text-muted-foreground bg-white/5 border border-white/10 rounded">
@@ -170,13 +170,15 @@ export default function FuturisticHeader() {
               </kbd>
             </button>
 
-            <div className="flex items-center gap-3">
-              {/* Language Switcher */}
-              <LanguageSwitcher />
+            <div className="flex items-center gap-1.5 sm:gap-3">
+              {/* Language Switcher - hidden on very small screens */}
+              <div className="hidden xs:block sm:block">
+                <LanguageSwitcher />
+              </div>
               
               <button 
                 onClick={startVoiceSearch}
-                className={`p-2 rounded-lg bg-card/50 transition-all border border-white/10 ${
+                className={`p-2 rounded-lg bg-card/50 transition-all border border-white/10 hidden sm:flex ${
                   isListening ? 'animate-pulse' : ''
                 }`}
                 style={isListening ? { boxShadow: '0 0 8px rgba(109,40,217,0.5)' } : {}}
@@ -224,8 +226,8 @@ export default function FuturisticHeader() {
                 </button>
               </div>
 
-              {/* AI Credits Badge - shown for logged-in users */}
-              {user && <CreditsBadge />}
+              {/* AI Credits Badge - shown for logged-in users - hidden on mobile */}
+              {user && <div className="hidden sm:block"><CreditsBadge /></div>}
 
               {/* User Menu or Sign In */}
               {user ? (
@@ -233,11 +235,11 @@ export default function FuturisticHeader() {
               ) : (
                 <button 
                   onClick={() => navigate('/sign-in')}
-                  className="group relative flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 via-purple-500 to-sky-500 text-white font-semibold transition-all hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50 active:scale-95 border border-white/20 min-w-[44px]"
+                  className="group relative flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl bg-gradient-to-r from-purple-600 via-purple-500 to-sky-500 text-white font-semibold transition-all hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50 active:scale-95 border border-white/20 min-w-[40px] sm:min-w-[44px]"
                   style={{ boxShadow: '0 4px 15px rgba(109,40,217,0.4)' }}
                   aria-label={t('header.signIn')}
                 >
-                  <SignIn size={20} weight="bold" className="group-hover:scale-110 transition-transform" />
+                  <SignIn size={18} weight="bold" className="group-hover:scale-110 transition-transform sm:w-5 sm:h-5" />
                   <span className="hidden sm:inline text-sm whitespace-nowrap">{t('header.signIn')}</span>
                   {/* Glow effect */}
                   <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-400 to-sky-400 opacity-0 group-hover:opacity-20 blur-xl transition-opacity pointer-events-none" />
@@ -255,7 +257,7 @@ export default function FuturisticHeader() {
             onClick={() => setSearchOpen(false)}
           />
           <div
-            className="fixed top-20 left-1/2 -translate-x-1/2 w-full max-w-2xl z-50 px-4"
+            className="fixed top-16 sm:top-20 left-1/2 -translate-x-1/2 w-full max-w-2xl z-50 px-3 sm:px-4"
           >
             <div className="bg-card/90 backdrop-blur-sm rounded-2xl overflow-hidden border-2 border-accent/30"
               style={{ boxShadow: '0 0 20px rgba(109,40,217,0.4)' }}

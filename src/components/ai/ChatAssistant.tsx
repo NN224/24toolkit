@@ -278,7 +278,7 @@ export default function FloatingChatAssistant() {
   return (
     <>
       {isOpen && (
-        <div className="fixed bottom-24 right-6 w-[400px] max-w-[calc(100vw-3rem)] z-[9999]">
+        <div className="fixed bottom-20 sm:bottom-24 right-4 sm:right-6 w-[calc(100vw-2rem)] sm:w-[400px] max-w-[400px] z-[9999]">
           <div className="bg-card/90 backdrop-blur-sm rounded-2xl overflow-hidden border-2 border-accent/30"
             style={{ boxShadow: '0 0 20px rgba(109,40,217,0.4)' }}
           >
