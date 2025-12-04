@@ -13,6 +13,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { UpgradeModal } from '@/components/UpgradeModal'
 import HomePage from '@/pages/HomePage'
 import AboutPage from '@/pages/AboutPage'
+import BlogPage from '@/pages/BlogPage'
 
 // Admin components (lazy loaded)
 const AdminRoutes = React.lazy(() => import('@/pages/admin/AdminRoutes'))
@@ -169,6 +170,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="about" element={<AboutPage />} />
+          <Route path="blog" element={<BlogPage />} />
           <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
           <Route path="terms-of-service" element={<TermsOfServicePage />} />
           <Route path="contact" element={<ContactPage />} />
