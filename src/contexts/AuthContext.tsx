@@ -91,6 +91,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, [user])
 
   useEffect(() => {
+    // If Firebase auth is not configured, set loading to false immediately
+    if (!auth) {
+      setLoading(false)
+      return
+    }
+    
     // Listen for auth state changes
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       setUser(firebaseUser)
