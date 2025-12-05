@@ -136,6 +136,7 @@ const Stopwatch = React.lazy(() => import('@/pages/tools/Stopwatch'))
 const Notepad = React.lazy(() => import('@/pages/tools/Notepad'))
 const DailyPlannerTemplate = React.lazy(() => import('@/pages/tools/DailyPlannerTemplate'))
 const PomodoroTimer = React.lazy(() => import('@/pages/tools/PomodoroTimer'))
+const ProjectTimeline = React.lazy(() => import('@/pages/tools/ProjectTimeline'))
 
 // Beautiful loading fallback component with skeleton
 const LoadingFallback = ({ name = 'tool' }: { name?: string }) => (
@@ -458,6 +459,7 @@ function App() {
           <Route path="tools/notepad" element={<Suspense fallback={<LoadingFallback name="Notepad" />}><Notepad /></Suspense>} />
           <Route path="tools/daily-planner-template" element={<Suspense fallback={<LoadingFallback name="Daily Planner" />}><DailyPlannerTemplate /></Suspense>} />
           <Route path="tools/pomodoro-timer" element={<Suspense fallback={<LoadingFallback name="Pomodoro Timer" />}><PomodoroTimer /></Suspense>} />
+          <Route path="tools/project-timeline" element={<Suspense fallback={<LoadingFallback name="Project Timeline" />}><ProjectTimeline /></Suspense>} />
           
           {/* Admin Routes */}
           <Route path="admin/*" element={

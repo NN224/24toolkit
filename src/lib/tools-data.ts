@@ -912,6 +912,17 @@ export const allTools: Tool[] = [
     category: 'fun'
   },
   {
+    id: 'project-timeline',
+    title: 'Project Timeline',
+    titleAr: 'الجدول الزمني للمشروع',
+    description: 'Interactive orbital timeline visualization',
+    descriptionAr: 'عرض تفاعلي للجدول الزمني مع حركة مدارية',
+    icon: CalendarBlank,
+    path: '/tools/project-timeline',
+    color: 'from-purple-500 to-indigo-500',
+    category: 'fun'
+  },
+  {
     id: 'text-to-speech',
     title: 'Text to Speech',
     titleAr: 'تحويل النص إلى كلام',
