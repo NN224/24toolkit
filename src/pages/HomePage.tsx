@@ -22,6 +22,7 @@ import { PopularTools } from '@/components/PopularTools'
 import { FavoriteTools } from '@/components/FavoriteTools'
 import { DailyTip } from '@/components/DailyTip'
 import { DailyChallenges } from '@/components/DailyChallenges'
+import { FeaturedTimeline } from '@/components/FeaturedTimeline'
 import { useFavoriteTools } from '@/hooks/useFavoriteTools'
 import { useToolAnalytics } from '@/hooks/useToolAnalytics'
 
@@ -266,6 +267,9 @@ export default function HomePage() {
 
         {selectedFilter === 'all' ? (
           <>
+            {/* Featured Timeline Hero Section */}
+            <FeaturedTimeline />
+
             {/* Daily Tip */}
             <DailyTip />
 
