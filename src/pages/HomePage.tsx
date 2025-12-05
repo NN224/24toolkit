@@ -25,9 +25,11 @@ import { DailyChallenges } from '@/components/DailyChallenges'
 import { useFavoriteTools } from '@/hooks/useFavoriteTools'
 import { useToolAnalytics } from '@/hooks/useToolAnalytics'
 
-function ToolCard({ tool }: { tool: any }) {
+function ToolCard({ tool, showFavoriteButton = true }: { tool: any; showFavoriteButton?: boolean }) {
   const { i18n, t } = useTranslation()
+  const { toggleFavorite, isFavorite } = useFavoriteTools()
   const Icon = tool.icon
+  const favorite = isFavorite(tool.id)
 
   // Extract glow color from tool.color gradient
   const getGlowColor = (color: string) => {
@@ -41,6 +43,12 @@ function ToolCard({ tool }: { tool: any }) {
     return 'rgba(147, 51, 234, 0.4)'
   }
 
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    toggleFavorite(tool.id)
+  }
+
   return (
     <Link to={tool.path} className="group block h-full">
       <Card 
@@ -52,6 +60,21 @@ function ToolCard({ tool }: { tool: any }) {
       >
         {/* Gradient overlay on hover */}
         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 to-sky-500/0 group-hover:from-purple-500/5 group-hover:to-sky-500/5 transition-all duration-500" />
+        
+        {/* Favorite button */}
+        {showFavoriteButton && (
+          <button
+            onClick={handleFavoriteClick}
+            className={`absolute top-3 right-3 z-10 p-2 rounded-full transition-all ${
+              favorite 
+                ? 'bg-pink-500/20 text-pink-500' 
+                : 'bg-white/5 text-muted-foreground opacity-0 group-hover:opacity-100 hover:bg-white/10 hover:text-pink-500'
+            }`}
+            aria-label={favorite ? t('favorites.remove') : t('favorites.add')}
+          >
+            <Heart size={18} weight={favorite ? 'fill' : 'regular'} />
+          </button>
+        )}
         
         <CardHeader className="relative">
           <div className="flex items-start justify-between mb-4">
