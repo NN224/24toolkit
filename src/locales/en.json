@@ -58,6 +58,49 @@
     "whatsapp": "WhatsApp",
     "nativeShare": "Share"
   },
+  "favorites": {
+    "title": "My Favorite Tools",
+    "subtitle": "Tools you've saved for quick access",
+    "added": "Added to favorites! ❤️",
+    "removed": "Removed from favorites",
+    "cleared": "All favorites cleared",
+    "add": "Add to favorites",
+    "remove": "Remove from favorites",
+    "empty": "No favorite tools yet",
+    "emptyHint": "Click the heart icon on any tool to add it here"
+  },
+  "popularTools": {
+    "title": "Most Used",
+    "subtitle": "Your frequently used tools for quick access",
+    "uses": "uses"
+  },
+  "dailyTip": {
+    "title": "Daily Tip",
+    "tryNow": "Try now:"
+  },
+  "challenges": {
+    "title": "Daily Challenges",
+    "subtitle": "Complete challenges and earn achievements!",
+    "completed": "Completed",
+    "suggest": "Suggest tool",
+    "allCompleted": "🎉 Great job! You completed all challenges today",
+    "comeBackTomorrow": "Come back tomorrow for new challenges!",
+    "use3Tools": {
+      "title": "Tool Explorer",
+      "description": "Use 3 different tools today",
+      "reward": "Unlock Explorer badge"
+    },
+    "useAITool": {
+      "title": "AI User",
+      "description": "Try at least one AI-powered tool",
+      "reward": "Unlock AI badge"
+    },
+    "exploreCategory": {
+      "title": "Enthusiast Developer",
+      "description": "Use 2 developer tools",
+      "reward": "Unlock Developer badge"
+    }
+  },
   "ai": {
     "signInRequired": "Please sign in to use AI features",
     "signInRequiredTitle": "Sign In Required",
