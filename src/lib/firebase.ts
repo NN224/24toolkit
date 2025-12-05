@@ -31,7 +31,7 @@ try {
 
 // Initialize Firebase App Check with reCAPTCHA v3
 // This protects your Firebase resources from abuse
-if (import.meta.env.VITE_RECAPTCHA_SITE_KEY) {
+if (app && import.meta.env.VITE_RECAPTCHA_SITE_KEY) {
   try {
     initializeAppCheck(app, {
       provider: new ReCaptchaV3Provider(import.meta.env.VITE_RECAPTCHA_SITE_KEY),
@@ -42,15 +42,15 @@ if (import.meta.env.VITE_RECAPTCHA_SITE_KEY) {
   } catch (error) {
     console.warn('⚠️ App Check initialization failed:', error)
   }
-} else {
+} else if (!import.meta.env.VITE_RECAPTCHA_SITE_KEY) {
   console.warn('⚠️ App Check not initialized: VITE_RECAPTCHA_SITE_KEY is missing')
 }
 
-// Initialize Firebase Authentication
-export const auth = getAuth(app)
+// Initialize Firebase Authentication (with null fallback)
+export const auth: Auth | null = app ? getAuth(app) : null
 
-// Initialize Firestore
-export const db = getFirestore(app)
+// Initialize Firestore (with null fallback)
+export const db: Firestore | null = app ? getFirestore(app) : null
 
 // ============================================
 // User Profile Types & Functions
