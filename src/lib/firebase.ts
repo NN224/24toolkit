@@ -158,6 +158,10 @@ export async function getUserProfile(userId: string, email?: string | null, disp
  * Returns the new credit count
  */
 export async function decrementCredits(userId: string): Promise<number> {
+  if (!db) {
+    return DEFAULT_DAILY_CREDITS - 1
+  }
+  
   const userRef = doc(db, 'users', userId)
   const userSnap = await getDoc(userRef)
   
