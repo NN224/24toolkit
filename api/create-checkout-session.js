@@ -53,8 +53,8 @@ export default async function handler(req, res) {
           quantity: 1,
         },
       ],
-      success_url: successUrl || 'https://24toolkit.com/settings?success=true',
-      cancel_url: cancelUrl || 'https://24toolkit.com/pricing?canceled=true',
+      success_url: successUrl || `${process.env.SITE_URL || process.env.VERCEL_URL || 'https://24toolkit.com'}/settings?success=true`,
+      cancel_url: cancelUrl || `${process.env.SITE_URL || process.env.VERCEL_URL || 'https://24toolkit.com'}/pricing?canceled=true`,
       customer_email: userEmail || undefined,
       metadata: {
         userId: userId,
