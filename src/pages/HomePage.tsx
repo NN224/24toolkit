@@ -163,11 +163,21 @@ export default function HomePage() {
   const [selectedFilter, setSelectedFilter] = useState('all')
   const [randomQuoteIndex] = useState(() => Math.floor(Math.random() * 5))
   const navigate = useNavigate()
+  const { trackToolUsage } = useToolAnalytics()
   useEasterEgg()
   
   // Set SEO metadata for home page
   const homeMetadata = getPageMetadata('home')
   useSEO({ ...homeMetadata, canonicalPath: '/' })
+
+  // Listen for tool usage from other pages
+  useEffect(() => {
+    const handleTrackToolUsage = (event: CustomEvent) => {
+      trackToolUsage(event.detail.toolId)
+    }
+    window.addEventListener('track-tool-usage', handleTrackToolUsage as EventListener)
+    return () => window.removeEventListener('track-tool-usage', handleTrackToolUsage as EventListener)
+  }, [trackToolUsage])
 
   const handleRandomTool = () => {
     const randomTool = allTools[Math.floor(Math.random() * allTools.length)]
