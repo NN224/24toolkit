@@ -85,6 +85,18 @@ function isSameDay(date1: Date, date2: Date): boolean {
  * If lastResetDate is not today, reset credits
  */
 export async function getUserProfile(userId: string, email?: string | null, displayName?: string | null): Promise<UserProfile> {
+  if (!db) {
+    // Return demo profile if Firebase not configured
+    return {
+      aiCredits: DEFAULT_DAILY_CREDITS,
+      isPremium: false,
+      lastResetDate: new Date(),
+      createdAt: new Date(),
+      email: email || null,
+      displayName: displayName || null
+    }
+  }
+  
   const userRef = doc(db, 'users', userId)
   const userSnap = await getDoc(userRef)
   
