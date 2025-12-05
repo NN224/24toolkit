@@ -213,6 +213,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // Reset password
   const resetPassword = async (email: string) => {
+    if (!auth) {
+      toast.error(i18n.t('auth.notConfigured'))
+      return
+    }
     try {
       await sendPasswordResetEmail(auth, email)
       toast.success(i18n.t('auth.resetEmailSent'))
@@ -231,6 +235,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   const signOut = async () => {
+    if (!auth) {
+      return
+    }
     try {
       await firebaseSignOut(auth)
       setUserProfile(null)
