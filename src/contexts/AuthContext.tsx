@@ -182,6 +182,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // Sign up with Email/Password
   const signUpWithEmail = async (email: string, password: string, displayName?: string) => {
+    if (!auth) {
+      toast.error(i18n.t('auth.notConfigured'))
+      return
+    }
     try {
       const result = await createUserWithEmailAndPassword(auth, email, password)
       
