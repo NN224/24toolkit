@@ -1,50 +1,54 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { toast } from 'sonner'
 import i18n from '@/i18n'
 
 const STORAGE_KEY = 'favorite-tools'
 
 export function useFavoriteTools() {
-  const [favorites, setFavorites] = useState<string[]>([])
-
-  // Load favorites from localStorage
-  useEffect(() => {
+  const [favorites, setFavorites] = useState<string[]>(() => {
+    // Initialize from localStorage
     const saved = localStorage.getItem(STORAGE_KEY)
     if (saved) {
       try {
-        setFavorites(JSON.parse(saved))
+        return JSON.parse(saved)
       } catch (e) {
         console.error('Failed to parse favorites:', e)
       }
     }
-  }, [])
+    return []
+  })
 
-  const saveFavorites = (newFavorites: string[]) => {
+  // Use ref to avoid stale closure
+  const favoritesRef = useRef(favorites)
+  favoritesRef.current = favorites
+
+  const saveFavorites = useCallback((newFavorites: string[]) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newFavorites))
     setFavorites(newFavorites)
-  }
+  }, [])
 
   const addFavorite = useCallback((toolId: string) => {
-    if (!favorites.includes(toolId)) {
-      const newFavorites = [...favorites, toolId]
+    const current = favoritesRef.current
+    if (!current.includes(toolId)) {
+      const newFavorites = [...current, toolId]
       saveFavorites(newFavorites)
       toast.success(i18n.t('favorites.added'))
     }
-  }, [favorites])
+  }, [saveFavorites])
 
   const removeFavorite = useCallback((toolId: string) => {
-    const newFavorites = favorites.filter(id => id !== toolId)
+    const newFavorites = favoritesRef.current.filter(id => id !== toolId)
     saveFavorites(newFavorites)
     toast.success(i18n.t('favorites.removed'))
-  }, [favorites])
+  }, [saveFavorites])
 
   const toggleFavorite = useCallback((toolId: string) => {
-    if (favorites.includes(toolId)) {
+    if (favoritesRef.current.includes(toolId)) {
       removeFavorite(toolId)
     } else {
       addFavorite(toolId)
     }
-  }, [favorites, addFavorite, removeFavorite])
+  }, [addFavorite, removeFavorite])
 
   const isFavorite = useCallback((toolId: string): boolean => {
     return favorites.includes(toolId)
