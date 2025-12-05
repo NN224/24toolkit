@@ -125,6 +125,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // Generic sign in function
   const signInWithProvider = async (provider: AuthProvider, providerName: string) => {
+    if (!auth) {
+      toast.error(i18n.t('auth.notConfigured'))
+      return
+    }
     try {
       const result = await signInWithPopup(auth, provider)
       toast.success(i18n.t('auth.welcomeMessage', { name: result.user.displayName || result.user.email }))
