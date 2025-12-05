@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -14,9 +14,16 @@ import {
   Code,
   ImageSquare,
   ShieldCheck,
-  Calculator
+  Calculator,
+  Heart
 } from '@phosphor-icons/react'
 import { getToolsByCategory, categories, allTools, getToolTitle, getToolDescription, getCategoryTitle } from '@/lib/tools-data'
+import { PopularTools } from '@/components/PopularTools'
+import { FavoriteTools } from '@/components/FavoriteTools'
+import { DailyTip } from '@/components/DailyTip'
+import { DailyChallenges } from '@/components/DailyChallenges'
+import { useFavoriteTools } from '@/hooks/useFavoriteTools'
+import { useToolAnalytics } from '@/hooks/useToolAnalytics'
 
 function ToolCard({ tool }: { tool: any }) {
   const { i18n, t } = useTranslation()
