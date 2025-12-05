@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { MagnifyingGlass, Microphone, User, Moon, Sun, Lightning, SignIn, Calendar } from '@phosphor-icons/react'
+import { MagnifyingGlass, Microphone, User, Moon, Sun, Lightning, SignIn } from '@phosphor-icons/react'
 import { searchTools, allTools, type Tool } from '@/lib/tools-data'
 import { useTheme } from '@/components/ThemeProvider'
 import { toast } from 'sonner'
@@ -168,22 +168,6 @@ export default function FuturisticHeader() {
               <kbd className="hidden lg:inline-flex px-2 py-1 text-xs font-semibold text-muted-foreground bg-white/5 border border-white/10 rounded">
                 {shortcutHint}
               </kbd>
-            </button>
-
-            {/* Project Timeline Quick Access */}
-            <button
-              onClick={() => navigate('/tools/project-timeline')}
-              className="p-2 rounded-lg bg-card/50 transition-all border border-white/10 hover:bg-purple-500/20 hover:border-purple-500/30 group relative hidden sm:flex"
-              title={t('header.projectTimeline', { defaultValue: 'Project Timeline' })}
-              style={{ boxShadow: '0 0 8px rgba(109,40,217,0.2)' }}
-            >
-              <Calendar 
-                size={20} 
-                weight="bold"
-                className="text-purple-400 group-hover:text-purple-300 transition-colors" 
-              />
-              {/* Glow effect on hover */}
-              <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-purple-500/0 to-indigo-500/0 group-hover:from-purple-500/20 group-hover:to-indigo-500/20 transition-all blur-sm pointer-events-none" />
             </button>
 
             <div className="flex items-center gap-1 sm:gap-2 lg:gap-3">
