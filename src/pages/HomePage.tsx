@@ -266,6 +266,18 @@ export default function HomePage() {
 
         {selectedFilter === 'all' ? (
           <>
+            {/* Daily Tip */}
+            <DailyTip />
+
+            {/* Daily Challenges */}
+            <DailyChallenges />
+
+            {/* Favorite Tools Section */}
+            <FavoriteTools />
+
+            {/* Popular Tools Section */}
+            <PopularTools />
+
             {/* Ad after hero section */}
             <div className="mb-8 sm:mb-12 lg:mb-16 flex justify-center">
               <AdBanner className="w-full max-w-5xl" />
