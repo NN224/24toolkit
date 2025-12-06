@@ -16,6 +16,9 @@ export default function BMICalculator() {
   const metadata = getPageMetadata('bmi-calculator')
   useSEO({ ...metadata, canonicalPath: '/tools/bmi-calculator' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.bMICalculator.name')
+
   const [weight, setWeight] = useState('')
   const [height, setHeight] = useState('')
   const [unit, setUnit] = useState<'metric' | 'imperial'>('metric')
@@ -67,8 +70,8 @@ export default function BMICalculator() {
             <Heartbeat size={24} className="text-white" weight="bold" />
           </div>
           <div>
-            <h1 className="text-3xl font-semibold text-foreground">{t('tools.bmiCalculator.name')}</h1>
-            <p className="text-muted-foreground">{t('tools.bmiCalculator.description')}</p>
+            <h1 className="text-3xl font-semibold text-foreground">{pageH1}</h1>
+            <p className="text-muted-foreground">{metadata.description}</p>
           </div>
         </div>
       </div>

@@ -15,6 +15,9 @@ export default function DiscountCalculator() {
   const metadata = getPageMetadata('discount-calculator')
   useSEO({ ...metadata, canonicalPath: '/tools/discount-calculator' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.discountCalculator.name')
+
   const [originalPrice, setOriginalPrice] = useState('')
   const [discountPercent, setDiscountPercent] = useState('')
   const [result, setResult] = useState<{
@@ -51,8 +54,8 @@ export default function DiscountCalculator() {
             <Tag size={24} className="text-white" weight="bold" />
           </div>
           <div>
-            <h1 className="text-3xl font-semibold text-foreground">{t('tools.discountCalculator.name')}</h1>
-            <p className="text-muted-foreground">{t('tools.discountCalculator.description')}</p>
+            <h1 className="text-3xl font-semibold text-foreground">{pageH1}</h1>
+            <p className="text-muted-foreground">{metadata.description}</p>
           </div>
         </div>
       </div>

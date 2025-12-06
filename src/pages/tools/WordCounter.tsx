@@ -23,6 +23,9 @@ export default function WordCounter() {
   useEffect(() => {
     trackToolUsage('Word Counter')
   }, [])
+  
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.wordCounter.name')
 
   const stats = useMemo(() => {
     const trimmedText = text.trim()
@@ -62,10 +65,10 @@ export default function WordCounter() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            {t('tools.wordCounter.name')}
+            {pageH1}
           </h1>
           <p className="text-lg text-muted-foreground">
-            {t('tools.wordCounter.description')}
+            {metadata.description}
           </p>
         </div>
 

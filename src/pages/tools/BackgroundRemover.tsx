@@ -18,6 +18,9 @@ export default function BackgroundRemover() {
   const metadata = getPageMetadata('background-remover')
   useSEO({ ...metadata, canonicalPath: '/tools/background-remover' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.backgroundRemover.name')
+
   const [image, setImage] = useState<string | null>(null)
   const [processedImage, setProcessedImage] = useState<string | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
@@ -159,14 +162,10 @@ export default function BackgroundRemover() {
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-3">
-            <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-              {t('tools.backgroundRemover.title')}
-            </h1>
+            <h1 className="text-4xl font-semibold text-foreground tracking-tight">{pageH1}</h1>
             <AIBadge />
           </div>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.backgroundRemover.subtitle')}
-          </p>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <Card className="mb-6">

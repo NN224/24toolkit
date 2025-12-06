@@ -18,6 +18,9 @@ export default function HTTPRedirectChecker() {
   const metadata = getPageMetadata('http-redirect-checker')
   useSEO({ ...metadata, canonicalPath: '/tools/http-redirect-checker' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.hTTPRedirectChecker.name')
+
   const [url, setUrl] = useState('')
   const [redirectChain, setRedirectChain] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -108,12 +111,8 @@ export default function HTTPRedirectChecker() {
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            {t('tools.httpRedirectChecker.title')}
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.httpRedirectChecker.subtitle')}
-          </p>
+          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">{pageH1}</h1>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <div className="space-y-6">

@@ -18,6 +18,9 @@ export default function ImageCaptionGenerator() {
   const metadata = getPageMetadata('image-caption-generator')
   useSEO({ ...metadata, canonicalPath: '/tools/image-caption-generator' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.imageCaptionGenerator.name')
+
   const [imageUrl, setImageUrl] = useState<string>('')
   const [caption, setCaption] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -106,14 +109,10 @@ export default function ImageCaptionGenerator() {
       <div className="max-w-5xl mx-auto">
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-3">
-            <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-              {t('tools.imageCaptionGenerator.title')}
-            </h1>
+            <h1 className="text-4xl font-semibold text-foreground tracking-tight">{pageH1}</h1>
             <AIBadge />
           </div>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.imageCaptionGenerator.subtitle')}
-          </p>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <div className="space-y-6">

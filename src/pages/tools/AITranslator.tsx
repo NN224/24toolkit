@@ -35,6 +35,9 @@ export default function AITranslator() {
   const metadata = getPageMetadata('ai-translator')
   useSEO({ ...metadata, canonicalPath: '/tools/ai-translator' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.aITranslator.name')
+
   const [inputText, setInputText] = useState('')
   const [targetLang, setTargetLang] = useState('es')
   const [translatedText, setTranslatedText] = useState('')
@@ -93,8 +96,8 @@ export default function AITranslator() {
             <Globe size={24} className="text-white" weight="bold" />
           </div>
           <div>
-            <h1 className="text-3xl font-semibold text-foreground">{t('tools.aiTranslator.name')}</h1>
-            <p className="text-muted-foreground">{t('tools.aiTranslator.description')}</p>
+            <h1 className="text-3xl font-semibold text-foreground">{pageH1}</h1>
+            <p className="text-muted-foreground">{metadata.description}</p>
           </div>
         </div>
       </div>

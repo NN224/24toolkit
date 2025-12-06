@@ -19,6 +19,9 @@ export default function AESEncryptor() {
   const metadata = getPageMetadata('aes-encryptor')
   useSEO({ ...metadata, canonicalPath: '/tools/aes-encryptor' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.aESEncryptor.name')
+
   const [plaintext, setPlaintext] = useState('')
   const [ciphertext, setCiphertext] = useState('')
   const [encryptKey, setEncryptKey] = useState('')
@@ -131,12 +134,8 @@ export default function AESEncryptor() {
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            {t('tools.aesEncryptor.name')}
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.aesEncryptor.description')}
-          </p>
+          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">{pageH1}</h1>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <Tabs defaultValue="encrypt" className="space-y-6">

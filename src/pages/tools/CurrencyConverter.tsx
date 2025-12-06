@@ -18,6 +18,9 @@ export default function CurrencyConverter() {
   const metadata = getPageMetadata('currency-converter')
   useSEO({ ...metadata, canonicalPath: '/tools/currency-converter' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.currencyConverter.name')
+
   const [amount, setAmount] = useState('')
   const [fromCurrency, setFromCurrency] = useState('USD')
   const [toCurrency, setToCurrency] = useState('EUR')
@@ -76,8 +79,8 @@ export default function CurrencyConverter() {
             <CurrencyDollar size={24} className="text-white" weight="bold" />
           </div>
           <div>
-            <h1 className="text-3xl font-semibold text-foreground">{t('tools.currencyConverter.name')}</h1>
-            <p className="text-muted-foreground">{t('tools.currencyConverter.description')}</p>
+            <h1 className="text-3xl font-semibold text-foreground">{pageH1}</h1>
+            <p className="text-muted-foreground">{metadata.description}</p>
           </div>
         </div>
       </div>

@@ -19,6 +19,9 @@ export default function TextEncryptor() {
   const metadata = getPageMetadata('text-encryptor')
   useSEO({ ...metadata, canonicalPath: '/tools/text-encryptor' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.textEncryptor.name')
+
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')
   const [password, setPassword] = useState('')
@@ -109,12 +112,8 @@ export default function TextEncryptor() {
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            {t('tools.textEncryptor.title')}
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.textEncryptor.subtitle')}
-          </p>
+          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">{pageH1}</h1>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <Card className="mb-6 bg-yellow-50 border-yellow-200">

@@ -23,6 +23,9 @@ export default function ColorPicker() {
   const metadata = getPageMetadata('color-picker')
   useSEO({ ...metadata, canonicalPath: '/tools/color-picker' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.colorPicker.name')
+
   const [selectedColor, setSelectedColor] = useState('#4A90E2')
   const [palette, setPalette] = useState<ColorPalette[]>([])
   const copyColor = useCopyToClipboard()
@@ -88,12 +91,8 @@ export default function ColorPicker() {
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            {t('tools.colorPicker.name')}
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.colorPicker.description')}
-          </p>
+          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">{pageH1}</h1>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <div className="space-y-6">

@@ -18,6 +18,9 @@ export default function JSONCSVConverter() {
   const metadata = getPageMetadata('json-csv-converter')
   useSEO({ ...metadata, canonicalPath: '/tools/json-csv-converter' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.jSONCSVConverter.name')
+
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')
 
@@ -85,12 +88,8 @@ export default function JSONCSVConverter() {
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            {t('tools.jsonCsvConverter.title')}
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.jsonCsvConverter.subtitle')}
-          </p>
+          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">{pageH1}</h1>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-6 mb-6">

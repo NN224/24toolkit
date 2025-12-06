@@ -14,11 +14,13 @@ import { getPageMetadata } from '@/lib/seo-metadata'
 import { RelatedTools } from '@/components/RelatedTools'
 
 export default function SecurePasswordGenerator() {
+  const { t } = useTranslation()
   // Set SEO metadata
   const metadata = getPageMetadata('secure-password-generator')
   useSEO({ ...metadata, canonicalPath: '/tools/secure-password-generator' })
 
-  const { t } = useTranslation()
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.securePasswordGenerator.name')
   const [password, setPassword] = useState('')
   const [length, setLength] = useState(20)
   const [options, setOptions] = useState({
@@ -116,12 +118,8 @@ export default function SecurePasswordGenerator() {
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            {t('tools.securePasswordGenerator.title')}
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.securePasswordGenerator.subtitle')}
-          </p>
+          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">{pageH1}</h1>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <div className="space-y-6">

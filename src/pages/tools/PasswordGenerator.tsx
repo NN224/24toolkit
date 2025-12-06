@@ -22,6 +22,9 @@ export default function PasswordGenerator() {
   const metadata = getPageMetadata('password-generator')
   useSEO({ ...metadata, canonicalPath: '/tools/password-generator' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.passwordGenerator.name')
+
   // Track tool usage
   useEffect(() => {
     trackToolUsage('Password Generator')
@@ -92,10 +95,10 @@ export default function PasswordGenerator() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            {t('tools.passwordGenerator.name')}
+            {pageH1}
           </h1>
           <p className="text-lg text-muted-foreground">
-            {t('tools.passwordGenerator.description')}
+            {metadata.description}
           </p>
         </div>
 

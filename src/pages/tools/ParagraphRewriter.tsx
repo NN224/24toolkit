@@ -26,6 +26,9 @@ export default function ParagraphRewriter() {
   const metadata = getPageMetadata('paragraph-rewriter')
   useSEO({ ...metadata, canonicalPath: '/tools/paragraph-rewriter' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.paragraphRewriter.name')
+
   const [inputText, setInputText] = useState('')
   const [outputText, setOutputText] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -91,14 +94,10 @@ export default function ParagraphRewriter() {
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-3">
-            <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-              {t('tools.paragraphRewriter.title')}
-            </h1>
+            <h1 className="text-4xl font-semibold text-foreground tracking-tight">{pageH1}</h1>
             <AIBadge />
           </div>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.paragraphRewriter.subtitle')}
-          </p>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <div className="space-y-6">

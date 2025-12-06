@@ -17,6 +17,9 @@ export default function IPAddressFinder() {
   const metadata = getPageMetadata('ip-address-finder')
   useSEO({ ...metadata, canonicalPath: '/tools/ip-address-finder' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.iPAddressFinder.name')
+
   const [ipInfo, setIpInfo] = useState<{
     ip: string
     city?: string
@@ -96,8 +99,8 @@ export default function IPAddressFinder() {
             <NetworkSlash size={24} className="text-white" weight="bold" />
           </div>
           <div>
-            <h1 className="text-3xl font-semibold text-foreground">{t('tools.ipAddressFinder.name')}</h1>
-            <p className="text-muted-foreground">{t('tools.ipAddressFinder.description')}</p>
+            <h1 className="text-3xl font-semibold text-foreground">{pageH1}</h1>
+            <p className="text-muted-foreground">{metadata.description}</p>
           </div>
         </div>
       </div>

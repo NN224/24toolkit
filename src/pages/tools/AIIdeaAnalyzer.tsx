@@ -21,6 +21,9 @@ export default function IdeaAnalyzer() {
   const metadata = getPageMetadata('idea-analyzer')
   useSEO({ ...metadata, canonicalPath: '/tools/ai-idea-analyzer' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.aIIdeaAnalyzer.name')
+
   const [idea, setIdea] = useState('');
   const [analysis, setAnalysis] = useState<string>('');
   const [provider, setProvider] = useState<AIProvider>('anthropic');
@@ -95,12 +98,8 @@ export default function IdeaAnalyzer() {
       
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-            {t('tools.ideaAnalyzer.title')}
-          </h1>
-          <p className="text-lg text-muted-foreground mt-3">
-            {t('tools.ideaAnalyzer.subtitle')}
-          </p>
+          <h1 className="text-4xl font-semibold text-foreground tracking-tight">{pageH1}</h1>
+          <p className="text-lg text-muted-foreground mt-3">{metadata.description}</p>
           <AIBadge className="mt-2 inline-block" />
         </div>
 

@@ -20,11 +20,14 @@ interface Task {
 }
 
 export default function AITaskBuilder() {
+  const { t } = useTranslation();
+  
   // Set SEO metadata
   const metadata = getPageMetadata('ai-task-builder')
   useSEO({ ...metadata, canonicalPath: '/tools/ai-task-builder' })
 
-  const { t } = useTranslation();
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.aITaskBuilder.name')
   const [goal, setGoal] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -126,8 +129,8 @@ export default function AITaskBuilder() {
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-semibold text-foreground tracking-tight">{t('tools.aiTaskBuilder.title')}</h1>
-          <p className="text-lg text-muted-foreground mt-3">{t('tools.aiTaskBuilder.subtitle')}</p>
+          <h1 className="text-4xl font-semibold text-foreground tracking-tight">{pageH1}</h1>
+          <p className="text-lg text-muted-foreground mt-3">{metadata.description}</p>
           <AIBadge className="mt-2 inline-block" />
         </div>
 

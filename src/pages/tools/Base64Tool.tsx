@@ -18,6 +18,9 @@ export default function Base64Tool() {
   const metadata = getPageMetadata('base64-tool')
   useSEO({ ...metadata, canonicalPath: '/tools/base64-tool' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.base64Tool.name')
+
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')
   const [mode, setMode] = useState<'encode' | 'decode'>('encode')
@@ -71,12 +74,8 @@ export default function Base64Tool() {
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            {t('tools.base64Tool.name')}
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.base64Tool.description')}
-          </p>
+          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">{pageH1}</h1>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

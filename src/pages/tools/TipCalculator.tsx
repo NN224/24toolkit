@@ -16,6 +16,9 @@ export default function TipCalculator() {
   const metadata = getPageMetadata('tip-calculator')
   useSEO({ ...metadata, canonicalPath: '/tools/tip-calculator' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.tipCalculator.name')
+
   const [billAmount, setBillAmount] = useState('')
   const [tipPercent, setTipPercent] = useState('15')
   const [numPeople, setNumPeople] = useState('1')
@@ -51,8 +54,8 @@ export default function TipCalculator() {
             <Receipt size={24} className="text-white" weight="bold" />
           </div>
           <div>
-            <h1 className="text-3xl font-semibold text-foreground">{t('tools.tipCalculator.name')}</h1>
-            <p className="text-muted-foreground">{t('tools.tipCalculator.description')}</p>
+            <h1 className="text-3xl font-semibold text-foreground">{pageH1}</h1>
+            <p className="text-muted-foreground">{metadata.description}</p>
           </div>
         </div>
       </div>

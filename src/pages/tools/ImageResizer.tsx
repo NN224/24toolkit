@@ -17,6 +17,9 @@ export default function ImageResizer() {
   const metadata = getPageMetadata('image-resizer')
   useSEO({ ...metadata, canonicalPath: '/tools/image-resizer' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.imageResizer.name')
+
   const [image, setImage] = useState<string | null>(null)
   const [resizedImage, setResizedImage] = useState<string | null>(null)
   const [width, setWidth] = useState('')
@@ -121,10 +124,10 @@ export default function ImageResizer() {
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            {t('tools.imageResizer.name')}
+            {pageH1}
           </h1>
           <p className="text-lg text-muted-foreground">
-            {t('tools.imageResizer.description')}
+            {metadata.description}
           </p>
         </div>
 

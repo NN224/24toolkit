@@ -11,11 +11,13 @@ import { getPageMetadata } from '@/lib/seo-metadata'
 import { RelatedTools } from '@/components/RelatedTools'
 
 export default function PDFToWord() {
+  const { t } = useTranslation()
   // Set SEO metadata
   const metadata = getPageMetadata('pdf-to-word')
   useSEO({ ...metadata, canonicalPath: '/tools/pdf-to-word' })
 
-  const { t } = useTranslation()
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.pDFToWord.name')
   const [file, setFile] = useState<File | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -130,12 +132,8 @@ export default function PDFToWord() {
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            {t('tools.pdfToWord.title')}
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.pdfToWord.subtitle')}
-          </p>
+          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">{pageH1}</h1>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <div className="space-y-6">

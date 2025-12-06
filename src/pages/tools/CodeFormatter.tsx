@@ -25,6 +25,9 @@ export default function CodeFormatter() {
   const metadata = getPageMetadata('code-formatter')
   useSEO({ ...metadata, canonicalPath: '/tools/code-formatter' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.codeFormatter.name')
+
   const [code, setCode] = useState('')
   const [formattedCode, setFormattedCode] = useState('')
   const [explanation, setExplanation] = useState('')
@@ -130,14 +133,10 @@ ${code}`
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-3">
-            <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-              {t('tools.codeFormatter.name')}
-            </h1>
+            <h1 className="text-4xl font-semibold text-foreground tracking-tight">{pageH1}</h1>
             <AIBadge />
           </div>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.codeFormatter.description')}
-          </p>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

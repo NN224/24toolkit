@@ -19,6 +19,9 @@ export default function RandomStringGenerator() {
   const metadata = getPageMetadata('random-string-generator')
   useSEO({ ...metadata, canonicalPath: '/tools/random-string-generator' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.randomStringGenerator.name')
+
   const [result, setResult] = useState('')
   const [length, setLength] = useState(16)
   const [options, setOptions] = useState({
@@ -95,12 +98,8 @@ export default function RandomStringGenerator() {
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            {t('tools.randomStringGenerator.title')}
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.randomStringGenerator.subtitle')}
-          </p>
+          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">{pageH1}</h1>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <div className="space-y-6">

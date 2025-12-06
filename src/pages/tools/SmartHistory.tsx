@@ -35,10 +35,12 @@ import { Link } from 'react-router-dom'
 import { allTools } from '@/lib/tools-data'
 
 export default function SmartHistory() {
+  const { t } = useTranslation()
   const metadata = getPageMetadata('smart-history')
   useSEO({ ...metadata, canonicalPath: '/tools/smart-history' })
 
-  const { t } = useTranslation()
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.smartHistory.name')
   const [history, setHistory] = useState<HistoryEntry[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [activeFilter, setActiveFilter] = useState<'all' | 'favorites'>('all')
@@ -132,9 +134,7 @@ export default function SmartHistory() {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-3">
-              <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-                {t('tools.smartHistory.title')}
-              </h1>
+              <h1 className="text-4xl font-semibold text-foreground tracking-tight">{pageH1}</h1>
               <Badge variant="secondary">
                 {stats.totalEntries} {t('tools.smartHistory.entries')}
               </Badge>
@@ -150,9 +150,7 @@ export default function SmartHistory() {
               </Button>
             </div>
           </div>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.smartHistory.subtitle')}
-          </p>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
