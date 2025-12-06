@@ -31,6 +31,9 @@ export default function AIEmailWriter() {
   const [provider, setProvider] = useState<AIProvider>('anthropic')
   const [isArabic, setIsArabic] = useState(false)
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.aiEmailWriter.name')
+
   // Detect if topic is Arabic
   useEffect(() => {
     setIsArabic(/[\u0600-\u06FF]/.test(topic))
@@ -91,8 +94,8 @@ export default function AIEmailWriter() {
             <Envelope size={24} className="text-white" weight="bold" />
           </div>
           <div>
-            <h1 className="text-3xl font-semibold text-foreground">{t('tools.aiEmailWriter.name')}</h1>
-            <p className="text-muted-foreground">{t('tools.aiEmailWriter.subtitle')}</p>
+            <h1 className="text-3xl font-semibold text-foreground">{pageH1}</h1>
+            <p className="text-muted-foreground">{metadata.description}</p>
           </div>
         </div>
       </div>
