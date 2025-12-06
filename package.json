@@ -85,7 +85,7 @@
         "onnxruntime-web": "1.21.0",
         "openai": "^6.9.1",
         "papaparse": "^5.5.3",
-        "pdfjs-dist": "^4.10.38",
+        "pdfjs-dist": "^5.4.449",
         "qrcode.react": "^4.2.0",
         "react": "^19.0.0",
         "react-day-picker": "^9.6.7",
