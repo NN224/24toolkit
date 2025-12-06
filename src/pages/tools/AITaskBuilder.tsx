@@ -20,14 +20,14 @@ interface Task {
 }
 
 export default function AITaskBuilder() {
+  const { t } = useTranslation();
+  
   // Set SEO metadata
   const metadata = getPageMetadata('ai-task-builder')
   useSEO({ ...metadata, canonicalPath: '/tools/ai-task-builder' })
 
   // Use SEO H1 if available, otherwise fall back to translation
   const pageH1 = metadata.h1 || t('tools.aITaskBuilder.name')
-
-  const { t } = useTranslation();
   const [goal, setGoal] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([]);

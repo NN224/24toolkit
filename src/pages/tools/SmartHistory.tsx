@@ -35,13 +35,12 @@ import { Link } from 'react-router-dom'
 import { allTools } from '@/lib/tools-data'
 
 export default function SmartHistory() {
+  const { t } = useTranslation()
   const metadata = getPageMetadata('smart-history')
   useSEO({ ...metadata, canonicalPath: '/tools/smart-history' })
 
   // Use SEO H1 if available, otherwise fall back to translation
   const pageH1 = metadata.h1 || t('tools.smartHistory.name')
-
-  const { t } = useTranslation()
   const [history, setHistory] = useState<HistoryEntry[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [activeFilter, setActiveFilter] = useState<'all' | 'favorites'>('all')

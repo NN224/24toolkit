@@ -11,14 +11,13 @@ import { getPageMetadata } from '@/lib/seo-metadata'
 import { RelatedTools } from '@/components/RelatedTools'
 
 export default function PDFToWord() {
+  const { t } = useTranslation()
   // Set SEO metadata
   const metadata = getPageMetadata('pdf-to-word')
   useSEO({ ...metadata, canonicalPath: '/tools/pdf-to-word' })
 
   // Use SEO H1 if available, otherwise fall back to translation
   const pageH1 = metadata.h1 || t('tools.pDFToWord.name')
-
-  const { t } = useTranslation()
   const [file, setFile] = useState<File | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
   const [progress, setProgress] = useState(0)

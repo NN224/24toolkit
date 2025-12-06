@@ -40,13 +40,12 @@ interface StepState {
 }
 
 export default function AIToolChains() {
+  const { t } = useTranslation()
   const metadata = getPageMetadata('ai-tool-chains')
   useSEO({ ...metadata, canonicalPath: '/tools/ai-tool-chains' })
 
   // Use SEO H1 if available, otherwise fall back to translation
   const pageH1 = metadata.h1 || t('tools.aIToolChains.name')
-
-  const { t } = useTranslation()
   const [input, setInput] = useState('')
   const [selectedChain, setSelectedChain] = useState<ChainTemplate | null>(null)
   const [isRunning, setIsRunning] = useState(false)

@@ -10,14 +10,13 @@ import { getPageMetadata } from '@/lib/seo-metadata'
 import { RelatedTools } from '@/components/RelatedTools'
 
 export default function DailyPlannerTemplate() {
+  const { t } = useTranslation()
   // Set SEO metadata
   const metadata = getPageMetadata('daily-planner-template')
   useSEO({ ...metadata, canonicalPath: '/tools/daily-planner-template' })
 
   // Use SEO H1 if available, otherwise fall back to translation
   const pageH1 = metadata.h1 || t('tools.dailyPlannerTemplate.name')
-
-  const { t } = useTranslation()
   const [date, setDate] = useState(new Date().toISOString().split('T')[0])
 
   const generateTemplate = () => {

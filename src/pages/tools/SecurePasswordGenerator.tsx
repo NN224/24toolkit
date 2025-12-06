@@ -14,14 +14,13 @@ import { getPageMetadata } from '@/lib/seo-metadata'
 import { RelatedTools } from '@/components/RelatedTools'
 
 export default function SecurePasswordGenerator() {
+  const { t } = useTranslation()
   // Set SEO metadata
   const metadata = getPageMetadata('secure-password-generator')
   useSEO({ ...metadata, canonicalPath: '/tools/secure-password-generator' })
 
   // Use SEO H1 if available, otherwise fall back to translation
   const pageH1 = metadata.h1 || t('tools.securePasswordGenerator.name')
-
-  const { t } = useTranslation()
   const [password, setPassword] = useState('')
   const [length, setLength] = useState(20)
   const [options, setOptions] = useState({

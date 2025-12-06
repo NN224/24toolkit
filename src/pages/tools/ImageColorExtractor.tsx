@@ -15,14 +15,13 @@ interface ColorInfo {
 }
 
 export default function ImageColorExtractor() {
+  const { t } = useTranslation()
   // Set SEO metadata
   const metadata = getPageMetadata('image-color-extractor')
   useSEO({ ...metadata, canonicalPath: '/tools/image-color-extractor' })
 
   // Use SEO H1 if available, otherwise fall back to translation
   const pageH1 = metadata.h1 || t('tools.imageColorExtractor.name')
-
-  const { t } = useTranslation()
   const [image, setImage] = useState<string | null>(null)
   const [colors, setColors] = useState<ColorInfo[]>([])
   const [isProcessing, setIsProcessing] = useState(false)

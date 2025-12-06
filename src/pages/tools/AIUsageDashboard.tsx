@@ -32,13 +32,12 @@ import {
 import { Link } from 'react-router-dom'
 
 export default function AIUsageDashboard() {
+  const { t } = useTranslation()
   const metadata = getPageMetadata('ai-usage-dashboard')
   useSEO({ ...metadata, canonicalPath: '/tools/ai-usage-dashboard' })
 
   // Use SEO H1 if available, otherwise fall back to translation
   const pageH1 = metadata.h1 || t('tools.aIUsageDashboard.name')
-
-  const { t } = useTranslation()
   const [insights, setInsights] = useState<UserInsights | null>(null)
   const [todaySummary, setTodaySummary] = useState<DailySummary | null>(null)
   const [isArabic, setIsArabic] = useState(false)
