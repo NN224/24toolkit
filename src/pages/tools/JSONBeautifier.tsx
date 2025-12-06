@@ -19,6 +19,9 @@ export default function JSONBeautifier() {
   const metadata = getPageMetadata('json-beautifier')
   useSEO({ ...metadata, canonicalPath: '/tools/json-beautifier' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.jSONBeautifier.name')
+
   const [input, setInput] = useState('')
   const [formatted, setFormatted] = useState('')
   const [isValid, setIsValid] = useState<boolean | null>(null)
@@ -81,12 +84,8 @@ export default function JSONBeautifier() {
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            {t('tools.jsonBeautifier.name')}
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.jsonBeautifier.description')}
-          </p>
+          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">{pageH1}</h1>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

@@ -20,6 +20,9 @@ export default function GrammarCorrector() {
   const metadata = getPageMetadata('grammar-corrector')
   useSEO({ ...metadata, canonicalPath: '/tools/grammar-corrector' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.grammarCorrector.name')
+
   const [text, setText] = useState('')
   const [correctedText, setCorrectedText] = useState('')
   const [corrections, setCorrections] = useState<string[]>([])
@@ -91,16 +94,12 @@ export default function GrammarCorrector() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-3">
-            <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-              {t('tools.grammarCorrector.name')}
-            </h1>
+            <h1 className="text-4xl font-semibold text-foreground tracking-tight">{pageH1}</h1>
             <div className="px-3 py-1 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-medium">
               {t('tools.common.aiPowered')}
             </div>
           </div>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.grammarCorrector.description')}
-          </p>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <div className="space-y-6">

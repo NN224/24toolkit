@@ -18,6 +18,9 @@ export default function WatermarkAdder() {
   const metadata = getPageMetadata('watermark-adder')
   useSEO({ ...metadata, canonicalPath: '/tools/watermark-adder' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.watermarkAdder.name')
+
   const [image, setImage] = useState<string | null>(null)
   const [watermarkText, setWatermarkText] = useState('© Your Watermark')
   const [fontSize, setFontSize] = useState(40)
@@ -138,12 +141,8 @@ export default function WatermarkAdder() {
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            {t('tools.watermarkAdder.title')}
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.watermarkAdder.subtitle')}
-          </p>
+          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">{pageH1}</h1>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

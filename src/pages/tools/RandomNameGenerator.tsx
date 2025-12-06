@@ -32,6 +32,9 @@ export default function RandomNameGenerator() {
   const metadata = getPageMetadata('random-name-generator')
   useSEO({ ...metadata, canonicalPath: '/tools/random-name-generator' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.randomNameGenerator.name')
+
   const [names, setNames] = useState<string[]>([])
   const [count, setCount] = useState(5)
 
@@ -59,12 +62,8 @@ export default function RandomNameGenerator() {
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            {t('tools.randomNameGenerator.name')}
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.randomNameGenerator.description')}
-          </p>
+          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">{pageH1}</h1>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <div className="space-y-6">

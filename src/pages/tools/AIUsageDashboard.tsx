@@ -35,6 +35,9 @@ export default function AIUsageDashboard() {
   const metadata = getPageMetadata('ai-usage-dashboard')
   useSEO({ ...metadata, canonicalPath: '/tools/ai-usage-dashboard' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.aIUsageDashboard.name')
+
   const { t } = useTranslation()
   const [insights, setInsights] = useState<UserInsights | null>(null)
   const [todaySummary, setTodaySummary] = useState<DailySummary | null>(null)
@@ -100,9 +103,7 @@ export default function AIUsageDashboard() {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-3">
-              <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-                {t('tools.aiUsageDashboard.title')}
-              </h1>
+              <h1 className="text-4xl font-semibold text-foreground tracking-tight">{pageH1}</h1>
               <AIBadge />
             </div>
             <div className="flex gap-2">
@@ -116,9 +117,7 @@ export default function AIUsageDashboard() {
               </Button>
             </div>
           </div>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.aiUsageDashboard.subtitle')}
-          </p>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         {insights.totalRequests === 0 ? (

@@ -16,6 +16,9 @@ export default function CountdownTimer() {
   const metadata = getPageMetadata('countdown-timer')
   useSEO({ ...metadata, canonicalPath: '/tools/countdown-timer' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.countdownTimer.name')
+
   const [minutes, setMinutes] = useState(5)
   const [seconds, setSeconds] = useState(0)
   const [timeLeft, setTimeLeft] = useState(0)
@@ -61,12 +64,8 @@ export default function CountdownTimer() {
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            {t('tools.countdownTimer.name')}
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.countdownTimer.description')}
-          </p>
+          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">{pageH1}</h1>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <div className="space-y-6">

@@ -19,6 +19,9 @@ export default function QRGenerator() {
   const metadata = getPageMetadata('qr-generator')
   useSEO({ ...metadata, canonicalPath: '/tools/qr-generator' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.qRGenerator.name')
+
   const [text, setText] = useState('')
   const [size, setSize] = useState(256)
   const qrRef = useRef<HTMLDivElement>(null)
@@ -54,12 +57,8 @@ export default function QRGenerator() {
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            {t('tools.qrGenerator.name')}
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.qrGenerator.description')}
-          </p>
+          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">{pageH1}</h1>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">

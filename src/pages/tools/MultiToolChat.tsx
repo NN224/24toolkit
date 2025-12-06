@@ -46,6 +46,9 @@ export default function MultiToolChat() {
   const metadata = getPageMetadata('multi-tool-chat')
   useSEO({ ...metadata, canonicalPath: '/tools/multi-tool-chat' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.multiToolChat.name')
+
   const { t } = useTranslation()
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')

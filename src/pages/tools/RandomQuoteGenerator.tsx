@@ -34,6 +34,9 @@ export default function RandomQuoteGenerator() {
   const metadata = getPageMetadata('random-quote-generator')
   useSEO({ ...metadata, canonicalPath: '/tools/random-quote-generator' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.randomQuoteGenerator.name')
+
   const [quote, setQuote] = useState(quotes[0])
   const [key, setKey] = useState(0)
 
@@ -57,12 +60,8 @@ export default function RandomQuoteGenerator() {
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            {t('tools.randomQuoteGenerator.name')}
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.randomQuoteGenerator.description')}
-          </p>
+          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">{pageH1}</h1>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <div className="space-y-6">

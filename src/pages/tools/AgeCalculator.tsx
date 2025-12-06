@@ -16,6 +16,9 @@ export default function AgeCalculator() {
   const metadata = getPageMetadata('age-calculator')
   useSEO({ ...metadata, canonicalPath: '/tools/age-calculator' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.ageCalculator.name')
+
   const [birthDate, setBirthDate] = useState('')
   const [targetDate, setTargetDate] = useState('')
   const [ageResult, setAgeResult] = useState<{
@@ -75,8 +78,8 @@ export default function AgeCalculator() {
             <Calendar size={24} className="text-white" weight="bold" />
           </div>
           <div>
-            <h1 className="text-3xl font-semibold text-foreground">{t('tools.ageCalculator.name')}</h1>
-            <p className="text-muted-foreground">{t('tools.ageCalculator.description')}</p>
+            <h1 className="text-3xl font-semibold text-foreground">{pageH1}</h1>
+            <p className="text-muted-foreground">{metadata.description}</p>
           </div>
         </div>
       </div>

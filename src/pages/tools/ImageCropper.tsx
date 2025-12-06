@@ -16,6 +16,9 @@ export default function ImageCropper() {
   const metadata = getPageMetadata('image-cropper')
   useSEO({ ...metadata, canonicalPath: '/tools/image-cropper' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.imageCropper.name')
+
   const [image, setImage] = useState<string | null>(null)
   const [crop, setCrop] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
@@ -112,12 +115,8 @@ export default function ImageCropper() {
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            {t('tools.imageCropper.name')}
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.imageCropper.description')}
-          </p>
+          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">{pageH1}</h1>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

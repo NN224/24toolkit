@@ -26,6 +26,9 @@ export default function TextSummarizer() {
   const metadata = getPageMetadata('text-summarizer')
   useSEO({ ...metadata, canonicalPath: '/tools/text-summarizer' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.textSummarizer.name')
+
   // Smart tool recommendations
   const { triggerRecommendations, PopupComponent } = useToolRecommendations('text-summarizer')
 
@@ -100,14 +103,10 @@ export default function TextSummarizer() {
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-3">
-            <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-              {t('tools.textSummarizer.name')}
-            </h1>
+            <h1 className="text-4xl font-semibold text-foreground tracking-tight">{pageH1}</h1>
             <AIBadge />
           </div>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.textSummarizer.description')}
-          </p>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

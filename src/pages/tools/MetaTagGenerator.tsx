@@ -18,6 +18,9 @@ export default function MetaTagGenerator() {
   const metadata = getPageMetadata('meta-tag-generator')
   useSEO({ ...metadata, canonicalPath: '/tools/meta-tag-generator' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.metaTagGenerator.name')
+
   const [pageTitle, setPageTitle] = useState('')
   const [description, setDescription] = useState('')
   const [keywords, setKeywords] = useState('')
@@ -72,7 +75,7 @@ ${description ? `<meta property="twitter:description" content="${description}">`
           </div>
           <div>
             <h1 className="text-3xl font-semibold text-foreground">{t('tools.metaTagGenerator.pageTitle')}</h1>
-            <p className="text-muted-foreground">{t('tools.metaTagGenerator.subtitle')}</p>
+            <p className="text-muted-foreground">{metadata.description}</p>
           </div>
         </div>
       </div>

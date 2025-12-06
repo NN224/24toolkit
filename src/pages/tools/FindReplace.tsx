@@ -19,6 +19,9 @@ export default function FindReplace() {
   const metadata = getPageMetadata('find-replace')
   useSEO({ ...metadata, canonicalPath: '/tools/find-replace' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.findReplace.name')
+
   const [text, setText] = useState('')
   const [findText, setFindText] = useState('')
   const [replaceText, setReplaceText] = useState('')
@@ -93,12 +96,8 @@ export default function FindReplace() {
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            {t('tools.findReplace.name')}
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.findReplace.description')}
-          </p>
+          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">{pageH1}</h1>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <div className="space-y-6">

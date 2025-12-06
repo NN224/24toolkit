@@ -43,6 +43,9 @@ export default function AIToolChains() {
   const metadata = getPageMetadata('ai-tool-chains')
   useSEO({ ...metadata, canonicalPath: '/tools/ai-tool-chains' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.aIToolChains.name')
+
   const { t } = useTranslation()
   const [input, setInput] = useState('')
   const [selectedChain, setSelectedChain] = useState<ChainTemplate | null>(null)
@@ -140,14 +143,10 @@ export default function AIToolChains() {
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-3">
-            <h1 className="text-4xl font-semibold text-foreground tracking-tight">
-              {t('tools.aiToolChains.title')}
-            </h1>
+            <h1 className="text-4xl font-semibold text-foreground tracking-tight">{pageH1}</h1>
             <AIBadge />
           </div>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.aiToolChains.subtitle')}
-          </p>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

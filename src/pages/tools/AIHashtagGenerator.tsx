@@ -28,6 +28,9 @@ export default function AIHashtagGenerator() {
   const metadata = getPageMetadata('ai-hashtag-generator')
   useSEO({ ...metadata, canonicalPath: '/tools/ai-hashtag-generator' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.aIHashtagGenerator.name')
+
   const [content, setContent] = useState('')
   const [hashtags, setHashtags] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
@@ -118,8 +121,8 @@ export default function AIHashtagGenerator() {
             <Hash size={24} className="text-white" weight="bold" />
           </div>
           <div>
-            <h1 className="text-3xl font-semibold text-foreground">{t('tools.aiHashtagGenerator.title')}</h1>
-            <p className="text-muted-foreground">{t('tools.aiHashtagGenerator.subtitle')}</p>
+            <h1 className="text-3xl font-semibold text-foreground">{pageH1}</h1>
+            <p className="text-muted-foreground">{metadata.description}</p>
           </div>
         </div>
       </div>

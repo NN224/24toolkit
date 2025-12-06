@@ -17,6 +17,9 @@ export default function PalindromeChecker() {
   const metadata = getPageMetadata('palindrome-checker')
   useSEO({ ...metadata, canonicalPath: '/tools/palindrome-checker' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.palindromeChecker.name')
+
   const [text, setText] = useState('')
   const [checked, setChecked] = useState(false)
   const [isPalindrome, setIsPalindrome] = useState(false)
@@ -62,12 +65,8 @@ export default function PalindromeChecker() {
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            {t('tools.palindromeChecker.title')}
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.palindromeChecker.subtitle')}
-          </p>
+          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">{pageH1}</h1>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <div className="space-y-6">

@@ -36,6 +36,9 @@ export default function AIPromptPresets() {
   const metadata = getPageMetadata('ai-prompt-presets')
   useSEO({ ...metadata, canonicalPath: '/tools/ai-prompt-presets' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.aIPromptPresets.name')
+
   const { t } = useTranslation()
   const [presets, setPresets] = useState<PromptPreset[]>([])
   const [selectedPreset, setSelectedPreset] = useState<PromptPreset | null>(null)

@@ -17,6 +17,9 @@ export default function UUIDGenerator() {
   const metadata = getPageMetadata('uuid-generator')
   useSEO({ ...metadata, canonicalPath: '/tools/uuid-generator' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.uUIDGenerator.name')
+
   const [uuids, setUuids] = useState<string[]>([])
   const [count, setCount] = useState(1)
   const copyToClipboard = useCopyToClipboard()
@@ -36,12 +39,8 @@ export default function UUIDGenerator() {
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            {t('tools.uuidGenerator.name')}
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.uuidGenerator.description')}
-          </p>
+          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">{pageH1}</h1>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <Card className="mb-6">

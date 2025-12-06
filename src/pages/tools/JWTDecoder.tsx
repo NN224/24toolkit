@@ -22,6 +22,9 @@ export default function JWTDecoder() {
   const metadata = getPageMetadata('jwt-decoder')
   useSEO({ ...metadata, canonicalPath: '/tools/jwt-decoder' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.jWTDecoder.name')
+
   const [jwt, setJwt] = useState('')
   const [decoded, setDecoded] = useState<DecodedJWT | null>(null)
   const [error, setError] = useState('')
@@ -80,12 +83,8 @@ export default function JWTDecoder() {
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            {t('tools.jwtDecoder.name')}
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            {t('tools.jwtDecoder.description')}
-          </p>
+          <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">{pageH1}</h1>
+          <p className="text-lg text-muted-foreground">{metadata.description}</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

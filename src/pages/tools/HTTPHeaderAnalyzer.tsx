@@ -18,6 +18,9 @@ export default function HTTPHeaderAnalyzer() {
   const metadata = getPageMetadata('http-header-analyzer')
   useSEO({ ...metadata, canonicalPath: '/tools/http-header-analyzer' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.hTTPHeaderAnalyzer.name')
+
   const [url, setUrl] = useState('')
   const [headers, setHeaders] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(false)
@@ -90,8 +93,8 @@ export default function HTTPHeaderAnalyzer() {
             <MagnifyingGlass size={24} className="text-white" weight="bold" />
           </div>
           <div>
-            <h1 className="text-3xl font-semibold text-foreground">{t('tools.httpHeaderAnalyzer.title')}</h1>
-            <p className="text-muted-foreground">{t('tools.httpHeaderAnalyzer.subtitle')}</p>
+            <h1 className="text-3xl font-semibold text-foreground">{pageH1}</h1>
+            <p className="text-muted-foreground">{metadata.description}</p>
           </div>
         </div>
       </div>
