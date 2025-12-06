@@ -89,7 +89,7 @@
         "qrcode.react": "^4.2.0",
         "react": "^19.0.0",
         "react-day-picker": "^9.6.7",
-        "react-dom": "^19.2.0",
+        "react-dom": "^19.2.1",
         "react-easy-crop": "^5.5.3",
         "react-error-boundary": "^6.0.0",
         "react-hook-form": "^7.67.0",
