@@ -74,7 +74,7 @@ ${description ? `<meta property="twitter:description" content="${description}">`
             <Tag size={24} className="text-white" weight="bold" />
           </div>
           <div>
-            <h1 className="text-3xl font-semibold text-foreground">{t('tools.metaTagGenerator.pageTitle')}</h1>
+            <h1 className="text-3xl font-semibold text-foreground">{pageH1}</h1>
             <p className="text-muted-foreground">{metadata.description}</p>
           </div>
         </div>
