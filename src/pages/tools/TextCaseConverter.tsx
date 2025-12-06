@@ -17,6 +17,9 @@ export default function TextCaseConverter() {
   const metadata = getPageMetadata('text-case-converter')
   useSEO({ ...metadata, canonicalPath: '/tools/text-case-converter' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.textCaseConverter.name')
+
   const [text, setText] = useState('')
   const [result, setResult] = useState('')
   const copyToClipboard = useCopyToClipboard()
@@ -76,10 +79,10 @@ export default function TextCaseConverter() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            {t('tools.textCaseConverter.name')}
+            {pageH1}
           </h1>
           <p className="text-lg text-muted-foreground">
-            {t('tools.textCaseConverter.description')}
+            {metadata.description}
           </p>
         </div>
 

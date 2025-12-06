@@ -19,6 +19,9 @@ export default function HTMLFormatter() {
   const metadata = getPageMetadata('html-formatter')
   useSEO({ ...metadata, canonicalPath: '/tools/html-formatter' })
 
+  // Use SEO H1 if available, otherwise fall back to translation
+  const pageH1 = metadata.h1 || t('tools.htmlFormatter.title')
+
   const [input, setInput] = useState('')
   const [formatted, setFormatted] = useState('')
   const [language, setLanguage] = useState<'html' | 'css' | 'javascript'>('html')
@@ -139,10 +142,10 @@ export default function HTMLFormatter() {
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-semibold text-foreground mb-3 tracking-tight">
-            {t('tools.htmlFormatter.title')}
+            {pageH1}
           </h1>
           <p className="text-lg text-muted-foreground">
-            {t('tools.htmlFormatter.subtitle')}
+            {metadata.description}
           </p>
         </div>
 
